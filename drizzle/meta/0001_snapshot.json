@@ -1,0 +1,482 @@
+{
+  "id": "c2dd6d47-3016-4b35-8b30-04ea234448d9",
+  "prevId": "37e6d8a8-4565-4b18-9cf7-0b5655dd6264",
+  "version": "6",
+  "dialect": "postgresql",
+  "tables": {
+    "public.easy-and-tasty_comment_like": {
+      "name": "easy-and-tasty_comment_like",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "comment_id": {
+          "name": "comment_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "easy-and-tasty_comment_like_user_id_easy-and-tasty_user_id_fk": {
+          "name": "easy-and-tasty_comment_like_user_id_easy-and-tasty_user_id_fk",
+          "tableFrom": "easy-and-tasty_comment_like",
+          "tableTo": "easy-and-tasty_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "easy-and-tasty_comment_like_comment_id_easy-and-tasty_comment_id_fk": {
+          "name": "easy-and-tasty_comment_like_comment_id_easy-and-tasty_comment_id_fk",
+          "tableFrom": "easy-and-tasty_comment_like",
+          "tableTo": "easy-and-tasty_comment",
+          "columnsFrom": [
+            "comment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.easy-and-tasty_comment": {
+      "name": "easy-and-tasty_comment",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reply_id": {
+          "name": "reply_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recipe_id": {
+          "name": "recipe_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "easy-and-tasty_comment_user_id_easy-and-tasty_user_id_fk": {
+          "name": "easy-and-tasty_comment_user_id_easy-and-tasty_user_id_fk",
+          "tableFrom": "easy-and-tasty_comment",
+          "tableTo": "easy-and-tasty_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "easy-and-tasty_comment_reply_id_easy-and-tasty_comment_id_fk": {
+          "name": "easy-and-tasty_comment_reply_id_easy-and-tasty_comment_id_fk",
+          "tableFrom": "easy-and-tasty_comment",
+          "tableTo": "easy-and-tasty_comment",
+          "columnsFrom": [
+            "reply_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "easy-and-tasty_comment_recipe_id_easy-and-tasty_recipe_id_fk": {
+          "name": "easy-and-tasty_comment_recipe_id_easy-and-tasty_recipe_id_fk",
+          "tableFrom": "easy-and-tasty_comment",
+          "tableTo": "easy-and-tasty_recipe",
+          "columnsFrom": [
+            "recipe_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.easy-and-tasty_rating": {
+      "name": "easy-and-tasty_rating",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recipe_id": {
+          "name": "recipe_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "easy-and-tasty_rating_user_id_easy-and-tasty_user_id_fk": {
+          "name": "easy-and-tasty_rating_user_id_easy-and-tasty_user_id_fk",
+          "tableFrom": "easy-and-tasty_rating",
+          "tableTo": "easy-and-tasty_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "easy-and-tasty_rating_recipe_id_easy-and-tasty_recipe_id_fk": {
+          "name": "easy-and-tasty_rating_recipe_id_easy-and-tasty_recipe_id_fk",
+          "tableFrom": "easy-and-tasty_rating",
+          "tableTo": "easy-and-tasty_recipe",
+          "columnsFrom": [
+            "recipe_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.easy-and-tasty_recipe_like": {
+      "name": "easy-and-tasty_recipe_like",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recipe_id": {
+          "name": "recipe_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "easy-and-tasty_recipe_like_user_id_easy-and-tasty_user_id_fk": {
+          "name": "easy-and-tasty_recipe_like_user_id_easy-and-tasty_user_id_fk",
+          "tableFrom": "easy-and-tasty_recipe_like",
+          "tableTo": "easy-and-tasty_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "easy-and-tasty_recipe_like_recipe_id_easy-and-tasty_recipe_id_fk": {
+          "name": "easy-and-tasty_recipe_like_recipe_id_easy-and-tasty_recipe_id_fk",
+          "tableFrom": "easy-and-tasty_recipe_like",
+          "tableTo": "easy-and-tasty_recipe",
+          "columnsFrom": [
+            "recipe_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.easy-and-tasty_recipe_tag": {
+      "name": "easy-and-tasty_recipe_tag",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "tag_id": {
+          "name": "tag_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recipe_id": {
+          "name": "recipe_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "easy-and-tasty_recipe_tag_tag_id_easy-and-tasty_tag_id_fk": {
+          "name": "easy-and-tasty_recipe_tag_tag_id_easy-and-tasty_tag_id_fk",
+          "tableFrom": "easy-and-tasty_recipe_tag",
+          "tableTo": "easy-and-tasty_tag",
+          "columnsFrom": [
+            "tag_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "easy-and-tasty_recipe_tag_recipe_id_easy-and-tasty_recipe_id_fk": {
+          "name": "easy-and-tasty_recipe_tag_recipe_id_easy-and-tasty_recipe_id_fk",
+          "tableFrom": "easy-and-tasty_recipe_tag",
+          "tableTo": "easy-and-tasty_recipe",
+          "columnsFrom": [
+            "recipe_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.easy-and-tasty_recipe": {
+      "name": "easy-and-tasty_recipe",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ingredients": {
+          "name": "ingredients",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recipe": {
+          "name": "recipe",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "easy-and-tasty_recipe_user_id_easy-and-tasty_user_id_fk": {
+          "name": "easy-and-tasty_recipe_user_id_easy-and-tasty_user_id_fk",
+          "tableFrom": "easy-and-tasty_recipe",
+          "tableTo": "easy-and-tasty_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.easy-and-tasty_tag": {
+      "name": "easy-and-tasty_tag",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.easy-and-tasty_user": {
+      "name": "easy-and-tasty_user",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
