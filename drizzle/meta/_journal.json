@@ -15,6 +15,13 @@
       "when": 1719246031632,
       "tag": "0001_hot_red_ghost",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1719605581475,
+      "tag": "0002_motionless_freak",
+      "breakpoints": true
     }
   ]
 }
