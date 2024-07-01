@@ -18,7 +18,8 @@
 			"style": {
 				"noNonNullAssertion": "off",
 				"useTemplate": "off",
-				"noParameterAssign": "off"
+				"noParameterAssign": "off",
+				"useImportType": "off"
 			},
 			"performance": {
 				"noDelete": "off"

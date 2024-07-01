@@ -9,5 +9,8 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     "package.json": "*"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
   }
 }
