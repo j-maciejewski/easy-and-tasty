@@ -9,12 +9,17 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import logo from "@/public/logo.png";
+import Image from "next/image";
 import { AuthInput } from "../_components/AuthInput";
 
 export default function () {
 	return (
 		<Card className="mx-auto max-w-sm min-w-[350px]">
 			<CardHeader>
+				<Link href="/">
+					<Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />
+				</Link>
 				<CardTitle className="text-2xl">Login</CardTitle>
 				<CardDescription>
 					Enter your email below to login to your account
