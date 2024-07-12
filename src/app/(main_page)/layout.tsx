@@ -8,8 +8,8 @@ import Link from "next/link";
 
 export default function ({ children }: React.PropsWithChildren) {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center h-screen bg-secondary">
-			<header className="w-full">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-secondary">
+			<header className="w-full bg-white">
 				<div className="mx-auto px-4 py-3 max-w-[1000px] flex justify-between items-center h-[80px]">
 					<div>
 						<Image src={logo} alt="logo" height={40} />
