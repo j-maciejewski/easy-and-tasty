@@ -7,7 +7,12 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Timer } from "lucide-react";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Heart, Timer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Rating } from "./Rating";
@@ -21,42 +26,74 @@ namespace RecipeCard {
 			time: number;
 			difficulty: string;
 			image: string;
+			slug: string;
 		};
 	}
 }
 
-const getDifficultyIcon = (difficulty: string) => {
-	if (difficulty === "easy") return <GaugeLow className="text-green-600" />;
-	if (difficulty === "medium")
-		return <GaugeMedium className="text-yellow-600" />;
-	return <GaugeHigh className="text-red-600" />;
+const getDifficulty = (difficulty: string) => {
+	const [text, Icon] = (() => {
+		if (difficulty === "easy")
+			return ["Easy", <GaugeLow key="easy" className="text-green-600" />];
+		if (difficulty === "medium")
+			return ["Medium", <GaugeMedium key="easy" className="text-yellow-600" />];
+		return ["Hard", <GaugeHigh key="hard" className="text-red-600" />];
+	})();
+
+	return (
+		<>
+			<TooltipTrigger>{Icon}</TooltipTrigger>
+			<TooltipContent>{text}</TooltipContent>
+		</>
+	);
 };
 
 export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 	return (
-		<Link href={"/"}>
-			<Card className="min-w-[200px] max-w-[400px] w-full flex flex-col h-full">
-				<CardContent className="p-0 overflow-hidden rounded-t-lg">
-					<Image
-						src={`/${recipe.image}`}
-						width={400}
-						height={600}
-						alt="cake"
-						className="rounded-t-lg max-h-[300px] object-cover w-full transition ease-in-out hover:scale-[1.05]"
-					/>
-				</CardContent>
-				<CardHeader className="p-4 grow">
-					<CardTitle className="text-lg">{recipe.title}</CardTitle>
-				</CardHeader>
-				<CardFooter className="p-4 pt-0 justify-center">
-					<Timer className="mr-1" />
-					<span className="text-gray-600">{recipe.time}</span>
-					<Separator orientation="vertical" className="h-4 mx-2" />
-					{getDifficultyIcon(recipe.difficulty)}
-					<Separator orientation="vertical" className="h-4 mx-2" />
-					<Rating rating={recipe.rating} />
-				</CardFooter>
-			</Card>
-		</Link>
+		<div className="relative group/card">
+			<Tooltip>
+				<TooltipTrigger className="absolute right-2 top-2 z-10" asChild>
+					<button
+						type="button"
+						className="size-10 rounded-full bg-white justify-center items-center hidden group-hover/card:flex"
+					>
+						<Heart className="text-red-700 stroke-[2.5]" />
+					</button>
+				</TooltipTrigger>
+				<TooltipContent>Save recipe</TooltipContent>
+			</Tooltip>
+			<Link href={`/recipe/${recipe.slug}`}>
+				<Card className="min-w-[200px] max-w-[400px] w-full flex flex-col h-full">
+					<CardContent className="p-0 overflow-hidden rounded-t-lg">
+						<Image
+							src={`/${recipe.image}`}
+							width={400}
+							height={600}
+							alt="cake"
+							loading="lazy"
+							className="rounded-t-lg max-h-[300px] object-cover w-full transition ease-in-out hover:scale-[1.05]"
+						/>
+					</CardContent>
+					<CardHeader className="p-4 grow">
+						<CardTitle className="text-lg">{recipe.title}</CardTitle>
+					</CardHeader>
+					<CardFooter className="p-4 pt-0 justify-center">
+						<Tooltip>
+							<TooltipTrigger asChild>
+								<div className="flex text-gray-600">
+									<Timer className="mr-1" />
+									<span className="font-semibold">{recipe.time}</span>
+								</div>
+							</TooltipTrigger>
+							<TooltipContent>{recipe.time} minutes</TooltipContent>
+						</Tooltip>
+						<Separator orientation="vertical" className="h-4 mx-2" />
+						<Tooltip>{getDifficulty(recipe.difficulty)}</Tooltip>
+						<Separator orientation="vertical" className="h-4 mx-2" />
+						<Rating rating={recipe.rating} />
+					</CardFooter>
+				</Card>
+			</Link>
+		</div>
 	);
 };

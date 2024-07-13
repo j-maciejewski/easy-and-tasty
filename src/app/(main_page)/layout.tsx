@@ -12,7 +12,7 @@ export default function ({ children }: React.PropsWithChildren) {
 			<header className="w-full bg-white">
 				<div className="mx-auto px-4 py-3 max-w-[1000px] flex justify-between items-center h-[80px]">
 					<div>
-						<Image src={logo} alt="logo" height={40} />
+						<Image src={logo} alt="logo" height={40} priority />
 					</div>
 					<ul className="flex gap-5 uppercase tracking-wide font-semibold h-fit">
 						<li>

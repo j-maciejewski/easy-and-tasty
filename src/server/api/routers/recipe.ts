@@ -110,6 +110,7 @@ const GET_RECIPES_MOCK = [
 		difficulty: "medium",
 		image: "cheeseburger-1.jpg",
 		ingredients: "{}",
+		rating: 1.8,
 		recipe: "{}",
 		slug: "garlic-butter",
 		time: 90,
