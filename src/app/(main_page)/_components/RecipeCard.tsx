@@ -62,38 +62,46 @@ export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 				</TooltipTrigger>
 				<TooltipContent>Save recipe</TooltipContent>
 			</Tooltip>
-			<Link href={`/recipe/${recipe.slug}`}>
-				<Card className="min-w-[200px] max-w-[400px] w-full flex flex-col h-full">
-					<CardContent className="p-0 overflow-hidden rounded-t-lg">
+
+			<Card className="min-w-[200px] max-w-[400px] w-full flex flex-col h-full shadow">
+				<CardContent className="p-0 overflow-hidden rounded-t-lg">
+					<Link href={`/recipe/${recipe.slug}`}>
 						<Image
-							src={`/${recipe.image}`}
+							src={`/mock/meals/${recipe.image}`}
 							width={400}
 							height={600}
-							alt="cake"
+							alt="recipe"
 							loading="lazy"
 							className="rounded-t-lg max-h-[300px] object-cover w-full transition ease-in-out hover:scale-[1.05]"
 						/>
-					</CardContent>
-					<CardHeader className="p-4 grow">
-						<CardTitle className="text-lg">{recipe.title}</CardTitle>
-					</CardHeader>
-					<CardFooter className="p-4 pt-0 justify-center">
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<div className="flex text-gray-600">
-									<Timer className="mr-1" />
-									<span className="font-semibold">{recipe.time}</span>
-								</div>
-							</TooltipTrigger>
-							<TooltipContent>{recipe.time} minutes</TooltipContent>
-						</Tooltip>
-						<Separator orientation="vertical" className="h-4 mx-2" />
-						<Tooltip>{getDifficulty(recipe.difficulty)}</Tooltip>
-						<Separator orientation="vertical" className="h-4 mx-2" />
-						<Rating rating={recipe.rating} />
-					</CardFooter>
-				</Card>
-			</Link>
+					</Link>
+				</CardContent>
+				<CardHeader className="p-4 grow">
+					<CardTitle className="text-lg">
+						<Link
+							href={`/recipe/${recipe.slug}`}
+							className="hover:text-green-600"
+						>
+							{recipe.title}
+						</Link>
+					</CardTitle>
+				</CardHeader>
+				<CardFooter className="p-4 pt-0 justify-center">
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<div className="flex text-gray-600">
+								<Timer className="mr-1" />
+								<span className="font-semibold">{recipe.time}</span>
+							</div>
+						</TooltipTrigger>
+						<TooltipContent>{recipe.time} minutes</TooltipContent>
+					</Tooltip>
+					<Separator orientation="vertical" className="h-4 mx-2" />
+					<Tooltip>{getDifficulty(recipe.difficulty)}</Tooltip>
+					<Separator orientation="vertical" className="h-4 mx-2" />
+					<Rating rating={recipe.rating} />
+				</CardFooter>
+			</Card>
 		</div>
 	);
 };

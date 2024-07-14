@@ -14,7 +14,7 @@ export default function ({ children }: React.PropsWithChildren) {
 					<div>
 						<Image src={logo} alt="logo" height={40} priority />
 					</div>
-					<ul className="flex gap-5 uppercase tracking-wide font-semibold h-fit">
+					<ul className="flex gap-5 uppercase tracking-wide font-semibold h-fit max-lg:hidden">
 						<li>
 							<Link href="/">Home</Link>
 						</li>
@@ -37,8 +37,10 @@ export default function ({ children }: React.PropsWithChildren) {
 			</header>
 			<div className="bg-primary w-full">
 				<div className="mx-auto px-4 py-3 max-w-[1000px] flex justify-between items-center text-white h-[60px]">
-					<div className="text-lg font-bold">Find your new favorite recipe</div>
-					<div className="relative ml-auto flex-1 md:grow-0">
+					<div className="text-lg font-bold whitespace-nowrap">
+						Find your new favorite recipe
+					</div>
+					<div className="relative ml-auto">
 						<Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
 						<Input
 							type="search"
@@ -48,7 +50,7 @@ export default function ({ children }: React.PropsWithChildren) {
 					</div>
 				</div>
 			</div>
-			<main className="grow w-full">{children}</main>
+			<main className="grow w-full pt-12">{children}</main>
 			<footer className="bg-slate-900 px-4 py-2 w-full text-center text-gray-300 text-xs">
 				easy and tasty | Copyright © 2024 - All Rigths reserved
 			</footer>
