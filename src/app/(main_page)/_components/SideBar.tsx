@@ -9,14 +9,14 @@ export const SideBar = async () => {
 	const recipes = await api.recipe.getRecipes();
 
 	return (
-		<div className="mx-4 lg:w-[25%] text-gray-600 text-sm">
-			<Separator className="my-4 lg:hidden" />
-			<div className="flex lg:flex-col">
-				<div className="max-lg:mr-4 lg:mx-6 lg:mb-4">
+		<div className="mx-4 xl:min-w-[25%] xl:w-1/4 text-gray-600 text-sm">
+			<Separator className="my-4 xl:hidden" />
+			<div className="flex xl:flex-col items-center">
+				<div className="max-xl:mr-4 xl:mx-6 xl:mb-4">
 					<Image
 						src={hana}
 						alt="Hana"
-						className="rounded-full max-lg:min-w-32 max-lg:size-32"
+						className="rounded-full max-sm:min-w-24 max-sm:size-24 max-md:min-w-32 max-md:size-32 max-lg:min-w-40 max-lg:size-40 max-xl:min-w-48 max-xl:size-48"
 					/>
 				</div>
 				<div className="flex flex-col justify-center">
@@ -35,7 +35,7 @@ export const SideBar = async () => {
 				</div>
 			</div>
 			<Separator className="my-4" />
-			<h6 className="text-base font-semibold mb-2">Popular recipes</h6>
+			<h6 className="text-base font-semibold mb-3">Popular recipes</h6>
 			<div className="flex flex-col gap-2">
 				{/* @ts-ignore */}
 				{recipes.slice(0, 3).map((recipe) => (

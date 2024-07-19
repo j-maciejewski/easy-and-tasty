@@ -37,20 +37,22 @@ export default function ({ children }: React.PropsWithChildren) {
 			</header>
 			<div className="bg-primary w-full">
 				<div className="mx-auto px-4 py-3 max-w-[1000px] flex justify-between items-center text-white h-[60px]">
-					<div className="text-lg font-bold whitespace-nowrap">
+					<div className="text-lg font-bold whitespace-nowrap max-sm:hidden">
 						Find your new favorite recipe
 					</div>
-					<div className="relative ml-auto">
+					<div className="relative ml-auto max-sm:w-full">
 						<Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
 						<Input
 							type="search"
 							placeholder="Search recipes..."
-							className="w-full rounded-lg bg-background pl-8 md:w-[260px] lg:w-[320px] h-fit"
+							className="w-full rounded-lg bg-background pl-8 md:w-[300px] lg:w-[360px] h-fit"
 						/>
 					</div>
 				</div>
 			</div>
-			<main className="grow w-full pt-12">{children}</main>
+			<main className="grow w-full max-md:py-4 max-lg:py-6 lg:py-8">
+				{children}
+			</main>
 			<footer className="bg-slate-900 px-4 py-2 w-full text-center text-gray-300 text-xs">
 				easy and tasty | Copyright © 2024 - All Rigths reserved
 			</footer>
