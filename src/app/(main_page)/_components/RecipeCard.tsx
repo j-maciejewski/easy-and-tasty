@@ -36,7 +36,7 @@ export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 				<TooltipTrigger className="absolute right-2 top-2 z-10" asChild>
 					<button
 						type="button"
-						className="size-10 rounded-full bg-white justify-center items-center hidden group-hover/card:flex"
+						className="size-10 rounded-full bg-white justify-center items-center hidden group-hover/card:lg:flex"
 					>
 						<Heart className="text-red-700 stroke-[2.5]" />
 					</button>

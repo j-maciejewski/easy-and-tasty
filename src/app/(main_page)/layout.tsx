@@ -50,7 +50,7 @@ export default function ({ children }: React.PropsWithChildren) {
 					</div>
 				</div>
 			</div>
-			<main className="grow w-full max-md:py-4 max-lg:py-6 lg:py-8">
+			<main className="grow w-full max-md:py-4 max-lg:py-6 lg:py-8 flex flex-col">
 				{children}
 			</main>
 			<footer className="bg-slate-900 px-4 py-2 w-full text-center text-gray-300 text-xs">

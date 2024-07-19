@@ -18,13 +18,13 @@ export default async function () {
 async function Recipes() {
 	const recipes = await api.recipe.getRecipes();
 
-	const featuredRecipe = recipes[3];
+	const featuredRecipe = recipes[10];
 
 	return (
 		<div className="grow mx-4">
 			{recipes ? (
 				<>
-					<h3 className="text-2xl font-semibold mb-4 bg-primary p-3 pl-6 italic text-white">
+					<h3 className="max-lg:text-xl lg:text-2xl font-semibold mb-4 bg-primary max-lg:py-2 lg:py-3 max-lg:px-4 lg:px-6 italic text-white">
 						Latest recipes
 					</h3>
 					<div className="sm:flex mb-4 rounded-lg overflow-hidden">
@@ -38,7 +38,7 @@ async function Recipes() {
 								className="max-sm:w-full min-h-full max-h-[325px] object-cover"
 							/>
 						</div>
-						<div className="bg-white grow p-6 flex flex-col">
+						<div className="bg-white grow max-sm:p-4 sm:p-6 flex flex-col">
 							<h3 className="font-semibold tracking-tight text-xl mb-3 max-sm:text-center">
 								{featuredRecipe.title}
 							</h3>
@@ -67,7 +67,7 @@ async function Recipes() {
 					</div>
 					<div className="gap-4 max-lg:flex max-lg:overflow-auto max-lg:pb-2 max-lg:-mb-2 lg:grid lg:grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] xl:grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
 						{/* @ts-ignore */}
-						{recipes.slice(4).map((recipe) => (
+						{recipes.slice(3).map((recipe) => (
 							<RecipeCard key={recipe.id} recipe={recipe} />
 						))}
 					</div>
