@@ -15,7 +15,7 @@ async function Recipes() {
 	const featuredRecipe = recipes[11];
 
 	return (
-		<div className="grow max-xl:px-[3vw]">
+		<div className="grow max-xl:px-[3vw] xl:pr-8">
 			{recipes ? (
 				<>
 					<h3 className="max-lg:text-xl lg:text-2xl font-semibold mb-4 bg-primary max-lg:py-2 lg:py-3 max-lg:px-4 lg:px-6 italic text-white">
