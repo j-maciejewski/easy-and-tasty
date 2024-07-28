@@ -24,6 +24,7 @@ namespace RecipeCard {
 			time: number;
 			difficulty: string;
 			image: string;
+			servings: number;
 			slug: string;
 		};
 	}

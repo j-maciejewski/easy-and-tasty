@@ -5,7 +5,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Timer } from "lucide-react";
+import { Drumstick, Timer } from "lucide-react";
 import { Rating } from "./Rating";
 
 namespace RecipeInformation {
@@ -17,8 +17,11 @@ namespace RecipeInformation {
 			time: number;
 			difficulty: string;
 			image: string;
+			servings: number;
 			slug: string;
 		};
+		withText?: boolean;
+		withServings?: boolean;
 	}
 }
 
@@ -39,22 +42,49 @@ const getDifficulty = (difficulty: string) => {
 	);
 };
 
-export const RecipeInformation = ({ recipe }: RecipeInformation.Props) => {
+export const RecipeInformation = ({
+	recipe,
+	withText,
+	withServings,
+}: RecipeInformation.Props) => {
 	return (
-		<div className="flex justify-center items-center">
+		<div className="flex justify-center items-center text-gray-600 font-semibold flex-wrap gap-y-2">
+			{withServings && (
+				<>
+					<Drumstick />
+					<span className="ml-2 tracking-normal whitespace-nowrap">
+						{`${recipe.servings} servings`}
+					</span>
+					<Separator orientation="vertical" className="h-4 mx-2" />
+				</>
+			)}
 			<Tooltip>
 				<TooltipTrigger asChild>
-					<div className="flex text-gray-600">
+					<div className="flex">
 						<Timer className="mr-1" />
-						<span className="font-semibold">{recipe.time}</span>
+						<span className="whitespace-nowrap">
+							{recipe.time} {withText && "minutes"}
+						</span>
 					</div>
 				</TooltipTrigger>
 				<TooltipContent>{recipe.time} minutes</TooltipContent>
 			</Tooltip>
 			<Separator orientation="vertical" className="h-4 mx-2" />
 			<Tooltip>{getDifficulty(recipe.difficulty)}</Tooltip>
+			{withText && (
+				<span className="ml-2 tracking-normal capitalize">
+					{recipe.difficulty}
+				</span>
+			)}
 			<Separator orientation="vertical" className="h-4 mx-2" />
-			<Rating rating={recipe.rating} />
+			<div className="flex justify-center items-center">
+				<Rating rating={recipe.rating} />
+				{withText && (
+					<span className="ml-2 tracking-normal whitespace-nowrap">
+						{`${recipe.rating} / 5 (15 reviews)`}
+					</span>
+				)}
+			</div>
 		</div>
 	);
 };

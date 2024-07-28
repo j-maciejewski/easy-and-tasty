@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function () {
 	return (
-		<div className="w-full max-xl:max-w-[1000px] max-w-[1200px] mx-auto flex flex-col items-center justify-center grow max-sm:p-4 md:p-6">
+		<div className="w-full max-xl:max-w-[1000px] max-w-[1200px] mx-auto flex flex-col items-center justify-center grow max-sm:p-4 md:p-6 min-h-screen">
 			<Image
 				src={Image404}
 				alt="404 image"

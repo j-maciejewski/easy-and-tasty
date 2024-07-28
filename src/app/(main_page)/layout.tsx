@@ -5,14 +5,17 @@ import logo from "@/public/logo.png";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { SideBar } from "./_components/SideBar";
 
 export default function ({ children }: React.PropsWithChildren) {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-secondary">
 			<header className="w-full bg-white">
-				<div className="mx-auto px-4 py-3 max-w-[1000px] flex justify-between items-center h-[80px]">
+				<div className="mx-auto px-4 py-3 max-xl:max-w-[1000px] max-w-[1100px] flex justify-between items-center h-[80px]">
 					<div>
-						<Image src={logo} alt="logo" height={40} priority />
+						<Link href="/">
+							<Image src={logo} alt="logo" height={40} priority />
+						</Link>
 					</div>
 					<ul className="flex gap-5 uppercase tracking-wide font-semibold h-fit max-lg:hidden">
 						<li>
@@ -36,7 +39,7 @@ export default function ({ children }: React.PropsWithChildren) {
 				</div>
 			</header>
 			<div className="bg-primary w-full">
-				<div className="mx-auto px-4 py-3 max-w-[1000px] flex justify-between items-center text-white h-[60px]">
+				<div className="mx-auto px-4 py-3 max-xl:max-w-[1000px] max-w-[1100px] flex justify-between items-center text-white h-[60px]">
 					<div className="text-lg font-bold whitespace-nowrap max-sm:hidden">
 						Find your new favorite recipe
 					</div>
@@ -51,9 +54,12 @@ export default function ({ children }: React.PropsWithChildren) {
 				</div>
 			</div>
 			<main className="grow w-full max-md:py-4 max-lg:py-6 lg:py-8 flex flex-col">
-				{children}
+				<div className="w-full max-xl:max-w-[1000px] max-w-[1100px] mx-auto flex flex-col xl:flex-row grow">
+					{children}
+					<SideBar />
+				</div>
 			</main>
-			<footer className="bg-slate-900 px-4 py-2 w-full text-center text-gray-300 text-xs">
+			<footer className="bg-gray-700 px-4 py-2 w-full text-center text-gray-300 text-xs">
 				easy and tasty | Copyright © 2024 - All Rigths reserved
 			</footer>
 		</div>

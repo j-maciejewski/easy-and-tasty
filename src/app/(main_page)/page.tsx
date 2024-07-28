@@ -4,30 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { RecipeCard } from "./_components/RecipeCard";
 import { RecipeInformation } from "./_components/RecipeInformation";
-import { SideBar } from "./_components/SideBar";
 
 export default async function () {
-	return (
-		<div className="w-full max-xl:max-w-[1000px] max-w-[1200px] mx-auto flex flex-col xl:flex-row">
-			<Recipes />
-			<SideBar />
-		</div>
-	);
+	return <Recipes />;
 }
 
 async function Recipes() {
 	const recipes = await api.recipe.getRecipes();
 
-	const featuredRecipe = recipes[10];
+	const featuredRecipe = recipes[11];
 
 	return (
-		<div className="grow mx-4">
+		<div className="grow max-xl:px-[3vw]">
 			{recipes ? (
 				<>
 					<h3 className="max-lg:text-xl lg:text-2xl font-semibold mb-4 bg-primary max-lg:py-2 lg:py-3 max-lg:px-4 lg:px-6 italic text-white">
 						Latest recipes
 					</h3>
-					<div className="sm:flex mb-4 rounded-lg overflow-hidden">
+					<div className="sm:flex mb-4 rounded-lg overflow-hidden shadow">
 						<div className="max-sm:w-full sm:min-w-[40%] sm:w-2/5">
 							<Image
 								src={`/mock/meals/${featuredRecipe.image}`}
@@ -65,7 +59,7 @@ async function Recipes() {
 							</div>
 						</div>
 					</div>
-					<div className="gap-4 max-lg:flex max-lg:overflow-auto max-lg:pb-2 max-lg:-mb-2 lg:grid lg:grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] xl:grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
+					<div className="gap-4 max-lg:flex max-lg:overflow-auto max-lg:pb-2 max-lg:-mb-2 lg:grid lg:grid-cols-[repeat(auto-fill,_minmax(225px,_1fr))]">
 						{/* @ts-ignore */}
 						{recipes.slice(3).map((recipe) => (
 							<RecipeCard key={recipe.id} recipe={recipe} />

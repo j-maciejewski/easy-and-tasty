@@ -24,7 +24,7 @@ export const Rating = ({ rating }: Rating.Props) => {
 	return (
 		<Tooltip>
 			<TooltipTrigger asChild>
-				<div className="relative">
+				<div className="relative w-fit">
 					<div className="flex gap-[1px]">
 						{[...Array(5).keys()].map((idx) => (
 							<Fragment key={idx}>{EmptyStar}</Fragment>
