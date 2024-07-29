@@ -1,11 +1,11 @@
+import { Facebook, Instagram } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import logo from "@/public/logo.png";
-import { Search } from "lucide-react";
+import { CircleUserRound, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { SideBar } from "./_components/SideBar";
 
 export default function ({ children }: React.PropsWithChildren) {
 	return (
@@ -17,33 +17,7 @@ export default function ({ children }: React.PropsWithChildren) {
 							<Image src={logo} alt="logo" height={40} priority />
 						</Link>
 					</div>
-					<ul className="flex gap-5 uppercase tracking-wide font-semibold h-fit max-lg:hidden">
-						<li>
-							<Link href="/">Home</Link>
-						</li>
-						<li>
-							<Link href="/recipes">Recipes</Link>
-						</li>
-						<li>
-							<Link href="/about">About</Link>
-						</li>
-					</ul>
-					<div className="flex gap-4">
-						<Link href="/login">
-							<Button className="text-muted-foreground" variant="link">
-								Sign in
-							</Button>
-						</Link>
-						<Separator orientation="vertical" />
-					</div>
-				</div>
-			</header>
-			<div className="bg-primary w-full">
-				<div className="mx-auto px-4 py-3 max-xl:max-w-[1000px] max-w-[1100px] flex justify-between items-center text-white h-[60px]">
-					<div className="text-lg font-bold whitespace-nowrap max-sm:hidden">
-						Find your new favorite recipe
-					</div>
-					<div className="relative ml-auto max-sm:w-full">
+					<div className="relative max-sm:w-full mr-4">
 						<Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
 						<Input
 							type="search"
@@ -51,12 +25,56 @@ export default function ({ children }: React.PropsWithChildren) {
 							className="w-full rounded-lg bg-background pl-8 md:w-[300px] lg:w-[360px] h-fit"
 						/>
 					</div>
+
+					<div className="flex gap-4 items-center">
+						<Facebook className="size-5" />
+						<Instagram className="size-5" />
+						<Link href="/login">
+							<Button className="text-black" variant="link">
+								<CircleUserRound className="size-5 mr-2" />
+								Sign in
+							</Button>
+						</Link>
+						<Separator orientation="vertical" />
+					</div>
+				</div>
+			</header>
+			<div className="bg-white w-full shadow-lg max-lg:hidden">
+				<div className="mx-auto px-4 pb-4 pt-2 max-xl:max-w-[1000px] max-w-[1100px] flex justify-between items-center text-black">
+					<ul className="flex gap-8 uppercase tracking-wide font-bold h-fit text-sm w-full">
+						<li>
+							<Link href="/recipes/snacks">Snacks</Link>
+						</li>
+						<li>
+							<Link href="/recipes/soups">Soups</Link>
+						</li>
+						<li>
+							<Link href="/recipes/salads">Salads</Link>
+						</li>
+						<li>
+							<Link href="/recipes/lunch">Lunch</Link>
+						</li>
+						<li>
+							<Link href="/recipes/drinks">Drinks</Link>
+						</li>
+						<li>
+							<Link href="/recipes/desserts">Desserts</Link>
+						</li>
+						<li>
+							<Link href="/blog">Blog</Link>
+						</li>
+						<li>
+							<Link href="/about">About us</Link>
+						</li>
+						<li>
+							<Link href="/recipes">All Recipes</Link>
+						</li>
+					</ul>
 				</div>
 			</div>
 			<main className="grow w-full max-md:py-4 max-lg:py-6 lg:py-8 flex flex-col">
 				<div className="w-full max-xl:max-w-[1000px] max-w-[1100px] mx-auto flex flex-col xl:flex-row grow">
 					{children}
-					<SideBar />
 				</div>
 			</main>
 			<footer className="bg-gray-700 px-4 py-2 w-full text-center text-gray-300 text-xs">

@@ -54,7 +54,7 @@ export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 							height={600}
 							alt="recipe"
 							loading="lazy"
-							className="rounded-t-lg max-h-[300px] object-cover w-full transition ease-in-out hover:scale-[1.05]"
+							className="rounded-t-lg min-h-[300px] max-h-[300px] object-cover w-full transition ease-in-out hover:scale-[1.05]"
 						/>
 					</Link>
 				</CardContent>
