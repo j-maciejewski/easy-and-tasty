@@ -1,7 +1,7 @@
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { RecipeInformation } from "../../_components/RecipeInformation";
+import { Breadcrumbs, RecipeInformation } from "../../_components";
 import { Ingredients } from "./_components/Ingredients";
 
 export default async function ({ params }: { params: { slug: string } }) {
@@ -16,6 +16,9 @@ export default async function ({ params }: { params: { slug: string } }) {
 	return (
 		<>
 			<div className="pt-6 xl:pr-8 overflow-hidden max-xl:px-[3vw]">
+				<Breadcrumbs
+					paths={[{ label: "Recipe" }, { label: recipe.title, active: true }]}
+				/>
 				<h2 className="text-3xl font-semibold text-center">{recipe.title}</h2>
 				<div className="max-h-[700px] my-6 lg:px-12">
 					<Image

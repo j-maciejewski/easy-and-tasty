@@ -12,9 +12,9 @@ export const Instagram = (props: SVGProps<SVGSVGElement>) => (
 	>
 		<defs>
 			<linearGradient id="instagram-gradient">
-				<stop offset="0%" stop-color="#F8ED34" />
-				<stop offset="50%" stop-color="#EA118D" />
-				<stop offset="100%" stop-color="#2E368F" />
+				<stop offset="0%" stopColor="#F8ED34" />
+				<stop offset="50%" stopColor="#EA118D" />
+				<stop offset="100%" stopColor="#2E368F" />
 			</linearGradient>
 		</defs>
 		<path
