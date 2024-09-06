@@ -50,7 +50,10 @@ export default function () {
 						<Label htmlFor="password">Password</Label>
 						<AuthInput name="password" type="password" />
 					</div>
-					<Button type="submit" className="w-full">
+					<Button
+						type="submit"
+						className="w-full bg-green-500 hover:bg-green-600 text-white"
+					>
 						Create an account
 					</Button>
 				</div>

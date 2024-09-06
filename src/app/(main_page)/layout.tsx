@@ -9,9 +9,9 @@ import Link from "next/link";
 
 export default function ({ children }: React.PropsWithChildren) {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-secondary">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-background">
 			<header className="w-full bg-white">
-				<div className="mx-auto px-4 py-3 max-xl:max-w-[1000px] max-w-[1100px] flex justify-between items-center h-[80px]">
+				<div className="mx-auto px-4 py-3 max-xl:max-w-[1000px] max-w-[1200px] flex justify-between items-center h-[80px]">
 					<div>
 						<Link href="/">
 							<Image src={logo} alt="logo" height={40} priority />
@@ -40,7 +40,7 @@ export default function ({ children }: React.PropsWithChildren) {
 				</div>
 			</header>
 			<div className="bg-white w-full shadow-lg max-lg:hidden">
-				<div className="mx-auto px-4 pb-4 pt-2 max-xl:max-w-[1000px] max-w-[1100px] flex justify-between items-center text-black">
+				<div className="mx-auto px-4 pb-4 pt-2 max-xl:max-w-[1000px] max-w-[1200px] flex justify-between items-center text-black">
 					<ul className="flex gap-8 uppercase tracking-wide font-bold h-fit text-sm w-full">
 						<li>
 							<Link href="/recipes/snacks">Snacks</Link>
@@ -73,7 +73,7 @@ export default function ({ children }: React.PropsWithChildren) {
 				</div>
 			</div>
 			<main className="grow w-full max-md:py-4 max-lg:py-6 lg:py-8 flex flex-col">
-				<div className="w-full max-xl:max-w-[1000px] max-w-[1100px] mx-auto flex flex-col xl:flex-row grow">
+				<div className="w-full max-xl:max-w-[1000px] max-w-[1200px] mx-auto flex flex-col xl:flex-row grow">
 					{children}
 				</div>
 			</main>

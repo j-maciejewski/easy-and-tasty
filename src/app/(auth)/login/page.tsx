@@ -48,7 +48,10 @@ export default function () {
 						</div>
 						<AuthInput name="password" type="password" required />
 					</div>
-					<Button type="submit" className="w-full">
+					<Button
+						type="submit"
+						className="w-full bg-green-500 hover:bg-green-600 text-white"
+					>
 						Login
 					</Button>
 				</div>

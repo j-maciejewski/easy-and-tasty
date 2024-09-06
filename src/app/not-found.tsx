@@ -12,14 +12,16 @@ export default function () {
 				className="max-md:mb-6 md:mb-8 max-md:size-32 md:size-40"
 			/>
 
-			<h2 className="text-primary max-md:text-5xl md:text-6xl font-bold  max-md:mb-8 md:mb-10 text-center">
+			<h2 className="text-secondary max-md:text-5xl md:text-6xl font-bold max-md:mb-8 md:mb-10 text-center">
 				Page not found
 			</h2>
 			<p className="max-md:text-md md:text-lg max-md:mb-6 md:mb-8 text-gray-600 text-center">
 				The page you are looking for may have been moved or deleted
 			</p>
 			<Link href="/">
-				<Button className="font-semibold rounded-full">Back to home</Button>
+				<Button className="font-semibold rounded-full text-white bg-secondary hover:bg-accent">
+					Back to home
+				</Button>
 			</Link>
 		</div>
 	);

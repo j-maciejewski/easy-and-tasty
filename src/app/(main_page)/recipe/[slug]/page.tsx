@@ -15,7 +15,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	return (
 		<>
-			<div className="pt-6 xl:pr-8 overflow-hidden max-xl:px-[3vw]">
+			<div className="pt-6 xl:pr-8 overflow-hidden max-xl:px-[3vw] grow">
 				<Breadcrumbs
 					paths={[{ label: "Recipe" }, { label: recipe.title, active: true }]}
 				/>
@@ -36,7 +36,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					<q>content</q>
 				</p>
 			</div>
-			<div className="xl:min-w-[30%] xl:w-[30%] text-gray-600 text-sm max-xl:px-[3vw]">
+			<div className="xl:min-w-[30%] xl:w-[30%] text-gray-600 text-sm max-xl:px-[3vw] pt-6">
 				{ingredientsGroups.length > 0 && (
 					<Ingredients ingredientsGroups={ingredientsGroups} />
 				)}

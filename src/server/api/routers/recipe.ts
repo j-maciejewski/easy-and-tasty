@@ -34,6 +34,17 @@ export const recipeRouter = createTRPCRouter({
 		});
 	}),
 
+	getRecipesByCategory: publicProcedure
+		.input(z.string())
+		// @ts-ignore
+		.query(({ ctx, input }) => {
+			if (env.MOCK_MODE) return GET_RECIPES_MOCK;
+
+			return ctx.db.query.recipes.findMany({
+				orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
+			});
+		}),
+
 	addRecipe: publicProcedure
 		.input(
 			z.object({
