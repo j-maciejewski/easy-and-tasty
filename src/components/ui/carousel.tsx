@@ -78,10 +78,12 @@ const Carousel = React.forwardRef<
     }, [])
 
     const scrollPrev = React.useCallback(() => {
+      api?.plugins().autoplay.reset()
       api?.scrollPrev()
     }, [api])
 
     const scrollNext = React.useCallback(() => {
+      api?.plugins().autoplay.reset()
       api?.scrollNext()
     }, [api])
 

@@ -51,7 +51,7 @@ export const recipes = createTable("recipe", {
 	updatedAt: timestamp("updatedAt", { withTimezone: true }),
 });
 
-export const ratings = createTable("rating", {
+export const recipe_ratings = createTable("recipe_rating", {
 	id: serial("id").primaryKey(),
 	userId: integer("user_id")
 		.notNull()
@@ -98,17 +98,36 @@ export const recipe_likes = createTable("recipe_like", {
 		.references(() => recipes.id),
 });
 
-export const recipe_tags = createTable("recipe_tag", {
+export const recipe_categories = createTable("recipe_category", {
 	id: serial("id").primaryKey(),
-	tagId: integer("tag_id")
+	categoryId: integer("category_id")
 		.notNull()
-		.references(() => tags.id),
+		.references(() => categories.id),
 	recipeId: integer("recipe_id")
 		.notNull()
 		.references(() => recipes.id),
 });
 
-export const tags = createTable("tag", {
+export const recipe_cuisines = createTable("recipe_cuisine", {
+	id: serial("id").primaryKey(),
+	cuisineId: integer("cuisine_id")
+		.notNull()
+		.references(() => cuisines.id),
+	recipeId: integer("recipe_id")
+		.notNull()
+		.references(() => recipes.id),
+});
+
+export const categories = createTable("category", {
 	id: serial("id").primaryKey(),
 	name: varchar("name", { length: 256 }).notNull(),
+	slug: varchar("slug", { length: 256 }).notNull(),
+	description: varchar("description", { length: 256 }).notNull(),
+});
+
+export const cuisines = createTable("cuisine", {
+	id: serial("id").primaryKey(),
+	name: varchar("name", { length: 256 }).notNull(),
+	slug: varchar("slug", { length: 256 }).notNull(),
+	description: varchar("description", { length: 256 }).notNull(),
 });

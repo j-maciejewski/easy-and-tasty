@@ -4,7 +4,7 @@ import { recipes } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-export const recipeRouter = createTRPCRouter({
+export const publicRecipeRouter = createTRPCRouter({
 	// @ts-ignore
 	getRecipe: publicProcedure.input(z.number()).query(({ ctx, input }) => {
 		if (env.MOCK_MODE) return GET_RECIPE_MOCK;
@@ -42,26 +42,6 @@ export const recipeRouter = createTRPCRouter({
 
 			return ctx.db.query.recipes.findMany({
 				orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
-			});
-		}),
-
-	addRecipe: publicProcedure
-		.input(
-			z.object({
-				title: z.string().min(1),
-				description: z.string().min(1),
-				ingredients: z.string(),
-				recipe: z.string(),
-			}),
-		)
-		.mutation(async ({ ctx, input }) => {
-			// @ts-ignore
-			await ctx.db.insert(recipes).values({
-				title: input.title,
-				description: input.description,
-
-				ingredients: input.ingredients,
-				recipe: input.recipe,
 			});
 		}),
 });

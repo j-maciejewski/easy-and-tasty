@@ -50,7 +50,8 @@ export default function () {
 					</div>
 					<Button
 						type="submit"
-						className="w-full bg-green-500 hover:bg-green-600 text-white"
+						variant="secondary"
+						className="w-full font-semibold"
 					>
 						Login
 					</Button>

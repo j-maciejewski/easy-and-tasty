@@ -45,8 +45,8 @@ export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 				<TooltipContent>Save recipe</TooltipContent>
 			</Tooltip>
 
-			<Card className="max-xl:min-w-[200px] max-w-[500px] w-full flex flex-col h-full shadow bg-primary">
-				<CardContent className="p-0 overflow-hidden rounded-t-lg">
+			<Card className="max-xl:min-w-[200px] max-w-[500px] w-full flex flex-col h-full shadow">
+				<CardContent className="p-0 rounded-t-lg hover:bg-accent transition ease-in-out">
 					<Link href={`/recipe/${recipe.slug}`}>
 						<Image
 							src={`/mock/meals/${recipe.image}`}
@@ -54,15 +54,15 @@ export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 							height={600}
 							alt="recipe"
 							loading="lazy"
-							className="rounded-t-lg min-h-[300px] max-h-[300px] object-cover w-full transition ease-in-out hover:scale-[1.05]"
+							className="rounded-t-lg min-h-[300px] max-h-[300px] object-cover w-full transition ease-in-out hover:-translate-x-1 hover:-translate-y-1"
 						/>
 					</Link>
 				</CardContent>
-				<CardHeader className="p-4 grow">
+				<CardHeader className="p-4 grow justify-center">
 					<CardTitle className="text-lg text-center">
 						<Link
 							href={`/recipe/${recipe.slug}`}
-							className="hover:text-gray-600"
+							className="hover:text-gray-700"
 						>
 							{recipe.title}
 						</Link>

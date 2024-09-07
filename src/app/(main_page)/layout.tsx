@@ -29,12 +29,12 @@ export default function ({ children }: React.PropsWithChildren) {
 					<div className="flex gap-4 items-center">
 						<Facebook className="size-5" />
 						<Instagram className="size-5" />
-						<Link href="/login">
-							<Button className="text-black" variant="link">
+						<Button asChild variant="link">
+							<Link href="/login">
 								<CircleUserRound className="size-5 mr-2" />
 								Sign in
-							</Button>
-						</Link>
+							</Link>
+						</Button>
 						<Separator orientation="vertical" />
 					</div>
 				</div>
@@ -43,22 +43,19 @@ export default function ({ children }: React.PropsWithChildren) {
 				<div className="mx-auto px-4 pb-4 pt-2 max-xl:max-w-[1000px] max-w-[1200px] flex justify-between items-center text-black">
 					<ul className="flex gap-8 uppercase tracking-wide font-bold h-fit text-sm w-full">
 						<li>
-							<Link href="/recipes/snacks">Snacks</Link>
+							<Link href="/categories/snacks">Snacks</Link>
 						</li>
 						<li>
-							<Link href="/recipes/soups">Soups</Link>
+							<Link href="/categories/soups">Soups</Link>
 						</li>
 						<li>
-							<Link href="/recipes/salads">Salads</Link>
+							<Link href="/categories/salads">Salads</Link>
 						</li>
 						<li>
-							<Link href="/recipes/lunch">Lunch</Link>
+							<Link href="/categories/lunch">Lunch</Link>
 						</li>
 						<li>
-							<Link href="/recipes/drinks">Drinks</Link>
-						</li>
-						<li>
-							<Link href="/recipes/desserts">Desserts</Link>
+							<Link href="/categories/desserts">Desserts</Link>
 						</li>
 						<li>
 							<Link href="/blog">Blog</Link>
@@ -67,7 +64,10 @@ export default function ({ children }: React.PropsWithChildren) {
 							<Link href="/about">About us</Link>
 						</li>
 						<li>
-							<Link href="/recipes">All Recipes</Link>
+							<Link href="/categories">Categories</Link>
+						</li>
+						<li>
+							<Link href="/cuisines">Cuisines</Link>
 						</li>
 					</ul>
 				</div>

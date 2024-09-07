@@ -33,11 +33,11 @@ namespace RecipesCarousel {
 export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
 	return (
 		<Carousel
-			opts={{ duration: 50 }}
+			opts={{ duration: 50, loop: true }}
 			className="rounded-lg"
 			plugins={[
 				Autoplay({
-					delay: 5000,
+					delay: 4000,
 				}),
 			]}
 		>
@@ -55,15 +55,14 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
 									className="max-sm:w-full min-h-full max-h-[400px] object-cover w-full"
 								/>
 							</div>
-							<div className="grow max-sm:p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col text-center justify-center bg-primary">
+							<div className="grow max-sm:p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col text-center justify-center bg-secondary">
 								<h3 className="font-semibold tracking-tight text-lg md:text-2xl xl:text-4xl mb-6 max-sm:text-center">
 									{recipe.title}
 								</h3>
 								<RecipeInformation recipe={recipe} />
 								<Button
 									type="button"
-									className="block ml-auto rounded-full w-fit text-center max-sm:w-full mt-10 font-bold mx-auto bg-secondary text-white uppercase tracking-wider cursor-pointer hover:bg-accent"
-									variant="outline"
+									className="block ml-auto rounded-full w-fit text-center max-sm:w-full mt-10 font-bold mx-auto uppercase tracking-wider cursor-pointer"
 									asChild
 								>
 									<span className="flex">
@@ -76,8 +75,8 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
 					</CarouselItem>
 				))}
 			</CarouselContent>
-			<CarouselPrevious className="bg-white hover:bg-secondary" />
-			<CarouselNext className="bg-white hover:bg-secondary" />
+			<CarouselPrevious className="bg-white hover:bg-primary" />
+			<CarouselNext className="bg-white hover:bg-primary" />
 		</Carousel>
 	);
 };

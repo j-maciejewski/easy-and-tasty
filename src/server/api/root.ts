@@ -1,14 +1,20 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import {
-	commentLikeRouter,
-	commentRouter,
-	ratingRouter,
-	recipeLikeRouter,
-	recipeRouter,
-	recipeTagRouter,
-	tagRouter,
-	userRouter,
-} from "./routers";
+	publicCategoryRouter,
+	publicCuisineRouter,
+	publicRecipeRouter,
+	publicUserRouter,
+} from "./routers/public";
+import {
+	protectedCategoryRouter,
+	protectedUserRouter,
+	protectedRecipeRouter,
+} from "./routers/protected";
+import {
+	authedCommentRouter,
+	authedRecipeRouter,
+	authedUserRouter,
+} from "./routers/authed";
 
 /**
  * This is the primary router for your server.
@@ -16,14 +22,22 @@ import {
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-	tag: tagRouter,
-	user: userRouter,
-	recipe: recipeRouter,
-	comment: commentRouter,
-	commentLike: commentLikeRouter,
-	recipeLike: recipeLikeRouter,
-	recipeTag: recipeTagRouter,
-	rating: ratingRouter,
+	public: {
+		recipe: publicRecipeRouter,
+		user: publicUserRouter,
+		cuisine: publicCuisineRouter,
+		category: publicCategoryRouter,
+	},
+	authed: {
+		comment: authedCommentRouter,
+		recipe: authedRecipeRouter,
+		user: authedUserRouter,
+	},
+	protected: {
+		category: protectedCategoryRouter,
+		recipe: protectedRecipeRouter,
+		user: protectedUserRouter,
+	},
 });
 
 // export type definition of API

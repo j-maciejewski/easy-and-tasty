@@ -5,7 +5,7 @@ import { Breadcrumbs, RecipeInformation } from "../../_components";
 import { Ingredients } from "./_components/Ingredients";
 
 export default async function ({ params }: { params: { slug: string } }) {
-	const recipe = await api.recipe.getRecipeBySlug(params.slug);
+	const recipe = await api.public.recipe.getRecipeBySlug(params.slug);
 
 	if (!recipe) {
 		notFound();

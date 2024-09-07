@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const SideBar = async () => {
-	const recipes = await api.recipe.getRecipes();
+	const recipes = await api.public.recipe.getRecipes();
 
 	return (
 		<div className="xl:min-w-[25%] xl:w-1/4 text-gray-600 text-sm max-xl:px-[3vw]">
