@@ -1,8 +1,8 @@
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Breadcrumbs, RecipeInformation } from "../../_components";
-import { Ingredients } from "./_components/Ingredients";
+import { Breadcrumbs, RecipeInformation, SideBar } from "../../_components";
+import Markdown from "markdown-to-jsx";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const recipe = await api.public.recipe.getRecipeBySlug(params.slug);
@@ -10,8 +10,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 	if (!recipe) {
 		notFound();
 	}
-
-	const ingredientsGroups = JSON.parse(recipe.ingredients);
 
 	return (
 		<>
@@ -31,16 +29,11 @@ export default async function ({ params }: { params: { slug: string } }) {
 					/>
 				</div>
 				<RecipeInformation recipe={recipe} withText withServings />
-				<p className="text-base mt-6 mb-6">{recipe.description}</p>
-				<p className="text-gray-600">
-					<q>content</q>
-				</p>
+				<article className="prose prose-slate max-w-full">
+					<Markdown>{recipe.content}</Markdown>
+				</article>
 			</div>
-			<div className="xl:min-w-[30%] xl:w-[30%] text-gray-600 text-sm max-xl:px-[3vw] pt-6">
-				{ingredientsGroups.length > 0 && (
-					<Ingredients ingredientsGroups={ingredientsGroups} />
-				)}
-			</div>
+			<SideBar />
 		</>
 	);
 }

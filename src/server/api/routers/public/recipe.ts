@@ -1,7 +1,7 @@
 import { env } from "@/env";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { recipes } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 
 export const publicRecipeRouter = createTRPCRouter({
@@ -34,7 +34,34 @@ export const publicRecipeRouter = createTRPCRouter({
 		});
 	}),
 
+	getRecipesByQuery: publicProcedure
+		.input(z.string().min(3))
+		// @ts-ignore
+		.query(({ ctx, input: searchQuery }) => {
+			if (env.MOCK_MODE)
+				return GET_RECIPES_MOCK.filter((recipe) =>
+					recipe.title.toLowerCase().includes(searchQuery.toLowerCase()),
+				);
+
+			return ctx.db.query.recipes.findMany({
+				where: ilike(recipes.title, `%${searchQuery}%`),
+				orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
+				limit: 10,
+			});
+		}),
+
 	getRecipesByCategory: publicProcedure
+		.input(z.string())
+		// @ts-ignore
+		.query(({ ctx, input }) => {
+			if (env.MOCK_MODE) return GET_RECIPES_MOCK;
+
+			return ctx.db.query.recipes.findMany({
+				orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
+			});
+		}),
+
+	getRecipesByCuisine: publicProcedure
 		.input(z.string())
 		// @ts-ignore
 		.query(({ ctx, input }) => {
@@ -219,10 +246,48 @@ const GET_RECIPES_MOCK = [
 			"A simple recipe for Swedish pancakes that can be topped with powdered sugar, jam, or more.",
 		difficulty: "easy",
 		image: "sweedish-pancakes.jpg",
-		ingredients:
-			'[{"label":"test123","ingredients":["3 tablespoons unsalted butter, plus more for cooking","2 cups milk","1 cup all-purpose flour","3 large eggs","1 tablespoon granulated sugar","1/4 teaspoon kosher salt","For serving: fresh fruit or jam, whipped cream, powdered sugar, lemon juice, maple syrup, or yogurt"]},{"label":"Sauce","ingredients":["3 tablespoons unsalted butter, plus more for cooking","2 cups milk","For serving: fresh fruit or jam, whipped cream, powdered sugar, lemon juice, maple syrup, or yogurt"]}]',
 		rating: 4.7,
-		recipe: "{}",
+		content: `
+Swedish pancakes are light, thin, and delicious. They are slightly different from regular pancakes, with a delicate texture and a subtle sweetness.
+
+## Ingredients
+
+- 1 cup all-purpose flour
+- 1 ½ cups milk
+- 3 large eggs
+- 2 tbsp granulated sugar
+- ¼ tsp salt
+- 3 tbsp unsalted butter, melted (plus extra for the pan)
+- 1 tsp vanilla extract
+
+## Instructions
+
+### 1. Prepare the Batter
+- In a large mixing bowl, whisk together the flour, sugar, and salt.
+- In a separate bowl, beat the eggs and then add in the milk and vanilla extract.
+- Gradually pour the wet ingredients into the dry ingredients, stirring until smooth and lump-free.
+- Stir in the melted butter until fully combined. The batter should be thin and smooth.
+
+### 2. Heat the Pan
+- Heat a non-stick skillet or crepe pan over medium heat.
+- Lightly butter the pan.
+
+### 3. Cook the Pancakes
+- Pour about ¼ cup of batter onto the pan, swirling it to spread the batter thinly across the surface.
+- Cook for 1-2 minutes, or until the edges start to lift and the bottom is golden brown.
+- Flip the pancake and cook the other side for about 30 seconds to 1 minute.
+- Repeat with the remaining batter, buttering the pan as needed.
+
+### 4. Serve
+- Stack the pancakes and serve warm with your favorite toppings: fresh berries, whipped cream, powdered sugar, or a drizzle of syrup.
+
+## Tips for Perfect Swedish Pancakes
+- **Thin batter:** The batter should be thinner than traditional pancake batter, almost like crepe batter.
+- **Pan heat:** Make sure the pan is properly heated, but not too hot. This ensures an even, golden color without burning.
+- **Toppings:** Swedish pancakes are versatile. Try serving them with lingonberry jam, honey, or a sprinkle of cinnamon sugar.
+
+Enjoy your light and fluffy Swedish pancakes!
+		`,
 		servings: 3,
 		slug: "sweedish-pancakes",
 		time: 90,

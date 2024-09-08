@@ -28,7 +28,7 @@ export default async function () {
 							</Link>
 						</CardContent>
 						<CardHeader className="p-2 grow justify-center">
-							<CardTitle className="text-md text-center">
+							<CardTitle className="text-md text-center tracking-wide">
 								<Link
 									href={`/cou/${cuisine.slug}`}
 									className="hover:text-gray-600"
