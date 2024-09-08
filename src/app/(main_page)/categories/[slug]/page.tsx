@@ -5,7 +5,9 @@ import { notFound } from "next/navigation";
 
 export default async function ({ params }: { params: { slug: string } }) {
 	const category = await api.public.category.getCategoryBySlug(params.slug);
-	const recipes = await api.public.recipe.getRecipesByCategory(params.slug);
+	const recipes = await api.public.recipe.getRecipesByCategory({
+		slug: params.slug,
+	});
 
 	if (!category) notFound();
 

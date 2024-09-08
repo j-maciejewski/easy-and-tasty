@@ -5,7 +5,7 @@ import { sql } from "drizzle-orm";
 import {
 	type AnyPgColumn,
 	integer,
-	json,
+	pgEnum,
 	pgTableCreator,
 	serial,
 	smallint,
@@ -35,16 +35,18 @@ export const users = createTable("user", {
 	updatedAt: timestamp("updatedAt", { withTimezone: true }),
 });
 
+export const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
+
 export const recipes = createTable("recipe", {
 	id: serial("id").primaryKey(),
 	title: varchar("title", { length: 256 }).notNull(),
 	description: varchar("description", { length: 1024 }).notNull(),
+	difficulty: difficultyEnum("difficulty").notNull(), // easy, medium, hard
 	image: varchar("image", { length: 1024 }),
-	ingredients: json("ingredients").notNull(),
-	recipe: json("recipe").notNull(),
-	userId: integer("user_id")
-		.notNull()
-		.references(() => users.id),
+	content: varchar("content", { length: 1024 }).notNull(),
+	servings: integer("servings"), // 1, 2, 3 and so
+	slug: varchar("slug", { length: 256 }).notNull(),
+	time: integer("time"), // in minutes
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
@@ -123,6 +125,7 @@ export const categories = createTable("category", {
 	name: varchar("name", { length: 256 }).notNull(),
 	slug: varchar("slug", { length: 256 }).notNull(),
 	description: varchar("description", { length: 256 }).notNull(),
+	featuredRecipeId: integer("featured_recipe_id").references(() => recipes.id),
 });
 
 export const cuisines = createTable("cuisine", {
@@ -130,4 +133,5 @@ export const cuisines = createTable("cuisine", {
 	name: varchar("name", { length: 256 }).notNull(),
 	slug: varchar("slug", { length: 256 }).notNull(),
 	description: varchar("description", { length: 256 }).notNull(),
+	featuredRecipeId: integer("featured_recipe_id").references(() => recipes.id),
 });

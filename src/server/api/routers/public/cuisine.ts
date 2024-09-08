@@ -6,10 +6,19 @@ import { z } from "zod";
 
 export const publicCuisineRouter = createTRPCRouter({
 	getCuisines: publicProcedure.query(({ ctx }) => {
-		if (env.MOCK_MODE) return GET_CUISINES_MOCK;
+		if (env.MOCK_MODE)
+			return GET_CUISINES_MOCK.sort((a, b) => {
+				if (a.name < b.name) {
+					return -1;
+				}
+				if (a.name > b.name) {
+					return 1;
+				}
+				return 0;
+			});
 
 		return ctx.db.query.cuisines.findMany({
-			orderBy: (cuisines, { desc }) => [desc(cuisines.name)],
+			orderBy: (cuisines, { asc }) => [asc(cuisines.name)],
 		});
 	}),
 

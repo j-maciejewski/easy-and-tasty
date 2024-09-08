@@ -1,6 +1,12 @@
 import { env } from "@/env";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { recipes } from "@/server/db/schema";
+import {
+	categories,
+	cuisines,
+	recipe_categories,
+	recipe_cuisines,
+	recipes,
+} from "@/server/db/schema";
 import { eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 
@@ -51,25 +57,66 @@ export const publicRecipeRouter = createTRPCRouter({
 		}),
 
 	getRecipesByCategory: publicProcedure
-		.input(z.string())
+		.input(
+			z.object({
+				slug: z.string(),
+				limit: z.number().default(12),
+				offset: z.number().default(0),
+			}),
+		)
 		// @ts-ignore
 		.query(({ ctx, input }) => {
-			if (env.MOCK_MODE) return GET_RECIPES_MOCK;
+			if (env.MOCK_MODE)
+				return GET_RECIPES_MOCK.slice(input.offset, input.offset + input.limit);
 
-			return ctx.db.query.recipes.findMany({
-				orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
-			});
+			return ctx.db
+				.select({
+					id: recipes.id,
+					title: recipes.title,
+					description: recipes.description,
+					image: recipes.image,
+					content: recipes.content,
+					createdAt: recipes.createdAt,
+				})
+				.from(recipes)
+				.innerJoin(
+					recipe_categories,
+					eq(recipes.id, recipe_categories.recipeId),
+				)
+				.innerJoin(categories, eq(recipe_categories.categoryId, categories.id))
+				.where(eq(categories.slug, input.slug))
+				.offset(input.offset)
+				.limit(input.limit);
 		}),
 
 	getRecipesByCuisine: publicProcedure
-		.input(z.string())
+		.input(
+			z.object({
+				slug: z.string(),
+				limit: z.number().default(12),
+				offset: z.number().default(0),
+			}),
+		)
 		// @ts-ignore
 		.query(({ ctx, input }) => {
-			if (env.MOCK_MODE) return GET_RECIPES_MOCK;
+			if (env.MOCK_MODE)
+				return GET_RECIPES_MOCK.slice(input.offset, input.offset + input.limit);
 
-			return ctx.db.query.recipes.findMany({
-				orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
-			});
+			return ctx.db
+				.select({
+					id: recipes.id,
+					title: recipes.title,
+					description: recipes.description,
+					image: recipes.image,
+					content: recipes.content,
+					createdAt: recipes.createdAt,
+				})
+				.from(recipes)
+				.innerJoin(recipe_cuisines, eq(recipes.id, recipe_cuisines.recipeId))
+				.innerJoin(cuisines, eq(recipe_cuisines.cuisineId, cuisines.id))
+				.where(eq(cuisines.slug, input.slug))
+				.offset(input.offset)
+				.limit(input.limit);
 		}),
 });
 

@@ -6,10 +6,19 @@ import { z } from "zod";
 
 export const publicCategoryRouter = createTRPCRouter({
 	getCategories: publicProcedure.query(({ ctx }) => {
-		if (env.MOCK_MODE) return GET_CATEGORIES_MOCK;
+		if (env.MOCK_MODE)
+			return GET_CATEGORIES_MOCK.sort((a, b) => {
+				if (a.name < b.name) {
+					return -1;
+				}
+				if (a.name > b.name) {
+					return 1;
+				}
+				return 0;
+			});
 
 		return ctx.db.query.categories.findMany({
-			orderBy: (categories, { desc }) => [desc(categories.name)],
+			orderBy: (categories, { asc }) => [asc(categories.name)],
 		});
 	}),
 
