@@ -58,7 +58,6 @@ export const RecipesGroupPreview = async (props: RecipesGroupPreview.Props) => {
 				</Link>
 			</div>
 			<div className="gap-4 max-lg:flex max-lg:overflow-auto max-lg:pb-2 max-lg:-mb-2 lg:grid lg:grid-cols-[repeat(auto-fill,_minmax(350px,_1fr))]">
-				{/* @ts-ignore */}
 				{recipes.map((recipe) => (
 					<RecipeCard key={recipe.id} recipe={recipe} />
 				))}

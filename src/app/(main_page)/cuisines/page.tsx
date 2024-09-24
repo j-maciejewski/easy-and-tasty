@@ -1,9 +1,16 @@
-import bbq from "@/public/mock/meals/bbq.jpg";
+import SampleImage from "@/public/mock/meals/sample-image.jpg";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "../_components";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { APP_NAME } from "@/consts";
+
+export function generateMetadata() {
+	return {
+		title: `Cuisines | ${APP_NAME}`,
+	};
+}
 
 export default async function () {
 	const cuisines = await api.public.cuisine.getCuisines();
@@ -18,10 +25,10 @@ export default async function () {
 						key={cuisine.id}
 						className="max-xl:min-w-[200px] max-w-[500px] w-full flex flex-col h-full shadow"
 					>
-						<CardContent className="p-0 rounded-t-lg hover:bg-accent transition ease-in-out">
+						<CardContent className="p-0 rounded-t-lg hover:bg-primary/75 transition ease-in-out">
 							<Link href={`/cuisines/${cuisine.name.toLowerCase()}`}>
 								<Image
-									src={bbq}
+									src={SampleImage}
 									className="aspect-square rounded-t-lg min-h-[225px] max-h-[225px] object-cover w-full transition ease-in-out hover:-translate-x-1 hover:-translate-y-1"
 									alt="cuisine"
 								/>
@@ -31,7 +38,7 @@ export default async function () {
 							<CardTitle className="text-md text-center tracking-wide">
 								<Link
 									href={`/cou/${cuisine.slug}`}
-									className="hover:text-gray-600"
+									className="hover:text-primary/95"
 								>
 									{cuisine.name}
 								</Link>

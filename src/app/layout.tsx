@@ -4,10 +4,11 @@ import { GeistSans } from "geist/font/sans";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { TRPCReactProvider } from "@/trpc/react";
+import { APP_DESCRIPTION, APP_NAME } from "@/consts";
 
 export const metadata = {
-	title: "easy and tasty",
-	description: "Find your new favorite recipe",
+	title: APP_NAME,
+	description: APP_DESCRIPTION,
 	icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

@@ -1,8 +1,9 @@
 import { Facebook, Instagram } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import logo from "@/public/logo.png";
-import { CircleUserRound, Search } from "lucide-react";
+import logo from "@/public/logo2.png";
+import icon from "@/public/icon.png";
+import { CircleUserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Searchbar } from "./_components";
@@ -10,11 +11,24 @@ import { Searchbar } from "./_components";
 export default function ({ children }: React.PropsWithChildren) {
 	return (
 		<div className="min-h-screen flex flex-col items-center justify-center bg-background">
-			<header className="w-full bg-white">
+			<header className="w-full bg-white max-lg:shadow-lg">
 				<div className="mx-auto px-4 py-3 max-xl:max-w-[1000px] max-w-[1200px] flex justify-between items-center h-[80px]">
 					<div>
 						<Link href="/">
-							<Image src={logo} alt="logo" height={40} priority />
+							<Image
+								src={logo}
+								alt="logo"
+								className="max-lg:hidden"
+								height={40}
+								priority
+							/>
+							<Image
+								src={icon}
+								alt="icon"
+								className="lg:hidden min-w-min mr-2"
+								height={40}
+								priority
+							/>
 						</Link>
 					</div>
 					<Searchbar />
@@ -32,7 +46,7 @@ export default function ({ children }: React.PropsWithChildren) {
 				</div>
 			</header>
 			<div className="bg-white w-full shadow-lg max-lg:hidden">
-				<div className="mx-auto px-4 pb-4 pt-2 max-xl:max-w-[1000px] max-w-[1200px] flex justify-between items-center text-black">
+				<div className="mx-auto px-4 pb-4 pt-2 max-xl:max-w-[1000px] max-w-[1200px] flex justify-between items-center text-black [&_a:hover]:hover:text-primary/95">
 					<ul className="flex gap-8 uppercase tracking-wider font-bold h-fit text-sm w-full">
 						<li>
 							<Link href="/categories/snacks">Snacks</Link>

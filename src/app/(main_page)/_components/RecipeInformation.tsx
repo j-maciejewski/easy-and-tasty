@@ -10,16 +10,8 @@ import { Rating } from "./Rating";
 
 namespace RecipeInformation {
 	export interface Props {
-		recipe: {
-			id: number;
-			title: string;
-			rating: number;
-			time: number;
-			difficulty: string;
-			image: string;
-			servings: number;
-			slug: string;
-		};
+		recipe: Pick<Recipe, "difficulty" | "servings" | "time"> &
+			RecipeRatingOptions;
 		withText?: boolean;
 		withServings?: boolean;
 	}
@@ -78,10 +70,12 @@ export const RecipeInformation = ({
 			)}
 			<Separator orientation="vertical" className="h-4 mx-2" />
 			<div className="flex justify-center items-center">
-				<Rating rating={recipe.rating} />
+				<Rating rating={recipe.avgRating} />
 				{withText && (
 					<span className="ml-2 tracking-normal whitespace-nowrap">
-						{`${recipe.rating} / 5 (15 reviews)`}
+						{recipe.ratingsCount === 0
+							? "Not rated"
+							: `${recipe.avgRating} / 5 (${recipe.ratingsCount} reviews)`}
 					</span>
 				)}
 			</div>

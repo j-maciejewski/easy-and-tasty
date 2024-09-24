@@ -5,51 +5,95 @@ import {
 	cuisines,
 	recipe_categories,
 	recipe_cuisines,
+	recipe_ratings,
 	recipes,
 } from "@/server/db/schema";
-import { eq, ilike } from "drizzle-orm";
+import { eq, ilike, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const publicRecipeRouter = createTRPCRouter({
-	// @ts-ignore
-	getRecipe: publicProcedure.input(z.number()).query(({ ctx, input }) => {
-		if (env.MOCK_MODE) return GET_RECIPE_MOCK;
-
-		return ctx.db.query.recipes.findFirst({
-			where: eq(recipes.id, input),
-		});
-	}),
-
-	// @ts-ignore
 	getRecipeBySlug: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-		if (env.MOCK_MODE)
-			return GET_RECIPES_MOCK.find((recipe) => recipe.slug === input) ?? null;
+		// #region
+		if (env.MOCK_MODE) {
+			const recipe = GET_RECIPES_MOCK.find((recipe) => recipe.slug === input) as
+				| Recipe
+				| undefined;
 
-		return ctx.db.query.recipes.findFirst({
-			// @ts-ignore
-			where: eq(recipes.slug, input),
-		});
+			if (!recipe) return [];
+
+			return [{ ...recipe, avgRating: 1.5, ratingsCount: 2 }];
+		}
+		// #endregion
+
+		return ctx.db
+			.select({
+				id: recipes.id,
+				title: recipes.title,
+				description: recipes.description,
+				image: recipes.image,
+				difficulty: recipes.difficulty,
+				content: recipes.content,
+				servings: recipes.servings,
+				slug: recipes.slug,
+				time: recipes.time,
+				avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+				ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+			})
+			.from(recipes)
+			.where(eq(recipes.slug, input))
+			.leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+			.groupBy(recipes.id)
+			.limit(1);
 	}),
 
-	// @ts-ignore
-	getRecipes: publicProcedure.query(({ ctx }) => {
-		if (env.MOCK_MODE) return GET_RECIPES_MOCK;
+	getRandomRecipes: publicProcedure
+		.input(z.number())
+		.query(({ ctx, input: recipesCount }) => {
+			// #region
+			if (env.MOCK_MODE)
+				return GET_RECIPES_MOCK.slice(0, recipesCount).map((recipe) => ({
+					...recipe,
+					avgRating: 1.5,
+					ratingsCount: 2,
+				})) as (Recipe & { avgRating: number; ratingsCount: number })[];
+			// #endregion
 
-		return ctx.db.query.recipes.findMany({
-			orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
-		});
-	}),
+			return ctx.db
+				.select({
+					id: recipes.id,
+					title: recipes.title,
+					description: recipes.description,
+					image: recipes.image,
+					difficulty: recipes.difficulty,
+					servings: recipes.servings,
+					slug: recipes.slug,
+					time: recipes.time,
+					avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+					ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+				})
+				.from(recipes)
+				.leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+				.groupBy(recipes.id)
+				.orderBy(sql`RANDOM()`)
+				.limit(recipesCount);
+		}),
 
 	getRecipesByQuery: publicProcedure
 		.input(z.string().min(3))
-		// @ts-ignore
 		.query(({ ctx, input: searchQuery }) => {
+			// #region
 			if (env.MOCK_MODE)
 				return GET_RECIPES_MOCK.filter((recipe) =>
 					recipe.title.toLowerCase().includes(searchQuery.toLowerCase()),
 				);
+			// #endregion
 
 			return ctx.db.query.recipes.findMany({
+				columns: {
+					id: true,
+					title: true,
+					slug: true,
+				},
 				where: ilike(recipes.title, `%${searchQuery}%`),
 				orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
 				limit: 10,
@@ -64,10 +108,18 @@ export const publicRecipeRouter = createTRPCRouter({
 				offset: z.number().default(0),
 			}),
 		)
-		// @ts-ignore
 		.query(({ ctx, input }) => {
+			// #region
 			if (env.MOCK_MODE)
-				return GET_RECIPES_MOCK.slice(input.offset, input.offset + input.limit);
+				return GET_RECIPES_MOCK.slice(
+					input.offset,
+					input.offset + input.limit,
+				).map((recipe) => ({
+					...recipe,
+					avgRating: 1.5,
+					ratingsCount: 2,
+				})) as (Recipe & { avgRating: number; ratingsCount: number })[];
+			// #endregion
 
 			return ctx.db
 				.select({
@@ -75,16 +127,23 @@ export const publicRecipeRouter = createTRPCRouter({
 					title: recipes.title,
 					description: recipes.description,
 					image: recipes.image,
-					content: recipes.content,
 					createdAt: recipes.createdAt,
+					slug: recipes.slug,
+					time: recipes.time,
+					difficulty: recipes.difficulty,
+					servings: recipes.servings,
+					avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+					ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
 				})
 				.from(recipes)
+				.leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
 				.innerJoin(
 					recipe_categories,
 					eq(recipes.id, recipe_categories.recipeId),
 				)
 				.innerJoin(categories, eq(recipe_categories.categoryId, categories.id))
 				.where(eq(categories.slug, input.slug))
+				.groupBy(recipes.id)
 				.offset(input.offset)
 				.limit(input.limit);
 		}),
@@ -97,10 +156,18 @@ export const publicRecipeRouter = createTRPCRouter({
 				offset: z.number().default(0),
 			}),
 		)
-		// @ts-ignore
 		.query(({ ctx, input }) => {
+			// #region
 			if (env.MOCK_MODE)
-				return GET_RECIPES_MOCK.slice(input.offset, input.offset + input.limit);
+				return GET_RECIPES_MOCK.slice(
+					input.offset,
+					input.offset + input.limit,
+				).map((recipe) => ({
+					...recipe,
+					avgRating: 1.5,
+					ratingsCount: 2,
+				})) as (Recipe & { avgRating: number; ratingsCount: number })[];
+			// #endregion
 
 			return ctx.db
 				.select({
@@ -108,13 +175,20 @@ export const publicRecipeRouter = createTRPCRouter({
 					title: recipes.title,
 					description: recipes.description,
 					image: recipes.image,
-					content: recipes.content,
 					createdAt: recipes.createdAt,
+					slug: recipes.slug,
+					time: recipes.time,
+					difficulty: recipes.difficulty,
+					servings: recipes.servings,
+					avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+					ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
 				})
 				.from(recipes)
+				.leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
 				.innerJoin(recipe_cuisines, eq(recipes.id, recipe_cuisines.recipeId))
 				.innerJoin(cuisines, eq(recipe_cuisines.cuisineId, cuisines.id))
 				.where(eq(cuisines.slug, input.slug))
+				.groupBy(recipes.id)
 				.offset(input.offset)
 				.limit(input.limit);
 		}),
@@ -342,16 +416,3 @@ Enjoy your light and fluffy Swedish pancakes!
 		updatedAt: null,
 	},
 ];
-
-const GET_RECIPE_MOCK = {
-	id: 3,
-	title: "mock",
-	description: "Description",
-	difficulty: "easy",
-	image: null,
-	ingredients: "[]",
-	recipe: "{}",
-	time: 90,
-	createdAt: new Date("2024-06-28T20:13:58.522Z"),
-	updatedAt: null,
-};

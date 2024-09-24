@@ -1,26 +1,23 @@
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
-import {
-	RecipeCard,
-	RecipesCarousel,
-	RecipesGroupPreview,
-} from "./_components";
+import { RecipesCarousel, RecipesGroupPreview } from "./_components";
+import { APP_NAME } from "@/consts";
 
-export default async function () {
-	return <Recipes />;
+export function generateMetadata() {
+	return {
+		title: `Home | ${APP_NAME}`,
+	};
 }
 
-async function Recipes() {
-	const recipes = await api.public.recipe.getRecipes();
+export default async function () {
+	const recipes = await api.public.recipe.getRandomRecipes(5);
 
 	return (
 		<>
 			<div className="grow max-xl:px-[3vw] w-full pt-6">
 				{recipes ? (
 					<>
-						<RecipesCarousel recipes={recipes.slice(0, 5)} />
+						<RecipesCarousel recipes={recipes} />
 						<Separator className="my-6" />
 						<RecipesGroupPreview
 							category={{ name: "Breakfast", slug: "breakfast" }}

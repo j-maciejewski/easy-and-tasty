@@ -45,7 +45,6 @@ export const Searchbar = () => {
 
 		return (
 			<>
-				{/* @ts-ignore */}
 				{data?.map((recipe) => (
 					<Link
 						key={recipe.id}
@@ -65,7 +64,7 @@ export const Searchbar = () => {
 			<Input
 				type="search"
 				placeholder="Search recipes..."
-				className="w-full rounded-lg bg-background pl-8 md:w-[300px] lg:w-[360px] h-fit peer/input"
+				className="w-full rounded-lg bg-background pl-8 md:w-[300px] lg:w-[360px] h-fit peer/input focus-visible:ring-primary/75"
 				value={query}
 				onChange={handleChange}
 			/>

@@ -13,20 +13,12 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { RecipeInformation } from "./RecipeInformation";
+import SampleImage from "@/public/mock/meals/sample-image.jpg";
 
 namespace RecipesCarousel {
 	export interface Props {
-		recipes: {
-			id: number;
-			description: string;
-			title: string;
-			rating: number;
-			time: number;
-			difficulty: string;
-			image: string;
-			servings: number;
-			slug: string;
-		}[];
+		recipes: (Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
+			RecipeRatingOptions)[];
 	}
 }
 
@@ -47,10 +39,12 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
 						<div className="sm:flex rounded-lg overflow-hidden shadow ">
 							<div className="max-sm:w-full sm:min-w-[40%] sm:w-2/5">
 								<Image
-									src={`/mock/meals/${recipe.image}`}
+									src={
+										recipe.image ? `/mock/meals/${recipe.image}` : SampleImage
+									}
 									width={400}
 									height={600}
-									alt="recipe"
+									alt={recipe.title}
 									loading="lazy"
 									className="max-sm:w-full min-h-full max-h-[400px] object-cover w-full"
 								/>
