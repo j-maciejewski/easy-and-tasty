@@ -11,7 +11,7 @@ export const SideBar = async () => {
 	return (
 		<div className="pt-6 xl:min-w-[25%] xl:w-1/4 text-gray-600 text-sm max-xl:px-[3vw]">
 			<Separator className="my-4 xl:hidden" />
-			<div className="sticky top-4">
+			<div>
 				<h6 className="text-base font-semibold mb-6">
 					Try out our other recipes!
 				</h6>

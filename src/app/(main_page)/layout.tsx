@@ -83,7 +83,7 @@ export default function ({ children }: React.PropsWithChildren) {
 					{children}
 				</div>
 			</main>
-			<footer className="bg-gray-700 px-4 py-2 w-full text-center text-gray-300 text-xs">
+			<footer className="bg-gray-200 px-4 py-2 w-full text-center text-gray-700 text-xs">
 				easy and tasty | Copyright © 2024 - All Rigths reserved
 			</footer>
 		</div>

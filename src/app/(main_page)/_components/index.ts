@@ -1,5 +1,6 @@
 export { Rating } from "./Rating";
 export { RecipeCard } from "./RecipeCard";
+export { RecipeTypeCard } from "./RecipeTypeCard";
 export { RecipeInformation } from "./RecipeInformation";
 export { RecipesCarousel } from "./RecipesCarousel";
 export { SideBar } from "./SideBar";

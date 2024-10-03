@@ -7,6 +7,7 @@ import SampleImage from "@/public/mock/meals/sample-image.jpg";
 import { Metadata } from "next";
 import { cache } from "react";
 import { APP_NAME } from "@/consts";
+import Link from "next/link";
 
 const fetchRecipe = cache(async (slug: string) => {
 	const [recipe] = await api.public.recipe.getRecipeBySlug(slug);
@@ -54,6 +55,18 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<article className="mt-6 prose prose-slate max-w-full">
 					<Markdown>{recipe.content}</Markdown>
 				</article>
+				<div className="flex flex-wrap gap-4 mt-6 text-white text-sm font-bold">
+					{recipe.categories.map((category) => (
+						<Link
+							key={category.name}
+							href={`/categories/${category.name.toLowerCase()}`}
+						>
+							<div className="py-2 px-3 bg-primary select-none hover:bg-primary/75">
+								{category.name}
+							</div>
+						</Link>
+					))}
+				</div>
 			</div>
 			<SideBar />
 		</>

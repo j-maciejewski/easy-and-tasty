@@ -21,7 +21,15 @@ export const publicRecipeRouter = createTRPCRouter({
 
 			if (!recipe) return [];
 
-			return [{ ...recipe, avgRating: 1.5, ratingsCount: 2 }];
+			return [
+				{
+					...recipe,
+					avgRating: 1.5,
+					ratingsCount: 2,
+					categories: [],
+					cuisines: [],
+				},
+			];
 		}
 		// #endregion
 
@@ -38,10 +46,25 @@ export const publicRecipeRouter = createTRPCRouter({
 				time: recipes.time,
 				avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
 				ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+				categories: sql<
+					{ name: string; slug: string }[]
+				>`json_agg(DISTINCT jsonb_build_object('name', ${categories.name}, 'slug', ${categories.slug}))`.as(
+					"categories",
+				),
+				cuisines: sql<
+					{ name: string; slug: string }[]
+				>`json_agg(DISTINCT jsonb_build_object('name', ${cuisines.name}, 'slug', ${cuisines.slug}))`.as(
+					"cuisines",
+				),
 			})
 			.from(recipes)
 			.where(eq(recipes.slug, input))
 			.leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+			.leftJoin(recipe_categories, eq(recipe_categories.recipeId, recipes.id))
+			.leftJoin(categories, eq(categories.id, recipe_categories.categoryId))
+			.leftJoin(recipe_cuisines, eq(recipe_cuisines.recipeId, recipes.id))
+			.leftJoin(cuisines, eq(cuisines.id, recipe_cuisines.cuisineId))
+
 			.groupBy(recipes.id)
 			.limit(1);
 	}),

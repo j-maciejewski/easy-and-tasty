@@ -38,7 +38,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 					{ label: cuisine.name, active: true },
 				]}
 			/>
-			<h2 className="font-semibold tracking-normal text-4xl text-center mb-4">
+			<h2 className="font-semibold tracking-normal text-3xl text-center mb-4">
 				{cuisine.name}
 			</h2>
 			<h6 className="font-medium text-md text-center mb-6 text-gray-800">
