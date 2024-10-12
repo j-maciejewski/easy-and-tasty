@@ -14,7 +14,7 @@ import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { RecipeInformation } from "./RecipeInformation";
-import SampleImage from "@/public/mock/meals/sample-image.jpg";
+import { recipeImageSrcParser } from "../_utils";
 
 namespace RecipeCard {
 	export interface Props {
@@ -42,7 +42,7 @@ export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 				<Card className="max-xl:min-w-[200px] max-w-[500px] w-full flex flex-col h-full transition ease-in-out hover:-translate-x-1 hover:-translate-y-1 overflow-hidden">
 					<CardContent className="p-0">
 						<Image
-							src={recipe.image ? `/mock/meals/${recipe.image}` : SampleImage}
+							src={recipeImageSrcParser(recipe.image)}
 							width={400}
 							height={600}
 							alt={recipe.title}

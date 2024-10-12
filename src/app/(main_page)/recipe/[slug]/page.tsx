@@ -3,11 +3,11 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumbs, RecipeInformation, SideBar } from "../../_components";
 import Markdown from "markdown-to-jsx";
-import SampleImage from "@/public/mock/meals/sample-image.jpg";
 import { Metadata } from "next";
 import { cache } from "react";
 import { APP_NAME } from "@/consts";
 import Link from "next/link";
+import { recipeImageSrcParser } from "../../_utils";
 
 const fetchRecipe = cache(async (slug: string) => {
 	const [recipe] = await api.public.recipe.getRecipeBySlug(slug);
@@ -43,7 +43,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 				<h2 className="text-3xl font-semibold text-center">{recipe.title}</h2>
 				<div className="max-h-[700px] my-6 lg:px-12">
 					<Image
-						src={recipe.image ? `/mock/meals/${recipe.image}` : SampleImage}
+						src={recipeImageSrcParser(recipe.image)}
 						width={400}
 						height={600}
 						alt={recipe.title}

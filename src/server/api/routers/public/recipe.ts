@@ -46,16 +46,20 @@ export const publicRecipeRouter = createTRPCRouter({
 				time: recipes.time,
 				avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
 				ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
-				categories: sql<
-					{ name: string; slug: string }[]
-				>`json_agg(DISTINCT jsonb_build_object('name', ${categories.name}, 'slug', ${categories.slug}))`.as(
-					"categories",
-				),
-				cuisines: sql<
-					{ name: string; slug: string }[]
-				>`json_agg(DISTINCT jsonb_build_object('name', ${cuisines.name}, 'slug', ${cuisines.slug}))`.as(
-					"cuisines",
-				),
+				categories: sql<{ name: string; slug: string }[]>`
+				COALESCE(
+					jsonb_agg(DISTINCT jsonb_build_object('name', ${categories.name}, 'slug', ${categories.slug}))
+					FILTER (WHERE ${categories.name} IS NOT NULL AND ${categories.slug} IS NOT NULL),
+					'[]'::jsonb
+				)
+				`.as("categories"),
+				cuisines: sql<{ name: string; slug: string }[]>`
+				COALESCE(
+					jsonb_agg(DISTINCT jsonb_build_object('name', ${cuisines.name}, 'slug', ${cuisines.slug}))
+					FILTER (WHERE ${cuisines.name} IS NOT NULL AND ${cuisines.slug} IS NOT NULL),
+					'[]'::jsonb
+				)
+				`.as("cuisines"),
 			})
 			.from(recipes)
 			.where(eq(recipes.slug, input))

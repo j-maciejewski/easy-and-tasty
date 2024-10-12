@@ -2,8 +2,8 @@ import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
 import Image from "next/image";
 import Link from "next/link";
-import SampleImage from "@/public/mock/meals/sample-image.jpg";
 import { Card, CardHeader } from "@/components/ui/card";
+import { recipeImageSrcParser } from "../_utils";
 
 export const SideBar = async () => {
 	const recipes = await api.public.recipe.getRandomRecipes(5);
@@ -21,9 +21,7 @@ export const SideBar = async () => {
 							<Card className="shadow hover:bg-primary/50 transition ease-in-out">
 								<div className="bg-card border rounded-lg flex items-center gap-2 transition ease-in-out hover:-translate-x-1 hover:-translate-y-1">
 									<Image
-										src={
-											recipe.image ? `/mock/meals/${recipe.image}` : SampleImage
-										}
+										src={recipeImageSrcParser(recipe.image)}
 										width={200}
 										height={200}
 										alt={recipe.title}
