@@ -3,8 +3,8 @@ import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { TRPCReactProvider } from "@/trpc/react";
 import { APP_DESCRIPTION, APP_NAME } from "@/consts";
+import { TRPCReactProvider } from "@/trpc/react";
 
 export const metadata = {
 	title: APP_NAME,

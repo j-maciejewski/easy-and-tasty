@@ -13,10 +13,10 @@ namespace Rating {
 }
 
 const EmptyStar = (
-	<Star className="size-4 text-gray-500 fill-gray-300 stroke-[1.75]" />
+	<Star className="size-4 fill-gray-300 stroke-[1.75] text-gray-500" />
 );
 
-const FilledStar = <Star className="size-4 text-yellow-300 fill-yellow-300" />;
+const FilledStar = <Star className="size-4 fill-yellow-300 text-yellow-300" />;
 
 export const Rating = ({ rating }: Rating.Props) => {
 	const scorePercent = (rating / 5) * 100;
@@ -32,7 +32,7 @@ export const Rating = ({ rating }: Rating.Props) => {
 					</div>
 					{!!rating && (
 						<div
-							className="gap-[1px] absolute top-0 overflow-hidden"
+							className="absolute top-0 gap-[1px] overflow-hidden"
 							style={{ display: "-webkit-box", width: `${scorePercent}%` }}
 						>
 							{[...Array(5).keys()].map((idx) => (

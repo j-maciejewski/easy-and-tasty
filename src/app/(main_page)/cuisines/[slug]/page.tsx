@@ -1,10 +1,10 @@
 import { Separator } from "@/components/ui/separator";
+import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
-import { Breadcrumbs, RecipeCard } from "../../_components";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { APP_NAME } from "@/consts";
-import { Metadata } from "next";
+import { Breadcrumbs, RecipeCard } from "../../_components";
 
 const fetchCuisine = cache((slug: string) => {
 	return api.public.cuisine.getCuisineBySlug(slug);
@@ -31,21 +31,21 @@ export default async function ({ params }: { params: { slug: string } }) {
 	if (!cuisine) notFound();
 
 	return (
-		<div className="pt-6 max-xl:px-[3vw] w-full">
+		<div className="w-full pt-6 max-xl:px-[3vw]">
 			<Breadcrumbs
 				paths={[
 					{ label: "Cuisines", href: "/cuisines" },
 					{ label: cuisine.name, active: true },
 				]}
 			/>
-			<h2 className="font-semibold tracking-normal text-3xl text-center mb-4">
+			<h2 className="mb-4 text-center font-semibold text-3xl tracking-normal">
 				{cuisine.name}
 			</h2>
-			<h6 className="font-medium text-md text-center mb-6 text-gray-800">
+			<h6 className="mb-6 text-center font-medium text-gray-800 text-md">
 				{cuisine.description}
 			</h6>
 			<Separator className="my-6" />
-			<div className="gap-4 grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
+			<div className="grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))] gap-4">
 				{recipes.map((recipe) => (
 					<RecipeCard key={recipe.id} recipe={recipe} />
 				))}

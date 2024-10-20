@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
+import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
 import { RecipesCarousel, RecipesGroupPreview } from "./_components";
-import { APP_NAME } from "@/consts";
 
 export function generateMetadata() {
 	return {
@@ -14,7 +14,7 @@ export default async function () {
 
 	return (
 		<>
-			<div className="grow max-xl:px-[3vw] w-full pt-6">
+			<div className="w-full grow pt-6 max-xl:px-[3vw]">
 				{recipes ? (
 					<>
 						<RecipesCarousel recipes={recipes} />

@@ -1,9 +1,9 @@
-import { AuthDataProvider } from "./_context/AuthEmailContext";
+import { AuthDataProvider } from "./_context/AuthDataProvider";
 
 export default function ({ children }: React.PropsWithChildren) {
 	return (
 		<AuthDataProvider>
-			<div className="flex flex-col items-center justify-center h-screen bg-background">
+			<div className="flex h-screen flex-col items-center justify-center bg-background">
 				{children}
 			</div>
 		</AuthDataProvider>

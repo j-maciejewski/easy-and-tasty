@@ -1,7 +1,7 @@
+import { Separator } from "@/components/ui/separator";
+import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
 import { Breadcrumbs, RecipeTypeCard } from "../_components";
-import { APP_NAME } from "@/consts";
-import { Separator } from "@/components/ui/separator";
 
 export function generateMetadata() {
 	return {
@@ -13,15 +13,15 @@ export default async function () {
 	const cuisines = await api.public.cuisine.getCuisines();
 
 	return (
-		<div className="pt-6 max-xl:px-[3vw] w-full">
+		<div className=" w-full pt-6 max-xl:px-[3vw]">
 			<Breadcrumbs paths={[{ label: "Cuisines", active: true }]} />
 
-			<h2 className="font-semibold tracking-normal text-3xl text-center mb-6">
+			<h2 className="mb-6 text-center font-semibold text-3xl tracking-normal">
 				Browse all cuisines
 			</h2>
 			<Separator className="my-6" />
 
-			<div className="gap-4 grid grid-cols-[repeat(auto-fill,_minmax(225px,_1fr))]">
+			<div className="grid grid-cols-[repeat(auto-fill,_minmax(225px,_1fr))] gap-4">
 				{cuisines.map((cuisine) => (
 					<RecipeTypeCard
 						key={cuisine.id}

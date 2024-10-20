@@ -40,14 +40,14 @@ export const RecipeInformation = ({
 	withServings,
 }: RecipeInformation.Props) => {
 	return (
-		<div className="flex justify-center items-center text-gray-600 font-semibold flex-wrap gap-y-2">
+		<div className="flex flex-wrap items-center justify-center gap-y-2 font-semibold text-gray-600">
 			{withServings && (
 				<>
 					<Drumstick />
-					<span className="ml-2 tracking-normal whitespace-nowrap">
+					<span className="ml-2 whitespace-nowrap tracking-normal">
 						{`${recipe.servings} servings`}
 					</span>
-					<Separator orientation="vertical" className="h-4 mx-2" />
+					<Separator orientation="vertical" className="mx-2 h-4" />
 				</>
 			)}
 			<Tooltip>
@@ -61,18 +61,18 @@ export const RecipeInformation = ({
 				</TooltipTrigger>
 				<TooltipContent>{recipe.time} minutes</TooltipContent>
 			</Tooltip>
-			<Separator orientation="vertical" className="h-4 mx-2" />
+			<Separator orientation="vertical" className="mx-2 h-4" />
 			<Tooltip>{getDifficulty(recipe.difficulty)}</Tooltip>
 			{withText && (
-				<span className="ml-2 tracking-normal capitalize">
+				<span className="ml-2 capitalize tracking-normal">
 					{recipe.difficulty}
 				</span>
 			)}
-			<Separator orientation="vertical" className="h-4 mx-2" />
-			<div className="flex justify-center items-center">
+			<Separator orientation="vertical" className="mx-2 h-4" />
+			<div className="flex items-center justify-center">
 				<Rating rating={recipe.avgRating} />
 				{withText && (
-					<span className="ml-2 tracking-normal whitespace-nowrap">
+					<span className="ml-2 whitespace-nowrap tracking-normal">
 						{recipe.ratingsCount === 0
 							? "Not rated"
 							: `${recipe.avgRating} / 5 (${recipe.ratingsCount} reviews)`}

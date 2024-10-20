@@ -15,7 +15,7 @@ import { AuthInput } from "../_components/AuthInput";
 
 export default function () {
 	return (
-		<Card className="mx-auto max-w-sm min-w-[350px]">
+		<Card className="mx-auto min-w-[350px] max-w-sm">
 			<CardHeader>
 				<Link href="/">
 					<Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />

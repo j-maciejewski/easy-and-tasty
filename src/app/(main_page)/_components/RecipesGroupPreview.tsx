@@ -1,7 +1,7 @@
+import { api } from "@/trpc/server";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { RecipeCard } from "./RecipeCard";
-import { api } from "@/trpc/server";
 
 interface CategoryPreview {
 	category: {
@@ -46,18 +46,18 @@ export const RecipesGroupPreview = async (props: RecipesGroupPreview.Props) => {
 
 	return (
 		<>
-			<div className="bg-primary text-white rounded-lg shadow flex justify-between max-lg:py-2 lg:py-3 max-lg:px-4 lg:px-6 items-center mb-6">
-				<h3 className="max-lg:text-xl lg:text-2xl font-semibold italic">
+			<div className="mb-6 flex items-center justify-between rounded-lg bg-primary text-white shadow max-lg:px-4 max-lg:py-2 lg:px-6 lg:py-3">
+				<h3 className="font-semibold italic max-lg:text-xl lg:text-2xl">
 					{name}
 				</h3>
 				<Link
 					href={href}
-					className="font-semibold flex items-center hover:text-white/90"
+					className="flex items-center font-semibold hover:text-white/90"
 				>
 					View All <ChevronRight className="h-5 stroke-[3px]" />
 				</Link>
 			</div>
-			<div className="gap-4 max-lg:flex max-lg:overflow-auto max-lg:pb-2 max-lg:-mb-2 lg:grid lg:grid-cols-[repeat(auto-fill,_minmax(350px,_1fr))]">
+			<div className="max-lg:-mb-2 gap-4 max-lg:flex max-lg:overflow-auto max-lg:pb-2 lg:grid lg:grid-cols-[repeat(auto-fill,_minmax(350px,_1fr))]">
 				{recipes.map((recipe) => (
 					<RecipeCard key={recipe.id} recipe={recipe} />
 				))}

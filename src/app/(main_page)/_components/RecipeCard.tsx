@@ -13,8 +13,8 @@ import {
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { RecipeInformation } from "./RecipeInformation";
 import { recipeImageSrcParser } from "../_utils";
+import { RecipeInformation } from "./RecipeInformation";
 
 namespace RecipeCard {
 	export interface Props {
@@ -25,21 +25,21 @@ namespace RecipeCard {
 
 export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 	return (
-		<div className="relative group/card hover:bg-primary/75 transition ease-in-out rounded-lg shadow-sm">
+		<div className="group/card relative rounded-lg shadow-sm transition ease-in-out hover:bg-primary/75">
 			<Tooltip>
-				<TooltipTrigger className="absolute right-2 top-2 z-10" asChild>
+				<TooltipTrigger className="absolute top-2 right-2 z-10" asChild>
 					<button
 						type="button"
-						className="size-10 rounded-full bg-white justify-center items-center hidden group-hover/card:lg:flex"
+						className="hidden size-10 items-center justify-center rounded-full bg-white group-hover/card:lg:flex"
 					>
-						<Heart className="text-red-700 stroke-[2.5]" />
+						<Heart className="stroke-[2.5] text-red-700" />
 					</button>
 				</TooltipTrigger>
 				<TooltipContent>Save recipe</TooltipContent>
 			</Tooltip>
 
 			<Link href={`/recipe/${recipe.slug}`}>
-				<Card className="max-xl:min-w-[200px] max-w-[500px] w-full flex flex-col h-full transition ease-in-out hover:-translate-x-1 hover:-translate-y-1 overflow-hidden">
+				<Card className="hover:-translate-x-1 hover:-translate-y-1 flex h-full w-full max-w-[500px] flex-col overflow-hidden transition ease-in-out max-xl:min-w-[200px]">
 					<CardContent className="p-0">
 						<Image
 							src={recipeImageSrcParser(recipe.image)}
@@ -47,15 +47,15 @@ export const RecipeCard = ({ recipe }: RecipeCard.Props) => {
 							height={600}
 							alt={recipe.title}
 							loading="lazy"
-							className="rounded-t-lg min-h-[300px] max-h-[300px] object-cover w-full"
+							className="max-h-[300px] min-h-[300px] w-full rounded-t-lg object-cover"
 						/>
 					</CardContent>
-					<CardHeader className="p-4 pb-2 grow justify-center">
-						<CardTitle className="text-lg text-center tracking-normal">
+					<CardHeader className="grow justify-center p-4 pb-2">
+						<CardTitle className="text-center text-lg tracking-normal">
 							{recipe.title}
 						</CardTitle>
 					</CardHeader>
-					<CardFooter className="p-4 pt-0 justify-center">
+					<CardFooter className="justify-center p-4 pt-0">
 						<RecipeInformation recipe={recipe} />
 					</CardFooter>
 				</Card>

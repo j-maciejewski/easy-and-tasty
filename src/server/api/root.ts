@@ -1,20 +1,20 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import {
+	authedCommentRouter,
+	authedRecipeRouter,
+	authedUserRouter,
+} from "./routers/authed";
+import {
+	protectedCategoryRouter,
+	protectedRecipeRouter,
+	protectedUserRouter,
+} from "./routers/protected";
+import {
 	publicCategoryRouter,
 	publicCuisineRouter,
 	publicRecipeRouter,
 	publicUserRouter,
 } from "./routers/public";
-import {
-	protectedCategoryRouter,
-	protectedUserRouter,
-	protectedRecipeRouter,
-} from "./routers/protected";
-import {
-	authedCommentRouter,
-	authedRecipeRouter,
-	authedUserRouter,
-} from "./routers/authed";
 
 /**
  * This is the primary router for your server.

@@ -12,8 +12,8 @@ import Autoplay from "embla-carousel-autoplay";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { RecipeInformation } from "./RecipeInformation";
 import { recipeImageSrcParser } from "../_utils";
+import { RecipeInformation } from "./RecipeInformation";
 
 namespace RecipesCarousel {
 	export interface Props {
@@ -35,26 +35,26 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
 		>
 			<CarouselContent className="m-0 gap-6 rounded-lg">
 				{recipes.map((recipe) => (
-					<CarouselItem key={recipe.id} className="ml-0 py-1 px-3">
-						<div className="sm:flex rounded-lg overflow-hidden shadow ">
-							<div className="max-sm:w-full sm:min-w-[40%] sm:w-2/5">
+					<CarouselItem key={recipe.id} className="ml-0 px-3 py-1">
+						<div className="overflow-hidden rounded-lg shadow sm:flex ">
+							<div className="max-sm:w-full sm:w-2/5 sm:min-w-[40%]">
 								<Image
 									src={recipeImageSrcParser(recipe.image)}
 									width={400}
 									height={600}
 									alt={recipe.title}
 									loading="lazy"
-									className="max-sm:w-full min-h-full max-h-[400px] object-cover w-full"
+									className="max-h-[400px] min-h-full w-full object-cover max-sm:w-full"
 								/>
 							</div>
-							<div className="grow max-sm:p-4 sm:p-6 lg:p-8 xl:p-10 flex flex-col text-center justify-center bg-secondary">
-								<h3 className="font-semibold tracking-tight text-lg md:text-2xl xl:text-4xl mb-6 max-sm:text-center">
+							<div className="flex grow flex-col justify-center bg-secondary text-center max-sm:p-4 sm:p-6 lg:p-8 xl:p-10">
+								<h3 className="mb-6 font-semibold text-lg tracking-tight max-sm:text-center md:text-2xl xl:text-4xl">
 									{recipe.title}
 								</h3>
 								<RecipeInformation recipe={recipe} />
 								<Button
 									type="button"
-									className="block ml-auto rounded-full w-fit text-center max-sm:w-full mt-10 font-bold mx-auto uppercase tracking-wider cursor-pointer"
+									className="mx-auto mt-10 ml-auto block w-fit cursor-pointer rounded-full text-center font-bold uppercase tracking-wider max-sm:w-full"
 									asChild
 								>
 									<span className="flex">

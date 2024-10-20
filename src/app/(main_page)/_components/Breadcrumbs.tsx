@@ -15,7 +15,7 @@ export const Breadcrumbs = ({ paths }: Breadcrumbs.Props) => {
 	if (paths.length === 0) return null;
 
 	return (
-		<ul className="flex mb-8 text-gray-600">
+		<ul className="mb-8 flex text-gray-600">
 			<li className="items-center font-semibold">
 				<Link href="/" className="hover:text-gray-800">
 					Home
@@ -24,7 +24,7 @@ export const Breadcrumbs = ({ paths }: Breadcrumbs.Props) => {
 			{paths.map((path) => (
 				<li
 					key={path.label}
-					className="pl-1 before:content-['\00BB'] before:mr-1 items-end font-semibold"
+					className="items-end pl-1 font-semibold before:mr-1 before:content-['\00BB']"
 				>
 					{path.href ? (
 						<Link href={path.href} className="hover:text-black">

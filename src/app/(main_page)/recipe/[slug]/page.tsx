@@ -1,12 +1,12 @@
+import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
-import Image from "next/image";
-import { notFound } from "next/navigation";
-import { Breadcrumbs, RecipeInformation, SideBar } from "../../_components";
 import Markdown from "markdown-to-jsx";
 import { Metadata } from "next";
-import { cache } from "react";
-import { APP_NAME } from "@/consts";
+import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { cache } from "react";
+import { Breadcrumbs, RecipeInformation, SideBar } from "../../_components";
 import { recipeImageSrcParser } from "../../_utils";
 
 const fetchRecipe = cache(async (slug: string) => {
@@ -36,32 +36,32 @@ export default async function ({ params }: { params: { slug: string } }) {
 
 	return (
 		<>
-			<div className="pt-6 xl:pr-8 overflow-hidden max-xl:px-[3vw] grow">
+			<div className="grow overflow-hidden pt-6 max-xl:px-[3vw] xl:pr-8">
 				<Breadcrumbs
 					paths={[{ label: "Recipe" }, { label: recipe.title, active: true }]}
 				/>
-				<h2 className="text-3xl font-semibold text-center">{recipe.title}</h2>
-				<div className="max-h-[700px] my-6 lg:px-12">
+				<h2 className="text-center font-semibold text-3xl">{recipe.title}</h2>
+				<div className="my-6 max-h-[700px] lg:px-12">
 					<Image
 						src={recipeImageSrcParser(recipe.image)}
 						width={400}
 						height={600}
 						alt={recipe.title}
 						loading="lazy"
-						className="rounded-lg max-sm:w-full min-h-full object-cover max-h-[700px] mx-auto w-full"
+						className="mx-auto max-h-[700px] min-h-full w-full rounded-lg object-cover max-sm:w-full"
 					/>
 				</div>
 				<RecipeInformation recipe={recipe} withText withServings />
-				<article className="mt-6 prose prose-slate max-w-full">
+				<article className="prose prose-slate mt-6 max-w-full">
 					<Markdown>{recipe.content}</Markdown>
 				</article>
-				<div className="flex flex-wrap gap-4 mt-6 text-white text-sm font-bold">
+				<div className="mt-6 flex flex-wrap gap-4 font-bold text-sm text-white">
 					{recipe.categories.map((category) => (
 						<Link
 							key={category.name}
 							href={`/categories/${category.name.toLowerCase()}`}
 						>
-							<div className="py-2 px-3 bg-primary select-none hover:bg-primary/75">
+							<div className="select-none bg-primary px-3 py-2 hover:bg-primary/75">
 								{category.name}
 							</div>
 						</Link>

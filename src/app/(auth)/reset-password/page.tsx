@@ -16,7 +16,7 @@ import { AuthInput } from "../_components/AuthInput";
 
 export default function () {
 	return (
-		<Card className="mx-auto max-w-sm min-w-[350px]">
+		<Card className="mx-auto min-w-[350px] max-w-sm">
 			<CardHeader>
 				<Link href="/">
 					<Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />
@@ -43,7 +43,7 @@ export default function () {
 						Reset password
 					</Button>
 				</div>
-				<div className="mt-4 text-center text-sm flex space-x-4 items-center">
+				<div className="mt-4 flex items-center space-x-4 text-center text-sm">
 					<div className="grow">
 						<Link href="/login" className="underline">
 							Sign in

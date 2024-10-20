@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import SampleImage from "@/public/mock/meals/sample-image.jpg";
 import Image from "next/image";
 import Link from "next/link";
-import SampleImage from "@/public/mock/meals/sample-image.jpg";
 
 namespace RecipeTypeCard {
 	export interface Props {
@@ -12,18 +12,18 @@ namespace RecipeTypeCard {
 
 export const RecipeTypeCard = ({ name, href }: RecipeTypeCard.Props) => {
 	return (
-		<div className="hover:bg-primary/75 transition ease-in-out rounded-lg shadow-sm">
+		<div className="rounded-lg shadow-sm transition ease-in-out hover:bg-primary/75">
 			<Link href={href}>
-				<Card className="max-xl:min-w-[200px] max-w-[500px] w-full flex flex-col h-full transition ease-in-out hover:-translate-x-1 hover:-translate-y-1 overflow-hidden">
+				<Card className="hover:-translate-x-1 hover:-translate-y-1 flex h-full w-full max-w-[500px] flex-col overflow-hidden transition ease-in-out max-xl:min-w-[200px]">
 					<CardContent className="p-0">
 						<Image
 							src={SampleImage}
-							className="aspect-square rounded-t-lg min-h-[225px] max-h-[225px] object-cover w-full "
+							className="aspect-square max-h-[225px] min-h-[225px] w-full rounded-t-lg object-cover "
 							alt="cuisine"
 						/>
 					</CardContent>
-					<CardHeader className="p-2 grow justify-center">
-						<CardTitle className="text-md text-center tracking-normal">
+					<CardHeader className="grow justify-center p-2">
+						<CardTitle className="text-center text-md tracking-normal">
 							{name}
 						</CardTitle>
 					</CardHeader>
