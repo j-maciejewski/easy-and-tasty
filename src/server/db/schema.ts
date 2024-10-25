@@ -28,7 +28,6 @@ export const users = createTable("user", {
 	email: varchar("email", { length: 256 }).notNull(),
 	password: varchar("password", { length: 256 }).notNull(),
 	image: varchar("image", { length: 1024 }),
-	description: varchar("description", { length: 256 }),
 	createdAt: timestamp("created_at", { withTimezone: true })
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
@@ -41,9 +40,9 @@ export const recipes = createTable("recipe", {
 	id: serial("id").primaryKey(),
 	title: varchar("title", { length: 256 }).notNull(),
 	description: varchar("description", { length: 1024 }).notNull(),
-	difficulty: difficultyEnum("difficulty").notNull(), // easy, medium, hard
-	image: varchar("image", { length: 1024 }),
-	content: varchar("content", { length: 1024 }).notNull(),
+	difficulty: difficultyEnum("difficulty").notNull(),
+	image: varchar("image", { length: 2048 }),
+	content: varchar("content", { length: 2048 }).notNull(),
 	servings: integer("servings"), // 1, 2, 3 and so
 	slug: varchar("slug", { length: 256 }).notNull(),
 	time: integer("time"), // in minutes
@@ -61,7 +60,7 @@ export const recipe_ratings = createTable("recipe_rating", {
 	recipeId: integer("recipe_id")
 		.notNull()
 		.references(() => recipes.id),
-	score: smallint("user_id").notNull(),
+	score: smallint("score").notNull(),
 });
 
 export const comments = createTable("comment", {
@@ -90,7 +89,7 @@ export const comment_likes = createTable("comment_like", {
 		.references(() => comments.id),
 });
 
-export const recipe_likes = createTable("recipe_like", {
+export const recipe_saves = createTable("recipe_save", {
 	id: serial("id").primaryKey(),
 	userId: integer("user_id")
 		.notNull()

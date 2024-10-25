@@ -44,7 +44,7 @@ export const publicRecipeRouter = createTRPCRouter({
 				servings: recipes.servings,
 				slug: recipes.slug,
 				time: recipes.time,
-				avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+				avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
 				ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
 				categories: sql<{ name: string; slug: string }[]>`
 				COALESCE(
@@ -95,7 +95,7 @@ export const publicRecipeRouter = createTRPCRouter({
 					servings: recipes.servings,
 					slug: recipes.slug,
 					time: recipes.time,
-					avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+					avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
 					ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
 				})
 				.from(recipes)
@@ -159,7 +159,7 @@ export const publicRecipeRouter = createTRPCRouter({
 					time: recipes.time,
 					difficulty: recipes.difficulty,
 					servings: recipes.servings,
-					avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+					avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
 					ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
 				})
 				.from(recipes)
@@ -207,7 +207,7 @@ export const publicRecipeRouter = createTRPCRouter({
 					time: recipes.time,
 					difficulty: recipes.difficulty,
 					servings: recipes.servings,
-					avgRating: sql<number>`CAST(COALESCE(AVG(${recipe_ratings.score}), 0) as float)`,
+					avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
 					ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
 				})
 				.from(recipes)

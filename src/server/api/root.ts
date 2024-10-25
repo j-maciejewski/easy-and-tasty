@@ -6,6 +6,7 @@ import {
 } from "./routers/authed";
 import {
 	protectedCategoryRouter,
+	protectedCuisineRouter,
 	protectedRecipeRouter,
 	protectedUserRouter,
 } from "./routers/protected";
@@ -15,6 +16,7 @@ import {
 	publicRecipeRouter,
 	publicUserRouter,
 } from "./routers/public";
+import { seedRouter } from "./routers/seed";
 
 /**
  * This is the primary router for your server.
@@ -35,9 +37,11 @@ export const appRouter = createTRPCRouter({
 	},
 	protected: {
 		category: protectedCategoryRouter,
+		cuisine: protectedCuisineRouter,
 		recipe: protectedRecipeRouter,
 		user: protectedUserRouter,
 	},
+	seeder: seedRouter,
 });
 
 // export type definition of API

@@ -1,25 +1,25 @@
 import { authedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { recipe_likes, recipe_ratings } from "@/server/db/schema";
+import { recipe_ratings, recipe_saves } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const authedRecipeRouter = createTRPCRouter({
-	likeRecipe: authedProcedure
+	saveRecipe: authedProcedure
 		.input(z.number().positive())
 		.mutation(async ({ ctx, input: recipeId }) => {
-			await ctx.db.insert(recipe_likes).values({
+			await ctx.db.insert(recipe_saves).values({
 				recipeId: recipeId,
 				userId: 1,
 			});
 		}),
 
-	unlikeRecipe: authedProcedure
+	unsaveRecipe: authedProcedure
 		.input(z.number().positive())
 		.mutation(async ({ ctx, input: recipeId }) => {
 			await ctx.db
-				.delete(recipe_likes)
+				.delete(recipe_saves)
 				.where(
-					and(eq(recipe_likes.recipeId, recipeId), eq(recipe_likes.userId, 1)),
+					and(eq(recipe_saves.recipeId, recipeId), eq(recipe_saves.userId, 1)),
 				);
 		}),
 

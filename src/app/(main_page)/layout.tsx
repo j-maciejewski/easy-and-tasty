@@ -1,6 +1,7 @@
 import { Facebook, Instagram } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Path } from "@/config";
 import icon from "@/public/icon.png";
 import logo from "@/public/logo2.png";
 import { CircleUserRound } from "lucide-react";
@@ -14,7 +15,7 @@ export default function ({ children }: React.PropsWithChildren) {
 			<header className="w-full bg-white max-lg:shadow-lg">
 				<div className="mx-auto flex h-[80px] max-w-[1200px] items-center justify-between px-4 py-3 max-xl:max-w-[1000px]">
 					<div>
-						<Link href="/">
+						<Link href={Path.HOME}>
 							<Image
 								src={logo}
 								alt="logo"
@@ -64,16 +65,16 @@ export default function ({ children }: React.PropsWithChildren) {
 							<Link href="/categories/desserts">Desserts</Link>
 						</li>
 						<li>
-							<Link href="/blog">Blog</Link>
+							<Link href={Path.BLOG}>Blog</Link>
 						</li>
 						<li>
-							<Link href="/about">About us</Link>
+							<Link href={Path.ABOUT}>About us</Link>
 						</li>
 						<li>
-							<Link href="/categories">Categories</Link>
+							<Link href={Path.CATEGORIES}>Categories</Link>
 						</li>
 						<li>
-							<Link href="/cuisines">Cuisines</Link>
+							<Link href={Path.CUISINES}>Cuisines</Link>
 						</li>
 					</ul>
 				</div>

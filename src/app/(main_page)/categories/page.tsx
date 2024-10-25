@@ -26,7 +26,7 @@ export default async function () {
 					<RecipeTypeCard
 						key={category.id}
 						name={category.name}
-						href={`/categories/${category.name.toLowerCase()}`}
+						href={`/categories/${category.slug}`}
 					/>
 				))}
 			</div>

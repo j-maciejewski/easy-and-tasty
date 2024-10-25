@@ -67,8 +67,8 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
 					</CarouselItem>
 				))}
 			</CarouselContent>
-			<CarouselPrevious className="bg-white hover:bg-primary" />
-			<CarouselNext className="bg-white hover:bg-primary" />
+			<CarouselPrevious />
+			<CarouselNext />
 		</Carousel>
 	);
 };

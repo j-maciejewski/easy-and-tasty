@@ -25,7 +25,6 @@ export const publicUserRouter = createTRPCRouter({
 				lastName: input.lastName,
 				email: input.email,
 				password: input.password,
-				description: input.descrption,
 			});
 		}),
 
@@ -45,7 +44,6 @@ export const publicUserRouter = createTRPCRouter({
 				lastName: input.lastName,
 				email: input.email,
 				password: input.password,
-				description: input.descrption,
 			});
 		}),
 });

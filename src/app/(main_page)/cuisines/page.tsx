@@ -26,7 +26,7 @@ export default async function () {
 					<RecipeTypeCard
 						key={cuisine.id}
 						name={cuisine.name}
-						href={`/cuisines/${cuisine.name.toLowerCase()}`}
+						href={`/cuisines/${cuisine.slug}`}
 					/>
 				))}
 			</div>
