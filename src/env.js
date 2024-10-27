@@ -8,6 +8,7 @@ export const env = createEnv({
 	 */
 	server: {
 		DATABASE_URL: z.string().url(),
+		APP_URL: z.string().url(),
 		MOCK_MODE: z.coerce.boolean(),
 		NODE_ENV: z
 			.enum(["development", "test", "production"])
@@ -29,6 +30,7 @@ export const env = createEnv({
 	 */
 	runtimeEnv: {
 		DATABASE_URL: process.env.DATABASE_URL,
+		APP_URL: process.env.APP_URL,
 		MOCK_MODE: process.env.MOCK_MODE,
 		NODE_ENV: process.env.NODE_ENV,
 		// NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,

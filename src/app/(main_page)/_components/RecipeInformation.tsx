@@ -28,7 +28,7 @@ const getDifficulty = (difficulty: string) => {
 
 	return (
 		<>
-			<TooltipTrigger>{Icon}</TooltipTrigger>
+			<TooltipTrigger tabIndex={-1}>{Icon}</TooltipTrigger>
 			<TooltipContent>{text}</TooltipContent>
 		</>
 	);

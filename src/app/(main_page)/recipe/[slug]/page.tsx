@@ -1,4 +1,5 @@
 import { APP_NAME } from "@/consts";
+import { env } from "@/env";
 import { api } from "@/trpc/server";
 import Markdown from "markdown-to-jsx";
 import { Metadata } from "next";
@@ -24,6 +25,13 @@ export async function generateMetadata({
 
 	return {
 		title: `${recipe.title} | ${APP_NAME}`,
+		description: `Recipe for ${recipe.title}`,
+		openGraph: {
+			type: "article",
+			siteName: "Easy and Tasty",
+			url: `${env.APP_URL}/recipe/${recipe.slug}`,
+			...(recipe.image ? { images: [{ url: recipe.image }] } : {}),
+		},
 	};
 }
 
@@ -39,9 +47,17 @@ export default async function ({ params }: { params: { slug: string } }) {
 			<div className="grow overflow-hidden pt-6 max-xl:px-[3vw] xl:pr-8">
 				<Breadcrumbs
 					paths={[{ label: "Recipe" }, { label: recipe.title, active: true }]}
+					shareConfig={{
+						path: `/recipe/${recipe.slug}`,
+						text: "Check out this awesome recipe!",
+						type: "recipe",
+					}}
 				/>
-				<h2 className="text-center font-semibold text-3xl">{recipe.title}</h2>
-				<div className="my-6 max-h-[700px] lg:px-12">
+				<h2 className="text-center font-semibold text-3xl mb-6">
+					{recipe.title}
+				</h2>
+				<RecipeInformation recipe={recipe} withText withServings />
+				<div className="mt-8 mb-6 max-h-[700px] lg:px-12">
 					<Image
 						src={recipeImageSrcParser(recipe.image)}
 						width={400}
@@ -51,7 +67,6 @@ export default async function ({ params }: { params: { slug: string } }) {
 						className="mx-auto max-h-[700px] min-h-full w-full rounded-lg object-cover max-sm:w-full"
 					/>
 				</div>
-				<RecipeInformation recipe={recipe} withText withServings />
 				<article className="prose prose-slate mt-6 max-w-full">
 					<Markdown>{recipe.content}</Markdown>
 				</article>
