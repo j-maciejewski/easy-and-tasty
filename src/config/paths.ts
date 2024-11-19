@@ -15,6 +15,7 @@ export enum Path {
 	// Dashboard
 	DASHBOARD = "/dashboard",
 	DASHBOARD_RECIPES = "/dashboard/recipes",
+	DASHBOARD_NEW_RECIPE = "/dashboard/recipes/new",
 	DASHBOARD_CUISINES = "/dashboard/cuisines",
 	DASHBOARD_CATEGORIES = "/dashboard/categories",
 	DASHBOARD_BLOG = "/dashboard/blog",

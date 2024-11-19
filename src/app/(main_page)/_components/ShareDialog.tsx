@@ -105,7 +105,7 @@ export const ShareDialog = ({ shareConfig }: ShareDialog.Props) => {
 						onClick={shareOnTwitter}
 						className="flex items-center space-x-2"
 					>
-						<Twitter className="w-5 h-5" />
+						<Twitter className="h-5 w-5" />
 						<span>Share on Twitter</span>
 					</Button>
 				</div>

@@ -6,16 +6,25 @@ import { Path } from "@/config";
 import { usePathname } from "next/navigation";
 import { ToggleThemeButton } from "./ToggleThemeButton";
 
-// TODO
-const breadcrumbsLabels = new Map([
+const SLUG_REGEX = "([a-zA-Z0-9_-]+)";
+
+const breadcrumbsLabels = new Map<Path | RegExp, string>([
 	[Path.DASHBOARD, "Summary"],
 	[Path.DASHBOARD_RECIPES, "Recipes"],
+	[Path.DASHBOARD_NEW_RECIPE, "New Recipe"],
+	[new RegExp(`^${Path.DASHBOARD_RECIPES}/edit/${SLUG_REGEX}$`), "Edit Recipe"],
 ]);
 
 export const Header = () => {
 	const pathname = usePathname();
 
-	const label = breadcrumbsLabels.get(pathname as Path);
+	const label = [...breadcrumbsLabels.entries()].find(([path]) => {
+		if (typeof path === "string") {
+			return path === pathname;
+		}
+
+		return path.test(pathname);
+	})?.[1];
 
 	return (
 		<header className="shadow-sm">

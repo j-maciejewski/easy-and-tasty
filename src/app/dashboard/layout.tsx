@@ -1,5 +1,6 @@
 import "./globals.css";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { env } from "@/env";
 import { api } from "@/trpc/server";
 import { ThemeProvider } from "next-themes";
@@ -31,6 +32,7 @@ export default async function ({ children }: React.PropsWithChildren) {
 								{children}
 							</div>
 						</div>
+						<Toaster richColors />
 					</CuisinesProvider>
 				</CategoriesProvider>
 			</SidebarProvider>

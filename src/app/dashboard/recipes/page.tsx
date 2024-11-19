@@ -3,6 +3,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
@@ -11,7 +19,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { MultiSelect } from "@/components/ui/multi-select";
 import {
 	Pagination,
 	PaginationButton,
@@ -41,7 +48,10 @@ import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { getPaginationTiles } from "@/utils";
 import { ChevronDown, ChevronUp, Columns3, Menu, Plus, X } from "lucide-react";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { AddRecipeForm } from "../_components/AddRecipeForm";
+import { MultiSelect } from "../_components/Multiselect";
 import { useCategories } from "../_context";
 import { useCuisines } from "../_context/CuisinesProvider";
 
@@ -188,7 +198,7 @@ export default function RecipesDashboard() {
 		},
 		{
 			label: "Actions",
-			render: () => (
+			render: (recipe) => (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="ghost" className="h-8 w-8 p-0">
@@ -199,7 +209,11 @@ export default function RecipesDashboard() {
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuItem>View Recipe</DropdownMenuItem>
-						<DropdownMenuItem>Edit Recipe</DropdownMenuItem>
+						<DropdownMenuItem>
+							<Link href={`/dashboard/recipes/edit/${recipe.id}`}>
+								Edit Recipe
+							</Link>
+						</DropdownMenuItem>
 						<DropdownMenuSeparator />
 						<DropdownMenuItem className="text-red-600">
 							Delete Recipe
@@ -210,16 +224,16 @@ export default function RecipesDashboard() {
 		},
 	]);
 
-	const updateColumnsVisibility = (
-		updatedColumns: (typeof columns)[number]["label"][],
-	) => {
-		setColumns(
-			columns.map((column) => ({
+	const toggleColumn = (toggledColumn: string) => {
+		setColumns((prevColumns) =>
+			prevColumns.map((column) => ({
 				...column,
-				hidden: !updatedColumns.includes(column.label),
+				hidden: toggledColumn === column.label ? !column.hidden : column.hidden,
 			})),
 		);
 	};
+
+	const addRecipeDialogCloseRef = useRef<HTMLButtonElement>(null);
 
 	return (
 		<>
@@ -244,25 +258,33 @@ export default function RecipesDashboard() {
 									options={columns.map((column) => ({
 										label: column.label,
 										value: column.label,
+										checked: !column.hidden,
 									}))}
-									onValueChange={updateColumnsVisibility}
-									defaultValue={columns
-										.filter((column) => !column.hidden)
-										.map((column) => column.label)}
-									placeholder="Select frameworks"
-									variant="inverted"
-									maxCount={3}
-									SimplifiedViewIcon={Columns3}
-								/>
-								{/* <Button
-									className="border bg-background p-1 px-4"
-									variant="outline"
+									toggleOption={toggleColumn}
 								>
-									<Filter className="mr-2 h-5" /> Filters
-								</Button> */}
-								<Button className="relative aspect-square" variant="secondary">
-									<Plus className="absolute size-5 stroke-2 text-foreground" />
-								</Button>
+									<Button variant="outline" className="aspect-square">
+										<Columns3 className="absolute size-5" />
+									</Button>
+								</MultiSelect>
+								<Dialog>
+									<DialogTrigger asChild>
+										<Button
+											className="relative aspect-square"
+											variant="secondary"
+										>
+											<Plus className="absolute size-5 stroke-2 text-foreground" />
+										</Button>
+									</DialogTrigger>
+									<DialogContent className="max-h-[calc(100%_-_4rem)] overflow-auto sm:max-w-md">
+										<DialogHeader>
+											<DialogTitle>Add recipe</DialogTitle>
+										</DialogHeader>
+										<AddRecipeForm
+											onSubmit={() => addRecipeDialogCloseRef.current?.click()}
+										/>
+										<DialogClose ref={addRecipeDialogCloseRef} />
+									</DialogContent>
+								</Dialog>
 							</div>
 						</div>
 						<div className="mb-6 empty:hidden">
@@ -359,7 +381,7 @@ export default function RecipesDashboard() {
 									</TableBody>
 								</Table>
 								<div className="mt-4 flex items-center justify-between">
-									<span className="text-nowrap font-semibold text-muted-foreground text-sm">
+									<span className="text-nowrap font-semibold text-muted-foreground text-xs">
 										Total results: {recipes.pagination?.hitsCount}
 									</span>
 									<Select
@@ -368,7 +390,7 @@ export default function RecipesDashboard() {
 											updateResultsPerQuery(Number(value))
 										}
 									>
-										<SelectTrigger className="mr-4 ml-auto w-[180px]">
+										<SelectTrigger className="mr-4 ml-auto h-8 w-[180px] text-xs">
 											<SelectValue>
 												Results shown: {resultsPerQuery}
 											</SelectValue>
@@ -388,7 +410,7 @@ export default function RecipesDashboard() {
 														disabled={paginationConfig.previousDisabled}
 													>
 														<PaginationPrevious
-															className="rounded-r-none"
+															className="h-8 rounded-r-none text-xs"
 															onClick={() =>
 																setPage(
 																	(
@@ -404,22 +426,23 @@ export default function RecipesDashboard() {
 														<PaginationItem key={number}>
 															{number !== null ? (
 																<PaginationButton
-																	className="rounded-none"
+																	className="size-8 rounded-none text-xs"
 																	onClick={() => setPage(number)}
 																	isActive={page === number}
 																>
 																	{number}
 																</PaginationButton>
 															) : (
-																<PaginationEllipsis />
+																<PaginationEllipsis className=" size-8 text-xs" />
 															)}
 														</PaginationItem>
 													))}
 													<PaginationItem
 														disabled={paginationConfig.nextDisabled}
+														className=" h-8 text-xs"
 													>
 														<PaginationNext
-															className="rounded-l-none"
+															className="h-8 rounded-l-none text-xs"
 															onClick={() =>
 																setPage(
 																	(

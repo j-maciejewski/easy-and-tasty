@@ -25,7 +25,7 @@ export async function generateMetadata({
 
 	return {
 		title: `${recipe.title} | ${APP_NAME}`,
-		description: `Recipe for ${recipe.title}`,
+		description: recipe.description,
 		openGraph: {
 			type: "article",
 			siteName: "Easy and Tasty",
@@ -53,7 +53,7 @@ export default async function ({ params }: { params: { slug: string } }) {
 						type: "recipe",
 					}}
 				/>
-				<h2 className="text-center font-semibold text-3xl mb-6">
+				<h2 className="mb-6 text-center font-semibold text-3xl">
 					{recipe.title}
 				</h2>
 				<RecipeInformation recipe={recipe} withText withServings />
