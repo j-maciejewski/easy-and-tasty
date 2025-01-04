@@ -4,25 +4,28 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function () {
-	return (
-		<div className="mx-auto flex min-h-screen w-full max-w-[1200px] grow flex-col items-center justify-center max-sm:p-4 max-xl:max-w-[1000px] md:p-6">
-			<Image
-				src={Image404}
-				alt="404 image"
-				className="max-md:mb-6 max-md:size-32 md:mb-8 md:size-40"
-			/>
+  return (
+    <div className="md:~max-w-[60rem]/[80rem] mx-auto flex min-h-screen w-full grow flex-col items-center justify-center max-sm:p-4 max-xl:max-w-[1000px] md:p-6">
+      <Image
+        src={Image404}
+        alt="404 image"
+        className="~mb-4/6 max-md:size-32 md:size-40"
+      />
 
-			<h2 className="text-center font-bold text-primary max-md:mb-8 max-md:text-5xl md:mb-10 md:text-6xl">
-				Page not found
-			</h2>
-			<p className="text-center text-gray-600 max-md:mb-6 max-md:text-md md:mb-8 md:text-lg">
-				The page you are looking for may have been moved or deleted
-			</p>
-			<Link href="/">
-				<Button variant="default" className="rounded-full font-semibold">
-					Back to home
-				</Button>
-			</Link>
-		</div>
-	);
+      <h2 className="~text-4xl/6xl ~mb-4/6 text-center font-bold text-primary">
+        Page not found
+      </h2>
+      <p className="~text-base/xl ~mb-6/9 text-center text-gray-600">
+        The page you are looking for may have been moved or deleted
+      </p>
+      <Link href="/">
+        <Button
+          variant="default"
+          className="~text-base/lg rounded-full font-semibold"
+        >
+          Back to home
+        </Button>
+      </Link>
+    </div>
+  );
 }

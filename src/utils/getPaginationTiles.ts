@@ -1,36 +1,36 @@
 const MAX_TILES = 5;
 
 export default function getPaginationTiles(
-	currentPage: number,
-	totalPages: number,
+  currentPage: number,
+  totalPages: number,
 ) {
-	const result: Array<number | null> = [];
+  const result: Array<number | null> = [];
 
-	if (totalPages <= MAX_TILES) {
-		for (let i = 1; i <= totalPages; i++) {
-			result.push(i);
-		}
-		return result;
-	}
+  if (totalPages <= MAX_TILES) {
+    for (let i = 1; i <= totalPages; i++) {
+      result.push(i);
+    }
+    return result;
+  }
 
-	result.push(1);
+  result.push(1);
 
-	if (currentPage > 3) {
-		result.push(null);
-	}
+  if (currentPage > 3) {
+    result.push(null);
+  }
 
-	const start = Math.max(2, currentPage - 1);
-	const end = Math.min(totalPages - 1, currentPage + 1);
+  const start = Math.max(2, currentPage - 1);
+  const end = Math.min(totalPages - 1, currentPage + 1);
 
-	for (let i = start; i <= end; i++) {
-		result.push(i);
-	}
+  for (let i = start; i <= end; i++) {
+    result.push(i);
+  }
 
-	if (currentPage < totalPages - 2) {
-		result.push(null);
-	}
+  if (currentPage < totalPages - 2) {
+    result.push(null);
+  }
 
-	result.push(totalPages);
+  result.push(totalPages);
 
-	return result;
+  return result;
 }

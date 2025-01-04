@@ -1,27 +1,24 @@
 export enum Path {
-	// App
-	HOME = "/",
-	CUISINES = "/cuisines",
-	CATEGORIES = "/categories",
-	ABOUT = "/about",
-	BLOG = "/blog",
-	RECIPE = "/recipe",
+  // App
+  HOME = "/",
+  CUISINES = "/cuisines",
+  CATEGORIES = "/categories",
+  RECIPE = "/recipe",
 
-	// Auth
-	LOGIN = "/login",
-	SIGN_UP = "/sign-up",
-	RESET_PASSWORD = "/reset-password",
+  // Auth
+  LOGIN = "/login",
+  SIGN_UP = "/sign-up",
+  RESET_PASSWORD = "/reset-password",
 
-	// Dashboard
-	DASHBOARD = "/dashboard",
-	DASHBOARD_RECIPES = "/dashboard/recipes",
-	DASHBOARD_NEW_RECIPE = "/dashboard/recipes/new",
-	DASHBOARD_CUISINES = "/dashboard/cuisines",
-	DASHBOARD_CATEGORIES = "/dashboard/categories",
-	DASHBOARD_BLOG = "/dashboard/blog",
-	DASHBOARD_USERS = "/dashboard/users",
-	DASHBOARD_PAGES = "/dashboard/pages",
-	DASHBOARD_NAVIGATION = "/dashboard/navigation",
+  // Dashboard
+  DASHBOARD = "/dashboard",
+  DASHBOARD_RECIPES = "/dashboard/recipes",
+  DASHBOARD_NEW_RECIPE = "/dashboard/recipes/new",
+  DASHBOARD_CUISINES = "/dashboard/cuisines",
+  DASHBOARD_CATEGORIES = "/dashboard/categories",
+  DASHBOARD_USERS = "/dashboard/users",
+  DASHBOARD_PAGES = "/dashboard/pages",
+  DASHBOARD_NAVIGATION = "/dashboard/settings/navigation",
 }
 
 export const getCuisinePath = (slug: string) => `${Path.CUISINES}/${slug}`;

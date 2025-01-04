@@ -1,3 +1,3 @@
-export { CategoriesProvider, useCategories } from "./CategoriesProvider";
-export { CuisinesProvider, useCuisines } from "./CuisinesProvider";
+export { CategoriesProvider, CategoriesContext } from "./CategoriesProvider";
+export { CuisinesProvider, CuisinesContext } from "./CuisinesProvider";
 export { ThemeProvider } from "./ThemeProvider";
