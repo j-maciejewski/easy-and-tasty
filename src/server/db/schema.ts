@@ -134,3 +134,16 @@ export const cuisines = createTable("cuisine", {
   description: varchar("description", { length: 256 }).notNull(),
   featuredRecipeId: integer("featured_recipe_id").references(() => recipes.id),
 });
+
+export const pages = createTable("page", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 256 }).notNull(),
+  image: varchar("image", { length: 2048 }),
+  slug: varchar("slug", { length: 256 }).notNull(),
+  description: varchar("description", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }),
+  publishedAt: timestamp("publishedAt", { withTimezone: true }),
+});

@@ -1,1 +1,2 @@
-export { default as getPaginationTiles } from "./getPaginationTiles";
+export { getPaginationTiles } from "./getPaginationTiles";
+export { parseSlug } from "./parseSlug";

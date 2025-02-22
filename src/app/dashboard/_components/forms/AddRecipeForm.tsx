@@ -19,20 +19,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Path } from "@/config";
 import { difficultyEnum } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { LoaderCircle, Plus, X } from "lucide-react";
-import { redirect } from "next/navigation";
+import { Image, Plus, X } from "lucide-react";
 import { use, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { CategoriesContext, CuisinesContext } from "../_context";
-import { MultiSelect } from "./Multiselect";
+import { CategoriesContext, CuisinesContext } from "../../_context";
+import { MultiSelect } from "../Multiselect";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -45,7 +43,7 @@ const formSchema = z.object({
   content: z.string().min(2, {
     message: "Content must be at least 2 characters.",
   }),
-  difficulty: z.enum(difficultyEnum.enumValues).default("easy"),
+  difficulty: z.enum(difficultyEnum.enumValues),
   time: z.coerce.number().min(1, {
     message: "Time must be at least 1 minute.",
   }),
@@ -60,18 +58,14 @@ const formSchema = z.object({
   }),
 });
 
-namespace EditRecipeForm {
+namespace AddRecipeForm {
   export interface Props {
-    recipeId: number;
     onSubmit?: () => void;
   }
 }
 
-export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
-  const { data, error, isLoading } =
-    api.protected.recipe.getRecipe.useQuery(recipeId);
-
-  const editRecipe = api.protected.recipe.editRecipe.useMutation();
+export function AddRecipeForm({ onSubmit }: AddRecipeForm.Props) {
+  const addRecipe = api.protected.recipe.addRecipe.useMutation();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
   const { cuisines } = use(CuisinesContext)!;
   const { categories } = use(CategoriesContext)!;
@@ -96,44 +90,21 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // @ts-expect-error Fix types
-    values: data
-      ? {
-          title: data.title,
-          description: data.description,
-          cuisines: data.cuisineIds,
-          categories: data.categoryIds,
-          content: data.content,
-          difficulty: data.difficulty,
-          time: data.time,
-          servings: data.servings,
-          image: data.image,
-        }
-      : {
-          title: "",
-          description: "",
-          cuisines: [],
-          categories: [],
-          content: "",
-          difficulty: "",
-          time: 0,
-          servings: 0,
-          image: "",
-        },
+    defaultValues: {
+      title: "",
+      description: "",
+      cuisines: [],
+      categories: [],
+    },
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await editRecipe.mutateAsync({ id: recipeId, ...values });
+    await addRecipe.mutateAsync(values);
 
-    toast.success("Recipe was modified.");
+    toast.success("Recipe was added.");
 
     if (onSubmit) onSubmit();
   }
-
-  if (isLoading)
-    return <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />;
-
-  if (!data) redirect(Path.DASHBOARD_RECIPES);
 
   return (
     <>
@@ -164,13 +135,20 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
                 <FormControl>
                   <>
                     <label htmlFor="image-input">
-                      <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
-                        <img
-                          src={field.value}
-                          className="mx-auto max-h-80 object-cover"
-                          alt="recipe"
-                        />
-                      </div>
+                      {field.value ? (
+                        <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
+                          <img
+                            src={field.value}
+                            className="mx-auto max-h-80 object-cover"
+                            alt="recipe"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border p-5 text-foreground/50 text-sm">
+                          <Image className="size-14 stroke-1" />
+                          Click to add image
+                        </div>
+                      )}
                     </label>
                     <Input
                       id="image-input"
@@ -259,7 +237,7 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
                         for (const item of dataTransfer.items) {
                           if (
                             item.kind === "file" &&
-                            ["image/png", "image/jpeg"].includes(item.type)
+                            item.type.startsWith("image/")
                           ) {
                             const file = item.getAsFile();
 
@@ -298,8 +276,6 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
                                 console.log(message.error);
                               }
                             }
-
-                            break;
                           }
                         }
                       }
@@ -317,11 +293,8 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
               <FormItem>
                 <FormLabel>Difficulty</FormLabel>
                 <Select
-                  onValueChange={(val) => {
-                    if (!val) return;
-                    field.onChange(val);
-                  }}
-                  value={field.value}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>

@@ -18,6 +18,7 @@ export enum Path {
   DASHBOARD_CATEGORIES = "/dashboard/categories",
   DASHBOARD_USERS = "/dashboard/users",
   DASHBOARD_PAGES = "/dashboard/pages",
+  DASHBOARD_ADD_PAGE = "/dashboard/pages/new",
   DASHBOARD_NAVIGATION = "/dashboard/settings/navigation",
 }
 

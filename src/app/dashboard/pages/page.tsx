@@ -19,22 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -46,19 +30,15 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { getPaginationTiles } from "@/utils";
 import { ChevronDown, ChevronUp, Columns3, Menu, Plus, X } from "lucide-react";
 import Link from "next/link";
-import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
-import { AddRecipeForm } from "../_components";
+import { ReactNode, useEffect, useRef, useState } from "react";
+// import { AddpageForm } from "../_components/AddpageForm";
 import { MultiSelect } from "../_components/Multiselect";
-import { CategoriesContext, CuisinesContext } from "../_context";
 
 export default function () {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-  const { categories } = use(CategoriesContext)!;
-  const { cuisines } = use(CuisinesContext)!;
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -87,32 +67,10 @@ export default function () {
   };
 
   const {
-    data: recipes,
+    data: pages,
     isLoading,
     error,
-  } = api.protected.recipe.getRecipes.useQuery({
-    title: debouncedSearchTerm,
-    orderBy: sortField,
-    orderDir: sortDir,
-    page,
-    limit: resultsPerQuery,
-  });
-
-  const paginationConfig = useMemo(
-    () =>
-      recipes?.pagination
-        ? {
-            previousDisabled: recipes.pagination.currentPage === 1,
-            tiles: getPaginationTiles(
-              recipes.pagination.currentPage,
-              recipes.pagination.pagesCount,
-            ),
-            nextDisabled:
-              recipes.pagination.currentPage === recipes.pagination.pagesCount,
-          }
-        : null,
-    [recipes?.pagination],
-  );
+  } = api.protected.page.getPages.useQuery();
 
   const toggleSort = (field: string) => {
     if (sortField === field) {
@@ -133,9 +91,7 @@ export default function () {
   const [columns, setColumns] = useState<
     {
       label: string;
-      render: (
-        recipe: NonNullable<typeof recipes>["results"][number],
-      ) => ReactNode;
+      render: (page: NonNullable<typeof pages>[number]) => ReactNode;
       sortKey?: string;
       hidden?: boolean;
     }[]
@@ -143,66 +99,32 @@ export default function () {
     {
       label: "Title",
       sortKey: "title",
-      render: (recipe) => recipe.title,
+      render: (page) => page.title,
     },
     {
       label: "Slug",
       sortKey: "slug",
-      render: (recipe) => recipe.slug,
-    },
-    {
-      label: "Categories",
-      render: (recipe) => (
-        <div className="inline-flex gap-2">
-          {recipe.categoryIds.map((id) => (
-            <Badge key={id} variant="outline">
-              {categories.get(id)?.name}
-            </Badge>
-          ))}
-        </div>
-      ),
-    },
-    {
-      label: "Cuisines",
-      render: (recipe) => (
-        <div className="inline-flex gap-2">
-          {recipe.cuisineIds.map((id) => (
-            <Badge key={id} variant="outline">
-              {cuisines.get(id)?.name}
-            </Badge>
-          ))}
-        </div>
-      ),
-    },
-    {
-      label: "Rating",
-      sortKey: "avg_rating",
-      render: (recipe) => recipe.avgRating,
-    },
-    {
-      label: "Comments",
-      render: () => "0",
-    },
-    {
-      label: "Votes",
-      render: (recipe) => recipe.ratingsCount,
-      sortKey: "ratings_count",
-      hidden: true,
+      render: (page) => page.slug,
     },
     {
       label: "Created At",
-      render: (recipe) => new Date(recipe.createdAt).toLocaleString(),
+      render: (page) => new Date(page.createdAt).toLocaleString(),
       hidden: true,
     },
     {
       label: "Updated At",
-      render: (recipe) =>
-        recipe.updatedAt ? new Date(recipe.updatedAt).toLocaleString() : null,
+      render: (page) =>
+        page.updatedAt ? new Date(page.updatedAt).toLocaleString() : null,
       hidden: true,
     },
     {
+      label: "Published At",
+      render: (page) =>
+        page.updatedAt ? new Date(page.updatedAt).toLocaleString() : null,
+    },
+    {
       label: "Actions",
-      render: (recipe) => (
+      render: (page) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -212,15 +134,16 @@ export default function () {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>View Recipe</DropdownMenuItem>
+            <DropdownMenuItem>View Page</DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={`/dashboard/recipes/edit/${recipe.id}`}>
-                Edit Recipe
-              </Link>
+              <Link href={`/dashboard/pages/edit/${page.id}`}>Edit Page</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600">
+              Publish page
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="text-red-600">
-              Delete Recipe
+              Delete page
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -237,7 +160,7 @@ export default function () {
     );
   };
 
-  const addRecipeDialogCloseRef = useRef<HTMLButtonElement>(null);
+  const addpageDialogCloseRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
@@ -250,7 +173,7 @@ export default function () {
               <div className="mb-4 w-full md:mb-0 md:w-1/3">
                 <Input
                   type="search"
-                  placeholder="Search recipes..."
+                  placeholder="Search pages..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full"
@@ -281,12 +204,12 @@ export default function () {
                   </DialogTrigger>
                   <DialogContent className="max-h-[calc(100%_-_4rem)] overflow-auto sm:max-w-md">
                     <DialogHeader>
-                      <DialogTitle>Add recipe</DialogTitle>
+                      <DialogTitle>Add page</DialogTitle>
                     </DialogHeader>
-                    <AddRecipeForm
-                      onSubmit={() => addRecipeDialogCloseRef.current?.click()}
-                    />
-                    <DialogClose ref={addRecipeDialogCloseRef} />
+                    {/* <AddpageForm
+                      onSubmit={() => addpageDialogCloseRef.current?.click()}
+                    /> */}
+                    <DialogClose ref={addpageDialogCloseRef} />
                   </DialogContent>
                 </Dialog>
               </div>
@@ -330,8 +253,7 @@ export default function () {
                   ))}
                 </TableBody>
               </Table>
-            ) : recipes?.results?.length !== undefined &&
-              recipes?.results?.length > 0 ? (
+            ) : pages?.length !== undefined && pages?.length > 0 ? (
               <>
                 <Table>
                   <TableHeader>
@@ -368,8 +290,8 @@ export default function () {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {recipes?.results?.map((recipe) => (
-                      <TableRow key={recipe.id}>
+                    {pages?.map((page) => (
+                      <TableRow key={page.id}>
                         {columns
                           .filter((column) => !column.hidden)
                           .map((column) => (
@@ -377,94 +299,16 @@ export default function () {
                               key={column.label}
                               className="font-medium"
                             >
-                              {column.render(recipe)}
+                              {column.render(page)}
                             </TableCell>
                           ))}
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="text-nowrap font-semibold text-muted-foreground text-xs">
-                    Total results: {recipes.pagination?.hitsCount}
-                  </span>
-                  <Select
-                    value={`${resultsPerQuery}`}
-                    onValueChange={(value) =>
-                      updateResultsPerQuery(Number(value))
-                    }
-                  >
-                    <SelectTrigger className="mr-4 ml-auto h-8 w-[180px] text-xs">
-                      <SelectValue>
-                        Results shown: {resultsPerQuery}
-                      </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value={"10"}>10</SelectItem>
-                      <SelectItem value={"20"}>20</SelectItem>
-                      <SelectItem value={"50"}>50</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {paginationConfig &&
-                    recipes.pagination &&
-                    recipes.pagination.pagesCount !== 1 && (
-                      <Pagination className="mx-0 w-fit rounded-lg border">
-                        <PaginationContent className="gap-0 [&>li:not(:first-child)]:border-l-2">
-                          <PaginationItem
-                            disabled={paginationConfig.previousDisabled}
-                          >
-                            <PaginationPrevious
-                              className="h-8 rounded-r-none text-xs"
-                              onClick={() =>
-                                setPage(
-                                  (
-                                    recipes.pagination as NonNullable<
-                                      typeof recipes.pagination
-                                    >
-                                  ).currentPage - 1,
-                                )
-                              }
-                            />
-                          </PaginationItem>
-                          {paginationConfig.tiles.map((number) => (
-                            <PaginationItem key={number}>
-                              {number !== null ? (
-                                <PaginationButton
-                                  className="size-8 rounded-none text-xs"
-                                  onClick={() => setPage(number)}
-                                  isActive={page === number}
-                                >
-                                  {number}
-                                </PaginationButton>
-                              ) : (
-                                <PaginationEllipsis className=" size-8 text-xs" />
-                              )}
-                            </PaginationItem>
-                          ))}
-                          <PaginationItem
-                            disabled={paginationConfig.nextDisabled}
-                            className=" h-8 text-xs"
-                          >
-                            <PaginationNext
-                              className="h-8 rounded-l-none text-xs"
-                              onClick={() =>
-                                setPage(
-                                  (
-                                    recipes.pagination as NonNullable<
-                                      typeof recipes.pagination
-                                    >
-                                  ).currentPage + 1,
-                                )
-                              }
-                            />
-                          </PaginationItem>
-                        </PaginationContent>
-                      </Pagination>
-                    )}
-                </div>
               </>
             ) : (
-              "No recipes"
+              "No pages"
             )}
           </div>
         </main>

@@ -15,7 +15,7 @@ export const metadata = {
 export default function ({ children }: React.PropsWithChildren) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+      <body className="!overflow-x-hidden">
         <TRPCReactProvider>
           <TooltipProvider delayDuration={300} disableHoverableContent>
             {children}

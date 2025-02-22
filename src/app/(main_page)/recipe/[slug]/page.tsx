@@ -34,7 +34,10 @@ export async function generateMetadata({
       type: "article",
       siteName: "Easy and Tasty",
       url: `${env.APP_URL}/recipe/${recipe.slug}`,
-      ...(recipe.image ? { images: [{ url: recipe.image }] } : {}),
+      ...(recipe.image ? { images: { url: recipe.image } } : {}),
+    },
+    twitter: {
+      card: recipe.image ? "summary_large_image" : "summary",
     },
   };
 }

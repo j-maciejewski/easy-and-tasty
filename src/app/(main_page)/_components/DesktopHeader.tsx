@@ -36,18 +36,18 @@ export const DesktopHeader = forwardRef<
           </div>
         </div>
       </header>
-      <div className="~md:~max-w-[60rem]/[80rem] mx-auto flex items-center justify-between px-4 pt-2 pb-4 text-black [&_a:hover]:hover:text-primary/95">
+      <div className="~md:~max-w-[60rem]/[80rem] mx-auto flex items-center justify-between px-4 pt-2 pb-4 text-black">
         <ul className="flex h-fit w-full flex-wrap gap-8 whitespace-nowrap text-sm tracking-wider">
           {navigation.links.map((link, idx) =>
             "href" in link ? (
               <li
                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={idx}
-                className="font-bold uppercase after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+                className="font-bold uppercase"
               >
                 <Link
                   href={link.href}
-                  className="relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
+                  className="relative transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
                 >
                   {link.label}
                 </Link>
@@ -55,10 +55,10 @@ export const DesktopHeader = forwardRef<
             ) : (
               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               <li key={idx} className="group relative">
-                <span className="relative font-bold uppercase after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+                <span className="relative cursor-default font-bold uppercase">
                   {link.label}
                 </span>
-                <ul className="invisible absolute top-full left-0 z-50 min-w-[200px] rounded-md bg-white py-2 opacity-0 shadow shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <ul className="invisible absolute top-[110%] left-0 z-50 min-w-[200px] rounded-md bg-white py-2 opacity-0 shadow-inner shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
                   {link.sublinks.map((sublink) => (
                     <li key={sublink.href}>
                       <Link

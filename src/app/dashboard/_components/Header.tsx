@@ -13,18 +13,17 @@ const breadcrumbsLabels = new Map<Path | RegExp, string>([
   [Path.DASHBOARD_RECIPES, "Recipes"],
   [Path.DASHBOARD_NEW_RECIPE, "New Recipe"],
   [new RegExp(`^${Path.DASHBOARD_RECIPES}/edit/${SLUG_REGEX}$`), "Edit Recipe"],
+  [Path.DASHBOARD_PAGES, "Pages"],
+  [Path.DASHBOARD_ADD_PAGE, "New Page"],
+  [new RegExp(`^${Path.DASHBOARD_PAGES}/edit/${SLUG_REGEX}$`), "Edit Page"],
 ]);
 
 export const Header = () => {
   const pathname = usePathname();
 
-  const label = [...breadcrumbsLabels.entries()].find(([path]) => {
-    if (typeof path === "string") {
-      return path === pathname;
-    }
-
-    return path.test(pathname);
-  })?.[1];
+  const label = [...breadcrumbsLabels.entries()].find(([path]) =>
+    typeof path === "string" ? path === pathname : path.test(pathname),
+  )?.[1];
 
   return (
     <header className="shadow-sm">

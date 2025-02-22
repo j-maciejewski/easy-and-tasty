@@ -7,6 +7,8 @@ import {
 import {
   protectedCategoryRouter,
   protectedCuisineRouter,
+  protectedNavigationRouter,
+  protectedPageRouter,
   protectedRecipeRouter,
   protectedUserRouter,
 } from "./routers/protected";
@@ -14,6 +16,7 @@ import {
   publicCategoryRouter,
   publicCuisineRouter,
   publicNavigationRouter,
+  publicPageRouter,
   publicRecipeRouter,
   publicUserRouter,
 } from "./routers/public";
@@ -31,6 +34,7 @@ export const appRouter = createTRPCRouter({
     cuisine: publicCuisineRouter,
     category: publicCategoryRouter,
     navigation: publicNavigationRouter,
+    page: publicPageRouter,
   },
   authed: {
     comment: authedCommentRouter,
@@ -42,6 +46,8 @@ export const appRouter = createTRPCRouter({
     cuisine: protectedCuisineRouter,
     recipe: protectedRecipeRouter,
     user: protectedUserRouter,
+    navigation: protectedNavigationRouter,
+    page: protectedPageRouter,
   },
   seeder: seedRouter,
 });

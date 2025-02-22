@@ -1,7 +1,7 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 
-export const publicNavigationRouter = createTRPCRouter({
-  getNavigation: publicProcedure.query(() => {
+export const protectedNavigationRouter = createTRPCRouter({
+  getNavigation: protectedProcedure.query(() => {
     return {
       links: [
         {

@@ -1,11 +1,11 @@
 import { api } from "@/trpc/server";
-import { DesktopHeader, MobileHeader } from "./_components";
+import { DesktopHeader, Footer, MobileHeader } from "./_components";
 
 export default async function ({ children }: React.PropsWithChildren) {
   const navigation = await api.public.navigation.getNavigation();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50">
       <DesktopHeader navigation={navigation} className="max-md:hidden" />
       <MobileHeader navigation={navigation} className="md:hidden" />
 
@@ -14,10 +14,7 @@ export default async function ({ children }: React.PropsWithChildren) {
           {children}
         </div>
       </main>
-      <footer className="w-full bg-gray-200 px-4 py-2 text-center text-gray-700 text-xs">
-        easy and tasty | Copyright © {new Date().getFullYear()} - All Rigths
-        reserved
-      </footer>
+      <Footer />
     </div>
   );
 }

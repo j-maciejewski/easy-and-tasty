@@ -6,6 +6,7 @@ import {
   recipe_ratings,
   recipes,
 } from "@/server/db/schema";
+import { parseSlug } from "@/utils";
 import { and, desc, eq, ilike, sql } from "drizzle-orm";
 import { z } from "zod";
 
@@ -157,11 +158,7 @@ export const protectedRecipeRouter = createTRPCRouter({
           .insert(recipes)
           .values({
             title: input.title,
-            slug: input.title
-              .toLowerCase()
-              .trim()
-              .replace(/[\s\W-]+/g, "-")
-              .replace(/^-+|-+$/g, ""),
+            slug: parseSlug(input.title),
             image: input.image,
             description: input.description,
             content: input.content,
@@ -212,11 +209,7 @@ export const protectedRecipeRouter = createTRPCRouter({
           .update(recipes)
           .set({
             title: input.title,
-            slug: input.title
-              .toLowerCase()
-              .trim()
-              .replace(/[\s\W-]+/g, "-")
-              .replace(/^-+|-+$/g, ""),
+            slug: parseSlug(input.title),
             image: input.image,
             description: input.description,
             content: input.content,

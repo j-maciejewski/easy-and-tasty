@@ -1,9 +1,6 @@
 const MAX_TILES = 5;
 
-export default function getPaginationTiles(
-  currentPage: number,
-  totalPages: number,
-) {
+export function getPaginationTiles(currentPage: number, totalPages: number) {
   const result: Array<number | null> = [];
 
   if (totalPages <= MAX_TILES) {
