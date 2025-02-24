@@ -73,6 +73,15 @@ export const publicRecipeRouter = createTRPCRouter({
       .limit(1);
   }),
 
+  getRecipesSlugs: publicProcedure.query(({ ctx }) => {
+    return ctx.db.query.recipes.findMany({
+      columns: {
+        slug: true,
+      },
+      orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
+    });
+  }),
+
   getRandomRecipes: publicProcedure
     .input(z.number())
     .query(({ ctx, input: recipesCount }) => {

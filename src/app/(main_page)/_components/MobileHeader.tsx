@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Path } from "@/config";
-import icon from "@/public/icon.png";
+import logo from "@/public/logo.png";
 import clsx from "clsx";
 import { Menu, Search } from "lucide-react";
 import Image from "next/image";
@@ -64,10 +64,10 @@ export const MobileHeader = forwardRef<
           <div>
             <Link href={Path.HOME}>
               <Image
-                src={icon}
+                src={logo}
                 alt="icon"
-                className="mr-2 min-w-min lg:hidden"
-                height={40}
+                className="mr-2 lg:hidden"
+                height={35}
                 priority
               />
             </Link>

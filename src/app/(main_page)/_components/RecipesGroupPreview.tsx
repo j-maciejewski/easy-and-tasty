@@ -49,7 +49,7 @@ export const RecipesGroupPreview = async (props: RecipesGroupPreview.Props) => {
       <div className="~mb-4/6 flex items-center justify-between">
         <Link
           href={href}
-          className="mx-auto flex items-center justify-center border-primary border-b-2 px-1 font-semibold hover:text-primary/90"
+          className="relative mx-auto flex items-center justify-center font-semibold transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
         >
           <h3 className="~text-xl/3xl">{name}</h3>
           <ArrowRight className="~/lg:~size-4/8 ml-2 stroke-[2px]" />

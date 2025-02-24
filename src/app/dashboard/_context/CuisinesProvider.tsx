@@ -9,7 +9,6 @@ interface ICuisinesContext {
       name: string;
       description: string;
       slug: string;
-      featuredRecipeId: number | null;
     }
   >;
 }
@@ -26,7 +25,6 @@ const CuisinesProvider = async ({
     name: string;
     description: string;
     slug: string;
-    featuredRecipeId: number | null;
   }[];
 }) => {
   const value = useMemo(

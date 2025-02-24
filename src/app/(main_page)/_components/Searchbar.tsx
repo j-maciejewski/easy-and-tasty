@@ -60,7 +60,7 @@ export const Searchbar = forwardRef<
           <Link
             key={recipe.id}
             href={`/recipe/${recipe.slug}`}
-            className="font-semibold text-sm [&:not(:last-child)>div]:border-b"
+            className="text-sm hover:bg-gray-50 [&:not(:last-child)>div]:border-b"
           >
             <div className="p-3 hover:bg-gray-100">{recipe.title}</div>
           </Link>
@@ -85,7 +85,7 @@ export const Searchbar = forwardRef<
       />
       {query.length >= 3 && (
         <div className="absolute top-full z-50 hidden w-full hover:block peer-focus/input:block">
-          <div className="mt-2 max-h-64 overflow-auto rounded-lg border bg-white">
+          <div className="mt-2 max-h-64 overflow-auto rounded-lg border bg-white shadow-inner">
             {SearchResults}
           </div>
         </div>

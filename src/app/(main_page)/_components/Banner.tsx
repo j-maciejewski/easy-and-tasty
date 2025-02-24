@@ -13,11 +13,7 @@ export const Banner = forwardRef<
   }
 >(({ className, title, text, image, href, ...props }, ref) => {
   return (
-    <div
-      className={clsx("w-full overflow-hidden rounded-lg", className)}
-      {...props}
-      ref={ref}
-    >
+    <div className={clsx("w-full", className)} {...props} ref={ref}>
       <Link href={href} className="relative block">
         <Image
           src={image}

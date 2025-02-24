@@ -26,14 +26,13 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
   return (
     <Carousel
       opts={{ duration: 75, loop: true }}
-      className="rounded-lg"
       plugins={[
         Autoplay({
           delay: 5000,
         }),
       ]}
     >
-      <CarouselContent className="~gap-4/6 m-0 rounded-lg">
+      <CarouselContent className="~gap-4/6 m-0">
         {recipes.map((recipe) => (
           <CarouselItem
             key={recipe.id}
@@ -43,7 +42,7 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
               href={`/recipe/${recipe.slug}`}
               className="md:pointer-events-none"
             >
-              <div className="m-[1px] flex overflow-hidden rounded-lg shadow max-md:flex-col">
+              <div className="m-[1px] flex overflow-hidden shadow max-md:flex-col">
                 <div className="max-md:w-full md:w-2/5 md:min-w-[40%]">
                   <Image
                     src={recipeImageSrcParser(recipe.image)}

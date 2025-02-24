@@ -12,8 +12,8 @@ export const publicNavigationRouter = createTRPCRouter({
               href: "/recipe/spaghetti-carbonara",
             },
             {
-              label: "Hungarian Goulash",
-              href: "/recipe/hungarian-goulash",
+              label: "Pierogi",
+              href: "/recipe/pierogi",
             },
             {
               label: "Pancakes",

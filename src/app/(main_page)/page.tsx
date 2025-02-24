@@ -26,7 +26,7 @@ export default async function () {
             <Banner
               title="Comfort Foods"
               text="Warm, hearty meals perfect for cozy evenings and family gatherings. From creamy casseroles and slow-cooked stews to savory pies and baked classics, these recipes bring comfort and nostalgia to your table, making every bite feel like home."
-              image="/mock/banner.jpg"
+              image="/mock/banner.png"
               href={"/comfort-foods"}
             />
             <RecipesCarousel recipes={recipes} />
@@ -40,11 +40,6 @@ export default async function () {
                 </span>
               </div>
             </FullWidthWrapper>
-            <Separator orientation="horizontal" />
-            <RecipesGroupPreview
-              category={{ name: "Breakfast", slug: "breakfast" }}
-            />
-            <Separator orientation="horizontal" />
             <ScrollableRecipes
               heading="Breakfast recipes"
               subheading="Easy and quick to make breakfast recipes"

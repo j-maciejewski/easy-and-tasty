@@ -9,7 +9,6 @@ interface ICategoriesContext {
       name: string;
       description: string;
       slug: string;
-      featuredRecipeId: number | null;
     }
   >;
 }
@@ -26,7 +25,6 @@ const CategoriesProvider = async ({
     name: string;
     description: string;
     slug: string;
-    featuredRecipeId: number | null;
   }[];
 }) => {
   const value = useMemo(

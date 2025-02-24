@@ -38,13 +38,13 @@ export const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
 
 export const recipes = createTable("recipe", {
   id: serial("id").primaryKey(),
-  title: varchar("title", { length: 256 }).notNull(),
+  title: varchar("title", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 1024 }).notNull(),
   difficulty: difficultyEnum("difficulty").notNull(),
-  image: varchar("image", { length: 2048 }),
+  image: varchar("image", { length: 2048 }).notNull(),
   content: varchar("content", { length: 2048 }).notNull(),
   servings: integer("servings"), // 1, 2, 3 and so
-  slug: varchar("slug", { length: 256 }).notNull(),
+  slug: varchar("slug", { length: 256 }).notNull().unique(),
   time: integer("time"), // in minutes
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -121,25 +121,23 @@ export const recipe_cuisines = createTable("recipe_cuisine", {
 
 export const categories = createTable("category", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  slug: varchar("slug", { length: 256 }).notNull(),
+  name: varchar("name", { length: 256 }).notNull().unique(),
+  slug: varchar("slug", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 256 }).notNull(),
-  featuredRecipeId: integer("featured_recipe_id").references(() => recipes.id),
 });
 
 export const cuisines = createTable("cuisine", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }).notNull(),
-  slug: varchar("slug", { length: 256 }).notNull(),
+  name: varchar("name", { length: 256 }).notNull().unique(),
+  slug: varchar("slug", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 256 }).notNull(),
-  featuredRecipeId: integer("featured_recipe_id").references(() => recipes.id),
 });
 
 export const pages = createTable("page", {
   id: serial("id").primaryKey(),
-  title: varchar("title", { length: 256 }).notNull(),
+  title: varchar("title", { length: 256 }).notNull().unique(),
   image: varchar("image", { length: 2048 }),
-  slug: varchar("slug", { length: 256 }).notNull(),
+  slug: varchar("slug", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 256 }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)

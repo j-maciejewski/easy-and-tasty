@@ -1,28 +1,56 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Path } from "@/config";
-import logo from "@/public/logo2.png";
+import logo from "@/public/logo.png";
 import clsx from "clsx";
 import { User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { HTMLAttributes, forwardRef } from "react";
+import { HTMLAttributes, forwardRef, useEffect, useState } from "react";
 import { Searchbar } from "./Searchbar";
 
 export const DesktopHeader = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { navigation: Navigation }
 >(({ className, navigation, ...props }, ref) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (window.scrollY > 75) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+      },
+      { signal: controller.signal },
+    );
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
   return (
     <div
-      className={clsx("w-full bg-white shadow-lg", className)}
+      className={clsx(
+        "fixed top-0 left-0 z-50 w-full bg-white shadow-lg",
+        className,
+      )}
       {...props}
       ref={ref}
     >
-      <header>
-        <div className="~md:~max-w-[60rem]/[80rem] mx-auto flex h-[80px] items-center justify-between px-4 py-3">
+      <header data-is-scrolled={isScrolled}>
+        <div
+          className={`~md:~max-w-[60rem]/[80rem] mx-auto flex items-center justify-between px-4 py-2 transition-all duration-300 ${isScrolled ? "h-[65px]" : "h-[80px]"}`}
+        >
           <div>
             <Link href={Path.HOME}>
-              <Image src={logo} alt="logo" height={40} priority />
+              <Image src={logo} alt="logo" height={35} priority />
             </Link>
           </div>
           <Searchbar />
@@ -36,14 +64,16 @@ export const DesktopHeader = forwardRef<
           </div>
         </div>
       </header>
-      <div className="~md:~max-w-[60rem]/[80rem] mx-auto flex items-center justify-between px-4 pt-2 pb-4 text-black">
-        <ul className="flex h-fit w-full flex-wrap gap-8 whitespace-nowrap text-sm tracking-wider">
+      <div
+        className={`transition-all duration-300 ${isScrolled ? "h-0 overflow-hidden opacity-0" : "h-12 opacity-100"} ~md:~max-w-[60rem]/[80rem] mx-auto flex items-center justify-between text-black`}
+      >
+        <ul className="flex h-fit w-full flex-wrap gap-8 whitespace-nowrap px-4 text-sm tracking-wider ">
           {navigation.links.map((link, idx) =>
             "href" in link ? (
               <li
                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={idx}
-                className="font-bold uppercase"
+                className="font-semibold uppercase"
               >
                 <Link
                   href={link.href}
@@ -55,15 +85,18 @@ export const DesktopHeader = forwardRef<
             ) : (
               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               <li key={idx} className="group relative">
-                <span className="relative cursor-default font-bold uppercase">
+                <span className="relative cursor-default font-semibold uppercase">
                   {link.label}
                 </span>
-                <ul className="invisible absolute top-[110%] left-0 z-50 min-w-[200px] rounded-md bg-white py-2 opacity-0 shadow-inner shadow-lg transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                <ul className="invisible absolute top-[110%] left-0 z-50 min-w-[200px] overflow-hidden rounded-md border bg-white opacity-0 shadow-inner transition-all duration-200 group-hover:visible group-hover:opacity-100">
                   {link.sublinks.map((sublink) => (
-                    <li key={sublink.href}>
+                    <li
+                      key={sublink.href}
+                      className="[&:not(:last-child)>a]:border-b"
+                    >
                       <Link
                         href={sublink.href}
-                        className="block px-4 py-2 text-sm hover:bg-gray-50"
+                        className="block px-4 py-3 text-sm hover:bg-gray-50"
                       >
                         {sublink.label}
                       </Link>

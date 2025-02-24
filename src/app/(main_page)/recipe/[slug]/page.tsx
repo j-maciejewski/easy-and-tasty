@@ -42,6 +42,10 @@ export async function generateMetadata({
   };
 }
 
+export async function generateStaticParams() {
+  return await api.public.recipe.getRecipesSlugs();
+}
+
 export default async function ({
   params,
 }: { params: Promise<{ slug: string }> }) {
