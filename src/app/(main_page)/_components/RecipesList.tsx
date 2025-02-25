@@ -1,5 +1,4 @@
-import { Card, CardHeader } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardHeader, Separator } from "@/components/ui";
 import { api } from "@/trpc/server";
 import clsx from "clsx";
 import Image from "next/image";

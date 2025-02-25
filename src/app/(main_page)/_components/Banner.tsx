@@ -1,3 +1,4 @@
+import { merienda } from "@/app/fonts";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,7 +25,12 @@ export const Banner = forwardRef<
         />
         <div className="~bottom-2/5 absolute left-[50%] max-w-[40rem] translate-x-[-50%] bg-secondary/90 p-3 md:w-[calc(100%-2rem)]">
           <div className="flex flex-col items-center p-3 ring ring-primary">
-            <span className="~text-lg/2xl text-center font-semibold">
+            <span
+              className={clsx(
+                "~text-lg/2xl text-center font-semibold",
+                merienda.className,
+              )}
+            >
               {title}
             </span>
             {text && (

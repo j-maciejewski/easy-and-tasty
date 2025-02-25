@@ -1,7 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { Path } from "@/config";
+import { useScrollDirection } from "@/hooks";
 import logo from "@/public/logo.png";
 import clsx from "clsx";
 import { Menu, Search } from "lucide-react";
@@ -15,6 +16,7 @@ export const MobileHeader = forwardRef<
   HTMLElement,
   HTMLAttributes<HTMLElement> & { navigation: Navigation }
 >(({ className, navigation, ...props }, ref) => {
+  const scrollDirection = useScrollDirection();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
@@ -56,7 +58,11 @@ export const MobileHeader = forwardRef<
   return (
     <>
       <header
-        className={clsx("fixed top-0 z-10 w-full bg-white shadow", className)}
+        className={clsx(
+          "fixed top-0 z-[50] w-full md:hidden bg-white shadow transition-transform duration-300",
+          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0",
+          className,
+        )}
         {...props}
         ref={ref}
       >

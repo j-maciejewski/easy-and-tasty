@@ -1,5 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@/components/ui";
 import clsx from "clsx";
 import { ChevronDown, X } from "lucide-react";
 import Link from "next/link";
@@ -50,7 +51,7 @@ const NavigationGroup = forwardRef<
             >
               <Link
                 href={sublink.href}
-                className="block h-full w-full px-4 py-3"
+                className="block h-full w-full pl-8 pr-4 py-3"
               >
                 {sublink.label}
               </Link>
@@ -71,7 +72,7 @@ export const MobileNavigation = forwardRef<
 >(({ className, navigation, handleClose, ...props }, ref) => {
   return (
     <nav
-      className="slide-in-from-right fixed top-0 right-0 left-0 z-10 flex h-full w-full animate-in flex-col bg-white duration-300"
+      className="slide-in-from-right fixed top-0 right-0 left-0 z-[100] flex h-full w-full animate-in flex-col bg-white duration-300"
       role="dialog"
       {...props}
       ref={ref}

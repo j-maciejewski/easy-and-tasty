@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { Path } from "@/config";
 import logo from "@/public/logo.png";
 import clsx from "clsx";
@@ -38,7 +38,7 @@ export const DesktopHeader = forwardRef<
   return (
     <div
       className={clsx(
-        "fixed top-0 left-0 z-50 w-full bg-white shadow-lg",
+        "fixed top-0 left-0 z-[50] w-full bg-white shadow-lg",
         className,
       )}
       {...props}

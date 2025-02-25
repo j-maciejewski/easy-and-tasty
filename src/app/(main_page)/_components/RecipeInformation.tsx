@@ -1,5 +1,5 @@
 import { GaugeHigh, GaugeLow, GaugeMedium } from "@/components/icons";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui";
 import clsx from "clsx";
 import { Drumstick, Timer } from "lucide-react";
 import { HTMLAttributes, forwardRef } from "react";

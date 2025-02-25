@@ -24,7 +24,7 @@ export const RecipeCard = forwardRef<
         className="max-h-[325px] min-h-[325px] w-full min-w-[250px] object-cover transition ease-in-out hover:opacity-90"
       />
       <h3
-        className="absolute bottom-3 left-3 z-20 font-semibold text-2xl text-white"
+        className="absolute bottom-3 left-3 z-10 font-semibold text-2xl text-white"
         style={{ textShadow: "1px 2px black" }}
       >
         {recipe.title}

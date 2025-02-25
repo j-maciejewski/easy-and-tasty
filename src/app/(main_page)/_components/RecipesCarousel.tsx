@@ -1,17 +1,19 @@
 "use client";
-import { Button } from "@/components/ui/button";
+
 import {
+  Button,
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Separator } from "@/components/ui/separator";
+  Separator,
+} from "@/components/ui";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronRight, Timer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { recipeImageSrcParser } from "../_utils";
 import { Rating } from "./Rating";
 
@@ -23,6 +25,8 @@ namespace RecipesCarousel {
 }
 
 export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
+  const router = useRouter();
+
   return (
     <Carousel
       opts={{ duration: 75, loop: true }}
@@ -85,9 +89,10 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
                     type="button"
                     className="pointer-events-auto mx-auto mt-10 ml-auto block w-fit cursor-pointer rounded-full text-center font-bold uppercase tracking-wider max-sm:w-full max-md:hidden"
                     asChild
+                    onClick={() => router.push(`/recipe/${recipe.slug}`)}
                   >
                     <span className="flex">
-                      <Link href={`/recipe/${recipe.slug}`}>See Recipe</Link>
+                      See Recipe
                       <ChevronRight className="h-5 stroke-[3px]" />
                     </span>
                   </Button>

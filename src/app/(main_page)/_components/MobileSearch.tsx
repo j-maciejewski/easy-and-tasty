@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, Input } from "@/components/ui";
 import { api } from "@/trpc/react";
 import { LoaderCircle, Search, X } from "lucide-react";
 import Link from "next/link";
@@ -83,7 +82,7 @@ export const MobileSearch = ({
 
   return (
     <div
-      className="slide-in-from-right fixed top-0 right-0 left-0 z-10 flex h-full w-full animate-in flex-col bg-white duration-300"
+      className="slide-in-from-right fixed top-0 right-0 left-0 z-[100] flex h-full w-full animate-in flex-col bg-white duration-300"
       {...props}
       ref={ref}
     >
