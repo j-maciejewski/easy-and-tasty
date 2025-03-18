@@ -4,9 +4,16 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const protectedCuisineRouter = createTRPCRouter({
+  getCuisine: protectedProcedure.input(z.number()).query(({ ctx, input }) => {
+    return ctx.db.query.cuisines.findFirst({
+      orderBy: (cuisines, { asc }) => [asc(cuisines.name)],
+      where: eq(cuisines.id, input),
+    });
+  }),
+
   getCuisines: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.cuisines.findMany({
-      orderBy: (cuisines, { desc }) => [desc(cuisines.name)],
+      orderBy: (cuisines, { asc }) => [asc(cuisines.name)],
     });
   }),
 

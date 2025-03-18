@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import Image404 from "@/public/404-image.png";
 import Image from "next/image";
 import Link from "next/link";

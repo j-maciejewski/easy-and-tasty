@@ -1,15 +1,21 @@
 import { EditRecipeForm } from "@/app/dashboard/_components";
+import { CategoriesProvider, CuisinesProvider } from "@/app/dashboard/_context";
+import { api } from "@/trpc/server";
 
 export default async function ({
   params,
 }: { params: Promise<{ id: string }> }) {
   const recipeId = (await params).id;
+  const categories = await api.protected.category.getCategories();
+  const cuisines = await api.protected.cuisine.getCuisines();
 
   return (
-    <main className="flex-1 overflow-y-auto overflow-x-hidden">
-      <div className="container mx-auto max-w-[60rem] px-6 py-8">
-        <EditRecipeForm recipeId={Number(recipeId)} />
-      </div>
-    </main>
+    <CategoriesProvider categories={categories}>
+      <CuisinesProvider cuisines={cuisines}>
+        <div className="mx-auto max-w-[60rem]">
+          <EditRecipeForm recipeId={Number(recipeId)} />
+        </div>
+      </CuisinesProvider>
+    </CategoriesProvider>
   );
 }

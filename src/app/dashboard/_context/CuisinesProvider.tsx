@@ -15,7 +15,7 @@ interface ICuisinesContext {
 
 const CuisinesContext = createContext<ICuisinesContext | null>(null);
 
-const CuisinesProvider = async ({
+const CuisinesProvider = ({
   cuisines,
   ...rest
 }: {

@@ -1,41 +1,37 @@
-import "./globals.css";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/sonner";
+import { SidebarProvider, Toaster } from "@/components/ui";
 import { env } from "@/env";
-import { api } from "@/trpc/server";
-import { ThemeProvider } from "next-themes";
 import { redirect } from "next/navigation";
-import { Header } from "./_components/Header";
-import { Sidebar } from "./_components/Sidebar";
-import { CategoriesProvider, CuisinesProvider } from "./_context";
+import { Header, Sidebar } from "./_components";
+import { PaginationProvider, ThemeProvider, UserProvider } from "./_context";
+import "./styles.css";
+import { Suspense } from "react";
 
 export default async function ({ children }: React.PropsWithChildren) {
-  const categories = await api.protected.category.getCategories();
-  const cuisines = await api.protected.cuisine.getCuisines();
-
   if (env.MOCK_MODE) redirect("/");
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <SidebarProvider>
-        <CategoriesProvider categories={categories}>
-          <CuisinesProvider cuisines={cuisines}>
-            <div className="flex h-screen w-full overflow-hidden">
-              <Sidebar />
-              <div className="flex flex-1 flex-col overflow-hidden bg-background">
-                <Header />
-                {children}
-              </div>
+    <UserProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <SidebarProvider>
+          <div className="flex h-screen w-full overflow-hidden">
+            <Sidebar />
+            <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-muted/30">
+              <Header />
+              <main className="container mx-auto flex-1 px-6 py-8">
+                <Suspense>
+                  <PaginationProvider>{children}</PaginationProvider>
+                </Suspense>
+              </main>
             </div>
-            <Toaster richColors />
-          </CuisinesProvider>
-        </CategoriesProvider>
-      </SidebarProvider>
-    </ThemeProvider>
+          </div>
+          <Toaster richColors />
+        </SidebarProvider>
+      </ThemeProvider>
+    </UserProvider>
   );
 }

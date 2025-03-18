@@ -24,8 +24,8 @@ export const RecipesList = forwardRef<
       <div className="~mt-4/6 flex flex-col gap-2">
         {recipes.map((recipe) => (
           <Link key={recipe.id} href={`/recipe/${recipe.slug}`}>
-            <Card className="shadow transition ease-in-out hover:opacity-80">
-              <div className="flex items-center gap-2 rounded-lg border bg-card">
+            <Card className="py-0 shadow transition ease-in-out hover:opacity-80">
+              <div className="flex items-center gap-2 rounded-lg">
                 <Image
                   src={recipeImageSrcParser(recipe.image)}
                   width={200}

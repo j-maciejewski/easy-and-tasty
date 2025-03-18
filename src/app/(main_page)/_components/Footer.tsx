@@ -114,8 +114,8 @@ export const Footer = ({
 
         <div className="mt-8 border-gray-600 border-t pt-8 text-center text-gray-600 text-sm">
           &copy; {new Date().getFullYear()}{" "}
-          <span className="text-primary">easy and tasty</span>. Wszelkie prawa
-          zastrzeżone.
+          <span className="text-primary">easy and tasty</span>. All rights
+          reserved.
         </div>
       </div>
     </footer>

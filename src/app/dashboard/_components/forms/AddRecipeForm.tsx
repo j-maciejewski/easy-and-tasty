@@ -1,36 +1,34 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
+  Badge,
+  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
+  Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+  Textarea,
+} from "@/components/ui";
 import { difficultyEnum } from "@/server/db/schema";
 import { api } from "@/trpc/react";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { Image, Plus, X } from "lucide-react";
-import { use, useMemo, useRef } from "react";
+import { use, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { CategoriesContext, CuisinesContext } from "../../_context";
-import { MultiSelect } from "../Multiselect";
+import { MultiSelect } from "../MultiSelect";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -60,33 +58,59 @@ const formSchema = z.object({
 
 namespace AddRecipeForm {
   export interface Props {
+    categories?: {
+      description: string;
+      id: number;
+      name: string;
+      slug: string;
+    }[];
+    cuisines?: {
+      description: string;
+      id: number;
+      name: string;
+      slug: string;
+    }[];
     onSubmit?: () => void;
   }
 }
 
-export function AddRecipeForm({ onSubmit }: AddRecipeForm.Props) {
+export function AddRecipeForm({
+  onSubmit,
+  categories,
+  cuisines,
+}: AddRecipeForm.Props) {
   const addRecipe = api.protected.recipe.addRecipe.useMutation();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
-  const { cuisines } = use(CuisinesContext)!;
-  const { categories } = use(CategoriesContext)!;
 
-  const cuisineOptions = useMemo(
-    () =>
-      [...cuisines.values()].map((cuisine) => ({
-        label: cuisine.name,
-        value: cuisine.id,
-      })),
-    [cuisines],
-  );
-
-  const categoryOptions = useMemo(
-    () =>
-      [...categories.values()].map((category) => ({
+  const categoryOptions = (() => {
+    if (categories) {
+      return categories.map((category) => ({
         label: category.name,
         value: category.id,
-      })),
-    [categories],
-  );
+      }));
+    }
+
+    const { categories: categoriesMap } = use(CategoriesContext)!;
+    return [...categoriesMap.values()].map((category) => ({
+      label: category.name,
+      value: category.id,
+    }));
+  })();
+
+  const cuisineOptions = (() => {
+    if (cuisines) {
+      return cuisines.map((cuisine) => ({
+        label: cuisine.name,
+        value: cuisine.id,
+      }));
+    }
+
+    const { cuisines: cuisinesMap } = use(CuisinesContext)!;
+    return [...cuisinesMap.values()].map((cuisine) => ({
+      label: cuisine.name,
+      value: cuisine.id,
+    }));
+  })();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -218,7 +242,7 @@ export function AddRecipeForm({ onSubmit }: AddRecipeForm.Props) {
                 <FormControl>
                   <CodeMirror
                     {...field}
-                    className="[&>div]:!outline-0 overflow-hidden rounded-lg border px-3 py-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>div]:bg-background"
+                    className="[&>div]:!outline-0 overflow-hidden rounded-lg border px-3 py-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>div]:bg-transparent"
                     height="200px"
                     extensions={[markdown({ base: markdownLanguage })]}
                     theme="dark"

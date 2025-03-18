@@ -1,4 +1,4 @@
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui";
 import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
 import { Metadata } from "next";

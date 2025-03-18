@@ -51,7 +51,7 @@ const NavigationGroup = forwardRef<
             >
               <Link
                 href={sublink.href}
-                className="block h-full w-full pl-8 pr-4 py-3"
+                className="block h-full w-full py-3 pr-4 pl-8"
               >
                 {sublink.label}
               </Link>

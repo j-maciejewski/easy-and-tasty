@@ -59,7 +59,7 @@ export const MobileHeader = forwardRef<
     <>
       <header
         className={clsx(
-          "fixed top-0 z-[50] w-full md:hidden bg-white shadow transition-transform duration-300",
+          "fixed top-0 z-[50] w-full bg-white shadow transition-transform duration-300 md:hidden",
           scrollDirection === "down" ? "-translate-y-full" : "translate-y-0",
           className,
         )}

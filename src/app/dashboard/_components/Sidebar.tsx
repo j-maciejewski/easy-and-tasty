@@ -1,20 +1,16 @@
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+"use client";
+
 import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
   Sidebar as SidebarWrapper,
-} from "@/components/ui/sidebar";
+} from "@/components/ui";
 import { Path } from "@/config";
 import {
   Book,
@@ -30,12 +26,10 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FC } from "react";
 
-const items: (
-  | { label: string; url: string; icon: FC }
-  | { label: string; icon: FC; links: { label: string; url: string }[] }
-)[] = [
+const items: { label: string; url: string; icon: FC }[] = [
   {
     label: "Summary",
     url: Path.DASHBOARD,
@@ -74,64 +68,40 @@ const items: (
   {
     label: "Settings",
     icon: Settings,
-    links: [
-      {
-        label: "Navigation",
-        url: Path.DASHBOARD_NAVIGATION,
-      },
-    ],
+    url: Path.DASHBOARD_SETTINGS,
   },
 ];
 
 export const Sidebar = () => {
+  const pathname = usePathname();
+
   return (
-    <SidebarWrapper>
+    <SidebarWrapper collapsible="icon" variant="inset">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuButton
+            size="lg"
+            className="pointer-events-none font-semibold text-2xl"
+          >
+            <ChefHat className="!size-6" />
+            <span>easy and tasty</span>
+          </SidebarMenuButton>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="my-5 h-auto font-semibold text-2xl text-foreground">
-            <ChefHat className="!size-7 mt-1 mr-2" />
-            easy and tasty
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) =>
-                "url" in item ? (
-                  <SidebarMenuItem key={item.label}>
-                    <SidebarMenuButton asChild>
-                      <Link href={item.url}>
-                        <item.icon />
-                        <span>{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ) : (
-                  <Collapsible
-                    key={item.label}
-                    defaultOpen
-                    className="group/collapsible"
-                  >
-                    <SidebarMenuItem>
-                      <CollapsibleTrigger asChild>
-                        <SidebarMenuButton>
-                          <item.icon />
-                          <span>{item.label}</span>
-                        </SidebarMenuButton>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <SidebarMenuSub>
-                          {item.links.map((link) => (
-                            <SidebarMenuButton key={link.label} asChild>
-                              <Link href={link.url}>
-                                <span>{link.label}</span>
-                              </Link>
-                            </SidebarMenuButton>
-                          ))}
-                        </SidebarMenuSub>
-                      </CollapsibleContent>
-                    </SidebarMenuItem>
-                  </Collapsible>
-                ),
-              )}
+              {items.map((item) => (
+                <SidebarMenuItem key={item.label}>
+                  <SidebarMenuButton asChild isActive={pathname === item.url}>
+                    <Link href={item.url}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

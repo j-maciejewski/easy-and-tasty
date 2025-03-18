@@ -1,11 +1,18 @@
+import { api } from "@/trpc/server";
 import { AddRecipeForm } from "../../_components";
+import { CategoriesProvider, CuisinesProvider } from "../../_context";
 
-export default function RecipesDashboard() {
+export default async function () {
+  const categories = await api.protected.category.getCategories();
+  const cuisines = await api.protected.cuisine.getCuisines();
+
   return (
-    <main className="flex-1 overflow-y-auto overflow-x-hidden">
-      <div className="container mx-auto max-w-[60rem] px-6 py-8">
-        <AddRecipeForm />
-      </div>
-    </main>
+    <CategoriesProvider categories={categories}>
+      <CuisinesProvider cuisines={cuisines}>
+        <div className="mx-auto max-w-[60rem]">
+          <AddRecipeForm />
+        </div>
+      </CuisinesProvider>
+    </CategoriesProvider>
   );
 }

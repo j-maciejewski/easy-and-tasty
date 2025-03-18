@@ -1,14 +1,14 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+  Label,
+} from "@/components/ui";
 import logo from "@/public/logo.png";
 import Image from "next/image";
 import { AuthInput } from "../_components/AuthInput";

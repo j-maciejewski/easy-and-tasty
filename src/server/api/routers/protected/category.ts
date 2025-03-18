@@ -4,9 +4,16 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const protectedCategoryRouter = createTRPCRouter({
+  getCategory: protectedProcedure.input(z.number()).query(({ ctx, input }) => {
+    return ctx.db.query.categories.findFirst({
+      orderBy: (categories, { asc }) => [asc(categories.name)],
+      where: eq(categories.id, input),
+    });
+  }),
+
   getCategories: protectedProcedure.query(({ ctx }) => {
     return ctx.db.query.categories.findMany({
-      orderBy: (categories, { desc }) => [desc(categories.name)],
+      orderBy: (categories, { asc }) => [asc(categories.name)],
     });
   }),
 

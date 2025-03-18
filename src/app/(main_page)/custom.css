@@ -1,9 +1,0 @@
-@media (width >= 48rem) {
-  body:has(header[data-is-scrolled="false"]) main {
-    padding-top: 8rem;
-  }
-
-  body:has(header[data-is-scrolled="true"]) main {
-    padding-top: 6rem;
-  }
-}

@@ -1,16 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
+  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+  Input,
+  Textarea,
+} from "@/components/ui";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Image } from "lucide-react";
@@ -50,7 +50,6 @@ export function AddPageForm({ onSubmit }: AddPageForm.Props) {
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    console.log(1);
     await addPage.mutateAsync(values);
 
     toast.success("Page was added.");
@@ -175,11 +174,7 @@ export function AddPageForm({ onSubmit }: AddPageForm.Props) {
             )}
           />
 
-          <Button
-            type="submit"
-            className="text-white"
-            onClick={() => console.log(1)}
-          >
+          <Button type="submit" className="text-white">
             Submit
           </Button>
         </form>

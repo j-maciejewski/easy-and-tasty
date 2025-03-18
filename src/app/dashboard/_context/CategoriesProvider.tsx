@@ -15,7 +15,7 @@ interface ICategoriesContext {
 
 const CategoriesContext = createContext<ICategoriesContext | null>(null);
 
-const CategoriesProvider = async ({
+const CategoriesProvider = ({
   categories,
   ...rest
 }: {
