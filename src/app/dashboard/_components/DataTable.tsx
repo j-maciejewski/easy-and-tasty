@@ -13,7 +13,7 @@ import { use } from "react";
 import { PaginationContext } from "../_context";
 import { Pagination } from "./Pagination";
 
-namespace DataTable {
+export namespace DataTable {
   export interface Props<T> {
     isLoading: boolean;
     hiddenColumns: string[];

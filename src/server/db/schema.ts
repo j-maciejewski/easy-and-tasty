@@ -4,11 +4,14 @@
 import { sql } from "drizzle-orm";
 import {
   type AnyPgColumn,
+  boolean,
   integer,
   pgEnum,
   pgTableCreator,
+  primaryKey,
   serial,
   smallint,
+  text,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -21,17 +24,23 @@ import {
  */
 export const createTable = pgTableCreator((name) => `easy-and-tasty_${name}`);
 
+export const roleEnum = pgEnum("role", ["viewer", "editor", "admin"]);
+
 export const users = createTable("user", {
-  id: serial("id").primaryKey(),
-  firstName: varchar("first_name", { length: 256 }).notNull(),
-  lastName: varchar("last_name", { length: 256 }).notNull(),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name"),
   email: varchar("email", { length: 256 }).notNull(),
-  password: varchar("password", { length: 256 }).notNull(),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  password: varchar("password", { length: 256 }),
   image: varchar("image", { length: 1024 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
+  role: roleEnum("role").default("viewer").notNull(),
+  preferences: varchar("preferences", { length: 512 }),
 });
 
 export const difficultyEnum = pgEnum("difficulty", ["easy", "medium", "hard"]);
@@ -43,9 +52,9 @@ export const recipes = createTable("recipe", {
   difficulty: difficultyEnum("difficulty").notNull(),
   image: varchar("image", { length: 2048 }).notNull(),
   content: varchar("content", { length: 2048 }).notNull(),
-  servings: integer("servings"), // 1, 2, 3 and so
+  servings: integer("servings").notNull(), // 1, 2, 3 and so
   slug: varchar("slug", { length: 256 }).notNull().unique(),
-  time: integer("time"), // in minutes
+  time: integer("time").notNull(), // in minutes
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -54,7 +63,7 @@ export const recipes = createTable("recipe", {
 
 export const recipe_ratings = createTable("recipe_rating", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id),
   recipeId: integer("recipe_id")
@@ -66,7 +75,7 @@ export const recipe_ratings = createTable("recipe_rating", {
 export const comments = createTable("comment", {
   id: serial("id").primaryKey(),
   text: varchar("text", { length: 256 }).notNull(),
-  userId: integer("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id),
   replyId: integer("reply_id").references((): AnyPgColumn => comments.id),
@@ -81,7 +90,7 @@ export const comments = createTable("comment", {
 
 export const comment_likes = createTable("comment_like", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id),
   commentId: integer("comment_id")
@@ -91,7 +100,7 @@ export const comment_likes = createTable("comment_like", {
 
 export const recipe_saves = createTable("recipe_save", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id")
+  userId: text("user_id")
     .notNull()
     .references(() => users.id),
   recipeId: integer("recipe_id")
@@ -145,3 +154,76 @@ export const pages = createTable("page", {
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
   publishedAt: timestamp("publishedAt", { withTimezone: true }),
 });
+
+export const accounts = createTable(
+  "account",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    type: text("type").notNull(),
+    provider: text("provider").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    refresh_token: text("refresh_token"),
+    access_token: text("access_token"),
+    expires_at: integer("expires_at"),
+    token_type: text("token_type"),
+    scope: text("scope"),
+    id_token: text("id_token"),
+    session_state: text("session_state"),
+  },
+  (account) => [
+    {
+      compoundKey: primaryKey({
+        columns: [account.provider, account.providerAccountId],
+      }),
+    },
+  ],
+);
+
+export const sessions = createTable("session", {
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { withTimezone: true }).notNull(),
+});
+
+export const verificationTokens = createTable(
+  "verificationToken",
+  {
+    identifier: text("identifier").notNull(),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { withTimezone: true }).notNull(),
+  },
+  (verificationToken) => [
+    {
+      compositePk: primaryKey({
+        columns: [verificationToken.identifier, verificationToken.token],
+      }),
+    },
+  ],
+);
+
+export const authenticators = createTable(
+  "authenticator",
+  {
+    credentialID: text("credentialID").notNull().unique(),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    providerAccountId: text("providerAccountId").notNull(),
+    credentialPublicKey: text("credentialPublicKey").notNull(),
+    counter: integer("counter").notNull(),
+    credentialDeviceType: text("credentialDeviceType").notNull(),
+    credentialBackedUp: boolean("credentialBackedUp").notNull(),
+    transports: text("transports"),
+  },
+  (authenticator) => [
+    {
+      compositePK: primaryKey({
+        columns: [authenticator.userId, authenticator.credentialID],
+      }),
+    },
+  ],
+);

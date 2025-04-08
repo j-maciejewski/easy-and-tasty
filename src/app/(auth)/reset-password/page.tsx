@@ -35,21 +35,17 @@ export default function () {
               required
             />
           </div>
-          <Button
-            type="submit"
-            variant="secondary"
-            className="w-full font-semibold"
-          >
+          <Button type="submit" className="w-full font-semibold">
             Reset password
           </Button>
         </div>
         <div className="mt-4 flex items-center space-x-4 text-center text-sm">
           <div className="grow">
             <Link href="/login" className="underline">
-              Sign in
+              Log in
             </Link>
           </div>
-          <Separator orientation="vertical" className="h-4" />
+          <Separator orientation="vertical" className="!h-4 w-px" />
           <div className="grow">
             <Link href="/sign-up" className="underline">
               Sign up

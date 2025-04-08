@@ -7,7 +7,7 @@ export const ScrollableRecipes = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { heading: string; subheading?: string }
 >(async ({ className, heading, subheading, ...props }, ref) => {
-  const recipes = await api.public.recipe.getRandomRecipes(10);
+  const recipes = await api.public.recipe.getRandomRecipes(5);
 
   return (
     <div className={clsx("flex flex-col", className)} {...props} ref={ref}>

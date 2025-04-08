@@ -1,6 +1,5 @@
 import { api } from "@/trpc/server";
 import { DesktopHeader, Footer, MobileHeader } from "./_components";
-import "./styles.css";
 
 export default async function ({ children }: React.PropsWithChildren) {
   const navigation = await api.public.navigation.getNavigation();

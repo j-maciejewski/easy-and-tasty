@@ -25,6 +25,7 @@ import {
   User2,
   Users,
 } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
@@ -79,13 +80,15 @@ export const Sidebar = () => {
     <SidebarWrapper collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuButton
-            size="lg"
-            className="pointer-events-none font-semibold text-2xl"
-          >
-            <ChefHat className="!size-6" />
-            <span>easy and tasty</span>
-          </SidebarMenuButton>
+          <Link href={Path.HOME}>
+            <SidebarMenuButton
+              size="lg"
+              className="pointer-events-none font-semibold text-2xl"
+            >
+              <ChefHat className="!size-6 ml-1" />
+              <span>easy and tasty</span>
+            </SidebarMenuButton>
+          </Link>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
@@ -109,7 +112,7 @@ export const Sidebar = () => {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton>
+            <SidebarMenuButton onClick={() => signOut({ callbackUrl: "/" })}>
               <User2 /> Log out
               <LogOut className="ml-auto" />
             </SidebarMenuButton>

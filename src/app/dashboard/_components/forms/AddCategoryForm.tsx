@@ -29,7 +29,7 @@ const formSchema = z.object({
   }),
 });
 
-namespace AddCategoryForm {
+export namespace AddCategoryForm {
   export interface Props {
     onSubmit?: () => void;
   }

@@ -5,7 +5,7 @@ import { Drumstick, Timer } from "lucide-react";
 import { HTMLAttributes, forwardRef } from "react";
 import { Rating } from "./Rating";
 
-namespace RecipeInformation {
+export namespace RecipeInformation {
   export interface Props {
     recipe: Pick<Recipe, "difficulty" | "servings" | "time"> &
       RecipeRatingOptions;

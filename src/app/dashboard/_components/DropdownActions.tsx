@@ -7,7 +7,7 @@ import {
 import { Menu } from "lucide-react";
 import React from "react";
 
-namespace DropdownActions {
+export namespace DropdownActions {
   export interface Props {
     children: React.ReactNode;
   }

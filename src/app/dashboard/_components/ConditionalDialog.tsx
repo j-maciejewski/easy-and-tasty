@@ -8,7 +8,7 @@ import {
 } from "@/components/ui";
 import Link from "next/link";
 
-namespace ConditionalDialog {
+export namespace ConditionalDialog {
   export interface Props {
     title: string;
     trigger: React.ReactNode;

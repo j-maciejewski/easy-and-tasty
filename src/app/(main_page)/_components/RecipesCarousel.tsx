@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { recipeImageSrcParser } from "../_utils";
 import { Rating } from "./Rating";
 
-namespace RecipesCarousel {
+export namespace RecipesCarousel {
   export interface Props {
     recipes: (Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
       RecipeRatingOptions)[];
@@ -87,7 +87,7 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
                   </div>
                   <Button
                     type="button"
-                    className="pointer-events-auto mx-auto mt-10 ml-auto block w-fit cursor-pointer rounded-full text-center font-bold uppercase tracking-wider max-sm:w-full max-md:hidden"
+                    className="pointer-events-auto mx-auto mt-10 ml-auto block w-fit cursor-pointer rounded-full text-center font-semibold max-sm:w-full max-md:hidden"
                     asChild
                     onClick={() => router.push(`/recipe/${recipe.slug}`)}
                   >

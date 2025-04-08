@@ -10,7 +10,7 @@ import {
 } from "@/components/ui";
 import * as React from "react";
 
-namespace MultiSelect {
+export namespace MultiSelect {
   export interface Props<T> {
     label?: string;
     options: { label: string; value: T; checked: boolean }[];

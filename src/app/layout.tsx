@@ -1,8 +1,9 @@
-import { GeistSans } from "geist/font/sans";
-
 import { TooltipProvider } from "@/components/ui";
 import { APP_DESCRIPTION, APP_NAME } from "@/consts";
 import { TRPCReactProvider } from "@/trpc/react";
+import { GeistSans } from "geist/font/sans";
+import { NextAuthProvider } from "./(shared)/context/NextAuthProvider";
+import "@/styles/globals.css";
 
 export const metadata = {
   title: APP_NAME,
@@ -14,11 +15,13 @@ export default function ({ children }: React.PropsWithChildren) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className="!overflow-x-hidden">
-        <TRPCReactProvider>
-          <TooltipProvider delayDuration={300} disableHoverableContent>
-            {children}
-          </TooltipProvider>
-        </TRPCReactProvider>
+        <NextAuthProvider>
+          <TRPCReactProvider>
+            <TooltipProvider delayDuration={300} disableHoverableContent>
+              {children}
+            </TooltipProvider>
+          </TRPCReactProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

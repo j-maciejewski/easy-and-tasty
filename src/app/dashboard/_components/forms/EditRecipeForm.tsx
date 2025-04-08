@@ -58,7 +58,7 @@ const formSchema = z.object({
   }),
 });
 
-namespace EditRecipeForm {
+export namespace EditRecipeForm {
   export interface Props {
     recipeId: number;
     categories?: {
@@ -83,8 +83,7 @@ export function EditRecipeForm({
   cuisines,
   onSubmit,
 }: EditRecipeForm.Props) {
-  const { data, error, isLoading } =
-    api.protected.recipe.getRecipe.useQuery(recipeId);
+  const { data, isLoading } = api.protected.recipe.getRecipe.useQuery(recipeId);
 
   const editRecipe = api.protected.recipe.editRecipe.useMutation();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
@@ -121,7 +120,6 @@ export function EditRecipeForm({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // @ts-expect-error Fix types
     values: data
       ? {
           title: data.title,
@@ -140,7 +138,7 @@ export function EditRecipeForm({
           cuisines: [],
           categories: [],
           content: "",
-          difficulty: "",
+          difficulty: "medium",
           time: 0,
           servings: 0,
           image: "",
@@ -148,11 +146,18 @@ export function EditRecipeForm({
   });
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await editRecipe.mutateAsync({ id: recipeId, ...values });
+    try {
+      await editRecipe.mutateAsync({ id: recipeId, ...values });
 
-    toast.success("Recipe was modified.");
+      toast.success("Recipe was modified.");
 
-    if (onSubmit) onSubmit();
+      onSubmit?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while modifying the recipe.",
+      );
+    }
   }
 
   if (isLoading)

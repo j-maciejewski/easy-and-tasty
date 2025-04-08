@@ -11,15 +11,18 @@
 		"rules": {
 			"recommended": true,
 			"a11y": {
-				"useSemanticElements": "off"
+				"useSemanticElements": "off",
+				"noSvgWithoutTitle": "off"
 			},
 			"correctness": {
-				"noUnusedImports": "warn"
+				"noUnusedImports": "warn",
+				"noUnusedVariables": "error"
 			},
 			"suspicious": {
 				"noExplicitAny": "error",
 				"noRedeclare": "off",
-        "noAssignInExpressions": "off"
+        "noAssignInExpressions": "off",
+				"noDuplicateAtImportRules": "error"
 			},
 			"complexity": {
 				"useLiteralKeys": "off"
@@ -41,8 +44,8 @@
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double",
-			"lineWidth": 80
-			
+			"lineWidth": 80,
+			"trailingCommas": "all"
 		}
 	}
 }

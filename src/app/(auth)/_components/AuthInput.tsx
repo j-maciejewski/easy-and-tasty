@@ -2,14 +2,16 @@
 
 import { Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { AuthData, useAuthData } from "../_context/AuthDataProvider";
+import { use } from "react";
+import { AuthData, AuthDataContext } from "../_context/AuthDataProvider";
 
 export const AuthInput = ({
   className,
   type,
   ...props
 }: React.ComponentProps<typeof Input>) => {
-  const { authData, handleChangeAuthData } = useAuthData();
+  const { authData, handleChangeAuthData } = use(AuthDataContext)!;
+
   return (
     <Input
       type={type}

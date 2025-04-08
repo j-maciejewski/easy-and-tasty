@@ -2,7 +2,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui";
 import { Star } from "lucide-react";
 import { Fragment } from "react";
 
-namespace Rating {
+export namespace Rating {
   export interface Props {
     rating: number;
   }

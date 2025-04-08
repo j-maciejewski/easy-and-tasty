@@ -1,4 +1,5 @@
 import { recipes } from "@/server/db/schema";
+import type { DefaultSession, User as TUser } from "next-auth";
 
 declare global {
   type Prettify<T> = {
@@ -23,4 +24,20 @@ declare global {
         }
     )[];
   };
+}
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      role?: string;
+      preferences?: string | null;
+    } & DefaultSession["user"];
+  }
+
+  interface User extends TUser {
+    id: string;
+    role?: string;
+    preferences?: string | null;
+  }
 }

@@ -9,7 +9,7 @@ export const authedRecipeRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: recipeId }) => {
       await ctx.db.insert(recipe_saves).values({
         recipeId: recipeId,
-        userId: 1,
+        userId: "1",
       });
     }),
 
@@ -19,7 +19,10 @@ export const authedRecipeRouter = createTRPCRouter({
       await ctx.db
         .delete(recipe_saves)
         .where(
-          and(eq(recipe_saves.recipeId, recipeId), eq(recipe_saves.userId, 1)),
+          and(
+            eq(recipe_saves.recipeId, recipeId),
+            eq(recipe_saves.userId, "1"),
+          ),
         );
     }),
 
@@ -34,7 +37,7 @@ export const authedRecipeRouter = createTRPCRouter({
       await ctx.db.insert(recipe_ratings).values({
         score: input.score,
         recipeId: input.recipeId,
-        userId: 1,
+        userId: "1",
       });
     }),
 
@@ -46,7 +49,7 @@ export const authedRecipeRouter = createTRPCRouter({
         .where(
           and(
             eq(recipe_ratings.recipeId, recipeId),
-            eq(recipe_ratings.userId, 1),
+            eq(recipe_ratings.userId, "1"),
           ),
         );
     }),

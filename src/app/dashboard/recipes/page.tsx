@@ -17,14 +17,14 @@ import { Columns3, Plus, X } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
 import {
+  AddRecipeForm,
   ConditionalDialog,
   DataTable,
   DropdownActions,
-  EditCategoryForm,
+  EditRecipeForm,
   ErrorCatcher,
   MultiSelect,
 } from "../_components";
-import { AddRecipeForm } from "../_components";
 import { PaginationContext, UserContext } from "../_context";
 
 export default function () {
@@ -77,6 +77,7 @@ export default function () {
     data: recipes,
     isLoading: recipesLoading,
     error: recipesError,
+    refetch: refetchRecipes,
   } = api.protected.recipe.getRecipes.useQuery({
     title: debouncedSearchTerm,
     orderBy: sortField,
@@ -163,16 +164,16 @@ export default function () {
           <DropdownMenuItem>
             {settings.formsInModals ? (
               <button type="button" onClick={() => setEditedRecipe(id)}>
-                Edit Category
+                Edit Recipe
               </button>
             ) : (
               <Link href={`${Path.DASHBOARD_RECIPES}/edit/${id}`}>
-                Edit Category
+                Edit Recipe
               </Link>
             )}
           </DropdownMenuItem>
           <DropdownMenuItem className="text-red-600">
-            Delete Category
+            Delete Recipe
           </DropdownMenuItem>
         </DropdownActions>
       ),
@@ -288,9 +289,14 @@ export default function () {
           <DialogHeader>
             <DialogTitle>Edit Recipe</DialogTitle>
           </DialogHeader>
-          <EditCategoryForm
-            categoryId={editedRecipe!}
-            onSubmit={() => setEditedRecipe(null)}
+          <EditRecipeForm
+            recipeId={editedRecipe!}
+            categories={categoriesData!}
+            cuisines={cuisinesData!}
+            onSubmit={() => {
+              setEditedRecipe(null);
+              refetchRecipes();
+            }}
           />
           <DialogClose />
         </DialogContent>

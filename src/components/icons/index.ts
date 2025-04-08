@@ -8,3 +8,4 @@ export { GaugeHigh } from "./GaugeHigh";
 
 export { Facebook } from "./Facebook";
 export { Instagram } from "./Instagram";
+export { Google } from "./Google";

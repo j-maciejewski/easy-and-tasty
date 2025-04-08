@@ -17,7 +17,7 @@ interface CuisinePreview {
   };
 }
 
-namespace RecipesGroupPreview {
+export namespace RecipesGroupPreview {
   export type Props = CategoryPreview | CuisinePreview;
 }
 

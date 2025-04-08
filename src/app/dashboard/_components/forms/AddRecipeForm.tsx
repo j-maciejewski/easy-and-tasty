@@ -56,7 +56,7 @@ const formSchema = z.object({
   }),
 });
 
-namespace AddRecipeForm {
+export namespace AddRecipeForm {
   export interface Props {
     categories?: {
       description: string;

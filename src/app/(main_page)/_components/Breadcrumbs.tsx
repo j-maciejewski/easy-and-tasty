@@ -2,7 +2,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { ShareDialog } from "./ShareDialog";
 
-namespace Breadcrumbs {
+export namespace Breadcrumbs {
   export interface Props {
     paths: Array<{
       label: string;

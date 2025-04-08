@@ -31,7 +31,7 @@ const formSchema = z.object({
   }),
 });
 
-namespace EditCuisineForm {
+export namespace EditCuisineForm {
   export interface Props {
     cuisineId: number;
     onSubmit?: () => void;
@@ -42,7 +42,7 @@ export function EditCuisineForm({
   cuisineId,
   onSubmit,
 }: EditCuisineForm.Props) {
-  const { data, error, isLoading } =
+  const { data, isLoading } =
     api.protected.cuisine.getCuisine.useQuery(cuisineId);
 
   const editCuisine = api.protected.cuisine.editCuisine.useMutation();

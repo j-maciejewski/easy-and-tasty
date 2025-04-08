@@ -12,8 +12,7 @@ export const publicUserRouter = createTRPCRouter({
   createUser: publicProcedure
     .input(
       z.object({
-        firstName: z.string().min(1),
-        lastName: z.string().min(1),
+        name: z.string().min(1),
         email: z.string().email(),
         password: z.string().min(1),
         descrption: z.string().min(1).optional(),
@@ -21,8 +20,7 @@ export const publicUserRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(users).values({
-        firstName: input.firstName,
-        lastName: input.lastName,
+        name: input.name,
         email: input.email,
         password: input.password,
       });
@@ -31,8 +29,7 @@ export const publicUserRouter = createTRPCRouter({
   validateUser: publicProcedure
     .input(
       z.object({
-        firstName: z.string().min(1),
-        lastName: z.string().min(1),
+        name: z.string().min(1),
         email: z.string().email(),
         password: z.string().min(1),
         descrption: z.string().min(1).optional(),
@@ -40,8 +37,7 @@ export const publicUserRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(users).values({
-        firstName: input.firstName,
-        lastName: input.lastName,
+        name: input.name,
         email: input.email,
         password: input.password,
       });

@@ -5,22 +5,19 @@ import {
   ChangeEvent,
   ReactNode,
   createContext,
-  useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
 
 export interface AuthData {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
 }
 
 const initialAuthData: AuthData = {
-  firstName: "",
-  lastName: "",
+  name: "",
   email: "",
   password: "",
 };
@@ -48,16 +45,6 @@ const AuthDataProvider = (props: { children: ReactNode }) => {
   return <AuthDataContext.Provider value={value} {...props} />;
 };
 
-const useAuthData = () => {
-  const context = useContext(AuthDataContext);
-
-  if (context === undefined) {
-    throw new Error("useAuthData must be used within a AuthDataProvider");
-  }
-
-  return context;
-};
-
 const AuthDataContext = createContext<IAuthDataContext | undefined>(undefined);
 
-export { AuthDataProvider, useAuthData };
+export { AuthDataProvider, AuthDataContext };

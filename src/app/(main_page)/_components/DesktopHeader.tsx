@@ -1,10 +1,19 @@
 "use client";
-
-import { Button } from "@/components/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui";
 import { Path } from "@/config";
 import logo from "@/public/logo.png";
 import clsx from "clsx";
-import { User2 } from "lucide-react";
+import { User, User2 } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { HTMLAttributes, forwardRef, useEffect, useState } from "react";
@@ -14,6 +23,7 @@ export const DesktopHeader = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { navigation: Navigation }
 >(({ className, navigation, ...props }, ref) => {
+  const session = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -54,14 +64,52 @@ export const DesktopHeader = forwardRef<
             </Link>
           </div>
           <Searchbar />
-          <div className="invisible flex items-center gap-4">
-            <Button asChild variant="link">
-              <Link href="/login" className="font-semibold">
-                <User2 className="mr-2 size-5" />
-                Sign in
-              </Link>
-            </Button>
-          </div>
+          {session.status === "loading" && <div className="invisible" />}
+
+          {session?.status === "authenticated" && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="rounded-full focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring"
+                >
+                  <Avatar>
+                    {session.data.user?.image && (
+                      <AvatarImage src={session.data.user.image} />
+                    )}
+                    <AvatarFallback>
+                      <User />
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>Liked recipes</DropdownMenuItem>
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                {session.data.user?.role !== "viewer" && (
+                  <Link href="/dashboard">
+                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  </Link>
+                )}
+                <DropdownMenuItem
+                  onClick={() => signOut()}
+                  className="text-red-600"
+                >
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          {session?.status === "unauthenticated" && (
+            <div className="flex items-center gap-4">
+              <Button asChild variant="link">
+                <Link href="/login" className="font-semibold">
+                  <User2 className="mr-2 size-5" />
+                  Sign in
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
       </header>
       <div

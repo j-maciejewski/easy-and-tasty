@@ -54,10 +54,10 @@ export default function () {
 
   const [sortField, setSortField] = useState<string | undefined>(undefined);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
-  const [resultsPerQuery, setResultsPerQuery] = useState(10);
-  const [page, setPage] = useState(1);
+  const [_resultsPerQuery, setResultsPerQuery] = useState(10);
+  const [_page, setPage] = useState(1);
 
-  const updateResultsPerQuery = (value: number) => {
+  const _updateResultsPerQuery = (value: number) => {
     setResultsPerQuery(value);
     setPage(1);
   };

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { HTMLAttributes, forwardRef } from "react";
 import { recipeImageSrcParser } from "../_utils";
 
-namespace RecipeCard {
+export namespace RecipeCard {
   export interface Props {
     recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
       RecipeRatingOptions;
@@ -12,7 +12,7 @@ namespace RecipeCard {
 export const RecipeCard = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & RecipeCard.Props
->(({ className, recipe, ...props }, ref) => {
+>(({ className, recipe, ...props }, _ref) => {
   return (
     <Link href={`/recipe/${recipe.slug}`} className="relative">
       <Image
@@ -22,6 +22,7 @@ export const RecipeCard = forwardRef<
         alt={recipe.title}
         loading="lazy"
         className="max-h-[325px] min-h-[325px] w-full min-w-[250px] object-cover transition ease-in-out hover:opacity-90"
+        {...props}
       />
       <h3
         className="absolute bottom-3 left-3 z-10 font-semibold text-2xl text-white"

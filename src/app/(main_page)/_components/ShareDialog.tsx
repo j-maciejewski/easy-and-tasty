@@ -15,7 +15,7 @@ import {
 import { Check, Copy, Facebook, Share2, Twitter } from "lucide-react";
 import { useState } from "react";
 
-namespace ShareDialog {
+export namespace ShareDialog {
   export interface Props {
     shareConfig: {
       path: string;
@@ -69,7 +69,7 @@ export const ShareDialog = ({ shareConfig }: ShareDialog.Props) => {
           Share {type === "recipe" ? "recipe" : "article"}
         </TooltipContent>
       </Tooltip>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="flex flex-col sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
             Share {type === "recipe" ? "recipe" : "article"}
@@ -91,20 +91,20 @@ export const ShareDialog = ({ shareConfig }: ShareDialog.Props) => {
             )}
           </Button>
         </div>
-        <div className="flex justify-between">
+        <div className="flex flex-wrap space-x-4 sm:justify-between">
           <Button
             onClick={shareOnFacebook}
             className="flex items-center space-x-2"
           >
             <Facebook className="h-5 w-5" />
-            <span>Share on Facebook</span>
+            <span className="max-sm:hidden">Share on Facebook</span>
           </Button>
           <Button
             onClick={shareOnTwitter}
             className="flex items-center space-x-2"
           >
             <Twitter className="h-5 w-5" />
-            <span>Share on Twitter</span>
+            <span className="max-sm:hidden">Share on Twitter</span>
           </Button>
         </div>
       </DialogContent>

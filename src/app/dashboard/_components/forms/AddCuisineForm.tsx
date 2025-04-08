@@ -29,7 +29,7 @@ const formSchema = z.object({
   }),
 });
 
-namespace AddCuisineForm {
+export namespace AddCuisineForm {
   export interface Props {
     onSubmit?: () => void;
   }

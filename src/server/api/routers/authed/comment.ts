@@ -18,7 +18,7 @@ export const authedCommentRouter = createTRPCRouter({
         text: input.text,
         recipeId: input.recipeId,
         replyId: input.replyId,
-        userId: 1,
+        userId: "1",
       });
     }),
 
@@ -27,7 +27,7 @@ export const authedCommentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: commentId }) => {
       await ctx.db
         .delete(comments)
-        .where(and(eq(comments.id, commentId), eq(comments.userId, 1)));
+        .where(and(eq(comments.id, commentId), eq(comments.userId, "1")));
     }),
 
   likeComment: authedProcedure
@@ -35,7 +35,7 @@ export const authedCommentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: commentId }) => {
       await ctx.db.insert(comment_likes).values({
         commentId,
-        userId: 1,
+        userId: "1",
       });
     }),
 
@@ -47,7 +47,7 @@ export const authedCommentRouter = createTRPCRouter({
         .where(
           and(
             eq(comment_likes.commentId, commentId),
-            eq(comment_likes.userId, 1),
+            eq(comment_likes.userId, "1"),
           ),
         );
     }),

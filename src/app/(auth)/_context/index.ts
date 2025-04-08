@@ -1,5 +1,5 @@
 export {
   AuthDataProvider,
-  useAuthData,
+  AuthDataContext,
   type AuthData,
 } from "./AuthDataProvider";

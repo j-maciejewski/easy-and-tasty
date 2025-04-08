@@ -31,7 +31,7 @@ const formSchema = z.object({
   }),
 });
 
-namespace AddPageForm {
+export namespace AddPageForm {
   export interface Props {
     onSubmit?: () => void;
   }

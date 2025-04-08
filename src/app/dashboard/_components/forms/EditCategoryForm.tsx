@@ -32,7 +32,7 @@ const formSchema = z.object({
   }),
 });
 
-namespace EditCategoryForm {
+export namespace EditCategoryForm {
   export interface Props {
     categoryId: number;
     onSubmit?: () => void;
@@ -43,7 +43,7 @@ export function EditCategoryForm({
   categoryId,
   onSubmit,
 }: EditCategoryForm.Props) {
-  const { data, error, isLoading } =
+  const { data, isLoading } =
     api.protected.category.getCategory.useQuery(categoryId);
 
   const editCategory = api.protected.category.editCategory.useMutation();

@@ -8,6 +8,7 @@ export enum Path {
   // Auth
   LOGIN = "/login",
   SIGN_UP = "/sign-up",
+  FORGOT_PASSWORD = "/forgot-password",
   RESET_PASSWORD = "/reset-password",
 
   // Dashboard
