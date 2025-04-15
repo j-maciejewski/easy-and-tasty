@@ -26,7 +26,7 @@ import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { LoaderCircle, Plus, X } from "lucide-react";
 import { redirect } from "next/navigation";
 import { use, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { CategoriesContext, CuisinesContext } from "../../_context";
@@ -119,7 +119,7 @@ export function EditRecipeForm({
   })();
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as Resolver<z.infer<typeof formSchema>>,
     values: data
       ? {
           title: data.title,

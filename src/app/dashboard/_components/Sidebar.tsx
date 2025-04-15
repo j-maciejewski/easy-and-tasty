@@ -29,6 +29,7 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
+import { LinkSpinner } from "./LinkSpinner";
 
 const items: { label: string; url: string; icon: FC }[] = [
   {
@@ -101,6 +102,7 @@ export const Sidebar = () => {
                     <Link href={item.url}>
                       <item.icon />
                       <span>{item.label}</span>
+                      <LinkSpinner className="ml-auto" />
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

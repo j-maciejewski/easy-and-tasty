@@ -6,6 +6,7 @@ export { DataTable } from "./DataTable";
 export { MultiSelect } from "./MultiSelect";
 export { Header } from "./Header";
 export { Sidebar } from "./Sidebar";
+export { LinkSpinner } from "./LinkSpinner";
 
 // Forms
 export { AddRecipeForm } from "./forms/AddRecipeForm";

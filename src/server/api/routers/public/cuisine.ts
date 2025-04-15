@@ -10,6 +10,14 @@ export const publicCuisineRouter = createTRPCRouter({
     });
   }),
 
+  getCuisinesSlugs: publicProcedure.query(({ ctx }) => {
+    return ctx.db.query.cuisines.findMany({
+      columns: {
+        slug: true,
+      },
+    });
+  }),
+
   getCuisineBySlug: publicProcedure
     .input(z.string())
     .query(({ ctx, input: cuisineSlug }) => {

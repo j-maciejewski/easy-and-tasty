@@ -22,6 +22,10 @@ export async function generateMetadata({
   };
 }
 
+export async function generateStaticParams() {
+  return await api.public.category.getCategoriesSlugs();
+}
+
 export default async function ({
   params,
 }: { params: Promise<{ slug: string }> }) {

@@ -10,6 +10,14 @@ export const publicCategoryRouter = createTRPCRouter({
     });
   }),
 
+  getCategoriesSlugs: publicProcedure.query(({ ctx }) => {
+    return ctx.db.query.categories.findMany({
+      columns: {
+        slug: true,
+      },
+    });
+  }),
+
   getCategoryBySlug: publicProcedure
     .input(z.string())
     .query(({ ctx, input: categorySlug }) => {

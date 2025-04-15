@@ -22,6 +22,10 @@ export async function generateMetadata({
   };
 }
 
+export async function generateStaticParams() {
+  return await api.public.cuisine.getCuisinesSlugs();
+}
+
 export default async function ({
   params,
 }: { params: Promise<{ slug: string }> }) {
