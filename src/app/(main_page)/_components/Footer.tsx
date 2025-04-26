@@ -29,7 +29,7 @@ export const Footer = ({
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  href="#"
+                  href="/categories"
                   className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
                 >
                   Categories
@@ -37,7 +37,7 @@ export const Footer = ({
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/cuisines"
                   className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
                 >
                   Cuisines
@@ -45,7 +45,7 @@ export const Footer = ({
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/all-recipes"
                   className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
                 >
                   All recipes

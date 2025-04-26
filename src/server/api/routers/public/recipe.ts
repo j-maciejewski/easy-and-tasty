@@ -7,7 +7,7 @@ import {
   recipe_ratings,
   recipes,
 } from "@/server/db/schema";
-import { eq, ilike, sql } from "drizzle-orm";
+import { and, count, desc, eq, gt, ilike, lt, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const publicRecipeRouter = createTRPCRouter({
@@ -99,6 +99,82 @@ export const publicRecipeRouter = createTRPCRouter({
       });
     }),
 
+  getInfiniteAllRecipes: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().default(12),
+        cursor: z.string().optional(),
+        sortBy: z.enum(["title", "createdAt"]).default("createdAt"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const query = ctx.db
+        .select({
+          id: recipes.id,
+          title: recipes.title,
+          description: recipes.description,
+          image: recipes.image,
+          createdAt: recipes.createdAt,
+          slug: recipes.slug,
+          time: recipes.time,
+          difficulty: recipes.difficulty,
+          servings: recipes.servings,
+          avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
+          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+        })
+        .from(recipes)
+        .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+        .innerJoin(
+          recipe_categories,
+          eq(recipes.id, recipe_categories.recipeId),
+        )
+        .innerJoin(categories, eq(recipe_categories.categoryId, categories.id))
+        .where(
+          and(
+            input.cursor
+              ? input.sortBy === "createdAt"
+                ? lt(recipes[input.sortBy], new Date(input.cursor))
+                : input.sortBy === "title"
+                  ? gt(recipes.title, input.cursor)
+                  : undefined
+              : undefined,
+          ),
+        )
+        .groupBy(recipes.id)
+        .orderBy(
+          input.sortBy === "createdAt"
+            ? desc(recipes.createdAt)
+            : recipes.title,
+        )
+        .limit(input.limit);
+
+      const results = await query.execute();
+
+      const lastResult =
+        results.length > 0
+          ? (results[results.length - 1] as (typeof results)[number])
+          : null;
+
+      const nextCursor = lastResult
+        ? input.sortBy === "createdAt"
+          ? lastResult.createdAt.toISOString()
+          : lastResult.title
+        : null;
+
+      return {
+        recipes: results,
+        nextCursor,
+      };
+    }),
+
+  getTotalRecipesCount: publicProcedure.query(({ ctx }) => {
+    return ctx.db
+      .select({
+        count: count(),
+      })
+      .from(recipes);
+  }),
+
   getRecipesByCategory: publicProcedure
     .input(
       z.object({
@@ -135,6 +211,96 @@ export const publicRecipeRouter = createTRPCRouter({
         .limit(input.limit);
     }),
 
+  getInfiniteRecipesByCategory: publicProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+        limit: z.number().default(12),
+        cursor: z.string().optional(),
+        sortBy: z.enum(["title", "createdAt"]).default("createdAt"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const query = ctx.db
+        .select({
+          id: recipes.id,
+          title: recipes.title,
+          description: recipes.description,
+          image: recipes.image,
+          createdAt: recipes.createdAt,
+          slug: recipes.slug,
+          time: recipes.time,
+          difficulty: recipes.difficulty,
+          servings: recipes.servings,
+          avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
+          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+        })
+        .from(recipes)
+        .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+        .innerJoin(
+          recipe_categories,
+          eq(recipes.id, recipe_categories.recipeId),
+        )
+        .innerJoin(categories, eq(recipe_categories.categoryId, categories.id))
+        .where(
+          and(
+            eq(categories.slug, input.slug),
+            input.cursor
+              ? input.sortBy === "createdAt"
+                ? lt(recipes[input.sortBy], new Date(input.cursor))
+                : input.sortBy === "title"
+                  ? gt(recipes.title, input.cursor)
+                  : undefined
+              : undefined,
+          ),
+        )
+        .groupBy(recipes.id)
+        .orderBy(
+          input.sortBy === "createdAt"
+            ? desc(recipes.createdAt)
+            : recipes.title,
+        )
+        .limit(input.limit);
+
+      const results = await query.execute();
+
+      const lastResult =
+        results.length > 0
+          ? (results[results.length - 1] as (typeof results)[number])
+          : null;
+
+      const nextCursor = lastResult
+        ? input.sortBy === "createdAt"
+          ? lastResult.createdAt.toISOString()
+          : lastResult.title
+        : null;
+
+      return {
+        recipes: results,
+        nextCursor,
+      };
+    }),
+
+  getRecipesByCategoryCount: publicProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      return ctx.db
+        .select({
+          count: count(),
+        })
+        .from(recipes)
+        .innerJoin(
+          recipe_categories,
+          eq(recipes.id, recipe_categories.recipeId),
+        )
+        .innerJoin(categories, eq(recipe_categories.categoryId, categories.id))
+        .where(eq(categories.slug, input.slug));
+    }),
+
   getRecipesByCuisine: publicProcedure
     .input(
       z.object({
@@ -166,5 +332,89 @@ export const publicRecipeRouter = createTRPCRouter({
         .groupBy(recipes.id)
         .offset(input.offset)
         .limit(input.limit);
+    }),
+
+  getInfiniteRecipesByCuisine: publicProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+        limit: z.number().default(12),
+        cursor: z.string().optional(),
+        sortBy: z.enum(["title", "createdAt"]).default("createdAt"),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const query = ctx.db
+        .select({
+          id: recipes.id,
+          title: recipes.title,
+          description: recipes.description,
+          image: recipes.image,
+          createdAt: recipes.createdAt,
+          slug: recipes.slug,
+          time: recipes.time,
+          difficulty: recipes.difficulty,
+          servings: recipes.servings,
+          avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
+          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+        })
+        .from(recipes)
+        .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+        .innerJoin(recipe_cuisines, eq(recipes.id, recipe_cuisines.recipeId))
+        .innerJoin(cuisines, eq(recipe_cuisines.cuisineId, cuisines.id))
+        .where(
+          and(
+            eq(cuisines.slug, input.slug),
+            input.cursor
+              ? input.sortBy === "createdAt"
+                ? lt(recipes[input.sortBy], new Date(input.cursor))
+                : input.sortBy === "title"
+                  ? gt(recipes.title, input.cursor)
+                  : undefined
+              : undefined,
+          ),
+        )
+        .groupBy(recipes.id)
+        .orderBy(
+          input.sortBy === "createdAt"
+            ? desc(recipes.createdAt)
+            : recipes.title,
+        )
+        .limit(input.limit);
+
+      const results = await query.execute();
+
+      const lastResult =
+        results.length > 0
+          ? (results[results.length - 1] as (typeof results)[number])
+          : null;
+
+      const nextCursor = lastResult
+        ? input.sortBy === "createdAt"
+          ? lastResult.createdAt.toISOString()
+          : lastResult.title
+        : null;
+
+      return {
+        recipes: results,
+        nextCursor,
+      };
+    }),
+
+  getRecipesByCuisineCount: publicProcedure
+    .input(
+      z.object({
+        slug: z.string(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      return ctx.db
+        .select({
+          count: count(),
+        })
+        .from(recipes)
+        .innerJoin(recipe_cuisines, eq(recipes.id, recipe_cuisines.recipeId))
+        .innerJoin(cuisines, eq(recipe_cuisines.cuisineId, cuisines.id))
+        .where(eq(cuisines.slug, input.slug));
     }),
 });

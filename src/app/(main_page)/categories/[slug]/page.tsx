@@ -3,8 +3,8 @@ import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cache } from "react";
-import { Breadcrumbs, RecipeCard } from "../../_components";
+import { Suspense, cache } from "react";
+import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "../../_components";
 
 const fetchCategory = cache((slug: string) => {
   return api.public.category.getCategoryBySlug(slug);
@@ -29,10 +29,14 @@ export async function generateStaticParams() {
 export default async function ({
   params,
 }: { params: Promise<{ slug: string }> }) {
-  const category = await fetchCategory((await params).slug);
-  const recipes = await api.public.recipe.getRecipesByCategory({
-    slug: (await params).slug,
-  });
+  const categorySlug = (await params).slug;
+
+  const [category, [countResponse]] = await Promise.all([
+    fetchCategory(categorySlug),
+    api.public.recipe.getRecipesByCategoryCount({
+      slug: categorySlug,
+    }),
+  ]);
 
   if (!category) notFound();
 
@@ -47,13 +51,22 @@ export default async function ({
       <h2 className="~mb-4/6 ~text-2xl/4xl font-semibold tracking-normal">
         {category.name}
       </h2>
-      <h6 className="~mb-4/6 text-gray-800 text-md">{category.description}</h6>
+      <h6 className="text-gray-800 text-md">{category.description}</h6>
       <Separator className="~my-4/6" />
-      <div className="~gap-4/6 grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
-        {recipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
-        ))}
+      <h4 className="~mb-2/3 ~text-xl/3xl text-center font-semibold tracking-normal">
+        Explore {category.name} recipes
+      </h4>
+      <div className="~mb-4/6 flex justify-between">
+        <p className="content-center text-md">
+          {countResponse && `Recipes: ${countResponse.count}`}
+        </p>
+        <Suspense>
+          <SortSelect />
+        </Suspense>
       </div>
+      <Suspense>
+        <InfiniteRecipeList slug={categorySlug} type="category" />
+      </Suspense>
     </div>
   );
 }

@@ -15,3 +15,5 @@ export { MobileSearch } from "./MobileSearch";
 export { MobileNavigation } from "./MobileNavigation";
 export { FullWidthWrapper } from "./FullWidthWrapper";
 export { Footer } from "./Footer";
+export { InfiniteRecipeList } from "./InfiniteRecipeList";
+export { SortSelect } from "./SortSelect";

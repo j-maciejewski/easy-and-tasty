@@ -84,14 +84,14 @@ export default async function ({
         <div className="mt-6 flex flex-wrap gap-4 font-bold text-sm text-white">
           {recipe.categories.map((category) => (
             <Link key={category.name} href={`/categories/${category.slug}`}>
-              <div className="select-none bg-primary px-3 py-2 hover:bg-primary/75">
+              <div className="select-none rounded bg-primary px-2 py-1 text-primary text-white hover:bg-primary/75">
                 {category.name}
               </div>
             </Link>
           ))}
           {recipe.cuisines.map((cuisine) => (
-            <Link key={cuisine.name} href={`/categories/${cuisine.slug}`}>
-              <div className="select-none bg-primary px-3 py-2 hover:bg-primary/75">
+            <Link key={cuisine.name} href={`/cuisines/${cuisine.slug}`}>
+              <div className="select-none rounded bg-primary px-2 py-1 text-primary text-white hover:bg-primary/75">
                 {cuisine.name}
               </div>
             </Link>

@@ -3,8 +3,8 @@ import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cache } from "react";
-import { Breadcrumbs, RecipeCard } from "../../_components";
+import { Suspense, cache } from "react";
+import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "../../_components";
 
 const fetchCuisine = cache((slug: string) => {
   return api.public.cuisine.getCuisineBySlug(slug);
@@ -29,10 +29,14 @@ export async function generateStaticParams() {
 export default async function ({
   params,
 }: { params: Promise<{ slug: string }> }) {
-  const cuisine = await fetchCuisine((await params).slug);
-  const recipes = await api.public.recipe.getRecipesByCuisine({
-    slug: (await params).slug,
-  });
+  const cuisineSlug = (await params).slug;
+
+  const [cuisine, [countResponse]] = await Promise.all([
+    fetchCuisine(cuisineSlug),
+    api.public.recipe.getRecipesByCuisineCount({
+      slug: cuisineSlug,
+    }),
+  ]);
 
   if (!cuisine) notFound();
 
@@ -49,11 +53,20 @@ export default async function ({
       </h2>
       <h6 className="text-gray-800 text-md">{cuisine.description}</h6>
       <Separator className="~my-4/6" />
-      <div className="~gap-4/6 grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">
-        {recipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
-        ))}
+      <h4 className="~mb-2/3 ~text-xl/3xl text-center font-semibold tracking-normal">
+        Explore {cuisine.name} recipes
+      </h4>
+      <div className="~mb-4/6 flex justify-between">
+        <p className="content-center text-md">
+          {countResponse && `Recipes: ${countResponse.count}`}
+        </p>
+        <Suspense>
+          <SortSelect />
+        </Suspense>
       </div>
+      <Suspense>
+        <InfiniteRecipeList slug={cuisineSlug} type="cuisine" />
+      </Suspense>
     </div>
   );
 }
