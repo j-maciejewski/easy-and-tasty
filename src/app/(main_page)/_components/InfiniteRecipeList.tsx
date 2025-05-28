@@ -79,8 +79,6 @@ export const InfiniteRecipeList = (props: InfiniteRecipeList.Props) => {
     return <div>No recipes found.</div>;
   }
 
-  console.log(recipes);
-
   return (
     <>
       <div className="~gap-4/6 grid grid-cols-[repeat(auto-fill,_minmax(250px,_1fr))]">

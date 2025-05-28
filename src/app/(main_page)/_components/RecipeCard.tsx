@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { HTMLAttributes, forwardRef } from "react";
-import { recipeImageSrcParser } from "../_utils";
 
 export namespace RecipeCard {
   export interface Props {
@@ -16,7 +15,7 @@ export const RecipeCard = forwardRef<
   return (
     <Link href={`/recipe/${recipe.slug}`} className="relative">
       <Image
-        src={recipeImageSrcParser(recipe.image)}
+        src={recipe.image}
         width={400}
         height={600}
         alt={recipe.title}

@@ -66,7 +66,7 @@ export default function () {
     data: pages,
     isLoading,
     error,
-  } = api.protected.page.getPages.useQuery();
+  } = api.authorized.page.getPages.useQuery();
 
   const toggleSort = (field: string) => {
     if (sortField === field) {

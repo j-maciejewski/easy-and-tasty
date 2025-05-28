@@ -83,9 +83,10 @@ export function EditRecipeForm({
   cuisines,
   onSubmit,
 }: EditRecipeForm.Props) {
-  const { data, isLoading } = api.protected.recipe.getRecipe.useQuery(recipeId);
+  const { data, isLoading } =
+    api.authorized.recipe.getRecipe.useQuery(recipeId);
 
-  const editRecipe = api.protected.recipe.editRecipe.useMutation();
+  const editRecipe = api.authorized.recipe.editRecipe.useMutation();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
 
   const categoryOptions = (() => {

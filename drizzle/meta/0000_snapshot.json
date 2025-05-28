@@ -1,5 +1,5 @@
 {
-  "id": "2df830e8-c36d-4229-b0cd-1c8ecfce197b",
+  "id": "5e4caa7b-d39d-4422-b856-2560cafcc2fb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -456,7 +456,7 @@
         },
         "image": {
           "name": "image",
-          "type": "varchar(2048)",
+          "type": "varchar(1024)",
           "primaryKey": false,
           "notNull": false
         },
@@ -511,6 +511,64 @@
           ]
         }
       },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.easy-and-tasty_recipe_bookmark": {
+      "name": "easy-and-tasty_recipe_bookmark",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recipe_id": {
+          "name": "recipe_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "easy-and-tasty_recipe_bookmark_user_id_easy-and-tasty_user_id_fk": {
+          "name": "easy-and-tasty_recipe_bookmark_user_id_easy-and-tasty_user_id_fk",
+          "tableFrom": "easy-and-tasty_recipe_bookmark",
+          "tableTo": "easy-and-tasty_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "easy-and-tasty_recipe_bookmark_recipe_id_easy-and-tasty_recipe_id_fk": {
+          "name": "easy-and-tasty_recipe_bookmark_recipe_id_easy-and-tasty_recipe_id_fk",
+          "tableFrom": "easy-and-tasty_recipe_bookmark",
+          "tableTo": "easy-and-tasty_recipe",
+          "columnsFrom": [
+            "recipe_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -695,64 +753,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.easy-and-tasty_recipe_save": {
-      "name": "easy-and-tasty_recipe_save",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "recipe_id": {
-          "name": "recipe_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "easy-and-tasty_recipe_save_user_id_easy-and-tasty_user_id_fk": {
-          "name": "easy-and-tasty_recipe_save_user_id_easy-and-tasty_user_id_fk",
-          "tableFrom": "easy-and-tasty_recipe_save",
-          "tableTo": "easy-and-tasty_user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "easy-and-tasty_recipe_save_recipe_id_easy-and-tasty_recipe_id_fk": {
-          "name": "easy-and-tasty_recipe_save_recipe_id_easy-and-tasty_recipe_id_fk",
-          "tableFrom": "easy-and-tasty_recipe_save",
-          "tableTo": "easy-and-tasty_recipe",
-          "columnsFrom": [
-            "recipe_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.easy-and-tasty_recipe": {
       "name": "easy-and-tasty_recipe",
       "schema": "",
@@ -784,7 +784,7 @@
         },
         "image": {
           "name": "image",
-          "type": "varchar(2048)",
+          "type": "varchar(1024)",
           "primaryKey": false,
           "notNull": true
         },
@@ -842,6 +842,59 @@
           "nullsNotDistinct": false,
           "columns": [
             "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.easy-and-tasty_seo": {
+      "name": "easy-and-tasty_seo",
+      "schema": "",
+      "columns": {
+        "staticPageType": {
+          "name": "staticPageType",
+          "type": "staticPageType",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar(1024)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "easy-and-tasty_seo_staticPageType_unique": {
+          "name": "easy-and-tasty_seo_staticPageType_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "staticPageType"
+          ]
+        },
+        "easy-and-tasty_seo_title_unique": {
+          "name": "easy-and-tasty_seo_title_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "title"
           ]
         }
       },
@@ -1019,6 +1072,16 @@
         "viewer",
         "editor",
         "admin"
+      ]
+    },
+    "public.staticPageType": {
+      "name": "staticPageType",
+      "schema": "public",
+      "values": [
+        "home",
+        "categories",
+        "cuisines",
+        "recipes"
       ]
     }
   },

@@ -2,6 +2,7 @@ import { Separator } from "@/components/ui";
 import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
 import clsx from "clsx";
+import { Metadata } from "next";
 import { merienda } from "../fonts";
 import {
   Banner,
@@ -11,14 +12,23 @@ import {
   ScrollableRecipes,
 } from "./_components";
 
-export function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await api.public.seo.getSeo("home");
+
   return {
-    title: `Home | ${APP_NAME}`,
+    title: `${seo?.title ?? "Home"} | ${APP_NAME}`,
+    description: seo?.description,
+    openGraph: {
+      ...(seo?.image ? { images: { url: seo.image } } : {}),
+    },
+    twitter: {
+      card: seo?.image ? "summary_large_image" : "summary",
+    },
   };
 }
 
 export default async function () {
-  const recipes = await api.public.recipe.getRandomRecipes(2);
+  const recipes = await api.public.recipe.getRandomRecipes(5);
 
   return (
     <>

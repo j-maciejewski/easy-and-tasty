@@ -50,7 +50,7 @@ export const recipes = createTable("recipe", {
   title: varchar("title", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 1024 }).notNull(),
   difficulty: difficultyEnum("difficulty").notNull(),
-  image: varchar("image", { length: 2048 }).notNull(),
+  image: varchar("image", { length: 1024 }).notNull(),
   content: varchar("content", { length: 2048 }).notNull(),
   servings: integer("servings").notNull(), // 1, 2, 3 and so
   slug: varchar("slug", { length: 256 }).notNull().unique(),
@@ -98,7 +98,7 @@ export const comment_likes = createTable("comment_like", {
     .references(() => comments.id),
 });
 
-export const recipe_saves = createTable("recipe_save", {
+export const recipe_bookmarks = createTable("recipe_bookmark", {
   id: serial("id").primaryKey(),
   userId: text("user_id")
     .notNull()
@@ -145,7 +145,7 @@ export const cuisines = createTable("cuisine", {
 export const pages = createTable("page", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 256 }).notNull().unique(),
-  image: varchar("image", { length: 2048 }),
+  image: varchar("image", { length: 1024 }),
   slug: varchar("slug", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 256 }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
@@ -153,6 +153,20 @@ export const pages = createTable("page", {
     .notNull(),
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
   publishedAt: timestamp("publishedAt", { withTimezone: true }),
+});
+
+export const staticPageTypeEnum = pgEnum("staticPageType", [
+  "home",
+  "categories",
+  "cuisines",
+  "recipes",
+]);
+
+export const seo = createTable("seo", {
+  pageType: staticPageTypeEnum("staticPageType").notNull().unique(),
+  title: varchar("title", { length: 256 }).notNull().unique(),
+  description: varchar("description", { length: 256 }).notNull(),
+  image: varchar("image", { length: 1024 }),
 });
 
 export const accounts = createTable(

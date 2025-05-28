@@ -44,8 +44,8 @@ export default function () {
     data: cuisines,
     isLoading,
     error,
-  } = api.protected.cuisine.getCuisines.useQuery();
-  const deleteCuisine = api.protected.cuisine.deleteCuisine.useMutation();
+  } = api.authorized.cuisine.getCuisines.useQuery();
+  const deleteCuisine = api.authorized.cuisine.deleteCuisine.useMutation();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function () {
     } catch (error) {
       toast.error(
         (error as Error)?.message ??
-          "There was an error while deleting the cuisine.",
+        "There was an error while deleting the cuisine.",
       );
     }
   }
@@ -86,46 +86,46 @@ export default function () {
     sortKey?: string;
     hidden?: boolean;
   }[] = [
-    {
-      label: "Name",
-      sortKey: "name",
-      render: ({ name }) => name,
-    },
-    {
-      label: "Slug",
-      sortKey: "slug",
-      render: ({ slug }) => slug,
-    },
-    {
-      label: "Description",
-      sortKey: "description",
-      render: ({ description }) => description,
-    },
-    {
-      label: "Actions",
-      render: ({ id }) => (
-        <DropdownActions>
-          <DropdownMenuItem>
-            {settings.formsInModals ? (
-              <button type="button" onClick={() => setEditedCuisine(id)}>
-                Edit Cuisine
-              </button>
-            ) : (
-              <Link href={`${Path.DASHBOARD_CUISINES}/edit/${id}`}>
-                Edit Cuisine
-              </Link>
-            )}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="text-red-600"
-            onClick={() => handleDeleteCuisine(id)}
-          >
-            Delete Cuisine
-          </DropdownMenuItem>
-        </DropdownActions>
-      ),
-    },
-  ];
+      {
+        label: "Name",
+        sortKey: "name",
+        render: ({ name }) => name,
+      },
+      {
+        label: "Slug",
+        sortKey: "slug",
+        render: ({ slug }) => slug,
+      },
+      {
+        label: "Description",
+        sortKey: "description",
+        render: ({ description }) => description,
+      },
+      {
+        label: "Actions",
+        render: ({ id }) => (
+          <DropdownActions>
+            <DropdownMenuItem>
+              {settings.formsInModals ? (
+                <button type="button" onClick={() => setEditedCuisine(id)}>
+                  Edit Cuisine
+                </button>
+              ) : (
+                <Link href={`${Path.DASHBOARD_CUISINES}/edit/${id}`}>
+                  Edit Cuisine
+                </Link>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => handleDeleteCuisine(id)}
+            >
+              Delete Cuisine
+            </DropdownMenuItem>
+          </DropdownActions>
+        ),
+      },
+    ];
 
   const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
 
@@ -145,8 +145,8 @@ export default function () {
     const filteredCuisines =
       searchTerm !== ""
         ? cuisines?.filter((cuisine) =>
-            cuisine.name.toLowerCase().includes(searchTerm.toLowerCase()),
-          )
+          cuisine.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        )
         : [...cuisines];
 
     if (sortField !== undefined) {

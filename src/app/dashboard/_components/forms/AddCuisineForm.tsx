@@ -36,7 +36,7 @@ export namespace AddCuisineForm {
 }
 
 export function AddCuisineForm({ onSubmit }: AddCuisineForm.Props) {
-  const addCuisine = api.protected.cuisine.addCuisine.useMutation();
+  const addCuisine = api.authorized.cuisine.addCuisine.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

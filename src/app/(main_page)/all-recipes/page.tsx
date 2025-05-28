@@ -1,12 +1,22 @@
 import { Separator } from "@/components/ui";
 import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
+import { Metadata } from "next";
 import { Suspense } from "react";
 import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "../_components";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await api.public.seo.getSeo("recipes");
+
   return {
-    title: `All recipes | ${APP_NAME}`,
+    title: `${seo?.title ?? "All recipes"} | ${APP_NAME}`,
+    description: seo?.description,
+    openGraph: {
+      ...(seo?.image ? { images: { url: seo.image } } : {}),
+    },
+    twitter: {
+      card: seo?.image ? "summary_large_image" : "summary",
+    },
   };
 }
 

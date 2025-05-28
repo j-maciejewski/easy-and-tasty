@@ -44,9 +44,9 @@ export function EditCategoryForm({
   onSubmit,
 }: EditCategoryForm.Props) {
   const { data, isLoading } =
-    api.protected.category.getCategory.useQuery(categoryId);
+    api.authorized.category.getCategory.useQuery(categoryId);
 
-  const editCategory = api.protected.category.editCategory.useMutation();
+  const editCategory = api.authorized.category.editCategory.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

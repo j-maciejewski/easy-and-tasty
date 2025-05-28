@@ -1,11 +1,21 @@
 import { APP_NAME } from "@/consts";
 import { api } from "@/trpc/server";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "../_components";
 
-export function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await api.public.seo.getSeo("cuisines");
+
   return {
-    title: `Cuisines | ${APP_NAME}`,
+    title: `${seo?.title ?? "Cuisines"} | ${APP_NAME}`,
+    description: seo?.description,
+    openGraph: {
+      ...(seo?.image ? { images: { url: seo.image } } : {}),
+    },
+    twitter: {
+      card: seo?.image ? "summary_large_image" : "summary",
+    },
   };
 }
 
@@ -20,10 +30,10 @@ export default async function () {
         Browse all cuisines
       </h2>
 
-      <div className="mt-6 flex flex-wrap gap-3 rounded bg-primary/50 p-4 font-bold text-sm uppercase">
+      <div className="mt-6 flex select-none flex-wrap gap-3 rounded bg-primary/50 p-4 font-bold text-primary text-sm">
         {cuisines.map((cuisine) => (
           <Link key={cuisine.name} href={`/cuisines/${cuisine.slug}`}>
-            <div className="select-none rounded bg-white px-2 py-1 text-primary hover:bg-slate-100">
+            <div className="rounded bg-white px-2 py-1 hover:bg-slate-100">
               {cuisine.name}
             </div>
           </Link>

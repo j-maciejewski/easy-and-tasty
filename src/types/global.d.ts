@@ -1,4 +1,4 @@
-import { recipes } from "@/server/db/schema";
+import { recipes, seo } from "@/server/db/schema";
 import type { DefaultSession, User as TUser } from "next-auth";
 
 declare global {
@@ -24,6 +24,8 @@ declare global {
         }
     )[];
   };
+
+  type Seo = typeof seo.$inferSelect;
 }
 
 declare module "next-auth" {
@@ -31,7 +33,7 @@ declare module "next-auth" {
     user: {
       id: string;
       role?: string;
-      preferences?: string | null;
+      preferences?: { dashboard?: { formsInModals?: boolean } } | null;
     } & DefaultSession["user"];
   }
 

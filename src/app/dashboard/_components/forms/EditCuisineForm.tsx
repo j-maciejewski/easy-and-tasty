@@ -43,9 +43,9 @@ export function EditCuisineForm({
   onSubmit,
 }: EditCuisineForm.Props) {
   const { data, isLoading } =
-    api.protected.cuisine.getCuisine.useQuery(cuisineId);
+    api.authorized.cuisine.getCuisine.useQuery(cuisineId);
 
-  const editCuisine = api.protected.cuisine.editCuisine.useMutation();
+  const editCuisine = api.authorized.cuisine.editCuisine.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

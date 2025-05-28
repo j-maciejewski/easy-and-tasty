@@ -14,7 +14,6 @@ import { ChevronRight, Timer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { recipeImageSrcParser } from "../_utils";
 import { Rating } from "./Rating";
 
 export namespace RecipesCarousel {
@@ -49,7 +48,7 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
               <div className="m-[1px] flex overflow-hidden shadow max-md:flex-col">
                 <div className="max-md:w-full md:w-2/5 md:min-w-[40%]">
                   <Image
-                    src={recipeImageSrcParser(recipe.image)}
+                    src={recipe.image}
                     width={400}
                     height={600}
                     alt={recipe.title}

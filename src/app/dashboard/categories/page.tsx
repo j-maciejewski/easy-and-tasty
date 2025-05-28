@@ -44,8 +44,8 @@ export default function () {
     data: categories,
     isLoading,
     error,
-  } = api.protected.category.getCategories.useQuery();
-  const deleteCategory = api.protected.category.deleteCategory.useMutation();
+  } = api.authorized.category.getCategories.useQuery();
+  const deleteCategory = api.authorized.category.deleteCategory.useMutation();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -68,7 +68,7 @@ export default function () {
     } catch (error) {
       toast.error(
         (error as Error)?.message ??
-          "There was an error while deleting the category.",
+        "There was an error while deleting the category.",
       );
     }
   }
@@ -86,46 +86,46 @@ export default function () {
     sortKey?: string;
     hidden?: boolean;
   }[] = [
-    {
-      label: "Name",
-      sortKey: "name",
-      render: ({ name }) => name,
-    },
-    {
-      label: "Slug",
-      sortKey: "slug",
-      render: ({ slug }) => slug,
-    },
-    {
-      label: "Description",
-      sortKey: "description",
-      render: ({ description }) => description,
-    },
-    {
-      label: "Actions",
-      render: ({ id }) => (
-        <DropdownActions>
-          <DropdownMenuItem>
-            {settings.formsInModals ? (
-              <button type="button" onClick={() => setEditedCategory(id)}>
-                Edit Category
-              </button>
-            ) : (
-              <Link href={`${Path.DASHBOARD_CATEGORIES}/edit/${id}`}>
-                Edit Category
-              </Link>
-            )}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="text-red-600"
-            onClick={() => handleDeleteCategory(id)}
-          >
-            Delete Category
-          </DropdownMenuItem>
-        </DropdownActions>
-      ),
-    },
-  ];
+      {
+        label: "Name",
+        sortKey: "name",
+        render: ({ name }) => name,
+      },
+      {
+        label: "Slug",
+        sortKey: "slug",
+        render: ({ slug }) => slug,
+      },
+      {
+        label: "Description",
+        sortKey: "description",
+        render: ({ description }) => description,
+      },
+      {
+        label: "Actions",
+        render: ({ id }) => (
+          <DropdownActions>
+            <DropdownMenuItem>
+              {settings.formsInModals ? (
+                <button type="button" onClick={() => setEditedCategory(id)}>
+                  Edit Category
+                </button>
+              ) : (
+                <Link href={`${Path.DASHBOARD_CATEGORIES}/edit/${id}`}>
+                  Edit Category
+                </Link>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-600"
+              onClick={() => handleDeleteCategory(id)}
+            >
+              Delete Category
+            </DropdownMenuItem>
+          </DropdownActions>
+        ),
+      },
+    ];
 
   const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
 
@@ -145,8 +145,8 @@ export default function () {
     const filteredCategories =
       searchTerm !== ""
         ? categories?.filter((category) =>
-            category.name.toLowerCase().includes(searchTerm.toLowerCase()),
-          )
+          category.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        )
         : [...categories];
 
     if (sortField !== undefined) {

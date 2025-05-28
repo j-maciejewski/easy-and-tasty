@@ -14,7 +14,6 @@ import {
   RecipesList,
   ScrollableRecipes,
 } from "../../_components";
-import { recipeImageSrcParser } from "../../_utils";
 
 const fetchRecipe = cache(async (slug: string) => {
   return (await api.public.recipe.getRecipeBySlug(slug))[0];
@@ -70,7 +69,7 @@ export default async function ({
         <RecipeInformation recipe={recipe} className="!justify-start ~mb-4/6" />
         <div className="~mb-4/6 max-h-[700px] overflow-hidden rounded-lg">
           <Image
-            src={recipeImageSrcParser(recipe.image)}
+            src={recipe.image}
             width={400}
             height={600}
             alt={recipe.title}
@@ -81,17 +80,17 @@ export default async function ({
         <article className="prose prose-slate mt-6 max-w-full">
           <Markdown>{recipe.content}</Markdown>
         </article>
-        <div className="mt-6 flex flex-wrap gap-4 font-bold text-sm text-white">
+        <div className="mt-6 flex select-none flex-wrap gap-4 font-bold text-sm text-white">
           {recipe.categories.map((category) => (
             <Link key={category.name} href={`/categories/${category.slug}`}>
-              <div className="select-none rounded bg-primary px-2 py-1 text-primary text-white hover:bg-primary/75">
+              <div className="rounded bg-primary px-2 py-1 hover:bg-primary/75">
                 {category.name}
               </div>
             </Link>
           ))}
           {recipe.cuisines.map((cuisine) => (
             <Link key={cuisine.name} href={`/cuisines/${cuisine.slug}`}>
-              <div className="select-none rounded bg-primary px-2 py-1 text-primary text-white hover:bg-primary/75">
+              <div className="rounded bg-primary px-2 py-1 hover:bg-primary/75">
                 {cuisine.name}
               </div>
             </Link>

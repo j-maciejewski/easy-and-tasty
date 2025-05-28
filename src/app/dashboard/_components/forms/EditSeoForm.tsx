@@ -22,40 +22,52 @@ const formSchema = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters.",
   }),
-  slug: z.string().min(2, {
-    message: "Slug must be at least 2 characters.",
-  }),
-  image: z.string(),
   description: z.string().min(2, {
     message: "Description must be at least 2 characters.",
   }),
+  image: z.string(),
 });
 
-export namespace AddPageForm {
+export namespace EditSeoForm {
   export interface Props {
+    data?: Omit<Seo, "pageType">;
+    pageType: Seo["pageType"];
     onSubmit?: () => void;
   }
 }
 
-export function AddPageForm({ onSubmit }: AddPageForm.Props) {
-  const addPage = api.authorized.page.addPage.useMutation();
+export function EditSeoForm({ onSubmit, data, pageType }: EditSeoForm.Props) {
+  const updateSeoConfig = api.authorized.seo.updateSeoConfig.useMutation();
+
+  async function handleSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await updateSeoConfig.mutateAsync({ ...values, pageType });
+
+      toast.success("Config was modified.");
+
+      onSubmit?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while modifying config.",
+      );
+    }
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      slug: "",
-      description: "",
-    },
+    values: data
+      ? {
+          title: data.title,
+          description: data.description,
+          image: data.image ?? "",
+        }
+      : {
+          title: "",
+          description: "",
+          image: "",
+        },
   });
-
-  async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await addPage.mutateAsync(values);
-
-    toast.success("Page was added.");
-
-    if (onSubmit) onSubmit();
-  }
 
   return (
     <>
@@ -79,12 +91,12 @@ export function AddPageForm({ onSubmit }: AddPageForm.Props) {
           />
           <FormField
             control={form.control}
-            name="slug"
+            name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Slug</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Textarea {...field} className="resize-none" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,19 +167,6 @@ export function AddPageForm({ onSubmit }: AddPageForm.Props) {
                       }}
                     />
                   </>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea {...field} className="resize-none" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

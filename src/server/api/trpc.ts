@@ -6,11 +6,13 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
+import { authOptions } from "@/lib/auth";
 import { db } from "@/server/db";
+import { getServerSession } from "next-auth";
 
 /**
  * 1. CONTEXT
@@ -52,6 +54,8 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   },
 });
 
+export const { router, procedure, middleware } = t;
+
 /**
  * Create a server-side caller.
  *
@@ -73,6 +77,24 @@ export const createCallerFactory = t.createCallerFactory;
  */
 export const createTRPCRouter = t.router;
 
+export const isAuthenticated = middleware(async ({ ctx, next }) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be logged in to access this resource",
+    });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      user: session.user,
+    },
+  });
+});
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -82,6 +104,6 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
-// TODO: Configure authed and protected procedures
-export const authedProcedure = t.procedure;
-export const protectedProcedure = t.procedure;
+// TODO: Configure authenticated and authorized procedures
+export const authenticatedProcedure = t.procedure.use(isAuthenticated);
+export const authorizedProcedure = t.procedure.use(isAuthenticated);

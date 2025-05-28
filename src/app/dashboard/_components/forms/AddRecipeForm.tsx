@@ -79,7 +79,7 @@ export function AddRecipeForm({
   categories,
   cuisines,
 }: AddRecipeForm.Props) {
-  const addRecipe = api.protected.recipe.addRecipe.useMutation();
+  const addRecipe = api.authorized.recipe.addRecipe.useMutation();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
 
   const categoryOptions = (() => {

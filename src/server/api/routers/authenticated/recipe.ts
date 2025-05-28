@@ -1,32 +1,32 @@
-import { authedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { recipe_ratings, recipe_saves } from "@/server/db/schema";
+import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { recipe_bookmarks, recipe_ratings } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-export const authedRecipeRouter = createTRPCRouter({
-  saveRecipe: authedProcedure
+export const authenticatedRecipeRouter = createTRPCRouter({
+  bookmarkRecipe: authenticatedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: recipeId }) => {
-      await ctx.db.insert(recipe_saves).values({
+      await ctx.db.insert(recipe_bookmarks).values({
         recipeId: recipeId,
-        userId: "1",
+        userId: ctx.user.id,
       });
     }),
 
-  unsaveRecipe: authedProcedure
+  unbookmarkRecipe: authenticatedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: recipeId }) => {
       await ctx.db
-        .delete(recipe_saves)
+        .delete(recipe_bookmarks)
         .where(
           and(
-            eq(recipe_saves.recipeId, recipeId),
-            eq(recipe_saves.userId, "1"),
+            eq(recipe_bookmarks.recipeId, recipeId),
+            eq(recipe_bookmarks.userId, ctx.user.id),
           ),
         );
     }),
 
-  rateRecipe: authedProcedure
+  rateRecipe: authenticatedProcedure
     .input(
       z.object({
         score: z.number().min(1).max(5),
@@ -37,11 +37,11 @@ export const authedRecipeRouter = createTRPCRouter({
       await ctx.db.insert(recipe_ratings).values({
         score: input.score,
         recipeId: input.recipeId,
-        userId: "1",
+        userId: ctx.user.id,
       });
     }),
 
-  removeRatingFromRecipe: authedProcedure
+  unrateRecipe: authenticatedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: recipeId }) => {
       await ctx.db
@@ -49,7 +49,7 @@ export const authedRecipeRouter = createTRPCRouter({
         .where(
           and(
             eq(recipe_ratings.recipeId, recipeId),
-            eq(recipe_ratings.userId, "1"),
+            eq(recipe_ratings.userId, ctx.user.id),
           ),
         );
     }),

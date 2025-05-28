@@ -1,23 +1,25 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import {
-  authedCommentRouter,
-  authedRecipeRouter,
-  authedUserRouter,
-} from "./routers/authed";
+  authenticatedCommentRouter,
+  authenticatedRecipeRouter,
+  authenticatedUserRouter,
+} from "./routers/authenticated";
 import {
-  protectedCategoryRouter,
-  protectedCuisineRouter,
-  protectedNavigationRouter,
-  protectedPageRouter,
-  protectedRecipeRouter,
-  protectedUserRouter,
-} from "./routers/protected";
+  authorizedCategoryRouter,
+  authorizedCuisineRouter,
+  authorizedNavigationRouter,
+  authorizedPageRouter,
+  authorizedRecipeRouter,
+  authorizedSeoRouter,
+  authorizedUserRouter,
+} from "./routers/authorized";
 import {
   publicCategoryRouter,
   publicCuisineRouter,
   publicNavigationRouter,
   publicPageRouter,
   publicRecipeRouter,
+  publicSeoRouter,
   publicUserRouter,
 } from "./routers/public";
 import { seedRouter } from "./routers/seed";
@@ -35,19 +37,21 @@ export const appRouter = createTRPCRouter({
     category: publicCategoryRouter,
     navigation: publicNavigationRouter,
     page: publicPageRouter,
+    seo: publicSeoRouter,
   },
-  authed: {
-    comment: authedCommentRouter,
-    recipe: authedRecipeRouter,
-    user: authedUserRouter,
+  authenticated: {
+    comment: authenticatedCommentRouter,
+    recipe: authenticatedRecipeRouter,
+    user: authenticatedUserRouter,
   },
-  protected: {
-    category: protectedCategoryRouter,
-    cuisine: protectedCuisineRouter,
-    recipe: protectedRecipeRouter,
-    user: protectedUserRouter,
-    navigation: protectedNavigationRouter,
-    page: protectedPageRouter,
+  authorized: {
+    category: authorizedCategoryRouter,
+    cuisine: authorizedCuisineRouter,
+    recipe: authorizedRecipeRouter,
+    user: authorizedUserRouter,
+    navigation: authorizedNavigationRouter,
+    page: authorizedPageRouter,
+    seo: authorizedSeoRouter,
   },
   seeder: seedRouter,
 });

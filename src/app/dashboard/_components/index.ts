@@ -7,6 +7,7 @@ export { MultiSelect } from "./MultiSelect";
 export { Header } from "./Header";
 export { Sidebar } from "./Sidebar";
 export { LinkSpinner } from "./LinkSpinner";
+export { SeoSection } from "./SeoSection";
 
 // Forms
 export { AddRecipeForm } from "./forms/AddRecipeForm";
@@ -16,3 +17,4 @@ export { AddPageForm } from "./forms/AddPageForm";
 export { EditRecipeForm } from "./forms/EditRecipeForm";
 export { EditCategoryForm } from "./forms/EditCategoryForm";
 export { EditCuisineForm } from "./forms/EditCuisineForm";
+export { EditSeoForm } from "./forms/EditSeoForm";

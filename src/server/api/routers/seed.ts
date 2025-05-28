@@ -1,4 +1,4 @@
-import { authedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
   categories,
   cuisines,
@@ -17,28 +17,28 @@ import {
 } from "drizzle/seed/data";
 
 export const seedRouter = createTRPCRouter({
-  seedUsers: authedProcedure.mutation(({ ctx }) => {
+  seedUsers: authenticatedProcedure.mutation(({ ctx }) => {
     return ctx.db.insert(users).values(USERS);
   }),
 
-  seedCuisines: authedProcedure.mutation(({ ctx }) => {
+  seedCuisines: authenticatedProcedure.mutation(({ ctx }) => {
     return ctx.db.insert(cuisines).values(CUISINES);
   }),
 
-  seedCategories: authedProcedure.mutation(({ ctx }) => {
+  seedCategories: authenticatedProcedure.mutation(({ ctx }) => {
     return ctx.db.insert(categories).values(CATEGORIES);
   }),
 
-  seedRecipes: authedProcedure.mutation(({ ctx }) => {
+  seedRecipes: authenticatedProcedure.mutation(({ ctx }) => {
     // @ts-ignore
     return ctx.db.insert(recipes).values(RECIPES);
   }),
 
-  seedRecipeCuisines: authedProcedure.mutation(({ ctx }) => {
+  seedRecipeCuisines: authenticatedProcedure.mutation(({ ctx }) => {
     return ctx.db.insert(recipe_cuisines).values(RECIPE_CUISINES);
   }),
 
-  seedRecipeCategories: authedProcedure.mutation(({ ctx }) => {
+  seedRecipeCategories: authenticatedProcedure.mutation(({ ctx }) => {
     return ctx.db.insert(recipe_categories).values(RECIPE_CATEGORIES);
   }),
 });

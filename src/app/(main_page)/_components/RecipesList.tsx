@@ -4,7 +4,6 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { HTMLAttributes, forwardRef } from "react";
-import { recipeImageSrcParser } from "../_utils";
 import { Rating } from "./Rating";
 
 export const RecipesList = forwardRef<
@@ -27,7 +26,7 @@ export const RecipesList = forwardRef<
             <Card className="py-0 shadow transition ease-in-out hover:opacity-80">
               <div className="flex items-center gap-2 rounded-lg">
                 <Image
-                  src={recipeImageSrcParser(recipe.image)}
+                  src={recipe.image}
                   width={200}
                   height={200}
                   alt={recipe.title}

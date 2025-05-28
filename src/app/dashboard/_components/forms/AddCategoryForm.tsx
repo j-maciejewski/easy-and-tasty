@@ -36,7 +36,7 @@ export namespace AddCategoryForm {
 }
 
 export function AddCategoryForm({ onSubmit }: AddCategoryForm.Props) {
-  const addCategory = api.protected.category.addCategory.useMutation();
+  const addCategory = api.authorized.category.addCategory.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

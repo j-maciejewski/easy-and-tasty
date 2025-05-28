@@ -1,4 +1,4 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
   difficultyEnum,
   recipe_categories,
@@ -10,9 +10,9 @@ import { parseSlug } from "@/utils";
 import { and, desc, eq, ilike, sql } from "drizzle-orm";
 import { z } from "zod";
 
-export const protectedRecipeRouter = createTRPCRouter({
+export const authorizedRecipeRouter = createTRPCRouter({
   // @ts-ignore
-  getRecipe: protectedProcedure
+  getRecipe: authorizedProcedure
     .input(z.number())
     .query(async ({ ctx, input }) => {
       const results = await ctx.db
@@ -49,7 +49,7 @@ export const protectedRecipeRouter = createTRPCRouter({
     }),
 
   // @ts-ignore
-  getRecipes: protectedProcedure
+  getRecipes: authorizedProcedure
     .input(
       z.object({
         title: z.string().optional(),
@@ -138,7 +138,7 @@ export const protectedRecipeRouter = createTRPCRouter({
       return { results, pagination };
     }),
 
-  addRecipe: protectedProcedure
+  addRecipe: authorizedProcedure
     .input(
       z.object({
         title: z.string().min(1),
@@ -188,7 +188,7 @@ export const protectedRecipeRouter = createTRPCRouter({
       });
     }),
 
-  editRecipe: protectedProcedure
+  editRecipe: authorizedProcedure
     .input(
       z.object({
         id: z.number(),

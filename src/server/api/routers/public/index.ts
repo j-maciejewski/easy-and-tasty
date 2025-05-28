@@ -4,3 +4,4 @@ export { publicCategoryRouter } from "./category";
 export { publicCuisineRouter } from "./cuisine";
 export { publicNavigationRouter } from "./navigation";
 export { publicPageRouter } from "./page";
+export { publicSeoRouter } from "./seo";

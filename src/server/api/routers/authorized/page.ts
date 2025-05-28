@@ -1,16 +1,16 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { pages } from "@/server/db/schema";
 import { eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 
-export const protectedPageRouter = createTRPCRouter({
-  getPages: protectedProcedure.query(({ ctx }) => {
+export const authorizedPageRouter = createTRPCRouter({
+  getPages: authorizedProcedure.query(({ ctx }) => {
     return ctx.db.query.pages.findMany({
       orderBy: (pages, { desc }) => [desc(pages.createdAt)],
     });
   }),
 
-  getPage: protectedProcedure
+  getPage: authorizedProcedure
     .input(z.string())
     .query(({ ctx, input: pageSlug }) => {
       return ctx.db.query.pages.findFirst({
@@ -19,7 +19,7 @@ export const protectedPageRouter = createTRPCRouter({
       });
     }),
 
-  addPage: protectedProcedure
+  addPage: authorizedProcedure
     .input(
       z.object({
         title: z.string().min(1),
@@ -37,7 +37,7 @@ export const protectedPageRouter = createTRPCRouter({
       });
     }),
 
-  editPage: protectedProcedure
+  editPage: authorizedProcedure
     .input(
       z.object({
         id: z.number(),

@@ -1,10 +1,10 @@
-import { authedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { comment_likes, comments } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
-export const authedCommentRouter = createTRPCRouter({
-  addComment: authedProcedure
+export const authenticatedCommentRouter = createTRPCRouter({
+  addComment: authenticatedProcedure
     .input(
       z.object({
         text: z.string().min(1),
@@ -22,7 +22,7 @@ export const authedCommentRouter = createTRPCRouter({
       });
     }),
 
-  deleteComment: authedProcedure
+  deleteComment: authenticatedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: commentId }) => {
       await ctx.db
@@ -30,7 +30,7 @@ export const authedCommentRouter = createTRPCRouter({
         .where(and(eq(comments.id, commentId), eq(comments.userId, "1")));
     }),
 
-  likeComment: authedProcedure
+  likeComment: authenticatedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: commentId }) => {
       await ctx.db.insert(comment_likes).values({
@@ -39,7 +39,7 @@ export const authedCommentRouter = createTRPCRouter({
       });
     }),
 
-  unlikeComment: authedProcedure
+  unlikeComment: authenticatedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: commentId }) => {
       await ctx.db

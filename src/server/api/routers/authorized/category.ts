@@ -1,23 +1,23 @@
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { categories } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
-export const protectedCategoryRouter = createTRPCRouter({
-  getCategory: protectedProcedure.input(z.number()).query(({ ctx, input }) => {
+export const authorizedCategoryRouter = createTRPCRouter({
+  getCategory: authorizedProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.db.query.categories.findFirst({
       orderBy: (categories, { asc }) => [asc(categories.name)],
       where: eq(categories.id, input),
     });
   }),
 
-  getCategories: protectedProcedure.query(({ ctx }) => {
+  getCategories: authorizedProcedure.query(({ ctx }) => {
     return ctx.db.query.categories.findMany({
       orderBy: (categories, { asc }) => [asc(categories.name)],
     });
   }),
 
-  addCategory: protectedProcedure
+  addCategory: authorizedProcedure
     .input(
       z.object({
         name: z.string().min(1),
@@ -33,7 +33,7 @@ export const protectedCategoryRouter = createTRPCRouter({
       });
     }),
 
-  editCategory: protectedProcedure
+  editCategory: authorizedProcedure
     .input(
       z.object({
         id: z.number().positive(),
@@ -53,8 +53,8 @@ export const protectedCategoryRouter = createTRPCRouter({
         .where(eq(categories.id, input.id));
     }),
 
-  deleteCategory: protectedProcedure
-    .input(z.number().positive())
+  deleteCategory: authorizedProcedure
+    .input(z.any())
     .mutation(async ({ ctx, input: categoryId }) => {
       await ctx.db.delete(categories).where(eq(categories.id, categoryId));
     }),

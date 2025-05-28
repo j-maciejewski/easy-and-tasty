@@ -12,6 +12,8 @@ const breadcrumbsLabels = new Map<Path | RegExp, string>([
   [Path.DASHBOARD_RECIPES, "Recipes"],
   [Path.DASHBOARD_CATEGORIES, "Categories"],
   [Path.DASHBOARD_CUISINES, "Cuisines"],
+  [Path.DASHBOARD_CUISINES, "Cuisines"],
+  [Path.DASHBOARD_SETTINGS, "Settings"],
   [Path.DASHBOARD_NEW_RECIPE, "New Recipe"],
   [Path.DASHBOARD_NEW_CATEGORY, "New Category"],
   [Path.DASHBOARD_NEW_CUISINE, "New Cuisine"],

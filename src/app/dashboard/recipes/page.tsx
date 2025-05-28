@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Badge,
   Button,
@@ -14,6 +15,7 @@ import { Path } from "@/config";
 import { api } from "@/trpc/react";
 import { createMap } from "@/utils";
 import { Columns3, Plus, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -25,7 +27,7 @@ import {
   ErrorCatcher,
   MultiSelect,
 } from "../_components";
-import { PaginationContext, UserContext } from "../_context";
+import { PaginationContext } from "../_context";
 
 export default function () {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,7 +36,7 @@ export default function () {
     data: categoriesData,
     error: categoriesError,
     isLoading: categoriesLoading,
-  } = api.protected.category.getCategories.useQuery();
+  } = api.authorized.category.getCategories.useQuery();
   const categories = useMemo(
     () => (categoriesData ? createMap(categoriesData) : null),
     [categoriesData],
@@ -43,14 +45,14 @@ export default function () {
     data: cuisinesData,
     error: cuisinesError,
     isLoading: cuisinesLoading,
-  } = api.protected.cuisine.getCuisines.useQuery();
+  } = api.authorized.cuisine.getCuisines.useQuery();
   const cuisines = useMemo(
     () => (cuisinesData ? createMap(cuisinesData) : null),
     [cuisinesData],
   );
   const { pagination, handleChangePage, setTotalItemsCount } =
     use(PaginationContext)!;
-  const { settings } = use(UserContext)!;
+  const { data } = useSession();
   const [editedRecipe, setEditedRecipe] = useState<number | null>(null);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -78,7 +80,7 @@ export default function () {
     isLoading: recipesLoading,
     error: recipesError,
     refetch: refetchRecipes,
-  } = api.protected.recipe.getRecipes.useQuery({
+  } = api.authorized.recipe.getRecipes.useQuery({
     title: debouncedSearchTerm,
     orderBy: sortField,
     orderDir: sortDir,
@@ -100,85 +102,85 @@ export default function () {
     ) => ReactNode;
     sortKey?: string;
   }[] = [
-    {
-      label: "Title",
-      sortKey: "title",
-      render: ({ title }) => title,
-    },
-    {
-      label: "Slug",
-      sortKey: "slug",
-      render: ({ slug }) => slug,
-    },
-    {
-      label: "Categories",
-      render: ({ categoryIds }) => (
-        <div className="inline-flex gap-2">
-          {categoryIds.map((id) => (
-            <Badge key={id} variant="outline">
-              {categories?.get(id)?.name}
-            </Badge>
-          ))}
-        </div>
-      ),
-    },
-    {
-      label: "Cuisines",
-      render: ({ cuisineIds }) => (
-        <div className="inline-flex gap-2">
-          {cuisineIds.map((id) => (
-            <Badge key={id} variant="outline">
-              {cuisines?.get(id)?.name}
-            </Badge>
-          ))}
-        </div>
-      ),
-    },
-    {
-      label: "Rating",
-      sortKey: "avg_rating",
-      render: ({ avgRating }) => avgRating,
-    },
-    {
-      label: "Comments",
-      render: () => "0",
-    },
-    {
-      label: "Votes",
-      render: ({ ratingsCount }) => ratingsCount,
-      sortKey: "ratings_count",
-    },
-    {
-      label: "Created At",
-      render: ({ createdAt }) => new Date(createdAt).toLocaleString(),
-    },
-    {
-      label: "Updated At",
-      render: ({ updatedAt }) =>
-        updatedAt ? new Date(updatedAt).toLocaleString() : null,
-    },
-    {
-      label: "Actions",
-      render: ({ id }) => (
-        <DropdownActions>
-          <DropdownMenuItem>
-            {settings.formsInModals ? (
-              <button type="button" onClick={() => setEditedRecipe(id)}>
-                Edit Recipe
-              </button>
-            ) : (
-              <Link href={`${Path.DASHBOARD_RECIPES}/edit/${id}`}>
-                Edit Recipe
-              </Link>
-            )}
-          </DropdownMenuItem>
-          <DropdownMenuItem className="text-red-600">
-            Delete Recipe
-          </DropdownMenuItem>
-        </DropdownActions>
-      ),
-    },
-  ];
+      {
+        label: "Title",
+        sortKey: "title",
+        render: ({ title }) => title,
+      },
+      {
+        label: "Slug",
+        sortKey: "slug",
+        render: ({ slug }) => slug,
+      },
+      {
+        label: "Categories",
+        render: ({ categoryIds }) => (
+          <div className="inline-flex gap-2">
+            {categoryIds.map((id) => (
+              <Badge key={id} variant="outline">
+                {categories?.get(id)?.name}
+              </Badge>
+            ))}
+          </div>
+        ),
+      },
+      {
+        label: "Cuisines",
+        render: ({ cuisineIds }) => (
+          <div className="inline-flex gap-2">
+            {cuisineIds.map((id) => (
+              <Badge key={id} variant="outline">
+                {cuisines?.get(id)?.name}
+              </Badge>
+            ))}
+          </div>
+        ),
+      },
+      {
+        label: "Rating",
+        sortKey: "avg_rating",
+        render: ({ avgRating }) => avgRating,
+      },
+      {
+        label: "Comments",
+        render: () => "0",
+      },
+      {
+        label: "Votes",
+        render: ({ ratingsCount }) => ratingsCount,
+        sortKey: "ratings_count",
+      },
+      {
+        label: "Created At",
+        render: ({ createdAt }) => new Date(createdAt).toLocaleString(),
+      },
+      {
+        label: "Updated At",
+        render: ({ updatedAt }) =>
+          updatedAt ? new Date(updatedAt).toLocaleString() : null,
+      },
+      {
+        label: "Actions",
+        render: ({ id }) => (
+          <DropdownActions>
+            <DropdownMenuItem>
+              {data?.user?.preferences?.dashboard?.formsInModals ? (
+                <button type="button" onClick={() => setEditedRecipe(id)}>
+                  Edit Recipe
+                </button>
+              ) : (
+                <Link href={`${Path.DASHBOARD_RECIPES}/edit/${id}`}>
+                  Edit Recipe
+                </Link>
+              )}
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600">
+              Delete Recipe
+            </DropdownMenuItem>
+          </DropdownActions>
+        ),
+      },
+    ];
 
   const [hiddenColumns, setHiddenColumns] = useState([
     "Votes",
@@ -237,7 +239,7 @@ export default function () {
                 className="relative aspect-square"
                 variant="secondary"
                 disabled={
-                  settings.formsInModals &&
+                  data?.user?.preferences?.dashboard?.formsInModals &&
                   (cuisinesLoading || categoriesLoading)
                 }
               >
@@ -245,7 +247,7 @@ export default function () {
               </Button>
             }
             dialogRef={addRecipeDialogCloseRef}
-            showDialog={settings.formsInModals}
+            showDialog={!!data?.user?.preferences?.dashboard?.formsInModals}
             content={
               <AddRecipeForm
                 categories={categoriesData!}
