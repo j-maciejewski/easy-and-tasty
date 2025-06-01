@@ -2,7 +2,7 @@ import { api } from "@/trpc/server";
 import { AddRecipeForm } from "../../_components";
 import { CategoriesProvider, CuisinesProvider } from "../../_context";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function () {
   const categories = await api.authorized.category.getCategories();

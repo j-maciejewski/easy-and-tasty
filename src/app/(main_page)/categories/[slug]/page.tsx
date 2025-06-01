@@ -1,25 +1,24 @@
 import { Separator } from "@/components/ui";
-import { APP_NAME } from "@/consts";
+import { getCategory, getCategoryRecipesCount } from "@/lib/data";
+import { parseMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense, cache } from "react";
+import { Suspense } from "react";
 import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "../../_components";
-
-const fetchCategory = cache((slug: string) => {
-  return api.public.category.getCategoryBySlug(slug);
-});
 
 export async function generateMetadata({
   params,
 }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const category = await fetchCategory((await params).slug);
+  const category = await getCategory((await params).slug);
 
   if (!category) return {};
 
-  return {
-    title: `${category.name} | ${APP_NAME}`,
-  };
+  return parseMetadata(
+    category.name,
+    category.description,
+    `/categories/${category.slug}`,
+  );
 }
 
 export async function generateStaticParams() {
@@ -31,11 +30,9 @@ export default async function ({
 }: { params: Promise<{ slug: string }> }) {
   const categorySlug = (await params).slug;
 
-  const [category, [countResponse]] = await Promise.all([
-    fetchCategory(categorySlug),
-    api.public.recipe.getRecipesByCategoryCount({
-      slug: categorySlug,
-    }),
+  const [category, recipesCount] = await Promise.all([
+    getCategory(categorySlug),
+    getCategoryRecipesCount(categorySlug),
   ]);
 
   if (!category) notFound();
@@ -53,20 +50,26 @@ export default async function ({
       </h2>
       <h6 className="text-gray-800 text-md">{category.description}</h6>
       <Separator className="~my-4/6" />
-      <h4 className="~mb-2/3 ~text-xl/3xl text-center font-semibold tracking-normal">
-        Explore {category.name} recipes
-      </h4>
-      <div className="~mb-4/6 flex justify-between">
-        <p className="content-center text-md">
-          {countResponse && `Recipes: ${countResponse.count}`}
-        </p>
-        <Suspense>
-          <SortSelect />
-        </Suspense>
-      </div>
-      <Suspense>
-        <InfiniteRecipeList slug={categorySlug} type="category" />
-      </Suspense>
+      {recipesCount !== 0 ? (
+        <>
+          <h4 className="~mb-2/3 ~text-xl/3xl text-center font-semibold tracking-normal">
+            Explore {category.name} recipes
+          </h4>
+          <div className="~mb-4/6 flex justify-between">
+            <p className="content-center text-md">
+              {recipesCount && `Recipes: ${recipesCount}`}
+            </p>
+            <Suspense>
+              <SortSelect />
+            </Suspense>
+          </div>
+          <Suspense>
+            <InfiniteRecipeList slug={categorySlug} type="category" />
+          </Suspense>
+        </>
+      ) : (
+        "No recipes found"
+      )}
     </div>
   );
 }

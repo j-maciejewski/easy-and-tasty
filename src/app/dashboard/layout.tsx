@@ -1,14 +1,16 @@
-"use client";
-
 import { SidebarProvider, Toaster } from "@/components/ui";
-import { useSession } from "next-auth/react";
+import { APP_NAME } from "@/consts";
+import { Metadata } from "next";
 import { Suspense } from "react";
-import { Header, Sidebar } from "./_components";
+import { Header, SessionWrapper, Sidebar } from "./_components";
 import { PaginationProvider, ThemeProvider, UserProvider } from "./_context";
 
-export default function ({ children }: React.PropsWithChildren) {
-  const { status } = useSession();
+export const metadata: Metadata = {
+  title: `Dashboard - ${APP_NAME}`,
+  icons: [{ rel: "icon", url: "/favicon-dashboard.png" }],
+};
 
+export default function ({ children }: React.PropsWithChildren) {
   return (
     <div data-view="dashboard">
       <UserProvider>
@@ -18,7 +20,7 @@ export default function ({ children }: React.PropsWithChildren) {
           enableSystem
           disableTransitionOnChange
         >
-          {status === "authenticated" && (
+          <SessionWrapper>
             <SidebarProvider>
               <div className="flex h-screen w-full overflow-hidden">
                 <Sidebar />
@@ -33,7 +35,7 @@ export default function ({ children }: React.PropsWithChildren) {
               </div>
               <Toaster richColors />
             </SidebarProvider>
-          )}
+          </SessionWrapper>
         </ThemeProvider>
       </UserProvider>
     </div>

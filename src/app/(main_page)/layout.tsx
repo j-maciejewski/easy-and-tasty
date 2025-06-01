@@ -1,8 +1,8 @@
-import { api } from "@/trpc/server";
+import { getNavigation } from "@/lib/data";
 import { DesktopHeader, Footer, MobileHeader } from "./_components";
 
 export default async function ({ children }: React.PropsWithChildren) {
-  const navigation = await api.public.navigation.getNavigation();
+  const navigation = await getNavigation();
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50">

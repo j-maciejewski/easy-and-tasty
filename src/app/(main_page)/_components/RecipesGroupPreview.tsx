@@ -1,4 +1,4 @@
-import { api } from "@/trpc/server";
+import { getRecipesByCategory, getRecipesByCuisine } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { RecipeCard } from "./RecipeCard";
@@ -41,8 +41,8 @@ export const RecipesGroupPreview = async (props: RecipesGroupPreview.Props) => {
   })();
 
   const recipes = await (type === "cuisine"
-    ? api.public.recipe.getRecipesByCuisine({ slug, limit: 6 })
-    : api.public.recipe.getRecipesByCategory({ slug, limit: 6 }));
+    ? getRecipesByCuisine(slug)
+    : getRecipesByCategory(slug));
 
   return (
     <div className="flex flex-col">

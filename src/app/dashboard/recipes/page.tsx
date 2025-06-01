@@ -102,85 +102,85 @@ export default function () {
     ) => ReactNode;
     sortKey?: string;
   }[] = [
-      {
-        label: "Title",
-        sortKey: "title",
-        render: ({ title }) => title,
-      },
-      {
-        label: "Slug",
-        sortKey: "slug",
-        render: ({ slug }) => slug,
-      },
-      {
-        label: "Categories",
-        render: ({ categoryIds }) => (
-          <div className="inline-flex gap-2">
-            {categoryIds.map((id) => (
-              <Badge key={id} variant="outline">
-                {categories?.get(id)?.name}
-              </Badge>
-            ))}
-          </div>
-        ),
-      },
-      {
-        label: "Cuisines",
-        render: ({ cuisineIds }) => (
-          <div className="inline-flex gap-2">
-            {cuisineIds.map((id) => (
-              <Badge key={id} variant="outline">
-                {cuisines?.get(id)?.name}
-              </Badge>
-            ))}
-          </div>
-        ),
-      },
-      {
-        label: "Rating",
-        sortKey: "avg_rating",
-        render: ({ avgRating }) => avgRating,
-      },
-      {
-        label: "Comments",
-        render: () => "0",
-      },
-      {
-        label: "Votes",
-        render: ({ ratingsCount }) => ratingsCount,
-        sortKey: "ratings_count",
-      },
-      {
-        label: "Created At",
-        render: ({ createdAt }) => new Date(createdAt).toLocaleString(),
-      },
-      {
-        label: "Updated At",
-        render: ({ updatedAt }) =>
-          updatedAt ? new Date(updatedAt).toLocaleString() : null,
-      },
-      {
-        label: "Actions",
-        render: ({ id }) => (
-          <DropdownActions>
-            <DropdownMenuItem>
-              {data?.user?.preferences?.dashboard?.formsInModals ? (
-                <button type="button" onClick={() => setEditedRecipe(id)}>
-                  Edit Recipe
-                </button>
-              ) : (
-                <Link href={`${Path.DASHBOARD_RECIPES}/edit/${id}`}>
-                  Edit Recipe
-                </Link>
-              )}
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">
-              Delete Recipe
-            </DropdownMenuItem>
-          </DropdownActions>
-        ),
-      },
-    ];
+    {
+      label: "Title",
+      sortKey: "title",
+      render: ({ title }) => title,
+    },
+    {
+      label: "Slug",
+      sortKey: "slug",
+      render: ({ slug }) => slug,
+    },
+    {
+      label: "Categories",
+      render: ({ categoryIds }) => (
+        <div className="inline-flex gap-2">
+          {categoryIds.map((id) => (
+            <Badge key={id} variant="outline">
+              {categories?.get(id)?.name}
+            </Badge>
+          ))}
+        </div>
+      ),
+    },
+    {
+      label: "Cuisines",
+      render: ({ cuisineIds }) => (
+        <div className="inline-flex gap-2">
+          {cuisineIds.map((id) => (
+            <Badge key={id} variant="outline">
+              {cuisines?.get(id)?.name}
+            </Badge>
+          ))}
+        </div>
+      ),
+    },
+    {
+      label: "Rating",
+      sortKey: "avg_rating",
+      render: ({ avgRating }) => avgRating,
+    },
+    {
+      label: "Comments",
+      render: () => "0",
+    },
+    {
+      label: "Votes",
+      render: ({ ratingsCount }) => ratingsCount,
+      sortKey: "ratings_count",
+    },
+    {
+      label: "Created At",
+      render: ({ createdAt }) => new Date(createdAt).toLocaleString(),
+    },
+    {
+      label: "Updated At",
+      render: ({ updatedAt }) =>
+        updatedAt ? new Date(updatedAt).toLocaleString() : null,
+    },
+    {
+      label: "Actions",
+      render: ({ id }) => (
+        <DropdownActions>
+          <DropdownMenuItem>
+            {data?.user?.preferences?.dashboard?.formsInModals ? (
+              <button type="button" onClick={() => setEditedRecipe(id)}>
+                Edit Recipe
+              </button>
+            ) : (
+              <Link href={`${Path.DASHBOARD_RECIPES}/edit/${id}`}>
+                Edit Recipe
+              </Link>
+            )}
+          </DropdownMenuItem>
+          <DropdownMenuItem className="text-red-600">
+            Delete Recipe
+          </DropdownMenuItem>
+        </DropdownActions>
+      ),
+    },
+  ];
 
   const [hiddenColumns, setHiddenColumns] = useState([
     "Votes",

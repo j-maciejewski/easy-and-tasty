@@ -1,13 +1,12 @@
 import { Separator } from "@/components/ui";
-import { APP_NAME } from "@/consts";
-import { env } from "@/env";
+import { getRecipe } from "@/lib/data";
+import { parseMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 import Markdown from "markdown-to-jsx";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { cache } from "react";
 import {
   Breadcrumbs,
   RecipeInformation,
@@ -15,30 +14,20 @@ import {
   ScrollableRecipes,
 } from "../../_components";
 
-const fetchRecipe = cache(async (slug: string) => {
-  return (await api.public.recipe.getRecipeBySlug(slug))[0];
-});
-
 export async function generateMetadata({
   params,
 }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const recipe = await fetchRecipe((await params).slug);
+  const recipe = await getRecipe((await params).slug);
 
   if (!recipe) return {};
 
-  return {
-    title: `${recipe.title} recipe | ${APP_NAME}`,
-    description: recipe.description,
-    openGraph: {
-      type: "article",
-      siteName: "Easy and Tasty",
-      url: `${env.APP_URL}/recipe/${recipe.slug}`,
-      ...(recipe.image ? { images: { url: recipe.image } } : {}),
-    },
-    twitter: {
-      card: recipe.image ? "summary_large_image" : "summary",
-    },
-  };
+  return parseMetadata(
+    recipe.title,
+    recipe.description,
+    `/recipe/${recipe.slug}`,
+    recipe.image,
+    "article",
+  );
 }
 
 export async function generateStaticParams() {
@@ -48,7 +37,7 @@ export async function generateStaticParams() {
 export default async function ({
   params,
 }: { params: Promise<{ slug: string }> }) {
-  const recipe = await fetchRecipe((await params).slug);
+  const recipe = await getRecipe((await params).slug);
 
   if (!recipe) {
     notFound();

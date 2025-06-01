@@ -1,27 +1,25 @@
 import { Separator } from "@/components/ui";
-import { APP_NAME } from "@/consts";
-import { api } from "@/trpc/server";
+import { getSeo, getTotalRecipesCount } from "@/lib/data";
+import { parseMetadata } from "@/lib/utils";
 import { Metadata } from "next";
 import { Suspense } from "react";
 import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "../_components";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await api.public.seo.getSeo("recipes");
+  const seo = await getSeo("recipes");
 
-  return {
-    title: `${seo?.title ?? "All recipes"} | ${APP_NAME}`,
-    description: seo?.description,
-    openGraph: {
-      ...(seo?.image ? { images: { url: seo.image } } : {}),
-    },
-    twitter: {
-      card: seo?.image ? "summary_large_image" : "summary",
-    },
-  };
+  if (!seo) return {};
+
+  return parseMetadata(
+    seo.title ?? "All recipes",
+    seo.description,
+    "/all-recipes",
+    seo.image,
+  );
 }
 
 export default async function () {
-  const [countResponse] = await api.public.recipe.getTotalRecipesCount();
+  const recipesCount = await getTotalRecipesCount();
 
   return (
     <div className="w-full">
@@ -30,20 +28,26 @@ export default async function () {
         All recipes
       </h2>
       <Separator className="~my-4/6" />
-      <h4 className="~mb-2/3 ~text-xl/3xl text-center font-semibold tracking-normal">
-        Explore all recipes
-      </h4>
-      <div className="~mb-4/6 flex justify-between">
-        <p className="content-center text-md">
-          {countResponse && `Recipes: ${countResponse.count}`}
-        </p>
-        <Suspense>
-          <SortSelect />
-        </Suspense>
-      </div>
-      <Suspense>
-        <InfiniteRecipeList type="all" />
-      </Suspense>
+      {recipesCount !== 0 ? (
+        <>
+          <h4 className="~mb-2/3 ~text-xl/3xl text-center font-semibold tracking-normal">
+            Explore all recipes
+          </h4>
+          <div className="~mb-4/6 flex justify-between">
+            <p className="content-center text-md">
+              {recipesCount && `Recipes: ${recipesCount}`}
+            </p>
+            <Suspense>
+              <SortSelect />
+            </Suspense>
+          </div>
+          <Suspense>
+            <InfiniteRecipeList type="all" />
+          </Suspense>
+        </>
+      ) : (
+        "No recipes found"
+      )}
     </div>
   );
 }

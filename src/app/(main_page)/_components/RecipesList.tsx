@@ -1,5 +1,5 @@
 import { Card, CardHeader, Separator } from "@/components/ui";
-import { api } from "@/trpc/server";
+import { getSuggestedRecipes } from "@/lib/data";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +10,7 @@ export const RecipesList = forwardRef<
   HTMLDivElement,
   HTMLAttributes<HTMLDivElement> & { heading: string; subheading?: string }
 >(async ({ className, heading, subheading, ...props }, ref) => {
-  const recipes = await api.public.recipe.getRandomRecipes(5);
+  const recipes = await getSuggestedRecipes("suggested");
 
   return (
     <div

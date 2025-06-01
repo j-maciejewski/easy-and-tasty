@@ -2,7 +2,7 @@ import { EditRecipeForm } from "@/app/dashboard/_components";
 import { CategoriesProvider, CuisinesProvider } from "@/app/dashboard/_context";
 import { api } from "@/trpc/server";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function ({
   params,

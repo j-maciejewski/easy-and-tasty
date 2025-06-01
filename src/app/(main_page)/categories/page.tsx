@@ -1,26 +1,24 @@
-import { APP_NAME } from "@/consts";
-import { api } from "@/trpc/server";
+import { getCategories, getSeo } from "@/lib/data";
+import { parseMetadata } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "../_components";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await api.public.seo.getSeo("categories");
+  const seo = await getSeo("categories");
 
-  return {
-    title: `${seo?.title ?? "Categories"} | ${APP_NAME}`,
-    description: seo?.description,
-    openGraph: {
-      ...(seo?.image ? { images: { url: seo.image } } : {}),
-    },
-    twitter: {
-      card: seo?.image ? "summary_large_image" : "summary",
-    },
-  };
+  if (!seo) return {};
+
+  return parseMetadata(
+    seo.title ?? "Categories",
+    seo.description,
+    "/categories",
+    seo.image,
+  );
 }
 
 export default async function () {
-  const categories = await api.public.category.getCategories();
+  const categories = await getCategories();
 
   return (
     <div className="w-full">
@@ -31,10 +29,10 @@ export default async function () {
       </h2>
 
       <div className="mt-6 flex select-none flex-wrap gap-3 rounded bg-primary/50 p-4 font-bold text-primary text-sm">
-        {categories.map((category) => (
-          <Link key={category.name} href={`/categories/${category.slug}`}>
+        {categories.map(({ name, slug }) => (
+          <Link key={name} href={`/categories/${slug}`}>
             <div className="rounded bg-white px-2 py-1 hover:bg-slate-100">
-              {category.name}
+              {name}
             </div>
           </Link>
         ))}

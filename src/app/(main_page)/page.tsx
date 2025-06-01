@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui";
-import { APP_NAME } from "@/consts";
-import { api } from "@/trpc/server";
+import { getSeo, getSuggestedRecipes } from "@/lib/data";
+import { parseMetadata } from "@/lib/utils";
 import clsx from "clsx";
 import { Metadata } from "next";
 import { merienda } from "../fonts";
@@ -13,22 +13,15 @@ import {
 } from "./_components";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await api.public.seo.getSeo("home");
+  const seo = await getSeo("home");
 
-  return {
-    title: `${seo?.title ?? "Home"} | ${APP_NAME}`,
-    description: seo?.description,
-    openGraph: {
-      ...(seo?.image ? { images: { url: seo.image } } : {}),
-    },
-    twitter: {
-      card: seo?.image ? "summary_large_image" : "summary",
-    },
-  };
+  if (!seo) return {};
+
+  return parseMetadata(seo.title ?? "Home", seo.description, "", seo.image);
 }
 
 export default async function () {
-  const recipes = await api.public.recipe.getRandomRecipes(5);
+  const recipes = await getSuggestedRecipes("carousel");
 
   return (
     <>

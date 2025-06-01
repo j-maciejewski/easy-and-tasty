@@ -8,6 +8,7 @@ export { Header } from "./Header";
 export { Sidebar } from "./Sidebar";
 export { LinkSpinner } from "./LinkSpinner";
 export { SeoSection } from "./SeoSection";
+export { SessionWrapper } from "./SessionWrapper";
 
 // Forms
 export { AddRecipeForm } from "./forms/AddRecipeForm";
