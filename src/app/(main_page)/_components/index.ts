@@ -17,3 +17,4 @@ export { FullWidthWrapper } from "./FullWidthWrapper";
 export { Footer } from "./Footer";
 export { InfiniteRecipeList } from "./InfiniteRecipeList";
 export { SortSelect } from "./SortSelect";
+export { AvatarDropdown } from "./AvatarDropdown";

@@ -1,0 +1,1 @@
+ALTER TABLE "easy-and-tasty_recipe" ALTER COLUMN "content" SET DATA TYPE varchar(8192);

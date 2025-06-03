@@ -1,6 +1,6 @@
 {
-  "id": "5e4caa7b-d39d-4422-b856-2560cafcc2fb",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "b61d20a7-11b2-48a0-b35a-e16a86db6246",
+  "prevId": "5e4caa7b-d39d-4422-b856-2560cafcc2fb",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -790,7 +790,7 @@
         },
         "content": {
           "name": "content",
-          "type": "varchar(2048)",
+          "type": "varchar(8192)",
           "primaryKey": false,
           "notNull": true
         },

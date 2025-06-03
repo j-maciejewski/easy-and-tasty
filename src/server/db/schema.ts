@@ -51,7 +51,7 @@ export const recipes = createTable("recipe", {
   description: varchar("description", { length: 1024 }).notNull(),
   difficulty: difficultyEnum("difficulty").notNull(),
   image: varchar("image", { length: 1024 }).notNull(),
-  content: varchar("content", { length: 2048 }).notNull(),
+  content: varchar("content", { length: 8192 }).notNull(),
   servings: integer("servings").notNull(), // 1, 2, 3 and so
   slug: varchar("slug", { length: 256 }).notNull().unique(),
   time: integer("time").notNull(), // in minutes

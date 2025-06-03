@@ -148,6 +148,7 @@ export function EditRecipeForm({
 
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     try {
+      console.log(recipeId, { values });
       await editRecipe.mutateAsync({ id: recipeId, ...values });
 
       toast.success("Recipe was modified.");
