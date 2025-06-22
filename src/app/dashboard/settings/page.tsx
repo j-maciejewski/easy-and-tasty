@@ -1,6 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { AccountContent, NavigationContent, SeoContent } from "./_tabs";
 
 export default function () {

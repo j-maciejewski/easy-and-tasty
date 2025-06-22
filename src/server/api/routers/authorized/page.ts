@@ -1,7 +1,8 @@
-import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { pages } from "@/server/db/schema";
 import { eq, ilike } from "drizzle-orm";
 import { z } from "zod";
+
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { pages } from "@/server/db/schema";
 
 export const authorizedPageRouter = createTRPCRouter({
   getPages: authorizedProcedure.query(({ ctx }) => {

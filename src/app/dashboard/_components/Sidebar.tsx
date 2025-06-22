@@ -1,18 +1,6 @@
 "use client";
 
 import {
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  Sidebar as SidebarWrapper,
-} from "@/components/ui";
-import { Path } from "@/config";
-import {
   Book,
   ChartPie,
   ChefHat,
@@ -25,10 +13,24 @@ import {
   User2,
   Users,
 } from "lucide-react";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { FC } from "react";
+
+import {
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  Sidebar as SidebarWrapper,
+} from "@/components/ui";
+import { Path } from "@/config";
+
 import { LinkSpinner } from "./LinkSpinner";
 
 const items: { label: string; url: string; icon: FC }[] = [

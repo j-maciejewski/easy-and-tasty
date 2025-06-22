@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui";
-import Image404 from "@/public/404-image.png";
 import Image from "next/image";
 import Link from "next/link";
+
+import { Button } from "@/components/ui";
+import Image404 from "@/public/404-image.png";
 
 export default function () {
   return (

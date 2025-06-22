@@ -1,4 +1,5 @@
 import { api } from "@/trpc/react";
+
 import { SeoSection } from "../../_components";
 
 export const SeoContent = () => {

@@ -1,7 +1,8 @@
-import { staticPageTypeEnum } from "@/server/db/schema";
-import { api } from "@/trpc/server";
 import { unstable_cache as next_cache } from "next/cache";
 import { cache } from "react";
+
+import { staticPageTypeEnum } from "@/server/db/schema";
+import { api } from "@/trpc/server";
 
 const REVALIDATE_TIME = 30;
 

@@ -1,5 +1,11 @@
 "use client";
 
+import Autoplay from "embla-carousel-autoplay";
+import { ChevronRight, Timer } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import {
   Button,
   Carousel,
@@ -9,11 +15,7 @@ import {
   CarouselPrevious,
   Separator,
 } from "@/components/ui";
-import Autoplay from "embla-carousel-autoplay";
-import { ChevronRight, Timer } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 import { Rating } from "./Rating";
 
 export namespace RecipesCarousel {

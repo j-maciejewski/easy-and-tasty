@@ -1,7 +1,8 @@
-import { Switch } from "@/components/ui";
-import { api } from "@/trpc/react";
 import { Session } from "next-auth";
 import { toast } from "sonner";
+
+import { Switch } from "@/components/ui";
+import { api } from "@/trpc/react";
 
 export const AccountContent = () => {
   const {
@@ -42,7 +43,7 @@ export const AccountContent = () => {
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h6 className="font-semibold text-base">Form modals</h6>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-foreground/75 text-sm">
             If you prefer to have your forms displayed as modals instead of new
             pages.
           </p>

@@ -1,37 +1,29 @@
-import Link from "next/link";
-
 import {
-  Dialog,
   DialogClose,
   DialogContent,
   DialogHeader,
+  Dialog as DialogRoot,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui";
 
-export namespace ConditionalDialog {
+export namespace Dialog {
   export interface Props {
     title: string;
     trigger: React.ReactNode;
     content: React.ReactNode;
-    showDialog: boolean;
     dialogRef: React.RefObject<HTMLButtonElement | null>;
-    link: string;
   }
 }
 
-export const ConditionalDialog = ({
+export const Dialog = ({
   trigger,
   title,
   content,
-  showDialog,
   dialogRef,
-  link,
-}: ConditionalDialog.Props) => {
-  if (!showDialog) return <Link href={link}>{trigger}</Link>;
-
+}: Dialog.Props) => {
   return (
-    <Dialog>
+    <DialogRoot>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-h-[calc(100%_-_4rem)] overflow-auto sm:max-w-md">
         <DialogHeader>
@@ -40,6 +32,6 @@ export const ConditionalDialog = ({
         {content}
         <DialogClose ref={dialogRef} />
       </DialogContent>
-    </Dialog>
+    </DialogRoot>
   );
 };

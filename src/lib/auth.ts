@@ -1,3 +1,10 @@
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { compare } from "bcryptjs";
+import { eq } from "drizzle-orm";
+import type { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+
 import { db } from "@/server/db";
 import {
   accounts,
@@ -5,12 +12,6 @@ import {
   users,
   verificationTokens,
 } from "@/server/db/schema";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { compare } from "bcryptjs";
-import { eq } from "drizzle-orm";
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, {

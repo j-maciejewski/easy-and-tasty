@@ -1,6 +1,8 @@
-import { api } from "@/trpc/server";
 import clsx from "clsx";
-import { HTMLAttributes, forwardRef } from "react";
+import { forwardRef, HTMLAttributes } from "react";
+
+import { api } from "@/trpc/server";
+
 import { RecipeCard } from "./RecipeCard";
 
 export const ScrollableRecipes = forwardRef<

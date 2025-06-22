@@ -1,9 +1,11 @@
 "use client";
 
-import { api } from "@/trpc/react";
 import { LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+
+import { api } from "@/trpc/react";
+
 import { RecipeCard } from "./RecipeCard";
 
 export namespace InfiniteRecipeList {
@@ -29,7 +31,8 @@ export const InfiniteRecipeList = (props: InfiniteRecipeList.Props) => {
     fetchNextPage,
     hasNextPage,
   } = props.type === "all"
-    ? api.public.recipe.getInfiniteAllRecipes.useInfiniteQuery(
+    ? // biome-ignore lint/correctness/useHookAtTopLevel: explanation
+      api.public.recipe.getInfiniteAllRecipes.useInfiniteQuery(
         {
           sortBy: sortBy as "title" | "createdAt",
         },
@@ -37,7 +40,8 @@ export const InfiniteRecipeList = (props: InfiniteRecipeList.Props) => {
           getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
         },
       )
-    : api.public.recipe[
+    : // biome-ignore lint/correctness/useHookAtTopLevel: explanation
+      api.public.recipe[
         props.type === "category"
           ? "getInfiniteRecipesByCategory"
           : "getInfiniteRecipesByCuisine"

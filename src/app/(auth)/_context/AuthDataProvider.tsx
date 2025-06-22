@@ -3,8 +3,8 @@
 import { usePathname } from "next/navigation";
 import {
   ChangeEvent,
-  ReactNode,
   createContext,
+  ReactNode,
   useEffect,
   useMemo,
   useState,
@@ -34,12 +34,12 @@ const AuthDataProvider = (props: { children: ReactNode }) => {
   const handleChangeAuthData = (evt: ChangeEvent<HTMLInputElement>) =>
     setAuthData((prev) => ({ ...prev, [evt.target.name]: evt.target.value }));
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies:
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     setAuthData((prev) => ({ ...prev, password: "" }));
   }, [pathname]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies:
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const value = useMemo(() => ({ authData, handleChangeAuthData }), [authData]);
 
   return <AuthDataContext.Provider value={value} {...props} />;

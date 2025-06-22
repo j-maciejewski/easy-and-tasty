@@ -1,5 +1,11 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Image } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
 import {
   Button,
   Form,
@@ -12,11 +18,6 @@ import {
   Textarea,
 } from "@/components/ui";
 import { api } from "@/trpc/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Image } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -109,64 +110,63 @@ export function EditSeoForm({ onSubmit, data, pageType }: EditSeoForm.Props) {
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormControl>
-                  <>
-                    <label htmlFor="image-input">
-                      {field.value ? (
-                        <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
-                          <img
-                            src={field.value}
-                            className="mx-auto max-h-80 object-cover"
-                            alt="recipe"
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border p-5 text-foreground/50 text-sm">
-                          <Image className="size-14 stroke-1" />
-                          Click to add image
-                        </div>
-                      )}
-                    </label>
-                    <Input
-                      id="image-input"
-                      type="file"
-                      accept="image/png, image/jpeg"
-                      className="hidden"
-                      onChange={async (evt) => {
-                        const file = evt.target.files?.[0];
+                  <label htmlFor="image-input">
+                    {field.value ? (
+                      <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
+                        {/** biome-ignore lint/performance/noImgElement: explanation */}
+                        <img
+                          src={field.value}
+                          className="mx-auto max-h-80 object-cover"
+                          alt="recipe"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border p-5 text-foreground/50 text-sm">
+                        <Image className="size-14 stroke-1" />
+                        Click to add image
+                      </div>
+                    )}
+                  </label>
+                  <Input
+                    id="image-input"
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    className="hidden"
+                    onChange={async (evt) => {
+                      const file = evt.target.files?.[0];
 
-                        if (
-                          !file ||
-                          !["image/png", "image/jpeg"].includes(file.type)
-                        )
-                          return;
+                      if (
+                        !file ||
+                        !["image/png", "image/jpeg"].includes(file.type)
+                      )
+                        return;
 
-                        const formData = new FormData();
+                      const formData = new FormData();
 
-                        formData.append("file", file);
+                      formData.append("file", file);
 
-                        const response = await fetch("/api/upload", {
-                          method: "POST",
-                          body: formData,
-                        });
+                      const response = await fetch("/api/upload", {
+                        method: "POST",
+                        body: formData,
+                      });
 
-                        const message = (await response.json()) as
-                          | {
-                              data: {
-                                name: string;
-                                url: string;
-                              };
-                              error: null;
-                            }
-                          | { data: null; error: string };
+                      const message = (await response.json()) as
+                        | {
+                            data: {
+                              name: string;
+                              url: string;
+                            };
+                            error: null;
+                          }
+                        | { data: null; error: string };
 
-                        if (message.data) {
-                          field.onChange(message.data.url);
-                        } else {
-                          console.log(message.error);
-                        }
-                      }}
-                    />
-                  </>
+                      if (message.data) {
+                        field.onChange(message.data.url);
+                      } else {
+                        console.log(message.error);
+                      }
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

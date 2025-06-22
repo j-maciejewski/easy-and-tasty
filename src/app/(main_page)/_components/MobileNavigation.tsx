@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui";
 import clsx from "clsx";
 import { ChevronDown, X } from "lucide-react";
 import Link from "next/link";
-import { HTMLAttributes, forwardRef, useState } from "react";
+import { forwardRef, HTMLAttributes, useState } from "react";
+
+import { Button } from "@/components/ui";
 
 const NavigationGroup = forwardRef<
   HTMLLIElement,
@@ -89,10 +90,10 @@ export const MobileNavigation = forwardRef<
         </Button>
       </div>
       <ul className="flex grow flex-col overflow-auto">
-        {navigation.links.map((link, idx) =>
-          "href" in link ? (
+        {navigation.map((link, idx) =>
+          link.href ? (
             <li
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               key={idx}
               className="relative border-t hover:bg-gray-100 [&:last-child]:border-b"
             >
@@ -106,10 +107,10 @@ export const MobileNavigation = forwardRef<
             </li>
           ) : (
             <NavigationGroup
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               key={idx}
               label={link.label}
-              sublinks={link.sublinks}
+              sublinks={link.sublinks!}
             />
           ),
         )}

@@ -1,5 +1,11 @@
 "use client";
 
+import { Columns3, Plus, X } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
+
 import {
   Badge,
   Button,
@@ -13,11 +19,7 @@ import {
 } from "@/components/ui";
 import { Path } from "@/config";
 import { api } from "@/trpc/react";
-import { Columns3, Plus, X } from "lucide-react";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
+
 import {
   AddCategoryForm,
   ConditionalDialog,
@@ -47,7 +49,7 @@ export default function () {
   } = api.authorized.category.getCategories.useQuery();
   const deleteCategory = api.authorized.category.deleteCategory.useMutation();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     if (!categories) return;
 
@@ -138,7 +140,7 @@ export default function () {
     });
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
 
@@ -191,7 +193,7 @@ export default function () {
     sortField,
   ]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     if (!categories || categories.length === filteredCategories.length) return;
 

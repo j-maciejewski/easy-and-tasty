@@ -1,6 +1,12 @@
 "use client";
 
+import { AlertCircle } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
 
 import { register } from "@/actions/auth";
 import { Google } from "@/components/icons";
@@ -17,12 +23,7 @@ import {
   Separator,
 } from "@/components/ui";
 import logo from "@/public/logo.png";
-import { AlertCircle } from "lucide-react";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+
 import { AuthInput } from "../_components/AuthInput";
 
 export default function () {

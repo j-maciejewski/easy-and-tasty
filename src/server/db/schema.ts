@@ -6,6 +6,7 @@ import {
   type AnyPgColumn,
   boolean,
   integer,
+  json,
   pgEnum,
   pgTableCreator,
   primaryKey,
@@ -167,6 +168,13 @@ export const seo = createTable("seo", {
   title: varchar("title", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 256 }).notNull(),
   image: varchar("image", { length: 1024 }),
+});
+
+export const configTypeEnum = pgEnum("configTypeEnum", ["header_navigation"]);
+
+export const config = createTable("config", {
+  configType: configTypeEnum("configType").notNull().unique(),
+  data: json("data").notNull(),
 });
 
 export const accounts = createTable(

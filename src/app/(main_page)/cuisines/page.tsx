@@ -1,7 +1,9 @@
-import { getCuisines, getSeo } from "@/lib/data";
-import { parseMetadata } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
+
+import { getCuisines, getSeo } from "@/lib/data";
+import { parseMetadata } from "@/lib/utils";
+
 import { Breadcrumbs } from "../_components";
 
 export async function generateMetadata(): Promise<Metadata> {

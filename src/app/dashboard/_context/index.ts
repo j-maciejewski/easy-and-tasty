@@ -1,5 +1,5 @@
-export { CategoriesProvider, CategoriesContext } from "./CategoriesProvider";
-export { CuisinesProvider, CuisinesContext } from "./CuisinesProvider";
-export { PaginationProvider, PaginationContext } from "./PaginationProvider";
-export { UserProvider, UserContext } from "./UserProvider";
+export { CategoriesContext, CategoriesProvider } from "./CategoriesProvider";
+export { CuisinesContext, CuisinesProvider } from "./CuisinesProvider";
+export { PaginationContext, PaginationProvider } from "./PaginationProvider";
 export { ThemeProvider } from "./ThemeProvider";
+export { UserContext, UserProvider } from "./UserProvider";

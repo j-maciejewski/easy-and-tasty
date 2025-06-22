@@ -1,7 +1,9 @@
-import { SidebarProvider, Toaster } from "@/components/ui";
-import { APP_NAME } from "@/consts";
 import { Metadata } from "next";
 import { Suspense } from "react";
+
+import { SidebarProvider, Toaster } from "@/components/ui";
+import { APP_NAME } from "@/consts";
+
 import { Header, SessionWrapper, Sidebar } from "./_components";
 import { PaginationProvider, ThemeProvider, UserProvider } from "./_context";
 

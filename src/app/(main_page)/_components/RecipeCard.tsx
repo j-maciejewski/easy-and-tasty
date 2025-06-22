@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { HTMLAttributes, forwardRef } from "react";
+import { forwardRef, HTMLAttributes } from "react";
 
 export namespace RecipeCard {
   export interface Props {

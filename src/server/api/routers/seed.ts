@@ -1,3 +1,12 @@
+import {
+  CATEGORIES,
+  CUISINES,
+  RECIPE_CATEGORIES,
+  RECIPE_CUISINES,
+  RECIPES,
+  USERS,
+} from "drizzle/seed/data";
+
 import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
   categories,
@@ -7,14 +16,6 @@ import {
   recipes,
   users,
 } from "@/server/db/schema";
-import {
-  CATEGORIES,
-  CUISINES,
-  RECIPES,
-  RECIPE_CATEGORIES,
-  RECIPE_CUISINES,
-  USERS,
-} from "drizzle/seed/data";
 
 export const seedRouter = createTRPCRouter({
   seedUsers: authenticatedProcedure.mutation(({ ctx }) => {

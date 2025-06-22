@@ -1,8 +1,10 @@
+import { Metadata } from "next";
+import { Suspense } from "react";
+
 import { Separator } from "@/components/ui";
 import { getSeo, getTotalRecipesCount } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
-import { Metadata } from "next";
-import { Suspense } from "react";
+
 import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "../_components";
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -1,4 +1,5 @@
 import { getNavigation } from "@/lib/data";
+
 import { DesktopHeader, Footer, MobileHeader } from "./_components";
 
 export default async function ({ children }: React.PropsWithChildren) {

@@ -1,8 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
 	"formatter": {
 		"indentStyle": "space"
 	},
@@ -21,20 +18,30 @@
 			"suspicious": {
 				"noExplicitAny": "error",
 				"noRedeclare": "off",
-        "noAssignInExpressions": "off",
+				"noAssignInExpressions": "off",
 				"noDuplicateAtImportRules": "error"
 			},
 			"complexity": {
 				"useLiteralKeys": "off"
 			},
 			"nursery": {
-				"useSortedClasses": "warn"
+				"useSortedClasses": "warn",
+				"useUniqueElementIds": "off"
 			},
 			"style": {
 				"noNonNullAssertion": "off",
 				"useTemplate": "off",
 				"noParameterAssign": "off",
-				"useImportType": "off"
+				"useImportType": "off",
+				"useAsConstAssertion": "error",
+				"useDefaultParameterLast": "error",
+				"useEnumInitializers": "error",
+				"useSelfClosingElements": "error",
+				"useSingleVarDeclarator": "error",
+				"noUnusedTemplateLiteral": "error",
+				"useNumberNamespace": "error",
+				"noInferrableTypes": "error",
+				"noUselessElse": "error"
 			},
 			"performance": {
 				"noDelete": "off"
@@ -46,6 +53,28 @@
 			"quoteStyle": "double",
 			"lineWidth": 80,
 			"trailingCommas": "all"
+		}
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							[
+								":BUN:",
+								":NODE:",
+								":PACKAGE:"
+							],
+							":BLANK_LINE:",
+							"@/**",
+							":BLANK_LINE:",
+							":PATH:"
+						]
+					}
+				}
+			}
 		}
 	}
 }

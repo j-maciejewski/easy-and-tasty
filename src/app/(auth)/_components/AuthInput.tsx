@@ -1,8 +1,10 @@
 "use client";
 
+import { use } from "react";
+
 import { Input } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { use } from "react";
+
 import { AuthData, AuthDataContext } from "../_context/AuthDataProvider";
 
 export const AuthInput = ({

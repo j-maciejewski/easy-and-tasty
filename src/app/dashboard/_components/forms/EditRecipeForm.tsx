@@ -1,5 +1,15 @@
 "use client";
 
+import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
+import { LoaderCircle, Plus, X } from "lucide-react";
+import { redirect } from "next/navigation";
+import React, { use, useRef } from "react";
+import { Resolver, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
 import {
   Badge,
   Button,
@@ -20,15 +30,7 @@ import {
 import { Path } from "@/config";
 import { difficultyEnum } from "@/server/db/schema";
 import { api } from "@/trpc/react";
-import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
-import { zodResolver } from "@hookform/resolvers/zod";
-import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { LoaderCircle, Plus, X } from "lucide-react";
-import { redirect } from "next/navigation";
-import { use, useRef } from "react";
-import { Resolver, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+
 import { CategoriesContext, CuisinesContext } from "../../_context";
 import { MultiSelect } from "../MultiSelect";
 
@@ -194,9 +196,10 @@ export function EditRecipeForm({
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormControl>
-                  <>
+                  <React.Fragment>
                     <label htmlFor="image-input">
                       <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
+                        {/** biome-ignore lint/performance/noImgElement: explanation */}
                         <img
                           src={field.value}
                           className="mx-auto max-h-80 object-cover"
@@ -244,7 +247,7 @@ export function EditRecipeForm({
                         }
                       }}
                     />
-                  </>
+                  </React.Fragment>
                 </FormControl>
                 <FormMessage />
               </FormItem>

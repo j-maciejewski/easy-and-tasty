@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import {
   Select,
   SelectContent,
@@ -8,7 +10,6 @@ import {
   SelectValue,
   Separator,
 } from "@/components/ui";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const SortSelect = () => {
   const router = useRouter();

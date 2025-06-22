@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import {
@@ -11,7 +12,7 @@ import {
   Separator,
 } from "@/components/ui";
 import logo from "@/public/logo.png";
-import Image from "next/image";
+
 import { AuthInput } from "../_components/AuthInput";
 
 export default function () {

@@ -14,54 +14,52 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  Textarea,
 } from "@/components/ui";
-import { api } from "@/trpc/react";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+  label: z.string().min(2, {
+    message: "Label must be at least 2 characters.",
   }),
-  slug: z.string().min(2, {
-    message: "Slug must be at least 2 characters.",
-  }),
-  description: z.string().min(2, {
-    message: "Description must be at least 2 characters.",
-  }),
+  href: z.string().optional(),
 });
 
-export namespace AddCuisineForm {
+export namespace NavigationItemForm {
   export interface Props {
-    onSubmit?: () => void;
+    data?: {
+      label: string;
+      href?: string;
+    };
+    onSubmit: (values: { label: string; href?: string }) => void;
   }
 }
 
-export function AddCuisineForm({ onSubmit }: AddCuisineForm.Props) {
-  const addCuisine = api.authorized.cuisine.addCuisine.useMutation();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      slug: "",
-      description: "",
-    },
-  });
-
+export function NavigationItemForm({
+  onSubmit,
+  data,
+}: NavigationItemForm.Props) {
   async function handleSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await addCuisine.mutateAsync(values);
-
-      toast.success("Cuisine was added.");
-
-      onSubmit?.();
+      onSubmit(values);
     } catch (error) {
       toast.error(
         (error as Error)?.message ??
-          "There was an error while adding the cuisine.",
+          "There was an error while modifying config.",
       );
     }
   }
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    values: data
+      ? {
+          label: data.label,
+          href: data.href,
+        }
+      : {
+          label: "",
+          href: "",
+        },
+  });
 
   return (
     <>
@@ -72,10 +70,10 @@ export function AddCuisineForm({ onSubmit }: AddCuisineForm.Props) {
         >
           <FormField
             control={form.control}
-            name="name"
+            name="label"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>Label</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -85,10 +83,10 @@ export function AddCuisineForm({ onSubmit }: AddCuisineForm.Props) {
           />
           <FormField
             control={form.control}
-            name="slug"
+            name="href"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Slug</FormLabel>
+                <FormLabel>Link</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -96,22 +94,8 @@ export function AddCuisineForm({ onSubmit }: AddCuisineForm.Props) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea {...field} className="resize-none" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <Button type="submit" className="text-white">
-            Submit
+            {data ? "Update" : "Create"}
           </Button>
         </form>
       </Form>

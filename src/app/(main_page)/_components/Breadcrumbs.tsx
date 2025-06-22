@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
+
 import { ShareDialog } from "./ShareDialog";
 
 export namespace Breadcrumbs {

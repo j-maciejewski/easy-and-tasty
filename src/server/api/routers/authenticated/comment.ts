@@ -1,7 +1,8 @@
-import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { comment_likes, comments } from "@/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
+
+import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { comment_likes, comments } from "@/server/db/schema";
 
 export const authenticatedCommentRouter = createTRPCRouter({
   addComment: authenticatedProcedure

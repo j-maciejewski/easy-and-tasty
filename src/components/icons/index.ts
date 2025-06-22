@@ -1,11 +1,11 @@
 // Lucide Icons
 
+export { GaugeHigh } from "./GaugeHigh";
 export { GaugeLow } from "./GaugeLow";
 export { GaugeMedium } from "./GaugeMedium";
-export { GaugeHigh } from "./GaugeHigh";
 
 // SVGL Icons
 
 export { Facebook } from "./Facebook";
-export { Instagram } from "./Instagram";
 export { Google } from "./Google";
+export { Instagram } from "./Instagram";

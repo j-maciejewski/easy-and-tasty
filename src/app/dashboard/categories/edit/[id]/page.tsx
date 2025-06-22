@@ -4,7 +4,9 @@ export const dynamic = "force-dynamic";
 
 export default async function ({
   params,
-}: { params: Promise<{ id: string }> }) {
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const categoryId = (await params).id;
 
   return (

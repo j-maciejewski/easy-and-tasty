@@ -1,5 +1,12 @@
 "use client";
 
+import clsx from "clsx";
+import { User2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { forwardRef, HTMLAttributes, useEffect, useState } from "react";
+
 import {
   Button,
   NavigationMenu,
@@ -12,12 +19,7 @@ import {
 } from "@/components/ui";
 import { Path } from "@/config";
 import logo from "@/public/logo.png";
-import clsx from "clsx";
-import { User2 } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
-import { HTMLAttributes, forwardRef, useEffect, useState } from "react";
+
 import { AvatarDropdown } from "./AvatarDropdown";
 import { Searchbar } from "./Searchbar";
 
@@ -87,11 +89,11 @@ export const DesktopHeader = forwardRef<
         className={`transition-all duration-300 ${isScrolled ? "h-0 overflow-hidden opacity-0" : "h-12 opacity-100"} ~md:~max-w-[60rem]/[80rem] mx-auto flex items-center justify-between text-black`}
       >
         <NavigationMenu viewport={false}>
-          <NavigationMenuList className="flex h-fit w-full flex-wrap gap-4 whitespace-nowrap px-4 text-sm tracking-wider">
-            {navigation.links.map((link, idx) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          <NavigationMenuList className="flex h-fit w-full flex-wrap gap-3 whitespace-nowrap px-4 text-sm tracking-wider">
+            {navigation.map((link, idx) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               <NavigationMenuItem key={idx}>
-                {"href" in link ? (
+                {link.href ? (
                   <NavigationMenuLink
                     asChild
                     className={navigationMenuTriggerStyle()}
@@ -102,9 +104,16 @@ export const DesktopHeader = forwardRef<
                   <>
                     <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger>
                     <NavigationMenuContent className="!w-[200px]">
-                      {link.sublinks.map(({ href, label }) => (
-                        <NavigationMenuLink asChild key={href}>
-                          <Link href={href}>{label}</Link>
+                      {link.sublinks?.map((sublink, _idx) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: explanation
+                        <NavigationMenuLink asChild key={_idx}>
+                          {sublink.href ? (
+                            <Link href={sublink.href}>{sublink.label}</Link>
+                          ) : (
+                            <span className="cursor-pointer">
+                              {sublink.label}
+                            </span>
+                          )}
                         </NavigationMenuLink>
                       ))}
                     </NavigationMenuContent>

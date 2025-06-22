@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, createContext, useMemo } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 
 interface ICuisinesContext {
   cuisines: Map<

@@ -1,3 +1,14 @@
+import {
+  LayoutDashboardIcon as Dashboard,
+  Heart,
+  LogOut,
+  Settings,
+  User,
+} from "lucide-react";
+import Link from "next/link";
+import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,16 +19,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  LayoutDashboardIcon as Dashboard,
-  Heart,
-  LogOut,
-  Settings,
-  User,
-} from "lucide-react";
-import { Session } from "next-auth";
-import { signOut } from "next-auth/react";
-import Link from "next/link";
 
 export const AvatarDropdown = ({ user }: { user: Session["user"] }) => {
   return (

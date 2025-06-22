@@ -1,12 +1,15 @@
-import { getPage } from "@/lib/data";
-import { parseMetadata, parseSlug } from "@/lib/utils";
-import { api } from "@/trpc/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { getPage } from "@/lib/data";
+import { parseMetadata, parseSlug } from "@/lib/utils";
+import { api } from "@/trpc/server";
+
 export async function generateMetadata({
   params,
-}: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
+}: {
+  params: Promise<{ slug: string[] }>;
+}): Promise<Metadata> {
   const page = await getPage(parseSlug((await params).slug));
 
   if (!page) return {};
@@ -30,7 +33,9 @@ export async function generateStaticParams() {
 
 export default async function ({
   params,
-}: { params: Promise<{ slug: string[] }> }) {
+}: {
+  params: Promise<{ slug: string[] }>;
+}) {
   const page = await getPage(parseSlug((await params).slug));
 
   if (!page) {

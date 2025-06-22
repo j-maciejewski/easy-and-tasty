@@ -1,15 +1,19 @@
+import { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+
 import { Separator } from "@/components/ui";
 import { getCategory, getCategoryRecipesCount } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
+
 import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "../../_components";
 
 export async function generateMetadata({
   params,
-}: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const category = await getCategory((await params).slug);
 
   if (!category) return {};
@@ -27,7 +31,9 @@ export async function generateStaticParams() {
 
 export default async function ({
   params,
-}: { params: Promise<{ slug: string }> }) {
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const categorySlug = (await params).slug;
 
   const [category, recipesCount] = await Promise.all([

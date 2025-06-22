@@ -1,3 +1,6 @@
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { use } from "react";
+
 import {
   Skeleton,
   Table,
@@ -8,8 +11,7 @@ import {
   TableRow,
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import { use } from "react";
+
 import { PaginationContext } from "../_context";
 import { Pagination } from "./Pagination";
 
@@ -104,7 +106,7 @@ export const DataTable = <T,>({
                 </TableRow>
               ))
             : data.map((item, idx) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                // biome-ignore lint/suspicious/noArrayIndexKey: explanation
                 <TableRow key={idx}>
                   {columns
                     .filter((column) => !hiddenColumns.includes(column.label))

@@ -1,8 +1,10 @@
+import clsx from "clsx";
+import { Metadata } from "next";
+
 import { Separator } from "@/components/ui";
 import { getSeo, getSuggestedRecipes } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
-import clsx from "clsx";
-import { Metadata } from "next";
+
 import { merienda } from "../fonts";
 import {
   Banner,

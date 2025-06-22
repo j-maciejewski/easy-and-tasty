@@ -6,7 +6,9 @@ export const dynamic = "force-dynamic";
 
 export default async function ({
   params,
-}: { params: Promise<{ id: string }> }) {
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const recipeId = (await params).id;
   const categories = await api.authorized.category.getCategories();
   const cuisines = await api.authorized.cuisine.getCuisines();

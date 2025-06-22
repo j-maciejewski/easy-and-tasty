@@ -1,5 +1,8 @@
 "use client";
 
+import { Check, Copy, Facebook, Share2, Twitter } from "lucide-react";
+import { useState } from "react";
+
 import {
   Button,
   Dialog,
@@ -12,8 +15,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui";
-import { Check, Copy, Facebook, Share2, Twitter } from "lucide-react";
-import { useState } from "react";
 
 export namespace ShareDialog {
   export interface Props {

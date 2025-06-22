@@ -1,8 +1,9 @@
-import { merienda } from "@/app/fonts";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { HTMLAttributes, forwardRef } from "react";
+import { forwardRef, HTMLAttributes } from "react";
+
+import { merienda } from "@/app/fonts";
 
 export const Banner = forwardRef<
   HTMLDivElement,

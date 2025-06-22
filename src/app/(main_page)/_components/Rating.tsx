@@ -1,6 +1,7 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui";
 import { Star } from "lucide-react";
 import { Fragment } from "react";
+
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui";
 
 export namespace Rating {
   export interface Props {

@@ -1,9 +1,11 @@
-import { Card, CardHeader, Separator } from "@/components/ui";
-import { getSuggestedRecipes } from "@/lib/data";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { HTMLAttributes, forwardRef } from "react";
+import { forwardRef, HTMLAttributes } from "react";
+
+import { Card, CardHeader, Separator } from "@/components/ui";
+import { getSuggestedRecipes } from "@/lib/data";
+
 import { Rating } from "./Rating";
 
 export const RecipesList = forwardRef<

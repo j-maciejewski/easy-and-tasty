@@ -1,7 +1,5 @@
 "use client";
 
-import { Button, Input } from "@/components/ui";
-import { api } from "@/trpc/react";
 import { LoaderCircle, Search, X } from "lucide-react";
 import Link from "next/link";
 import {
@@ -12,6 +10,9 @@ import {
   useMemo,
   useState,
 } from "react";
+
+import { Button, Input } from "@/components/ui";
+import { api } from "@/trpc/react";
 
 export const MobileSearch = ({
   className,

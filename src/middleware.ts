@@ -1,5 +1,6 @@
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+
 import { Path } from "./config";
 
 export async function middleware(request: NextRequest) {

@@ -1,8 +1,10 @@
-import { GaugeHigh, GaugeLow, GaugeMedium } from "@/components/icons";
-import { Separator } from "@/components/ui";
 import clsx from "clsx";
 import { Drumstick, Timer } from "lucide-react";
-import { HTMLAttributes, forwardRef } from "react";
+import { forwardRef, HTMLAttributes } from "react";
+
+import { GaugeHigh, GaugeLow, GaugeMedium } from "@/components/icons";
+import { Separator } from "@/components/ui";
+
 import { Rating } from "./Rating";
 
 export namespace RecipeInformation {

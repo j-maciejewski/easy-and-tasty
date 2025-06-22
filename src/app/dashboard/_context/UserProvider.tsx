@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, createContext, useMemo } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 
 interface IUserContext {
   settings: {
@@ -9,11 +9,7 @@ interface IUserContext {
 
 const UserContext = createContext<IUserContext | null>(null);
 
-const UserProvider = ({
-  ...rest
-}: {
-  children: ReactNode;
-}) => {
+const UserProvider = ({ ...rest }: { children: ReactNode }) => {
   const value = useMemo(
     () => ({
       settings: {

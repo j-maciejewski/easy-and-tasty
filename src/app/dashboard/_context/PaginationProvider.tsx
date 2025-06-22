@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ReactNode, createContext, useMemo, useState } from "react";
+import { createContext, ReactNode, useMemo, useState } from "react";
 
 interface IPaginationContext {
   pagination: {
@@ -15,11 +15,7 @@ interface IPaginationContext {
 
 const PaginationContext = createContext<IPaginationContext | null>(null);
 
-const PaginationProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+const PaginationProvider = ({ children }: { children: ReactNode }) => {
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -48,7 +44,7 @@ const PaginationProvider = ({
     router.push(`?${newParams.toString()}`);
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const context: IPaginationContext = useMemo(
     () => ({
       pagination: {

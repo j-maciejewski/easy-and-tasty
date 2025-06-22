@@ -1,5 +1,11 @@
 "use client";
 
+import { Columns3, Plus, X } from "lucide-react";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
+
 import {
   Badge,
   Button,
@@ -13,11 +19,7 @@ import {
 } from "@/components/ui";
 import { Path } from "@/config";
 import { api } from "@/trpc/react";
-import { Columns3, Plus, X } from "lucide-react";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
+
 import {
   AddCuisineForm,
   ConditionalDialog,
@@ -47,7 +49,7 @@ export default function () {
   } = api.authorized.cuisine.getCuisines.useQuery();
   const deleteCuisine = api.authorized.cuisine.deleteCuisine.useMutation();
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     if (!cuisines) return;
 
@@ -138,7 +140,7 @@ export default function () {
     });
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const filteredCuisines = useMemo(() => {
     if (!cuisines) return [];
 
@@ -191,7 +193,7 @@ export default function () {
     sortField,
   ]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     if (!cuisines || cuisines.length === filteredCuisines.length) return;
 

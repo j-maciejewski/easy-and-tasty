@@ -1,9 +1,10 @@
-import { APP_NAME } from "@/consts";
-import { env } from "@/env";
 import { type ClassValue, clsx } from "clsx";
 import { Metadata } from "next";
 import { OpenGraphType } from "next/dist/lib/metadata/types/opengraph-types";
 import { twMerge } from "tailwind-merge";
+
+import { APP_NAME } from "@/consts";
+import { env } from "@/env";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

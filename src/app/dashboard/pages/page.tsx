@@ -1,5 +1,9 @@
 "use client";
 
+import { ChevronDown, ChevronUp, Columns3, Menu, Plus, X } from "lucide-react";
+import Link from "next/link";
+import { ReactNode, useEffect, useRef, useState } from "react";
+
 import {
   Badge,
   Button,
@@ -26,9 +30,7 @@ import {
 } from "@/components/ui";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
-import { ChevronDown, ChevronUp, Columns3, Menu, Plus, X } from "lucide-react";
-import Link from "next/link";
-import { ReactNode, useEffect, useRef, useState } from "react";
+
 import { ErrorCatcher, MultiSelect } from "../_components";
 // import { AddpageForm } from "../_components/AddpageForm";
 
@@ -241,50 +243,48 @@ export default function () {
           </TableBody>
         </Table>
       ) : pages?.length !== undefined && pages?.length > 0 ? (
-        <>
-          <Table>
-            <TableHeader>
-              <TableRow>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {columns
+                .filter((column) => !column.hidden)
+                .map((column) => (
+                  <TableHead
+                    key={column.label}
+                    className={cn(
+                      "select-none",
+                      column.sortKey && "cursor-pointer hover:bg-gray-200/50",
+                    )}
+                    {...(column.sortKey
+                      ? {
+                          onClick: () => toggleSort(column.sortKey as string),
+                        }
+                      : {})}
+                  >
+                    <span className="flex justify-between">
+                      {column.label}
+                      {column.sortKey &&
+                        sortField === column.sortKey &&
+                        (sortDir === "asc" ? <ChevronUp /> : <ChevronDown />)}
+                    </span>
+                  </TableHead>
+                ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {pages?.map((page) => (
+              <TableRow key={page.id}>
                 {columns
                   .filter((column) => !column.hidden)
                   .map((column) => (
-                    <TableHead
-                      key={column.label}
-                      className={cn(
-                        "select-none",
-                        column.sortKey && "cursor-pointer hover:bg-gray-200/50",
-                      )}
-                      {...(column.sortKey
-                        ? {
-                            onClick: () => toggleSort(column.sortKey as string),
-                          }
-                        : {})}
-                    >
-                      <span className="flex justify-between">
-                        {column.label}
-                        {column.sortKey &&
-                          sortField === column.sortKey &&
-                          (sortDir === "asc" ? <ChevronUp /> : <ChevronDown />)}
-                      </span>
-                    </TableHead>
+                    <TableCell key={column.label} className="font-medium">
+                      {column.render(page)}
+                    </TableCell>
                   ))}
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {pages?.map((page) => (
-                <TableRow key={page.id}>
-                  {columns
-                    .filter((column) => !column.hidden)
-                    .map((column) => (
-                      <TableCell key={column.label} className="font-medium">
-                        {column.render(page)}
-                      </TableCell>
-                    ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </>
+            ))}
+          </TableBody>
+        </Table>
       ) : (
         "No pages"
       )}

@@ -1,7 +1,8 @@
-import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { seo, staticPageTypeEnum } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { seo, staticPageTypeEnum } from "@/server/db/schema";
 
 export const authorizedSeoRouter = createTRPCRouter({
   getSeoConfig: authorizedProcedure.query(async ({ ctx }) => {

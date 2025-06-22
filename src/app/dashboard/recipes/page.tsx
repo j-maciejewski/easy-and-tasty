@@ -1,5 +1,10 @@
 "use client";
 
+import { Columns3, Plus, X } from "lucide-react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
+
 import {
   Badge,
   Button,
@@ -14,10 +19,7 @@ import {
 import { Path } from "@/config";
 import { api } from "@/trpc/react";
 import { createMap } from "@/utils";
-import { Columns3, Plus, X } from "lucide-react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
+
 import {
   AddRecipeForm,
   ConditionalDialog,
@@ -55,7 +57,7 @@ export default function () {
   const { data } = useSession();
   const [editedRecipe, setEditedRecipe] = useState<number | null>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
@@ -88,7 +90,7 @@ export default function () {
     limit: pagination.itemsPerPage,
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     if (!recipes?.pagination) return;
 

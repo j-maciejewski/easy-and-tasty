@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -8,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui";
-import * as React from "react";
 
 export namespace MultiSelect {
   export interface Props<T> {
@@ -37,7 +38,7 @@ export const MultiSelect = <T extends string | number | (string | number)>({
         )}
         {options.map((option, idx) => (
           <DropdownMenuCheckboxItem
-            // biome-ignore lint/suspicious/noArrayIndexKey:
+            // biome-ignore lint/suspicious/noArrayIndexKey: explanation
             key={idx}
             checked={option.checked}
             onCheckedChange={() => toggleOption(option.value)}

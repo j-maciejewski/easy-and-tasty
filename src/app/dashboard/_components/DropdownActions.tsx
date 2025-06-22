@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui";
+import { Menu } from "lucide-react";
+import React from "react";
+
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui";
-import { Menu } from "lucide-react";
-import React from "react";
 
 export namespace DropdownActions {
   export interface Props {

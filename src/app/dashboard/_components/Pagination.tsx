@@ -1,5 +1,7 @@
 "use client";
 
+import { use, useMemo } from "react";
+
 import {
   PaginationButton,
   PaginationContent,
@@ -15,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui";
 import { getPaginationTiles } from "@/utils";
-import { use, useMemo } from "react";
+
 import { PaginationContext } from "../_context";
 
 export const Pagination = () => {
@@ -69,7 +71,7 @@ export const Pagination = () => {
               />
             </PaginationItem>
             {tiles.map((number, idx) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               <PaginationItem key={idx}>
                 {number !== null ? (
                   <PaginationButton

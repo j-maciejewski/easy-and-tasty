@@ -1,7 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { pages } from "@/server/db/schema";
 import { and, ilike, isNotNull } from "drizzle-orm";
 import { z } from "zod";
+
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { pages } from "@/server/db/schema";
 
 export const publicPageRouter = createTRPCRouter({
   getPage: publicProcedure

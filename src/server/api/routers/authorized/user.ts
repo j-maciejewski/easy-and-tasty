@@ -1,7 +1,8 @@
-import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { users } from "@/server/db/schema";
 
 export const authorizedUserRouter = createTRPCRouter({
   getUsers: authorizedProcedure.query(({ ctx }) => {

@@ -1,8 +1,10 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 import { Separator, SidebarTrigger } from "@/components/ui";
 import { Path } from "@/config";
-import { usePathname } from "next/navigation";
+
 import { ToggleThemeButton } from "./ToggleThemeButton";
 
 const SLUG_REGEX = "([a-zA-Z0-9_-]+)";

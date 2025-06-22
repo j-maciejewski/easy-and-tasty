@@ -8,6 +8,13 @@
       "when": 1748951826827,
       "tag": "0000_tense_deathstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1749394320926,
+      "tag": "0001_stiff_goblin_queen",
+      "breakpoints": true
     }
   ]
 }

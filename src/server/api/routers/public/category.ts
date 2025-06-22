@@ -1,7 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { categories } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
+
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { categories } from "@/server/db/schema";
 
 export const publicCategoryRouter = createTRPCRouter({
   getCategories: publicProcedure.query(({ ctx }) => {

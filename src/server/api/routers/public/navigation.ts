@@ -1,52 +1,23 @@
+import { eq } from "drizzle-orm";
+
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { config } from "@/server/db/schema";
 
 export const publicNavigationRouter = createTRPCRouter({
-  getNavigation: publicProcedure.query(() => {
-    return {
-      links: [
-        {
-          label: "Popular",
-          sublinks: [
-            {
-              label: "Spaghetti Carbonara",
-              href: "/recipe/spaghetti-carbonara",
-            },
-            {
-              label: "Pierogi",
-              href: "/recipe/pierogi",
-            },
-            {
-              label: "Pancakes",
-              href: "/recipe/pancakes",
-            },
-          ],
-        },
-        {
-          label: "Ocasions",
-          sublinks: [
-            {
-              label: "Christmas",
-              href: "/christmas-recipes",
-            },
-            {
-              label: "Valentine's Day",
-              href: "/valentines-day-recipes",
-            },
-            {
-              label: "Easter",
-              href: "/easter-recipes",
-            },
-          ],
-        },
-        {
-          label: "Categories",
-          href: "/categories",
-        },
-        {
-          label: "Cuisines",
-          href: "/cuisines",
-        },
-      ],
-    };
+  getNavigation: publicProcedure.query(async ({ ctx }) => {
+    const data = await ctx.db.query.config.findFirst({
+      columns: {
+        data: true,
+      },
+      where: eq(config.configType, "header_navigation"),
+    });
+
+    return (
+      (data?.data as {
+        label: string;
+        href?: string;
+        sublinks: { label: string; href: string }[];
+      }[]) ?? []
+    );
   }),
 });

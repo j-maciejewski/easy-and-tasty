@@ -1,18 +1,19 @@
 "use client";
 
-import { Input } from "@/components/ui";
-import { api } from "@/trpc/react";
 import clsx from "clsx";
 import { LoaderCircle, Search } from "lucide-react";
 import Link from "next/link";
 import {
   ChangeEvent,
-  HTMLAttributes,
   forwardRef,
+  HTMLAttributes,
   useEffect,
   useMemo,
   useState,
 } from "react";
+
+import { Input } from "@/components/ui";
+import { api } from "@/trpc/react";
 
 export const Searchbar = forwardRef<
   HTMLDivElement,

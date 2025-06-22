@@ -9,7 +9,7 @@ export const ErrorCatcher = ({
       {errors
         .filter((error) => error !== null)
         .map((error, idx) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          // biome-ignore lint/suspicious/noArrayIndexKey: explanation
           <div key={idx}>{error?.message ?? JSON.stringify(error)}</div>
         ))}
     </div>

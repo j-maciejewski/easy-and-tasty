@@ -1,6 +1,8 @@
-import { getRecipesByCategory, getRecipesByCuisine } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+
+import { getRecipesByCategory, getRecipesByCuisine } from "@/lib/data";
+
 import { RecipeCard } from "./RecipeCard";
 
 interface CategoryPreview {

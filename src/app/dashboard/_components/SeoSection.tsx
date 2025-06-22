@@ -1,3 +1,5 @@
+import { Pencil } from "lucide-react";
+
 import {
   Button,
   Dialog,
@@ -7,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui";
 import { seo, staticPageTypeEnum } from "@/server/db/schema";
-import { Pencil } from "lucide-react";
+
 import { EditSeoForm } from "./forms/EditSeoForm";
 
 export namespace SeoSection {
@@ -33,27 +35,26 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
         <div className="space-y-2">
           <h6 className="font-semibold text-base">Title</h6>
           {data?.title ? (
-            <p className="text-muted-foreground text-sm">{data.title}</p>
+            <p className="text-foreground/75 text-sm">{data.title}</p>
           ) : (
-            <p className="text-muted-foreground text-sm italic">No title</p>
+            <p className="text-foreground/75 text-sm italic">No title</p>
           )}
         </div>
         <div className="space-y-2">
           <h6 className="font-semibold text-base">Description</h6>
           {data?.description ? (
-            <p className="text-muted-foreground text-sm">{data.description}</p>
+            <p className="text-foreground/75 text-sm">{data.description}</p>
           ) : (
-            <p className="text-muted-foreground text-sm italic">
-              No description
-            </p>
+            <p className="text-foreground/75 text-sm italic">No description</p>
           )}
         </div>
         <div className="space-y-2">
           <h6 className="font-semibold text-base">Image</h6>
           {data?.image ? (
-            <img src={data.image} alt={data.title} />
+            // biome-ignore lint/performance/noImgElement: explanation
+            <img src={data.image} alt={data.title} className="max-w-[400px]" />
           ) : (
-            <p className="text-muted-foreground text-sm italic">No image</p>
+            <p className="text-foreground/75 text-sm italic">No image</p>
           )}
         </div>
         <DialogContent>

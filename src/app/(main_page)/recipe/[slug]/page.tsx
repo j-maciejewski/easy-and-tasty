@@ -1,12 +1,14 @@
-import { Separator } from "@/components/ui";
-import { getRecipe } from "@/lib/data";
-import { parseMetadata } from "@/lib/utils";
-import { api } from "@/trpc/server";
 import Markdown from "markdown-to-jsx";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+import { Separator } from "@/components/ui";
+import { getRecipe } from "@/lib/data";
+import { parseMetadata } from "@/lib/utils";
+import { api } from "@/trpc/server";
+
 import {
   Breadcrumbs,
   RecipeInformation,
@@ -16,7 +18,9 @@ import {
 
 export async function generateMetadata({
   params,
-}: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const recipe = await getRecipe((await params).slug);
 
   if (!recipe) return {};
@@ -36,7 +40,9 @@ export async function generateStaticParams() {
 
 export default async function ({
   params,
-}: { params: Promise<{ slug: string }> }) {
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const recipe = await getRecipe((await params).slug);
 
   if (!recipe) {
