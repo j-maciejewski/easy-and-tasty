@@ -29,8 +29,8 @@ export const RecipesList = forwardRef<
               <div className="flex items-center gap-2 rounded-lg">
                 <Image
                   src={recipe.image}
-                  width={200}
-                  height={200}
+                  width={80}
+                  height={80}
                   alt={recipe.title}
                   loading="lazy"
                   className="size-20 min-w-20 rounded-lg object-cover"

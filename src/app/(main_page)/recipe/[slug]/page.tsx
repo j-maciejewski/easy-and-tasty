@@ -65,8 +65,8 @@ export default async function ({
         <div className="~mb-4/6 max-h-[700px] overflow-hidden rounded-lg">
           <Image
             src={recipe.image}
-            width={400}
-            height={600}
+            width={900}
+            height={700}
             alt={recipe.title}
             loading="lazy"
             className="mx-auto max-h-[700px] min-h-full w-full object-cover max-sm:w-full"

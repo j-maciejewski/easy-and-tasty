@@ -15,6 +15,7 @@ import {
   CarouselPrevious,
   Separator,
 } from "@/components/ui";
+import { getDifficultyIcon } from "@/utils";
 
 import { Rating } from "./Rating";
 
@@ -52,7 +53,7 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
                   <Image
                     src={recipe.image}
                     width={400}
-                    height={600}
+                    height={300}
                     alt={recipe.title}
                     loading="lazy"
                     className="max-h-[300px] min-h-[300px] w-full object-cover max-sm:w-full md:max-h-64"
@@ -66,15 +67,12 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
                     {recipe.description}
                   </p>
                   <div className="flex justify-center gap-2 text-gray-600 text-sm">
-                    <Rating rating={recipe.avgRating} />
-                    {recipe.ratingsCount !== 0 && (
-                      <>
-                        <Separator orientation="vertical" />
-                        <p className="font-semiboldwhitespace-nowrap">
-                          {recipe.ratingsCount} Ratings
-                        </p>
-                      </>
-                    )}
+                    <div className="flex items-center">
+                      {getDifficultyIcon(recipe.difficulty)}
+                      <span className="ml-2 capitalize tracking-normal">
+                        {recipe.difficulty}
+                      </span>
+                    </div>
                     <Separator
                       orientation="vertical"
                       className="h-auto bg-gray-500/90"
@@ -85,6 +83,19 @@ export const RecipesCarousel = ({ recipes }: RecipesCarousel.Props) => {
                         {recipe.time} minutes
                       </span>
                     </div>
+                    <Separator
+                      orientation="vertical"
+                      className="h-auto bg-gray-500/90"
+                    />
+                    <Rating rating={recipe.avgRating} />
+                    {recipe.ratingsCount !== 0 && (
+                      <>
+                        <Separator orientation="vertical" />
+                        <p className="font-semiboldwhitespace-nowrap">
+                          {recipe.ratingsCount} Ratings
+                        </p>
+                      </>
+                    )}
                   </div>
                   <Button
                     type="button"

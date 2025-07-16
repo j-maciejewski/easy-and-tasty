@@ -5,11 +5,12 @@ import {
   Settings,
   User,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,7 +27,15 @@ export const AvatarDropdown = ({ user }: { user: Session["user"] }) => {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           <Avatar className="h-10 w-10">
-            {user.image && <AvatarImage src={user.image} />}
+            {user.image && (
+              <Image
+                src={user.image}
+                className="aspect-square h-full w-full"
+                width={40}
+                height={40}
+                alt="user avatar"
+              />
+            )}
             <AvatarFallback>
               <User />
             </AvatarFallback>
