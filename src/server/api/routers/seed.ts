@@ -31,7 +31,7 @@ export const seedRouter = createTRPCRouter({
   }),
 
   seedRecipes: authenticatedProcedure.mutation(({ ctx }) => {
-    // @ts-ignore
+    // @ts-expect-error
     return ctx.db.insert(recipes).values(RECIPES);
   }),
 

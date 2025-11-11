@@ -35,7 +35,6 @@ export const users = createTable("user", {
   email: varchar("email", { length: 256 }).notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   password: varchar("password", { length: 256 }),
-  image: varchar("image", { length: 1024 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -170,7 +169,10 @@ export const seo = createTable("seo", {
   image: varchar("image", { length: 1024 }),
 });
 
-export const configTypeEnum = pgEnum("configTypeEnum", ["header_navigation"]);
+export const configTypeEnum = pgEnum("configTypeEnum", [
+  "header_navigation",
+  "home_page",
+]);
 
 export const config = createTable("config", {
   configType: configTypeEnum("configType").notNull().unique(),

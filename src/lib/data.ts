@@ -34,7 +34,7 @@ export const getPage = cache(
 );
 
 export const getSuggestedRecipes = cache((tag: string) =>
-  next_cache(() => api.public.recipe.getRandomRecipes(5), [tag], {
+  next_cache(() => api.public.recipe.getRandomRecipes(6), [tag], {
     revalidate: REVALIDATE_TIME,
     tags: [tag],
   })(),

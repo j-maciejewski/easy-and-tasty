@@ -1,11 +1,11 @@
 import { GeistSans } from "geist/font/sans";
-import { unstable_ViewTransition as ViewTransition } from "react";
+
+// import { unstable_ViewTransition as ViewTransition } from "react";
 
 import { TooltipProvider } from "@/components/ui";
 import { APP_DESCRIPTION, APP_NAME } from "@/consts";
+import { NextAuthProvider } from "@/context";
 import { TRPCReactProvider } from "@/trpc/react";
-
-import { NextAuthProvider } from "./(shared)/context/NextAuthProvider";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
@@ -17,12 +17,17 @@ export const metadata: Metadata = {
 
 export default function ({ children }: React.PropsWithChildren) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="!overflow-x-hidden">
+    <html
+      lang="en"
+      className={`${GeistSans.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="overflow-x-hidden!">
         <NextAuthProvider>
           <TRPCReactProvider>
             <TooltipProvider delayDuration={300} disableHoverableContent>
-              <ViewTransition>{children}</ViewTransition>
+              {children}
+              {/* <ViewTransition>{children}</ViewTransition> */}
             </TooltipProvider>
           </TRPCReactProvider>
         </NextAuthProvider>

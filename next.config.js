@@ -19,7 +19,6 @@ const config = {
     ],
   },
   experimental: {
-    reactCompiler: true,
     viewTransition: true,
   },
   headers: async () => {

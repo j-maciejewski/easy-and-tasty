@@ -17,7 +17,6 @@ export const authorizedUserRouter = createTRPCRouter({
         id: true,
         email: true,
         name: true,
-        image: true,
         preferences: true,
       },
       where: (users, { eq }) => eq(users.id, ctx.user.id),

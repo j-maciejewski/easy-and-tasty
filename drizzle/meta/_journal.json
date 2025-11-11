@@ -15,6 +15,13 @@
       "when": 1749394320926,
       "tag": "0001_stiff_goblin_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1762870184180,
+      "tag": "0002_skinny_energizer",
+      "breakpoints": true
     }
   ]
 }

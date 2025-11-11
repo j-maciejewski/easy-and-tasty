@@ -15,6 +15,7 @@ import {
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, {
+    // @ts-expect-error TODO: fix legacy user image error
     usersTable: users,
     accountsTable: accounts,
     sessionsTable: sessions,
@@ -57,7 +58,6 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          image: user.image,
           role: user.role,
           preferences: user.preferences,
         };

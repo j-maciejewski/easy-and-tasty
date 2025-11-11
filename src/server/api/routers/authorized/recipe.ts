@@ -12,7 +12,6 @@ import {
 import { parseSlug } from "@/utils";
 
 export const authorizedRecipeRouter = createTRPCRouter({
-  // @ts-ignore
   getRecipe: authorizedProcedure
     .input(z.number())
     .query(async ({ ctx, input }) => {
@@ -49,7 +48,6 @@ export const authorizedRecipeRouter = createTRPCRouter({
       return results[0];
     }),
 
-  // @ts-ignore
   getRecipes: authorizedProcedure
     .input(
       z.object({
