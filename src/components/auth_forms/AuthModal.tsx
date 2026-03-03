@@ -14,8 +14,8 @@ export const AuthModal = () => {
     view === VIEWS.REGISTER
       ? SignUpForm
       : view === VIEWS.FORGOT_PASSWORD
-      ? ResetPasswordForm
-      : LoginForm;
+        ? ResetPasswordForm
+        : LoginForm;
 
   return <View type="modal" setView={setView} />;
 };

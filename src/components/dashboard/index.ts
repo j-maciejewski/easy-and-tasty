@@ -15,14 +15,21 @@ export { SessionWrapper } from "./SessionWrapper";
 export { Sidebar } from "./Sidebar";
 export { SortableNavigation } from "./SortableNavigation";
 export { ToggleThemeButton } from "./ToggleThemeButton";
+export { Modal } from "./Modal";
 
-// Form Components
+// Modals
+
+export { GenericModal } from "./modals/GenericModal";
+export { GenericConfirmModal } from "./modals/GenericConfirmModal";
+
+// Forms
 export { AddCategoryForm } from "./forms/AddCategoryForm";
 export { AddCuisineForm } from "./forms/AddCuisineForm";
 export { AddPageForm } from "./forms/AddPageForm";
 export { AddRecipeForm } from "./forms/AddRecipeForm";
 export { EditCategoryForm } from "./forms/EditCategoryForm";
 export { EditCuisineForm } from "./forms/EditCuisineForm";
+export { EditPageForm } from "./forms/EditPageForm";
 export { EditRecipeForm } from "./forms/EditRecipeForm";
 export { EditSeoForm } from "./forms/EditSeoForm";
 export { NavigationItemForm } from "./forms/NavigationItemForm";

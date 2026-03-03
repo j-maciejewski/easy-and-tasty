@@ -80,9 +80,6 @@ export const authOptions: NextAuthOptions = {
         });
         session.user.id = token.sub!;
         session.user.role = dbUser?.role;
-        session.user.preferences = dbUser?.preferences
-          ? (JSON.parse(dbUser.preferences) ?? null)
-          : null;
       }
       return session;
     },

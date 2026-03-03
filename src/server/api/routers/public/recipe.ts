@@ -1,4 +1,14 @@
-import { and, count, desc, eq, gt, ilike, lt, sql } from "drizzle-orm";
+import {
+  and,
+  count,
+  desc,
+  eq,
+  gt,
+  ilike,
+  isNotNull,
+  lt,
+  sql,
+} from "drizzle-orm";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
@@ -28,25 +38,26 @@ export const publicRecipeRouter = createTRPCRouter({
               servings: recipes.servings,
               slug: recipes.slug,
               time: recipes.time,
+              publishedAt: recipes.publishedAt,
               avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
               ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
               categories: sql<{ name: string; slug: string }[]>`
 				COALESCE(
 					jsonb_agg(DISTINCT jsonb_build_object('name', ${categories.name}, 'slug', ${categories.slug}))
-					FILTER (WHERE ${categories.name} IS NOT NULL AND ${categories.slug} IS NOT NULL),
+          FILTER (WHERE ${categories.name} IS NOT NULL AND ${categories.slug} IS NOT NULL AND ${categories.publishedAt} IS NOT NULL),
 					'[]'::jsonb
 				)
 				`.as("categories"),
               cuisines: sql<{ name: string; slug: string }[]>`
 				COALESCE(
 					jsonb_agg(DISTINCT jsonb_build_object('name', ${cuisines.name}, 'slug', ${cuisines.slug}))
-					FILTER (WHERE ${cuisines.name} IS NOT NULL AND ${cuisines.slug} IS NOT NULL),
+          FILTER (WHERE ${cuisines.name} IS NOT NULL AND ${cuisines.slug} IS NOT NULL AND ${cuisines.publishedAt} IS NOT NULL),
 					'[]'::jsonb
 				)
 				`.as("cuisines"),
             })
             .from(recipes)
-            .where(eq(recipes.slug, input))
+            .where(and(eq(recipes.slug, input), isNotNull(recipes.publishedAt)))
             .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
             .leftJoin(
               recipe_categories,
@@ -70,6 +81,7 @@ export const publicRecipeRouter = createTRPCRouter({
       columns: {
         slug: true,
       },
+      where: isNotNull(recipes.publishedAt),
       orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
     });
   }),
@@ -87,11 +99,13 @@ export const publicRecipeRouter = createTRPCRouter({
           servings: recipes.servings,
           slug: recipes.slug,
           time: recipes.time,
+          publishedAt: recipes.publishedAt,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
           ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+        .where(isNotNull(recipes.publishedAt))
         .groupBy(recipes.id)
         .orderBy(sql`RANDOM()`)
         .limit(recipesCount);
@@ -106,7 +120,10 @@ export const publicRecipeRouter = createTRPCRouter({
           title: true,
           slug: true,
         },
-        where: ilike(recipes.title, `%${searchQuery}%`),
+        where: and(
+          ilike(recipes.title, `%${searchQuery}%`),
+          isNotNull(recipes.publishedAt),
+        ),
         orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
         limit: 10,
       });
@@ -144,6 +161,8 @@ export const publicRecipeRouter = createTRPCRouter({
         .innerJoin(categories, eq(recipe_categories.categoryId, categories.id))
         .where(
           and(
+            isNotNull(recipes.publishedAt),
+            isNotNull(categories.publishedAt),
             input.cursor
               ? input.sortBy === "createdAt"
                 ? lt(recipes[input.sortBy], new Date(input.cursor))
@@ -188,6 +207,7 @@ export const publicRecipeRouter = createTRPCRouter({
             count: count(),
           })
           .from(recipes)
+          .where(isNotNull(recipes.publishedAt))
       )[0]?.count ?? 0
     );
   }),
@@ -222,7 +242,13 @@ export const publicRecipeRouter = createTRPCRouter({
           eq(recipes.id, recipe_categories.recipeId),
         )
         .innerJoin(categories, eq(recipe_categories.categoryId, categories.id))
-        .where(eq(categories.slug, input.slug))
+        .where(
+          and(
+            eq(categories.slug, input.slug),
+            isNotNull(recipes.publishedAt),
+            isNotNull(categories.publishedAt),
+          ),
+        )
         .groupBy(recipes.id)
         .offset(input.offset)
         .limit(input.limit);
@@ -262,6 +288,8 @@ export const publicRecipeRouter = createTRPCRouter({
         .where(
           and(
             eq(categories.slug, input.slug),
+            isNotNull(recipes.publishedAt),
+            isNotNull(categories.publishedAt),
             input.cursor
               ? input.sortBy === "createdAt"
                 ? lt(recipes[input.sortBy], new Date(input.cursor))
@@ -316,7 +344,13 @@ export const publicRecipeRouter = createTRPCRouter({
               categories,
               eq(recipe_categories.categoryId, categories.id),
             )
-            .where(eq(categories.slug, input))
+            .where(
+              and(
+                eq(categories.slug, input),
+                isNotNull(recipes.publishedAt),
+                isNotNull(categories.publishedAt),
+              ),
+            )
         )[0]?.count ?? 0
       );
     }),
@@ -348,7 +382,13 @@ export const publicRecipeRouter = createTRPCRouter({
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
         .innerJoin(recipe_cuisines, eq(recipes.id, recipe_cuisines.recipeId))
         .innerJoin(cuisines, eq(recipe_cuisines.cuisineId, cuisines.id))
-        .where(eq(cuisines.slug, input.slug))
+        .where(
+          and(
+            eq(cuisines.slug, input.slug),
+            isNotNull(recipes.publishedAt),
+            isNotNull(cuisines.publishedAt),
+          ),
+        )
         .groupBy(recipes.id)
         .offset(input.offset)
         .limit(input.limit);
@@ -385,6 +425,8 @@ export const publicRecipeRouter = createTRPCRouter({
         .where(
           and(
             eq(cuisines.slug, input.slug),
+            isNotNull(recipes.publishedAt),
+            isNotNull(cuisines.publishedAt),
             input.cursor
               ? input.sortBy === "createdAt"
                 ? lt(recipes[input.sortBy], new Date(input.cursor))
@@ -436,7 +478,13 @@ export const publicRecipeRouter = createTRPCRouter({
               eq(recipes.id, recipe_cuisines.recipeId),
             )
             .innerJoin(cuisines, eq(recipe_cuisines.cuisineId, cuisines.id))
-            .where(eq(cuisines.slug, input))
+            .where(
+              and(
+                eq(cuisines.slug, input),
+                isNotNull(recipes.publishedAt),
+                isNotNull(cuisines.publishedAt),
+              ),
+            )
         )[0]?.count ?? 0
       );
     }),

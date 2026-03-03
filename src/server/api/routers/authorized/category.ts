@@ -24,6 +24,7 @@ export const authorizedCategoryRouter = createTRPCRouter({
         name: z.string().min(1),
         slug: z.string().min(1),
         description: z.string().min(1),
+        published: z.boolean().default(false),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -31,6 +32,7 @@ export const authorizedCategoryRouter = createTRPCRouter({
         name: input.name,
         slug: input.slug,
         description: input.description,
+        publishedAt: input.published ? new Date() : null,
       });
     }),
 
@@ -41,6 +43,7 @@ export const authorizedCategoryRouter = createTRPCRouter({
         name: z.string().min(1),
         slug: z.string().min(1),
         description: z.string().min(1),
+        published: z.boolean().default(false),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -50,12 +53,35 @@ export const authorizedCategoryRouter = createTRPCRouter({
           name: input.name,
           slug: input.slug,
           description: input.description,
+          publishedAt: input.published ? new Date() : null,
         })
         .where(eq(categories.id, input.id));
     }),
 
+  publishCategory: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(categories)
+        .set({
+          publishedAt: new Date(),
+        })
+        .where(eq(categories.id, input));
+    }),
+
+  unpublishCategory: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(categories)
+        .set({
+          publishedAt: null,
+        })
+        .where(eq(categories.id, input));
+    }),
+
   deleteCategory: authorizedProcedure
-    .input(z.any())
+    .input(z.number().positive())
     .mutation(async ({ ctx, input: categoryId }) => {
       await ctx.db.delete(categories).where(eq(categories.id, categoryId));
     }),

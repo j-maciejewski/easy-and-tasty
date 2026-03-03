@@ -45,7 +45,7 @@ function parseNavigation(navigation: Navigation) {
   }));
 }
 
-export const NavigationContent = () => {
+export default function () {
   const { data: savedNavigation, isLoading } =
     api.authorized.navigation.getNavigation.useQuery();
   const updateNavigation =
@@ -53,11 +53,11 @@ export const NavigationContent = () => {
 
   const parsedSavedNavigation = useMemo(
     () => parseNavigation(savedNavigation ?? []),
-    [savedNavigation]
+    [savedNavigation],
   );
 
   const [navigation, setNavigation] = useState<NavigationItem[]>(
-    parsedSavedNavigation
+    parsedSavedNavigation,
   );
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -72,7 +72,7 @@ export const NavigationContent = () => {
       const navigationWithoutIds = navigation.map((item) => {
         const { label, href, children } = item;
         const parsedChildren = children?.map(
-          ({ label: _label, href: _href }) => ({ label: _label, href: _href })
+          ({ label: _label, href: _href }) => ({ label: _label, href: _href }),
         );
 
         return {
@@ -87,7 +87,7 @@ export const NavigationContent = () => {
     } catch (error) {
       toast.error(
         (error as Error)?.message ??
-          "There was an error while updating navigation."
+          "There was an error while updating navigation.",
       );
     }
   }
@@ -130,7 +130,7 @@ export const NavigationContent = () => {
 
         if (curr.children) {
           const filteredChildren = curr.children.filter(
-            (child) => child.id !== itemId
+            (child) => child.id !== itemId,
           );
           if (filteredChildren.length !== curr.children.length) {
             return acc.concat({ ...curr, children: filteredChildren });
@@ -146,8 +146,8 @@ export const NavigationContent = () => {
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="h-fit font-semibold text-xl">Header</h2>
+      <div className="mb-4 flex items-end justify-between">
+        <div />
         <Button
           className="relative aspect-square p-1"
           variant="ghost"
@@ -170,7 +170,7 @@ export const NavigationContent = () => {
         </p>
       )}
       <Button
-        className="mt-4 ml-auto"
+        className="mt-4 ml-auto block"
         size="sm"
         disabled={!navigationChanged}
         onClick={handleSubmit}
@@ -243,4 +243,4 @@ export const NavigationContent = () => {
       </Dialog>
     </div>
   );
-};
+}

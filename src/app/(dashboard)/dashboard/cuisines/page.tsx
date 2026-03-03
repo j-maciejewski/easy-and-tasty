@@ -1,91 +1,76 @@
 "use client";
 
 import { Columns3, Plus, X } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
+import { ReactNode, use, useEffect, useMemo, useState } from "react";
 
 import {
   AddCuisineForm,
-  ConditionalDialog,
   DataTable,
   DropdownActions,
   EditCuisineForm,
-  ErrorCatcher,
+  GenericConfirmModal,
+  GenericModal,
   MultiSelect,
 } from "@/components/dashboard";
-import {
-  Badge,
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DropdownMenuItem,
-  Input,
-} from "@/components/ui";
+import { Badge, Button, DropdownMenuItem, Input } from "@/components/ui";
 import { Path } from "@/config";
-import { PaginationContext, UserContext } from "@/context";
-import { api } from "@/trpc/react";
+import { CuisinesContext, PaginationContext } from "@/context";
+import {
+  searchItems,
+  sortItems,
+  useColumnsToggler,
+  useCuisinesActions,
+  useSearchQuery,
+} from "@/utils";
 
 export default function () {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { query, setQuery, clearQuery } = useSearchQuery();
   const {
+    sort,
     pagination,
     setTotalItemsCount,
     handleChangePage,
     handleChangeLimit,
   } = use(PaginationContext)!;
-  const { settings } = use(UserContext)!;
-  const [editedCuisine, setEditedCuisine] = useState<number | null>(null);
+  const { cuisines, cuisinesLoading, refreshCuisines } = use(CuisinesContext)!;
 
-  const {
-    data: cuisines,
-    isLoading,
-    error,
-  } = api.authorized.cuisine.getCuisines.useQuery();
-  const deleteCuisine = api.authorized.cuisine.deleteCuisine.useMutation();
+  const [action, setAction] = useState<
+    | {
+        type: "publish" | "unpublish" | "delete" | "edit";
+        cuisineId: number;
+      }
+    | { type: "add" }
+    | null
+  >(null);
+
+  const clearAction = () => setAction(null);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     if (!cuisines) return;
 
-    if (
-      (pagination.currentPage - 1) * pagination.itemsPerPage >
-      cuisines.length
-    )
+    if ((pagination.currentPage - 1) * pagination.itemsPerPage > cuisines.size)
       redirect(Path.DASHBOARD_CUISINES);
 
-    setTotalItemsCount(cuisines.length);
+    setTotalItemsCount(cuisines.size);
   }, [cuisines]);
 
-  async function handleDeleteCuisine(id: number) {
-    try {
-      await deleteCuisine.mutateAsync(id);
+  const { handleDeleteCuisine, handlePublishCuisine, handleUnpublishCuisine } =
+    useCuisinesActions();
 
-      toast.success("Cuisine was deleted.");
-    } catch (error) {
-      toast.error(
-        (error as Error)?.message ??
-          "There was an error while deleting the cuisine."
-      );
-    }
-  }
-
-  const clearSearch = () => {
-    setSearchTerm("");
-  };
-
-  const [sortField, setSortField] = useState<string | undefined>(undefined);
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  type ColumnLabel =
+    | "Name"
+    | "Slug"
+    | "Description"
+    | "Status"
+    | "Published at"
+    | "Actions";
 
   const columns: {
-    label: string;
-    render: (cuisine: NonNullable<typeof cuisines>[number]) => ReactNode;
+    label: ColumnLabel;
+    render: (cuisine: Cuisine) => ReactNode;
     sortKey?: string;
-    hidden?: boolean;
   }[] = [
     {
       label: "Name",
@@ -105,23 +90,45 @@ export default function () {
       render: ({ description }) => description,
     },
     {
+      label: "Status",
+      render: ({ publishedAt }) =>
+        publishedAt ? (
+          <Badge variant="secondary">Published</Badge>
+        ) : (
+          <Badge variant="secondary">Draft</Badge>
+        ),
+    },
+    {
+      label: "Published at",
+      sortKey: "publishedAt",
+      render: ({ publishedAt }) =>
+        publishedAt ? new Date(publishedAt).toLocaleString() : null,
+    },
+    {
       label: "Actions",
-      render: ({ id }) => (
+      render: ({ id, publishedAt }) => (
         <DropdownActions>
-          <DropdownMenuItem>
-            {settings.formsInModals ? (
-              <button type="button" onClick={() => setEditedCuisine(id)}>
-                Edit Cuisine
-              </button>
-            ) : (
-              <Link href={`${Path.DASHBOARD_CUISINES}/edit/${id}`}>
-                Edit Cuisine
-              </Link>
-            )}
+          <DropdownMenuItem
+            onClick={() => setAction({ type: "edit", cuisineId: id })}
+          >
+            Edit Cuisine
           </DropdownMenuItem>
+          {publishedAt ? (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "unpublish", cuisineId: id })}
+            >
+              Unpublish Cuisine
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "publish", cuisineId: id })}
+            >
+              Publish Cuisine
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             className="text-red-600"
-            onClick={() => handleDeleteCuisine(id)}
+            onClick={() => setAction({ type: "delete", cuisineId: id })}
           >
             Delete Cuisine
           </DropdownMenuItem>
@@ -130,90 +137,50 @@ export default function () {
     },
   ];
 
-  const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
-
-  const toggleColumn = (toggledColumn: string) => {
-    setHiddenColumns((prev) => {
-      if (prev.includes(toggledColumn)) {
-        return prev.filter((column) => column !== toggledColumn);
-      }
-      return [...prev, toggledColumn];
-    });
-  };
+  const { hiddenColumns, toggleColumn } = useColumnsToggler<ColumnLabel>([
+    "Published at",
+  ]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const filteredCuisines = useMemo(() => {
     if (!cuisines) return [];
 
-    const filteredCuisines =
-      searchTerm !== ""
-        ? cuisines?.filter((cuisine) =>
-            cuisine.name.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-        : [...cuisines];
+    const filteredCuisines = searchItems(
+      [...cuisines.values()],
+      ["name", "slug", "description"],
+      query,
+    );
 
-    if (sortField !== undefined) {
-      if (sortField === "id") {
-        if (sortDir === "asc") {
-          filteredCuisines.sort((a, b) => a.id - b.id);
-        } else {
-          filteredCuisines.sort((a, b) => b.id - a.id);
-        }
-      } else {
-        if (sortDir === "asc") {
-          filteredCuisines.sort((a, b) => {
-            const aValue = (
-              a[sortField as keyof typeof a] as string
-            ).toUpperCase();
-            const bValue = (
-              b[sortField as keyof typeof b] as string
-            ).toUpperCase();
-            return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-          });
-        } else {
-          filteredCuisines.sort((a, b) => {
-            const aValue = (
-              a[sortField as keyof typeof a] as string
-            ).toUpperCase();
-            const bValue = (
-              b[sortField as keyof typeof b] as string
-            ).toUpperCase();
-            return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
-          });
-        }
-      }
-    }
+    sortItems(filteredCuisines, sort.key as keyof Cuisine, sort.order);
 
     return filteredCuisines;
   }, [
     pagination.currentPage,
     pagination.itemsPerPage,
-    searchTerm,
+    query,
     cuisines,
-    sortDir,
-    sortField,
+    sort.key,
+    sort.order,
   ]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
-    if (!cuisines || cuisines.length === filteredCuisines.length) return;
+    if (cuisines.size === filteredCuisines.length) return;
 
     handleChangePage(1);
     handleChangeLimit(10);
     setTotalItemsCount(filteredCuisines.length);
   }, [filteredCuisines.length]);
 
-  const addCuisineDialogCloseRef = useRef<HTMLButtonElement>(null);
-
   return (
-    <ErrorCatcher errors={[error] as (Error | null)[]}>
+    <div>
       <div className="mb-6 flex flex-col items-center justify-between md:flex-row">
         <div className="mb-4 w-full md:mb-0 md:w-1/3">
           <Input
             type="search"
             placeholder="Search cuisines..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="w-full"
           />
         </div>
@@ -223,7 +190,7 @@ export default function () {
             options={columns.map((column) => ({
               label: column.label,
               value: column.label,
-              checked: !column.hidden,
+              checked: !hiddenColumns.includes(column.label),
             }))}
             toggleOption={toggleColumn}
           >
@@ -231,66 +198,107 @@ export default function () {
               <Columns3 className="absolute size-5" />
             </Button>
           </MultiSelect>
-          <ConditionalDialog
-            title="Add cuisine"
-            trigger={
-              <Button className="relative aspect-square" variant="secondary">
-                <Plus className="absolute size-5 stroke-2 text-foreground" />
-              </Button>
-            }
-            dialogRef={addCuisineDialogCloseRef}
-            showDialog={settings.formsInModals}
-            content={
-              <AddCuisineForm
-                onSubmit={() => addCuisineDialogCloseRef.current?.click()}
-              />
-            }
-            link={Path.DASHBOARD_NEW_CUISINE}
-          />
+          <Button
+            className="relative aspect-square"
+            variant="secondary"
+            onClick={() => setAction({ type: "add" })}
+          >
+            <Plus className="absolute size-5 stroke-2 text-foreground" />
+          </Button>
         </div>
       </div>
       <div className="mb-6 empty:hidden">
-        {searchTerm && (
+        {query && (
           <Badge
             variant="outline"
             className="cursor-pointer"
             tabIndex={0}
-            onClick={clearSearch}
+            onClick={clearQuery}
           >
-            Query: {searchTerm} <X className="h-4 text-red-600" />
+            Query: {query} <X className="h-4 text-red-600" />
           </Badge>
         )}
       </div>
 
       <DataTable
-        isLoading={isLoading}
+        isLoading={cuisinesLoading}
         hiddenColumns={hiddenColumns}
         columns={columns}
         data={filteredCuisines.slice(
           (pagination.currentPage - 1) * pagination.itemsPerPage,
-          pagination.currentPage * pagination.itemsPerPage
+          pagination.currentPage * pagination.itemsPerPage,
         )}
-        sortDir={sortDir}
-        sortField={sortField}
-        setSortDir={setSortDir}
-        setSortField={setSortField}
       />
 
-      <Dialog
-        open={editedCuisine !== null}
-        onOpenChange={() => setEditedCuisine(null)}
-      >
-        <DialogContent className="max-h-[calc(100%_-_4rem)] overflow-auto sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Edit Cuisine</DialogTitle>
-          </DialogHeader>
-          <EditCuisineForm
-            cuisineId={editedCuisine!}
-            onSubmit={() => setEditedCuisine(null)}
-          />
-          <DialogClose />
-        </DialogContent>
-      </Dialog>
-    </ErrorCatcher>
+      {action?.type === "add" && (
+        <GenericModal
+          title="New cuisine"
+          open={action?.type === "add"}
+          handleClose={clearAction}
+          content={
+            <AddCuisineForm
+              onSubmit={() => {
+                clearAction();
+                refreshCuisines();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "edit" && (
+        <GenericModal
+          title="Edit cuisine"
+          open={action?.type === "edit"}
+          handleClose={clearAction}
+          content={
+            <EditCuisineForm
+              cuisineId={action?.cuisineId}
+              onSubmit={() => {
+                clearAction();
+                refreshCuisines();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "publish" && (
+        <GenericConfirmModal
+          title="Publish cuisine?"
+          open={action?.type === "publish"}
+          handleClose={clearAction}
+          handleConfirm={() => {
+            handlePublishCuisine(action?.cuisineId!);
+            clearAction();
+          }}
+        />
+      )}
+
+      {action?.type === "unpublish" && (
+        <GenericConfirmModal
+          title="Unpublish cuisine?"
+          open={action?.type === "unpublish"}
+          handleClose={clearAction}
+          handleConfirm={() => {
+            handleUnpublishCuisine(action?.cuisineId!);
+            clearAction();
+          }}
+        />
+      )}
+
+      {action?.type === "delete" && (
+        <GenericConfirmModal
+          title="Delete cuisine?"
+          open={action?.type === "delete"}
+          description="This action cannot be undone."
+          handleClose={clearAction}
+          handleConfirm={() => {
+            handleDeleteCuisine(action?.cuisineId!);
+            clearAction();
+          }}
+        />
+      )}
+    </div>
   );
 }

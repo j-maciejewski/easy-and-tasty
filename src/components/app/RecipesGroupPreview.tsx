@@ -55,7 +55,7 @@ export const RecipesGroupPreview = async (props: RecipesGroupPreviewProps) => {
           <ArrowRight className="ml-2 size-4 stroke-[2px]" />
         </Link>
       </div>
-      <div className="max-lg:-mb-2 grid gap-4 max-lg:overflow-auto max-lg:pb-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 max-lg:-mb-2 max-lg:overflow-auto max-lg:pb-2 sm:grid-cols-2 lg:grid-cols-3">
         {recipes.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} />
         ))}

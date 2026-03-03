@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
   "formatter": {
     "indentStyle": "space"
   },
@@ -12,14 +12,30 @@
         "noSvgWithoutTitle": "off"
       },
       "correctness": {
-        "noUnusedImports": "warn",
-        "noUnusedVariables": "error"
+        "noUnusedImports": {
+          "level": "error",
+          "fix": "none"
+        },
+        "noUnusedVariables": {
+          "level": "error",
+          "fix": "none"
+        },
+        "noUnusedFunctionParameters": {
+          "level": "error",
+          "fix": "none"
+        },
+        "useExhaustiveDependencies": {
+          "level": "warn",
+          "fix": "none"
+        },
+        "useHookAtTopLevel": "off"
       },
       "suspicious": {
         "noExplicitAny": "error",
         "noRedeclare": "off",
         "noAssignInExpressions": "off",
-        "noDuplicateAtImportRules": "error"
+        "noDuplicateAtImportRules": "error",
+        "noNonNullAssertedOptionalChain": "off"
       },
       "complexity": {
         "useLiteralKeys": "off"

@@ -4,9 +4,8 @@ import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { Image, Plus, X } from "lucide-react";
-import { use, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { use, useMemo, useRef } from "react";
+import { Resolver, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { MultiSelect } from "@/components/dashboard";
@@ -25,96 +24,48 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Textarea,
 } from "@/components/ui";
+import { recipeFormSchema } from "@/constants";
 import { CategoriesContext, CuisinesContext } from "@/context";
-import { difficultyEnum } from "@/server/db/schema";
-import { api } from "@/trpc/react";
-
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  image: z.string(),
-  description: z.string().min(2, {
-    message: "Description must be at least 2 characters.",
-  }),
-  content: z.string().min(2, {
-    message: "Content must be at least 2 characters.",
-  }),
-  difficulty: z.enum(difficultyEnum.enumValues),
-  time: z.number().min(1, {
-    message: "Time must be at least 1 minute.",
-  }),
-  servings: z.number().min(1, {
-    message: "The dish should have at least 1 serving.",
-  }),
-  cuisines: z.number().array().min(1, {
-    message: "The dish should have at least 1 cuisine.",
-  }),
-  categories: z.number().array().min(1, {
-    message: "The dish should have at least 1 category.",
-  }),
-});
+import { useRecipesActions } from "@/utils";
 
 export namespace AddRecipeForm {
   export interface Props {
-    categories?: {
-      description: string;
-      id: number;
-      name: string;
-      slug: string;
-    }[];
-    cuisines?: {
-      description: string;
-      id: number;
-      name: string;
-      slug: string;
-    }[];
     onSubmit?: () => void;
   }
 }
 
-export function AddRecipeForm({
-  onSubmit,
-  categories,
-  cuisines,
-}: AddRecipeForm.Props) {
-  const addRecipe = api.authorized.recipe.addRecipe.useMutation();
+export function AddRecipeForm({ onSubmit }: AddRecipeForm.Props) {
+  const { handleCreateRecipe } = useRecipesActions();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
 
-  const categoryOptions = (() => {
-    if (categories) {
-      return categories.map((category) => ({
+  const { categories } = use(CategoriesContext)!;
+  const { cuisines } = use(CuisinesContext)!;
+
+  const categoryOptions = useMemo(
+    () =>
+      [...categories.values()].map((category) => ({
         label: category.name,
         value: category.id,
-      }));
-    }
+      })),
+    [categories],
+  );
 
-    const { categories: categoriesMap } = use(CategoriesContext)!;
-    return [...categoriesMap.values()].map((category) => ({
-      label: category.name,
-      value: category.id,
-    }));
-  })();
-
-  const cuisineOptions = (() => {
-    if (cuisines) {
-      return cuisines.map((cuisine) => ({
+  const cuisineOptions = useMemo(
+    () =>
+      [...cuisines.values()].map((cuisine) => ({
         label: cuisine.name,
         value: cuisine.id,
-      }));
-    }
+      })),
+    [cuisines],
+  );
 
-    const { cuisines: cuisinesMap } = use(CuisinesContext)!;
-    return [...cuisinesMap.values()].map((cuisine) => ({
-      label: cuisine.name,
-      value: cuisine.id,
-    }));
-  })();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof recipeFormSchema>>({
+    resolver: zodResolver(recipeFormSchema) as Resolver<
+      z.infer<typeof recipeFormSchema>
+    >,
     defaultValues: {
       title: "",
       image: "",
@@ -124,15 +75,12 @@ export function AddRecipeForm({
       servings: 1,
       cuisines: [],
       categories: [],
+      published: false,
     },
   });
 
-  async function handleSubmit(values: z.infer<typeof formSchema>) {
-    await addRecipe.mutateAsync(values);
-
-    toast.success("Recipe was added.");
-
-    if (onSubmit) onSubmit();
+  async function handleSubmit(values: z.infer<typeof recipeFormSchema>) {
+    await handleCreateRecipe(values, onSubmit);
   }
 
   return (
@@ -489,6 +437,21 @@ export function AddRecipeForm({
                 </div>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="published"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+              <FormLabel>Publish</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

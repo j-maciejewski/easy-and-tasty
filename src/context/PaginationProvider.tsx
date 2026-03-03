@@ -8,8 +8,13 @@ interface IPaginationContext {
     currentPage: number;
     totalItemsCount: number;
   };
+  sort: {
+    key: string | null;
+    order: "asc" | "desc";
+  };
   handleChangePage: (page: number) => void;
   handleChangeLimit: (limit: number) => void;
+  handleChangeSort: (key: string) => void;
   setTotalItemsCount: (count: number) => void;
 }
 
@@ -27,19 +32,50 @@ const PaginationProvider = ({ children }: { children: ReactNode }) => {
     ? Number(searchParams.get("page"))
     : 1;
 
+  const sortKey = searchParams.get("sortKey") ?? null;
+  const sortOrder = (searchParams.get("sortOrder") as "asc" | "desc") ?? "asc";
+
   const handleChangePage = (page: number) => {
     if (page === currentPage) return;
 
     const newParams = new URLSearchParams(searchParams);
-    newParams.set("page", page.toString());
+    if (page === 1) {
+      newParams.delete("page");
+    } else {
+      newParams.set("page", page.toString());
+    }
 
     router.push(`?${newParams.toString()}`);
   };
 
   const handleChangeLimit = (limit: number) => {
     const newParams = new URLSearchParams(searchParams);
-    newParams.set("limit", limit.toString());
-    newParams.set("page", "1");
+    newParams.delete("page");
+
+    if (limit === 10) {
+      newParams.delete("limit");
+    } else {
+      newParams.set("limit", limit.toString());
+    }
+
+    router.push(`?${newParams.toString()}`);
+  };
+
+  const handleChangeSort = (key: string) => {
+    const newParams = new URLSearchParams(searchParams);
+
+    newParams.delete("page");
+
+    if (sortKey === key) {
+      if (sortOrder === "asc") {
+        newParams.set("sortOrder", "desc");
+      } else {
+        newParams.delete("sortKey");
+        newParams.delete("sortOrder");
+      }
+    } else {
+      newParams.set("sortKey", key);
+    }
 
     router.push(`?${newParams.toString()}`);
   };
@@ -52,11 +88,16 @@ const PaginationProvider = ({ children }: { children: ReactNode }) => {
         currentPage,
         totalItemsCount,
       },
+      sort: {
+        key: sortKey,
+        order: sortOrder,
+      },
       handleChangePage,
       handleChangeLimit,
+      handleChangeSort,
       setTotalItemsCount,
     }),
-    [itemsPerPage, currentPage, totalItemsCount],
+    [itemsPerPage, currentPage, totalItemsCount, sortKey, sortOrder],
   );
 
   return <PaginationContext value={context}>{children}</PaginationContext>;

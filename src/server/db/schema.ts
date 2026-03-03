@@ -59,6 +59,7 @@ export const recipes = createTable("recipe", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updatedAt", { withTimezone: true }),
+  publishedAt: timestamp("publishedAt", { withTimezone: true }),
 });
 
 export const recipe_ratings = createTable("recipe_rating", {
@@ -133,6 +134,7 @@ export const categories = createTable("category", {
   name: varchar("name", { length: 256 }).notNull().unique(),
   slug: varchar("slug", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 256 }).notNull(),
+  publishedAt: timestamp("publishedAt", { withTimezone: true }),
 });
 
 export const cuisines = createTable("cuisine", {
@@ -140,6 +142,7 @@ export const cuisines = createTable("cuisine", {
   name: varchar("name", { length: 256 }).notNull().unique(),
   slug: varchar("slug", { length: 256 }).notNull().unique(),
   description: varchar("description", { length: 256 }).notNull(),
+  publishedAt: timestamp("publishedAt", { withTimezone: true }),
 });
 
 export const pages = createTable("page", {
@@ -147,7 +150,8 @@ export const pages = createTable("page", {
   title: varchar("title", { length: 256 }).notNull().unique(),
   image: varchar("image", { length: 1024 }),
   slug: varchar("slug", { length: 256 }).notNull().unique(),
-  description: varchar("description", { length: 256 }).notNull(),
+  description: varchar("description", { length: 1024 }).notNull(),
+  content: varchar("content", { length: 8192 }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

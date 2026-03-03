@@ -29,7 +29,7 @@ export const AuthLink = (props: AuthLinkProps) => {
       onClick={props.callback}
       className={clsx(
         "h-auto p-0 font-normal text-inherit underline",
-        props.className
+        props.className,
       )}
       variant="link"
       type="button"

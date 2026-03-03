@@ -36,7 +36,7 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
   const registered = searchParams.get("registered") === "true";
 
   const handleCredentialsLogIn = async (
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
     setIsLoading(true);

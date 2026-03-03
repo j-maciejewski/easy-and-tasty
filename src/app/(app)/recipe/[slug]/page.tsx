@@ -1,10 +1,14 @@
-import Markdown from "markdown-to-jsx";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { Breadcrumbs, RecipeInformation, RecipesList } from "@/components/app";
+import {
+  Breadcrumbs,
+  MarkdownContent,
+  RecipeInformation,
+  RecipesList,
+} from "@/components/app";
 import { Separator } from "@/components/ui";
 import { getRecipe, getSuggestedRecipes } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
@@ -24,7 +28,7 @@ export async function generateMetadata({
     recipe.description,
     `/recipe/${recipe.slug}`,
     recipe.image,
-    "article"
+    "article",
   );
 }
 
@@ -68,7 +72,7 @@ export default async function ({
           />
         </div>
         <article className="prose prose-slate mt-6 max-w-full">
-          <Markdown>{recipe.content}</Markdown>
+          <MarkdownContent>{recipe.content}</MarkdownContent>
         </article>
         <div className="mt-6 flex select-none flex-wrap gap-4 font-bold text-sm text-white">
           {recipe.categories.map((category) => (

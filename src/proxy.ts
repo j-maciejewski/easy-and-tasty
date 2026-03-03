@@ -12,9 +12,10 @@ export async function proxy(request: NextRequest) {
     pathname.toLowerCase().startsWith("/dashboard") &&
     (!token || token.role === "viewer")
   ) {
-    const redirectUrl = pathname.toLowerCase() === "/dashboard"
-      ? "/login"
-      : `/login?from=${encodeURIComponent(pathname + request.nextUrl.search)}`;
+    const redirectUrl =
+      pathname.toLowerCase() === "/dashboard"
+        ? "/login"
+        : `/login?from=${encodeURIComponent(pathname + request.nextUrl.search)}`;
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   }
 

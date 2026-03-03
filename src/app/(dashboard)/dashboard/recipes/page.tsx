@@ -1,80 +1,46 @@
 "use client";
 
 import { Columns3, Plus, X } from "lucide-react";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, use, useEffect, useState } from "react";
 
 import {
   AddRecipeForm,
-  ConditionalDialog,
   DataTable,
   DropdownActions,
   EditRecipeForm,
   ErrorCatcher,
+  GenericConfirmModal,
+  GenericModal,
   MultiSelect,
 } from "@/components/dashboard";
+import { Badge, Button, DropdownMenuItem, Input } from "@/components/ui";
 import {
-  Badge,
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DropdownMenuItem,
-  Input,
-} from "@/components/ui";
-import { Path } from "@/config";
-import { PaginationContext } from "@/context";
+  CategoriesContext,
+  CuisinesContext,
+  PaginationContext,
+} from "@/context";
 import { api } from "@/trpc/react";
-import { createMap } from "@/utils";
+import { useDebouncedSearchQuery, useRecipesActions } from "@/utils";
 
 export default function () {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-  const {
-    data: categoriesData,
-    error: categoriesError,
-    isLoading: categoriesLoading,
-  } = api.authorized.category.getCategories.useQuery();
-  const categories = useMemo(
-    () => (categoriesData ? createMap(categoriesData) : null),
-    [categoriesData]
-  );
-  const {
-    data: cuisinesData,
-    error: cuisinesError,
-    isLoading: cuisinesLoading,
-  } = api.authorized.cuisine.getCuisines.useQuery();
-  const cuisines = useMemo(
-    () => (cuisinesData ? createMap(cuisinesData) : null),
-    [cuisinesData]
-  );
+  const { categories, categoriesLoading } = use(CategoriesContext)!;
+  const { cuisines, cuisinesLoading } = use(CuisinesContext)!;
+
   const { pagination, handleChangePage, setTotalItemsCount } =
     use(PaginationContext)!;
-  const { data } = useSession();
-  const [editedRecipe, setEditedRecipe] = useState<number | null>(null);
+  const { query, setQuery, debouncedQuery, clearQuery } =
+    useDebouncedSearchQuery(() => handleChangePage(1));
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-      handleChangePage(1);
-    }, 300);
+  const [action, setAction] = useState<
+    | {
+        type: "publish" | "unpublish" | "delete" | "edit";
+        recipeId: number;
+      }
+    | { type: "add" }
+    | null
+  >(null);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchTerm]);
-
-  const clearSearch = () => {
-    setSearchTerm("");
-    setDebouncedSearchTerm("");
-  };
-
-  const [sortField, setSortField] = useState<string | undefined>(undefined);
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  const clearAction = () => setAction(null);
 
   const {
     data: recipes,
@@ -82,12 +48,15 @@ export default function () {
     error: recipesError,
     refetch: refetchRecipes,
   } = api.authorized.recipe.getRecipes.useQuery({
-    title: debouncedSearchTerm,
-    orderBy: sortField,
-    orderDir: sortDir,
+    title: debouncedQuery,
+    orderBy: "createdAt",
+    orderDir: "desc",
     page: pagination.currentPage,
     limit: pagination.itemsPerPage,
   });
+
+  const { handlePublishRecipe, handleUnpublishRecipe, handleDeleteRecipe } =
+    useRecipesActions();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
@@ -96,11 +65,11 @@ export default function () {
     setTotalItemsCount(recipes.pagination.hitsCount);
   }, [recipes]);
 
+  type RecipeItem = NonNullable<typeof recipes>["results"][number];
+
   const columns: {
     label: string;
-    render: (
-      recipe: NonNullable<typeof recipes>["results"][number]
-    ) => ReactNode;
+    render: (recipe: RecipeItem) => ReactNode;
     sortKey?: string;
   }[] = [
     {
@@ -150,6 +119,15 @@ export default function () {
       sortKey: "ratings_count",
     },
     {
+      label: "Status",
+      render: ({ publishedAt }) =>
+        publishedAt ? (
+          <Badge variant="secondary">Published</Badge>
+        ) : (
+          <Badge variant="secondary">Draft</Badge>
+        ),
+    },
+    {
       label: "Created At",
       render: ({ createdAt }) => new Date(createdAt).toLocaleString(),
     },
@@ -159,21 +137,36 @@ export default function () {
         updatedAt ? new Date(updatedAt).toLocaleString() : null,
     },
     {
+      label: "Published At",
+      render: ({ publishedAt }) =>
+        publishedAt ? new Date(publishedAt).toLocaleString() : null,
+    },
+    {
       label: "Actions",
-      render: ({ id }) => (
+      render: ({ id, publishedAt }) => (
         <DropdownActions>
-          <DropdownMenuItem>
-            {data?.user?.preferences?.dashboard?.formsInModals ? (
-              <button type="button" onClick={() => setEditedRecipe(id)}>
-                Edit Recipe
-              </button>
-            ) : (
-              <Link href={`${Path.DASHBOARD_RECIPES}/edit/${id}`}>
-                Edit Recipe
-              </Link>
-            )}
+          <DropdownMenuItem
+            onClick={() => setAction({ type: "edit", recipeId: id })}
+          >
+            Edit Recipe
           </DropdownMenuItem>
-          <DropdownMenuItem className="text-red-600">
+          {publishedAt ? (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "unpublish", recipeId: id })}
+            >
+              Unpublish Recipe
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "publish", recipeId: id })}
+            >
+              Publish Recipe
+            </DropdownMenuItem>
+          )}
+          <DropdownMenuItem
+            className="text-red-600"
+            onClick={() => setAction({ type: "delete", recipeId: id })}
+          >
             Delete Recipe
           </DropdownMenuItem>
         </DropdownActions>
@@ -185,6 +178,7 @@ export default function () {
     "Votes",
     "Created At",
     "Updated At",
+    "Published At",
   ]);
 
   const toggleColumn = (toggledColumn: string) => {
@@ -196,12 +190,10 @@ export default function () {
     });
   };
 
-  const addRecipeDialogCloseRef = useRef<HTMLButtonElement>(null);
-
   return (
     <ErrorCatcher
       errors={
-        [cuisinesError, categoriesError, recipesError] as (Error | null)[]
+        [/*cuisinesError, categoriesError, */ recipesError] as (Error | null)[]
       }
     >
       <div className="mb-6 flex flex-col items-center justify-between md:flex-row">
@@ -209,8 +201,8 @@ export default function () {
           <Input
             type="search"
             placeholder="Search recipes..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="w-full"
           />
         </div>
@@ -218,7 +210,7 @@ export default function () {
         <div className="flex gap-4">
           <MultiSelect
             options={columns.map(({ label }) => ({
-              label: label,
+              label,
               value: label,
               checked: !hiddenColumns.includes(label),
             }))}
@@ -228,42 +220,24 @@ export default function () {
               <Columns3 className="absolute size-5" />
             </Button>
           </MultiSelect>
-          <ConditionalDialog
-            title="Add recipe"
-            trigger={
-              <Button
-                className="relative aspect-square"
-                variant="secondary"
-                disabled={
-                  data?.user?.preferences?.dashboard?.formsInModals &&
-                  (cuisinesLoading || categoriesLoading)
-                }
-              >
-                <Plus className="absolute size-5 stroke-2 text-foreground" />
-              </Button>
-            }
-            dialogRef={addRecipeDialogCloseRef}
-            showDialog={!!data?.user?.preferences?.dashboard?.formsInModals}
-            content={
-              <AddRecipeForm
-                categories={categoriesData!}
-                cuisines={cuisinesData!}
-                onSubmit={() => addRecipeDialogCloseRef.current?.click()}
-              />
-            }
-            link={Path.DASHBOARD_NEW_RECIPE}
-          />
+          <Button
+            className="relative aspect-square"
+            variant="secondary"
+            onClick={() => setAction({ type: "add" })}
+          >
+            <Plus className="absolute size-5 stroke-2 text-foreground" />
+          </Button>
         </div>
       </div>
       <div className="mb-6 empty:hidden">
-        {debouncedSearchTerm && (
+        {debouncedQuery && (
           <Badge
             variant="outline"
             className="cursor-pointer"
             tabIndex={0}
-            onClick={clearSearch}
+            onClick={clearQuery}
           >
-            Query: {debouncedSearchTerm} <X className="h-4 text-red-600" />
+            Query: {debouncedQuery} <X className="h-4 text-red-600" />
           </Badge>
         )}
       </div>
@@ -273,32 +247,83 @@ export default function () {
         hiddenColumns={hiddenColumns}
         columns={columns}
         data={recipes?.results ?? []}
-        sortDir={sortDir}
-        sortField={sortField}
-        setSortDir={setSortDir}
-        setSortField={setSortField}
       />
 
-      <Dialog
-        open={editedRecipe !== null}
-        onOpenChange={() => setEditedRecipe(null)}
-      >
-        <DialogContent className="max-h-[calc(100%_-_4rem)] overflow-auto sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Edit Recipe</DialogTitle>
-          </DialogHeader>
-          <EditRecipeForm
-            recipeId={editedRecipe!}
-            categories={categoriesData!}
-            cuisines={cuisinesData!}
-            onSubmit={() => {
-              setEditedRecipe(null);
-              refetchRecipes();
-            }}
-          />
-          <DialogClose />
-        </DialogContent>
-      </Dialog>
+      {action?.type === "add" && (
+        <GenericModal
+          title="New recipe"
+          open={action?.type === "add"}
+          handleClose={clearAction}
+          content={
+            <AddRecipeForm
+              onSubmit={async () => {
+                clearAction();
+                await refetchRecipes();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "edit" && (
+        <GenericModal
+          title="Edit recipe"
+          open={action?.type === "edit"}
+          handleClose={clearAction}
+          content={
+            <EditRecipeForm
+              recipeId={action?.recipeId}
+              onSubmit={async () => {
+                clearAction();
+                await refetchRecipes();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "publish" && (
+        <GenericConfirmModal
+          title="Publish recipe?"
+          open={action?.type === "publish"}
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            await handlePublishRecipe(action?.recipeId!, async () => {
+              await refetchRecipes();
+            });
+            clearAction();
+          }}
+        />
+      )}
+
+      {action?.type === "unpublish" && (
+        <GenericConfirmModal
+          title="Unpublish recipe?"
+          open={action?.type === "unpublish"}
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            await handleUnpublishRecipe(action?.recipeId!, async () => {
+              await refetchRecipes();
+            });
+            clearAction();
+          }}
+        />
+      )}
+
+      {action?.type === "delete" && (
+        <GenericConfirmModal
+          title="Delete recipe?"
+          open={action?.type === "delete"}
+          description="This action cannot be undone."
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            await handleDeleteRecipe(action?.recipeId!, async () => {
+              await refetchRecipes();
+            });
+            clearAction();
+          }}
+        />
+      )}
     </ErrorCatcher>
   );
 }

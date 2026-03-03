@@ -7,38 +7,23 @@ import { Path } from "@/config";
 
 import { ToggleThemeButton } from "./ToggleThemeButton";
 
-const SLUG_REGEX = "([a-zA-Z0-9_-]+)";
-
 const breadcrumbsLabels = new Map<Path | RegExp, string>([
   [Path.DASHBOARD, "Summary"],
   [Path.DASHBOARD_RECIPES, "Recipes"],
   [Path.DASHBOARD_HOME, "Home"],
   [Path.DASHBOARD_CATEGORIES, "Categories"],
   [Path.DASHBOARD_CUISINES, "Cuisines"],
-  [Path.DASHBOARD_CUISINES, "Cuisines"],
+  [Path.DASHBOARD_USERS, "Users"],
+  [Path.DASHBOARD_NAVIGATION, "Navigation"],
   [Path.DASHBOARD_SETTINGS, "Settings"],
-  [Path.DASHBOARD_NEW_RECIPE, "New Recipe"],
-  [Path.DASHBOARD_NEW_CATEGORY, "New Category"],
-  [Path.DASHBOARD_NEW_CUISINE, "New Cuisine"],
-  [new RegExp(`^${Path.DASHBOARD_RECIPES}/edit/${SLUG_REGEX}$`), "Edit Recipe"],
-  [
-    new RegExp(`^${Path.DASHBOARD_CATEGORIES}/edit/${SLUG_REGEX}$`),
-    "Edit Category",
-  ],
-  [
-    new RegExp(`^${Path.DASHBOARD_CUISINES}/edit/${SLUG_REGEX}$`),
-    "Edit Cuisine",
-  ],
   [Path.DASHBOARD_PAGES, "Pages"],
-  [Path.DASHBOARD_ADD_PAGE, "New Page"],
-  [new RegExp(`^${Path.DASHBOARD_PAGES}/edit/${SLUG_REGEX}$`), "Edit Page"],
 ]);
 
 export const Header = () => {
   const pathname = usePathname();
 
-  const label = [...breadcrumbsLabels.entries()].find(([path]) =>
-    typeof path === "string" ? path === pathname : path.test(pathname)
+  const label = [...breadcrumbsLabels.entries()].find(
+    ([path]) => path === pathname,
   )?.[1];
 
   return (

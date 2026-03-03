@@ -20,7 +20,7 @@ export async function generateMetadata({
   return parseMetadata(
     category.name,
     category.description,
-    `/categories/${category.slug}`
+    `/categories/${category.slug}`,
   );
 }
 

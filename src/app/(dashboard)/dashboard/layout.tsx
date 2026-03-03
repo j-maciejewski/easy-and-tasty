@@ -4,14 +4,23 @@ import { Suspense } from "react";
 import { Header, SessionWrapper, Sidebar } from "@/components/dashboard";
 import { SidebarProvider, Toaster } from "@/components/ui";
 import { APP_NAME } from "@/consts";
-import { PaginationProvider, UserProvider } from "@/context";
+import {
+  CategoriesProvider,
+  CuisinesProvider,
+  PaginationProvider,
+  UserProvider,
+} from "@/context";
+import { api } from "@/trpc/server";
 
 export const metadata: Metadata = {
   title: `Dashboard - ${APP_NAME}`,
   icons: [{ rel: "icon", url: "/favicon-dashboard.png" }],
 };
 
-export default function ({ children }: React.PropsWithChildren) {
+export default async function ({ children }: React.PropsWithChildren) {
+  const categories = await api.authorized.category.getCategories();
+  const cuisines = await api.authorized.cuisine.getCuisines();
+
   return (
     <UserProvider>
       <SessionWrapper>
@@ -22,7 +31,11 @@ export default function ({ children }: React.PropsWithChildren) {
               <Header />
               <main className="mx-auto w-full flex-1 px-6 py-8">
                 <Suspense>
-                  <PaginationProvider>{children}</PaginationProvider>
+                  <CategoriesProvider categories={categories}>
+                    <CuisinesProvider cuisines={cuisines}>
+                      <PaginationProvider>{children}</PaginationProvider>
+                    </CuisinesProvider>
+                  </CategoriesProvider>
                 </Suspense>
               </main>
             </div>

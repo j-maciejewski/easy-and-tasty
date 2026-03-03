@@ -1,0 +1,1 @@
+ALTER TABLE "easy-and-tasty_recipe" ADD COLUMN "publishedAt" timestamp with time zone;

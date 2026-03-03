@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     seo.title ?? "Categories",
     seo.description,
     "/categories",
-    seo.image
+    seo.image,
   );
 }
 

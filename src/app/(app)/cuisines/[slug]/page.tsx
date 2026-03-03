@@ -20,7 +20,7 @@ export async function generateMetadata({
   return parseMetadata(
     cuisine.name,
     cuisine.description,
-    `/cuisines/${cuisine.slug}`
+    `/cuisines/${cuisine.slug}`,
   );
 }
 

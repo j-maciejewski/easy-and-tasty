@@ -28,7 +28,7 @@ const NavigationGroup = ({ label, sublinks }: NavigationGroupProps) => {
         <ChevronDown
           className={clsx(
             "pointer-events-none absolute top-[50%] right-5.5 size-5 translate-y-[-50%] p-0 transition-all duration-300",
-            isOpen ? "rotate-180" : "rotate-0"
+            isOpen ? "rotate-180" : "rotate-0",
           )}
         />
       </li>
@@ -36,7 +36,7 @@ const NavigationGroup = ({ label, sublinks }: NavigationGroupProps) => {
         <ul
           className={clsx(
             "flex flex-col overflow-hidden transition-all duration-300",
-            isOpen ? "h-[calc-size(auto,_size)]" : "h-0"
+            isOpen ? "h-[calc-size(auto,_size)]" : "h-0",
           )}
         >
           {sublinks.map((sublink) => (
@@ -106,7 +106,7 @@ export const MobileNavigation = ({
               label={link.label}
               sublinks={link.sublinks!}
             />
-          )
+          ),
         )}
       </ul>
     </nav>

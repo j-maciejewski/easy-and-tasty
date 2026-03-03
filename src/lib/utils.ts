@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function parseSlug(slug: string[]) {
-  return `/${slug.join("/")}`;
+  return `${slug.join("/")}`;
 }
 
 export function parseMetadata(

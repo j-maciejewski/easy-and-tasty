@@ -6,6 +6,7 @@ export { Footer } from "./Footer";
 export { FullWidthWrapper } from "./FullWidthWrapper";
 export { Header } from "./Header/Header";
 export { InfiniteRecipeList } from "./InfiniteRecipeList";
+export { MarkdownContent } from "./MarkdownComponent";
 export { Rating } from "./Rating";
 export { RecipeCard } from "./RecipeCards/RecipeCard";
 export { RecipeCardFull } from "./RecipeCards/RecipeCardFull";

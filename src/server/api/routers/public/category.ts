@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, isNotNull } from "drizzle-orm";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
@@ -8,6 +8,7 @@ export const publicCategoryRouter = createTRPCRouter({
   getCategories: publicProcedure.query(({ ctx }) => {
     return ctx.db.query.categories.findMany({
       orderBy: (categories, { asc }) => [asc(categories.name)],
+      where: isNotNull(categories.publishedAt),
     });
   }),
 
@@ -16,6 +17,7 @@ export const publicCategoryRouter = createTRPCRouter({
       columns: {
         slug: true,
       },
+      where: isNotNull(categories.publishedAt),
     });
   }),
 
@@ -23,7 +25,10 @@ export const publicCategoryRouter = createTRPCRouter({
     .input(z.string())
     .query(({ ctx, input: categorySlug }) => {
       return ctx.db.query.categories.findFirst({
-        where: eq(categories.slug, categorySlug),
+        where: and(
+          eq(categories.slug, categorySlug),
+          isNotNull(categories.publishedAt),
+        ),
       });
     }),
 });

@@ -1,98 +1,89 @@
 "use client";
 
-import { ChevronDown, ChevronUp, Columns3, Menu, Plus, X } from "lucide-react";
-import Link from "next/link";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { Columns3, Plus, X } from "lucide-react";
+import { redirect } from "next/navigation";
+import { ReactNode, use, useEffect, useMemo, useState } from "react";
 
-import { ErrorCatcher, MultiSelect } from "@/components/dashboard";
 import {
-  Badge,
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Input,
-  Skeleton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui";
-import { cn } from "@/lib/utils";
+  AddPageForm,
+  DataTable,
+  DropdownActions,
+  EditPageForm,
+  ErrorCatcher,
+  GenericConfirmModal,
+  GenericModal,
+  MultiSelect,
+} from "@/components/dashboard";
+import { Badge, Button, DropdownMenuItem, Input } from "@/components/ui";
+import { Path } from "@/config";
+import { PaginationContext } from "@/context";
 import { api } from "@/trpc/react";
-// import { AddpageForm } from "@/components/dashboard/AddpageForm";
+import {
+  searchItems,
+  sortItems,
+  useColumnsToggler,
+  usePagesActions,
+  useSearchQuery,
+} from "@/utils";
 
 export default function () {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-      setPage(1);
-    }, 300);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchTerm]);
-
-  const clearSearch = () => {
-    setSearchTerm("");
-    setDebouncedSearchTerm("");
-  };
-
-  const [sortField, setSortField] = useState<string | undefined>(undefined);
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
-  const [_resultsPerQuery, setResultsPerQuery] = useState(10);
-  const [_page, setPage] = useState(1);
-
-  const _updateResultsPerQuery = (value: number) => {
-    setResultsPerQuery(value);
-    setPage(1);
-  };
+  const { query, setQuery, clearQuery } = useSearchQuery();
+  const {
+    sort,
+    pagination,
+    setTotalItemsCount,
+    handleChangePage,
+    handleChangeLimit,
+  } = use(PaginationContext)!;
 
   const {
     data: pages,
     isLoading,
     error,
+    refetch,
   } = api.authorized.page.getPages.useQuery();
 
-  const toggleSort = (field: string) => {
-    if (sortField === field) {
-      if (sortDir === "asc") setSortDir("desc");
-      else {
-        setSortDir("asc");
-        setSortField(undefined);
+  const [action, setAction] = useState<
+    | {
+        type: "publish" | "unpublish" | "delete" | "edit";
+        pageId: number;
       }
-      setPage(1);
-      return;
-    }
+    | { type: "add" }
+    | null
+  >(null);
 
-    setSortField(field);
-    setSortDir("asc");
-    setPage(1);
-  };
+  const clearAction = () => setAction(null);
 
-  const [columns, setColumns] = useState<
-    {
-      label: string;
-      render: (page: NonNullable<typeof pages>[number]) => ReactNode;
-      sortKey?: string;
-      hidden?: boolean;
-    }[]
-  >([
+  const { handleDeletePage, handlePublishPage, handleUnpublishPage } =
+    usePagesActions();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  useEffect(() => {
+    if (!pages) return;
+
+    if ((pagination.currentPage - 1) * pagination.itemsPerPage > pages.length)
+      redirect(Path.DASHBOARD_PAGES);
+
+    setTotalItemsCount(pages.length);
+  }, [pages]);
+
+  type PageItem = NonNullable<typeof pages>[number];
+  type ColumnLabel =
+    | "Title"
+    | "Slug"
+    | "Description"
+    | "Status"
+    | "Created at"
+    | "Updated at"
+    | "Published at"
+    | "Actions";
+
+  const columns: {
+    label: ColumnLabel;
+    render: (page: PageItem) => ReactNode;
+    sortKey?: string;
+    defaultHidden?: boolean;
+  }[] = [
     {
       label: "Title",
       sortKey: "title",
@@ -101,63 +92,113 @@ export default function () {
     {
       label: "Slug",
       sortKey: "slug",
-      render: (page) => page.slug,
+      render: ({ slug }) => (
+        <span className="text-muted-foreground">{slug}</span>
+      ),
     },
     {
-      label: "Created At",
+      label: "Description",
+      sortKey: "description",
+      render: ({ description }) => description,
+    },
+    {
+      label: "Status",
+      render: ({ publishedAt }) =>
+        publishedAt ? (
+          <Badge variant="secondary">Published</Badge>
+        ) : (
+          <Badge variant="secondary">Draft</Badge>
+        ),
+    },
+    {
+      label: "Created at",
+      sortKey: "createdAt",
       render: (page) => new Date(page.createdAt).toLocaleString(),
-      hidden: true,
+      defaultHidden: true,
     },
     {
-      label: "Updated At",
+      label: "Updated at",
+      sortKey: "updatedAt",
       render: (page) =>
         page.updatedAt ? new Date(page.updatedAt).toLocaleString() : null,
-      hidden: true,
+      defaultHidden: true,
     },
     {
-      label: "Published At",
+      label: "Published at",
+      sortKey: "publishedAt",
       render: (page) =>
-        page.updatedAt ? new Date(page.updatedAt).toLocaleString() : null,
+        page.publishedAt ? new Date(page.publishedAt).toLocaleString() : null,
+      defaultHidden: true,
     },
     {
       label: "Actions",
       render: (page) => (
-        <DropdownMenu modal={false}>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <Menu className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>View Page</DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href={`/dashboard/pages/edit/${page.id}`}>Edit Page</Link>
+        <DropdownActions>
+          <DropdownMenuItem
+            onClick={() => setAction({ type: "edit", pageId: page.id })}
+          >
+            Edit Page
+          </DropdownMenuItem>
+          {page.publishedAt ? (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "unpublish", pageId: page.id })}
+            >
+              Unpublish Page
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">
-              Publish page
+          ) : (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "publish", pageId: page.id })}
+            >
+              Publish Page
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600">
-              Delete page
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          )}
+          <DropdownMenuItem
+            className="text-red-600"
+            onClick={() => setAction({ type: "delete", pageId: page.id })}
+          >
+            Delete Page
+          </DropdownMenuItem>
+        </DropdownActions>
       ),
     },
+  ];
+
+  const { hiddenColumns, toggleColumn } = useColumnsToggler<ColumnLabel>(
+    columns
+      .filter((column) => column.defaultHidden)
+      .map((column) => column.label),
+  );
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  const filteredPages = useMemo(() => {
+    if (!pages) return [];
+
+    const filteredPages = searchItems(
+      pages,
+      ["title", "slug", "description"],
+      query,
+    );
+
+    sortItems(filteredPages, sort.key as keyof PageItem, sort.order);
+
+    return filteredPages;
+  }, [
+    pagination.currentPage,
+    pagination.itemsPerPage,
+    query,
+    pages,
+    sort.key,
+    sort.order,
   ]);
 
-  const toggleColumn = (toggledColumn: string) => {
-    setColumns((prevColumns) =>
-      prevColumns.map((column) => ({
-        ...column,
-        hidden: toggledColumn === column.label ? !column.hidden : column.hidden,
-      }))
-    );
-  };
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  useEffect(() => {
+    if (!pages || pages.length === filteredPages.length) return;
 
-  const addpageDialogCloseRef = useRef<HTMLButtonElement>(null);
+    handleChangePage(1);
+    handleChangeLimit(10);
+    setTotalItemsCount(filteredPages.length);
+  }, [filteredPages.length, pages]);
 
   return (
     <ErrorCatcher errors={[error] as (Error | null)[]}>
@@ -166,8 +207,8 @@ export default function () {
           <Input
             type="search"
             placeholder="Search pages..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="w-full"
           />
         </div>
@@ -177,7 +218,7 @@ export default function () {
             options={columns.map((column) => ({
               label: column.label,
               value: column.label,
-              checked: !column.hidden,
+              checked: !hiddenColumns.includes(column.label),
             }))}
             toggleOption={toggleColumn}
           >
@@ -185,107 +226,109 @@ export default function () {
               <Columns3 className="absolute size-5" />
             </Button>
           </MultiSelect>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="relative aspect-square" variant="secondary">
-                <Plus className="absolute size-5 stroke-2 text-foreground" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Add page</DialogTitle>
-              </DialogHeader>
-              {/* <AddpageForm
-                      onSubmit={() => addpageDialogCloseRef.current?.click()}
-                    /> */}
-              <DialogClose ref={addpageDialogCloseRef} />
-            </DialogContent>
-          </Dialog>
+          <Button
+            className="relative aspect-square"
+            variant="secondary"
+            onClick={() => setAction({ type: "add" })}
+          >
+            <Plus className="absolute size-5 stroke-2 text-foreground" />
+          </Button>
         </div>
       </div>
       <div className="mb-6 empty:hidden">
-        {debouncedSearchTerm && (
+        {query && (
           <Badge
             variant="outline"
             className="cursor-pointer"
             tabIndex={0}
-            onClick={clearSearch}
+            onClick={clearQuery}
           >
-            Query: {debouncedSearchTerm} <X className="h-4 text-red-600" />
+            Query: {query} <X className="h-4 text-red-600" />
           </Badge>
         )}
       </div>
 
-      {isLoading ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {columns
-                .filter((column) => !column.hidden)
-                .map((column) => (
-                  <TableCell key={column.label}>{column.label}</TableCell>
-                ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {Array.from(Array(10).keys()).map((idx) => (
-              <TableRow key={idx}>
-                {columns
-                  .filter((column) => !column.hidden)
-                  .map((column) => (
-                    <TableCell key={column.label}>
-                      <Skeleton className="h-5 w-[200px] rounded-full" />
-                    </TableCell>
-                  ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      ) : pages?.length !== undefined && pages?.length > 0 ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {columns
-                .filter((column) => !column.hidden)
-                .map((column) => (
-                  <TableHead
-                    key={column.label}
-                    className={cn(
-                      "select-none",
-                      column.sortKey && "cursor-pointer hover:bg-gray-200/50"
-                    )}
-                    {...(column.sortKey
-                      ? {
-                          onClick: () => toggleSort(column.sortKey as string),
-                        }
-                      : {})}
-                  >
-                    <span className="flex justify-between">
-                      {column.label}
-                      {column.sortKey &&
-                        sortField === column.sortKey &&
-                        (sortDir === "asc" ? <ChevronUp /> : <ChevronDown />)}
-                    </span>
-                  </TableHead>
-                ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {pages?.map((page) => (
-              <TableRow key={page.id}>
-                {columns
-                  .filter((column) => !column.hidden)
-                  .map((column) => (
-                    <TableCell key={column.label} className="font-medium">
-                      {column.render(page)}
-                    </TableCell>
-                  ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      ) : (
-        "No pages"
+      <DataTable
+        isLoading={isLoading}
+        hiddenColumns={hiddenColumns}
+        columns={columns}
+        data={filteredPages.slice(
+          (pagination.currentPage - 1) * pagination.itemsPerPage,
+          pagination.currentPage * pagination.itemsPerPage,
+        )}
+      />
+
+      {action?.type === "add" && (
+        <GenericModal
+          title="New page"
+          open={action?.type === "add"}
+          handleClose={clearAction}
+          content={
+            <AddPageForm
+              onSubmit={async () => {
+                clearAction();
+                await refetch();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "publish" && (
+        <GenericConfirmModal
+          title="Publish page?"
+          open={action?.type === "publish"}
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            await handlePublishPage(action?.pageId!);
+            clearAction();
+            await refetch();
+          }}
+        />
+      )}
+
+      {action?.type === "edit" && (
+        <GenericModal
+          title="Edit page"
+          open={action?.type === "edit"}
+          handleClose={clearAction}
+          content={
+            <EditPageForm
+              pageId={action?.pageId}
+              onSubmit={async () => {
+                clearAction();
+                await refetch();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "unpublish" && (
+        <GenericConfirmModal
+          title="Unpublish page?"
+          open={action?.type === "unpublish"}
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            await handleUnpublishPage(action?.pageId!);
+            clearAction();
+            await refetch();
+          }}
+        />
+      )}
+
+      {action?.type === "delete" && (
+        <GenericConfirmModal
+          title="Delete page?"
+          open={action?.type === "delete"}
+          description="This action cannot be undone."
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            await handleDeletePage(action?.pageId!);
+            clearAction();
+            await refetch();
+          }}
+        />
       )}
     </ErrorCatcher>
   );

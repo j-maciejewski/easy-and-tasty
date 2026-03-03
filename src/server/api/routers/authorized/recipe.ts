@@ -3,7 +3,9 @@ import { z } from "zod";
 
 import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
+  comments,
   difficultyEnum,
+  recipe_bookmarks,
   recipe_categories,
   recipe_cuisines,
   recipe_ratings,
@@ -28,6 +30,7 @@ export const authorizedRecipeRouter = createTRPCRouter({
           time: recipes.time,
           createdAt: recipes.createdAt,
           updatedAt: recipes.updatedAt,
+          publishedAt: recipes.publishedAt,
           categoryIds: sql<
             number[]
           >`COALESCE(json_agg(DISTINCT ${recipe_categories.categoryId} ORDER BY ${recipe_categories.categoryId} NULLS LAST) FILTER (WHERE ${recipe_categories.categoryId} IS NOT NULL), '[]')`.as(
@@ -72,6 +75,7 @@ export const authorizedRecipeRouter = createTRPCRouter({
           time: recipes.time,
           createdAt: recipes.createdAt,
           updatedAt: recipes.updatedAt,
+          publishedAt: recipes.publishedAt,
           avgRating:
             sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`.as(
               "avg_rating",
@@ -149,6 +153,7 @@ export const authorizedRecipeRouter = createTRPCRouter({
         difficulty: z.enum(difficultyEnum.enumValues),
         time: z.number(),
         servings: z.number(),
+        published: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -164,6 +169,7 @@ export const authorizedRecipeRouter = createTRPCRouter({
             difficulty: input.difficulty,
             servings: input.servings,
             time: input.time,
+            publishedAt: input.published ? new Date() : null,
           })
           .returning({ insertedId: recipes.id });
 
@@ -200,6 +206,7 @@ export const authorizedRecipeRouter = createTRPCRouter({
         difficulty: z.enum(difficultyEnum.enumValues),
         time: z.number(),
         servings: z.number(),
+        published: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -215,6 +222,7 @@ export const authorizedRecipeRouter = createTRPCRouter({
             difficulty: input.difficulty,
             servings: input.servings,
             time: input.time,
+            publishedAt: input.published ? new Date() : null,
           })
           .where(eq(recipes.id, input.id))
           .returning({ insertedId: recipes.id });
@@ -290,5 +298,51 @@ export const authorizedRecipeRouter = createTRPCRouter({
       });
     }),
 
-  // TODO: Add remaining recipe options
+  publishRecipe: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(recipes)
+        .set({
+          publishedAt: new Date(),
+        })
+        .where(eq(recipes.id, input));
+    }),
+
+  unpublishRecipe: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(recipes)
+        .set({
+          publishedAt: null,
+        })
+        .where(eq(recipes.id, input));
+    }),
+
+  deleteRecipe: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input: recipeId }) => {
+      await ctx.db.transaction(async (tx) => {
+        await tx
+          .delete(recipe_ratings)
+          .where(eq(recipe_ratings.recipeId, recipeId));
+
+        await tx.delete(comments).where(eq(comments.recipeId, recipeId));
+
+        await tx
+          .delete(recipe_bookmarks)
+          .where(eq(recipe_bookmarks.recipeId, recipeId));
+
+        await tx
+          .delete(recipe_categories)
+          .where(eq(recipe_categories.recipeId, recipeId));
+
+        await tx
+          .delete(recipe_cuisines)
+          .where(eq(recipe_cuisines.recipeId, recipeId));
+
+        await tx.delete(recipes).where(eq(recipes.id, recipeId));
+      });
+    }),
 });

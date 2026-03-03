@@ -2,9 +2,7 @@
 import { createContext, ReactNode, useMemo } from "react";
 
 interface IUserContext {
-  settings: {
-    formsInModals: boolean;
-  };
+  settings: {};
 }
 
 const UserContext = createContext<IUserContext | null>(null);
@@ -12,9 +10,7 @@ const UserContext = createContext<IUserContext | null>(null);
 const UserProvider = ({ ...rest }: { children: ReactNode }) => {
   const value = useMemo(
     () => ({
-      settings: {
-        formsInModals: true,
-      },
+      settings: {},
     }),
     [],
   );

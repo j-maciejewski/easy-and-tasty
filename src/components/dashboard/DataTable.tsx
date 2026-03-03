@@ -10,14 +10,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui";
+import { PaginationContext } from "@/context";
 import { cn } from "@/lib/utils";
 
-import { PaginationContext } from "@/context";
 import { Pagination } from "./Pagination";
 
 export namespace DataTable {
   export interface Props<T> {
-    isLoading: boolean;
+    isLoading?: boolean;
     hiddenColumns: string[];
     data: T[];
     columns: {
@@ -25,40 +25,16 @@ export namespace DataTable {
       render: (item: T) => React.ReactNode;
       sortKey?: string;
     }[];
-    sortField: string | undefined;
-    setSortField: (value: React.SetStateAction<string | undefined>) => void;
-    sortDir: "desc" | "asc";
-    setSortDir: (value: React.SetStateAction<"desc" | "asc">) => void;
   }
 }
 
 export const DataTable = <T,>({
-  isLoading,
+  isLoading = false,
   hiddenColumns,
   columns,
   data,
-  sortDir,
-  sortField,
-  setSortDir,
-  setSortField,
 }: DataTable.Props<T>) => {
-  const { pagination, handleChangePage } = use(PaginationContext)!;
-
-  const toggleSort = (field: string) => {
-    if (sortField === field) {
-      if (sortDir === "asc") setSortDir("desc");
-      else {
-        setSortDir("asc");
-        setSortField(undefined);
-      }
-      handleChangePage(1);
-      return;
-    }
-
-    setSortField(field);
-    setSortDir("asc");
-    handleChangePage(1);
-  };
+  const { pagination, sort, handleChangeSort } = use(PaginationContext)!;
 
   if (!isLoading && data.length === 0) return <>No results</>;
 
@@ -74,19 +50,20 @@ export const DataTable = <T,>({
                   key={column.label}
                   className={cn(
                     "select-none text-foreground/50",
-                    column.sortKey && "cursor-pointer hover:bg-muted"
+                    column.sortKey && "cursor-pointer hover:bg-muted",
                   )}
                   {...(column.sortKey
                     ? {
-                        onClick: () => toggleSort(column.sortKey as string),
+                        onClick: () =>
+                          handleChangeSort(column.sortKey as string),
                       }
                     : {})}
                 >
                   <span className="flex items-center justify-between">
                     {column.label}
                     {column.sortKey &&
-                      sortField === column.sortKey &&
-                      (sortDir === "asc" ? <ChevronUp /> : <ChevronDown />)}
+                      sort.key === column.sortKey &&
+                      (sort.order === "asc" ? <ChevronUp /> : <ChevronDown />)}
                   </span>
                 </TableHead>
               ))}

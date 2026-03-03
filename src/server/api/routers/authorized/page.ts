@@ -20,6 +20,14 @@ export const authorizedPageRouter = createTRPCRouter({
       });
     }),
 
+  getPageById: authorizedProcedure
+    .input(z.number().positive())
+    .query(({ ctx, input: pageId }) => {
+      return ctx.db.query.pages.findFirst({
+        where: eq(pages.id, pageId),
+      });
+    }),
+
   addPage: authorizedProcedure
     .input(
       z.object({
@@ -27,6 +35,7 @@ export const authorizedPageRouter = createTRPCRouter({
         image: z.string(),
         slug: z.string().min(1),
         description: z.string().min(1),
+        content: z.string().min(1),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -35,6 +44,7 @@ export const authorizedPageRouter = createTRPCRouter({
         image: input.image,
         slug: input.slug,
         description: input.description,
+        content: input.content,
       });
     }),
 
@@ -46,6 +56,7 @@ export const authorizedPageRouter = createTRPCRouter({
         image: z.string(),
         slug: z.string().min(1),
         description: z.string().min(1),
+        content: z.string().min(1),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -56,7 +67,36 @@ export const authorizedPageRouter = createTRPCRouter({
           image: input.image,
           slug: input.slug,
           description: input.description,
+          content: input.content,
         })
         .where(eq(pages.id, input.id));
+    }),
+
+  publishPage: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(pages)
+        .set({
+          publishedAt: new Date(),
+        })
+        .where(eq(pages.id, input));
+    }),
+
+  unpublishPage: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(pages)
+        .set({
+          publishedAt: null,
+        })
+        .where(eq(pages.id, input));
+    }),
+
+  deletePage: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.delete(pages).where(eq(pages.id, input));
     }),
 });

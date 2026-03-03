@@ -7,10 +7,8 @@ import {
   Earth,
   FileText,
   Ham,
-  Home,
-  Inbox,
   LogOut,
-  Settings,
+  Navigation,
   User2,
   Users,
 } from "lucide-react";
@@ -46,11 +44,6 @@ const items: { label: string; url: string; icon: FC }[] = [
     icon: Book,
   },
   {
-    label: "Home",
-    url: Path.DASHBOARD_HOME,
-    icon: Home,
-  },
-  {
     label: "Pages",
     url: Path.DASHBOARD_PAGES,
     icon: FileText,
@@ -71,14 +64,9 @@ const items: { label: string; url: string; icon: FC }[] = [
     icon: Users,
   },
   {
-    label: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    label: "Settings",
-    icon: Settings,
-    url: Path.DASHBOARD_SETTINGS,
+    label: "Navigation",
+    url: Path.DASHBOARD_NAVIGATION,
+    icon: Navigation,
   },
 ];
 

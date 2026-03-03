@@ -50,7 +50,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
           setIsScrolled(false);
         }
       },
-      { signal: controller.signal }
+      { signal: controller.signal },
     );
 
     return () => {

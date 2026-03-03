@@ -25,7 +25,7 @@ export const Dialog = ({
   return (
     <DialogRoot>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-h-[calc(100%_-_4rem)] overflow-auto sm:max-w-md">
+      <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

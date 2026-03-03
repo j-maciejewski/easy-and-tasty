@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui";
 import { Rating } from "../Rating";
 
 interface RecipeCardProps {
-  recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
+  recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt" | "publishedAt"> &
     RecipeRatingOptions;
 }
 export const RecipeCard = ({ recipe }: RecipeCardProps) => {

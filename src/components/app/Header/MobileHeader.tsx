@@ -52,7 +52,7 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
           setIsNavigationOpen(false);
         }
       },
-      { signal: eventController.signal }
+      { signal: eventController.signal },
     );
 
     return () => eventController.abort();
@@ -63,7 +63,7 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
       <header
         className={clsx(
           "fixed top-0 z-50 w-full bg-white shadow transition-transform duration-300 md:hidden",
-          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0"
+          scrollDirection === "down" ? "-translate-y-full" : "translate-y-0",
         )}
       >
         <div className="mx-auto flex h-16 max-w-[1000px] items-center justify-between px-4">

@@ -16,9 +16,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui";
-import { getPaginationTiles } from "@/utils";
-
 import { PaginationContext } from "@/context";
+import { getPaginationTiles } from "@/utils";
 
 export const Pagination = () => {
   const {
@@ -31,9 +30,9 @@ export const Pagination = () => {
     () =>
       getPaginationTiles(
         currentPage,
-        Math.ceil(totalItemsCount / itemsPerPage)
+        Math.ceil(totalItemsCount / itemsPerPage),
       ),
-    [currentPage, totalItemsCount, itemsPerPage]
+    [currentPage, totalItemsCount, itemsPerPage],
   );
 
   const startItem = (currentPage - 1) * itemsPerPage + 1;

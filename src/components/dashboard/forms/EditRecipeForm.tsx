@@ -5,9 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import { LoaderCircle, Plus, X } from "lucide-react";
 import { redirect } from "next/navigation";
-import { use, useRef } from "react";
+import { use, useMemo, useRef } from "react";
 import { Resolver, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 import { MultiSelect } from "@/components/dashboard";
@@ -26,102 +25,54 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Textarea,
 } from "@/components/ui";
 import { Path } from "@/config";
+import { recipeFormSchema } from "@/constants";
 import { CategoriesContext, CuisinesContext } from "@/context";
-import { difficultyEnum } from "@/server/db/schema";
 import { api } from "@/trpc/react";
-
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  image: z.string(),
-  description: z.string().min(2, {
-    message: "Description must be at least 2 characters.",
-  }),
-  content: z.string().min(2, {
-    message: "Content must be at least 2 characters.",
-  }),
-  difficulty: z.enum(difficultyEnum.enumValues).default("easy"),
-  time: z.coerce.number().min(1, {
-    message: "Time must be at least 1 minute.",
-  }),
-  servings: z.coerce.number().min(1, {
-    message: "The dish should have at least 1 serving.",
-  }),
-  cuisines: z.number().array().min(1, {
-    message: "The dish should have at least 1 cuisine.",
-  }),
-  categories: z.number().array().min(1, {
-    message: "The dish should have at least 1 category.",
-  }),
-});
+import { useRecipesActions } from "@/utils";
 
 export namespace EditRecipeForm {
   export interface Props {
     recipeId: number;
-    categories?: {
-      description: string;
-      id: number;
-      name: string;
-      slug: string;
-    }[];
-    cuisines?: {
-      description: string;
-      id: number;
-      name: string;
-      slug: string;
-    }[];
     onSubmit?: () => void;
   }
 }
 
-export function EditRecipeForm({
-  recipeId,
-  categories,
-  cuisines,
-  onSubmit,
-}: EditRecipeForm.Props) {
+export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
+  const { handleUpdateRecipe } = useRecipesActions();
+
   const { data, isLoading } =
     api.authorized.recipe.getRecipe.useQuery(recipeId);
-
-  const editRecipe = api.authorized.recipe.editRecipe.useMutation();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
 
-  const categoryOptions = (() => {
-    if (categories) {
-      return categories.map((category) => ({
+  const { categories } = use(CategoriesContext)!;
+  const { cuisines } = use(CuisinesContext)!;
+
+  const categoryOptions = useMemo(
+    () =>
+      [...categories.values()].map((category) => ({
         label: category.name,
         value: category.id,
-      }));
-    }
+      })),
+    [categories],
+  );
 
-    const { categories: categoriesMap } = use(CategoriesContext)!;
-    return [...categoriesMap.values()].map((category) => ({
-      label: category.name,
-      value: category.id,
-    }));
-  })();
-
-  const cuisineOptions = (() => {
-    if (cuisines) {
-      return cuisines.map((cuisine) => ({
+  const cuisineOptions = useMemo(
+    () =>
+      [...cuisines.values()].map((cuisine) => ({
         label: cuisine.name,
         value: cuisine.id,
-      }));
-    }
+      })),
+    [cuisines],
+  );
 
-    const { cuisines: cuisinesMap } = use(CuisinesContext)!;
-    return [...cuisinesMap.values()].map((cuisine) => ({
-      label: cuisine.name,
-      value: cuisine.id,
-    }));
-  })();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema) as Resolver<z.infer<typeof formSchema>>,
+  const form = useForm<z.infer<typeof recipeFormSchema>>({
+    resolver: zodResolver(recipeFormSchema) as Resolver<
+      z.infer<typeof recipeFormSchema>
+    >,
     values: data
       ? {
           title: data.title,
@@ -133,6 +84,7 @@ export function EditRecipeForm({
           time: data.time,
           servings: data.servings,
           image: data.image,
+          published: Boolean(data.publishedAt),
         }
       : {
           title: "",
@@ -144,23 +96,12 @@ export function EditRecipeForm({
           time: 0,
           servings: 0,
           image: "",
+          published: false,
         },
   });
 
-  async function handleSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(recipeId, { values });
-      await editRecipe.mutateAsync({ id: recipeId, ...values });
-
-      toast.success("Recipe was modified.");
-
-      onSubmit?.();
-    } catch (error) {
-      toast.error(
-        (error as Error)?.message ??
-          "There was an error while modifying the recipe.",
-      );
-    }
+  async function handleSubmit(values: z.infer<typeof recipeFormSchema>) {
+    await handleUpdateRecipe(recipeId, values, onSubmit);
   }
 
   if (isLoading)
@@ -273,7 +214,7 @@ export function EditRecipeForm({
               <FormControl>
                 <CodeMirror
                   {...field}
-                  className="[&>div]:!outline-0 overflow-hidden rounded-lg border px-3 py-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>div]:bg-transparent"
+                  className="overflow-hidden rounded-lg border px-3 py-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>div]:bg-transparent [&>div]:outline-0!"
                   height="200px"
                   extensions={[markdown({ base: markdownLanguage })]}
                   theme="dark"
@@ -512,6 +453,21 @@ export function EditRecipeForm({
                 </div>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="published"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+              <FormLabel>Publish</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

@@ -1,4 +1,3 @@
-import { Timer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,8 +24,8 @@ export const RecipeListItem = ({ recipe }: RecipesListItemProps) => {
             className="size-20 min-w-20 rounded-l-lg object-cover"
           />
           <CardHeader className="grow p-2 text-sm">
-            <h6 className="font-medium">{recipe.title}</h6>
-            <div className="mt-2 flex gap-2 text-gray-600 text-sm">
+            <h6 className="font-medium text-base">{recipe.title}</h6>
+            <div className="mt-1 flex gap-2 text-gray-600 text-sm">
               <Rating rating={recipe.avgRating} />
               {recipe.ratingsCount !== 0 && (
                 <>
@@ -39,10 +38,6 @@ export const RecipeListItem = ({ recipe }: RecipesListItemProps) => {
                   </p>
                 </>
               )}
-              <div className="flex items-center">
-                <Timer className="mr-1 size-4" />
-                <span className="whitespace-nowrap">{recipe.time} minutes</span>
-              </div>
             </div>
           </CardHeader>
         </div>

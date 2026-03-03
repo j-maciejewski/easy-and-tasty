@@ -24,6 +24,7 @@ export const authorizedCuisineRouter = createTRPCRouter({
         name: z.string().min(1),
         slug: z.string().min(1),
         description: z.string().min(1),
+        published: z.boolean().default(false),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -31,6 +32,7 @@ export const authorizedCuisineRouter = createTRPCRouter({
         name: input.name,
         slug: input.slug,
         description: input.description,
+        publishedAt: input.published ? new Date() : null,
       });
     }),
 
@@ -41,6 +43,7 @@ export const authorizedCuisineRouter = createTRPCRouter({
         name: z.string().min(1),
         slug: z.string().min(1),
         description: z.string().min(1),
+        published: z.boolean().default(false),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -50,8 +53,31 @@ export const authorizedCuisineRouter = createTRPCRouter({
           name: input.name,
           slug: input.slug,
           description: input.description,
+          publishedAt: input.published ? new Date() : null,
         })
         .where(eq(cuisines.id, input.id));
+    }),
+
+  publishCuisine: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(cuisines)
+        .set({
+          publishedAt: new Date(),
+        })
+        .where(eq(cuisines.id, input));
+    }),
+
+  unpublishCuisine: authorizedProcedure
+    .input(z.number().positive())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(cuisines)
+        .set({
+          publishedAt: null,
+        })
+        .where(eq(cuisines.id, input));
     }),
 
   deleteCuisine: authorizedProcedure

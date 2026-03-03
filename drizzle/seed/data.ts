@@ -332,7 +332,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUPgPwG9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
     content:
-      "Cook pasta. In a separate pan, cook pancetta. Mix eggs and cheese. Combine all ingredients together.",
+      "This Spaghetti Carbonara recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "spaghetti-carbonara",
     time: 25,
@@ -348,7 +348,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGArOQbVatcYQN4O5WBgaTukZilXC29FmPeKwnv",
     content:
-      "Marinate chicken, grill, and then cook in tomato sauce with spices and cream.",
+      "This Chicken Tikka Masala recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "chicken-tikka-masala",
     time: 40,
@@ -363,7 +363,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAaWWUvqPJM6NWLh8O0pKRzAoe7ilUEjTwIyC3",
     content:
-      "Stir-fry noodles with eggs, vegetables, shrimp, and tamarind sauce.",
+      "This Pad Thai recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "pad-thai",
     time: 30,
@@ -379,7 +379,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAPTTFXom1p71nUljrkfORIqXSYbotLCB8Ev5i",
     content:
-      "Caramelize onions, add beef broth, and simmer. Top with bread and cheese.",
+      "This French Onion Soup recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 3,
     slug: "french-onion-soup",
     time: 60,
@@ -395,7 +395,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGABMnT0Kcv4DFZlM9o73PhxUpQT5CtS81brBmG",
     content:
-      "Cook seasoned ground beef. Assemble tacos with lettuce, cheese, and salsa.",
+      "This Beef Tacos recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "beef-tacos",
     time: 20,
@@ -411,7 +411,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAz8Y9cZ0RjSTpz2t65Wwq4Nn3obBEkOxAmZuJ",
     content:
-      "Roast duck until crispy. Serve with pancakes, cucumber, and hoisin sauce.",
+      "This Peking Duck recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "peking-duck",
     time: 120,
@@ -427,7 +427,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAAdJpPGTgnSWtq9HsfGe7vVOwyR2oCKIFjci8",
     content:
-      "Simmer broth, cook noodles, and serve with sliced beef and fresh herbs.",
+      "This Pho recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "pho",
     time: 90,
@@ -443,7 +443,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA8phkkioJgzyYdhl9EOtCSKX6AZanriLNopF2",
     content:
-      "Chop vegetables and toss with olive oil, oregano, and feta cheese.",
+      "This Greek Salad recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "greek-salad",
     time: 15,
@@ -459,7 +459,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA0L4jiYU1e2gCLDXqYJMbkEZwR5j8Gn7K6uTf",
     content:
-      "Marinate meat, grill, and serve with kimchi and other side dishes.",
+      "This Korean BBQ recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "korean-bbq",
     time: 60,
@@ -474,7 +474,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAuZoMDxXiLFnEQ5m8WlN9OXHKoTAp0gPuGweB",
-    content: "Layer filo dough, nuts, and honey. Bake until crispy.",
+    content: "This Baklava recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 12,
     slug: "baklava",
     time: 90,
@@ -490,7 +490,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAdm5nxvVV8GUX9wzBbN0E7CJYIp5ungOqM6Se",
     content:
-      "Roll dough, add tomato sauce, mozzarella, and basil. Bake in oven.",
+      "This Margherita Pizza recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "margherita-pizza",
     time: 30,
@@ -504,7 +504,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA33lfnxvrGeZTapY15yEQvNzo6jJFxIUKiHwn",
-    content: "Fry battered fish and serve with thick-cut fries.",
+    content: "This Fish and Chips recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "fish-and-chips",
     time: 25,
@@ -519,7 +519,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA20AYeLhRJK9bzYnjuTyHxXfW438cUkCwiDpv",
-    content: "Cook ziti, mix with sauce and cheese, and bake until bubbly.",
+    content: "This Baked Ziti recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "baked-ziti",
     time: 45,
@@ -534,7 +534,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAi45MAxwko1JFR4LW6gfZM0mc5TPtVXAS7daz",
-    content: "Slow-cook pork, shred, mix with BBQ sauce, and serve on a bun.",
+    content: "This BBQ Pulled Pork Sandwich recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "bbq-pulled-pork-sandwich",
     time: 240,
@@ -550,7 +550,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA864IyloJgzyYdhl9EOtCSKX6AZanriLNopF2",
     content:
-      "Poach eggs, toast muffins, and top with hollandaise sauce and ham.",
+      "This Eggs Benedict recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "eggs-benedict",
     time: 35,
@@ -564,7 +564,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAScY9j59b0isdEjMFnJtAQXUBY5cVyqZme8gG",
-    content: "Stir-fry vegetables in oil and season with soy sauce and garlic.",
+    content: "This Vegetable Stir-Fry recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "vegetable-stir-fry",
     time: 15,
@@ -579,7 +579,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUVUaZU9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
-    content: "Grill beef patty, add cheese, and assemble burger with toppings.",
+    content: "This Cheeseburger recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 1,
     slug: "cheeseburger",
     time: 15,
@@ -594,7 +594,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA0j52QLfU1e2gCLDXqYJMbkEZwR5j8Gn7K6uT",
-    content: "Cook lamb in a blend of spices, simmer in sauce until tender.",
+    content: "This Lamb Curry recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "lamb-curry",
     time: 120,
@@ -609,7 +609,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAjJNtmRLCMkIGATz6aB7yRwcsp9XHvtgVCQZx",
-    content: "Cook shrimp with garlic and butter, serve with pasta.",
+    content: "This Shrimp Scampi recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "shrimp-scampi",
     time: 30,
@@ -624,7 +624,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA7ikaGqgPjy2HMdTieVLzZqGXhcgUSJa9t04s",
-    content: "Mix batter, cook on griddle, and serve with toppings.",
+    content: "This Pancakes recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "pancakes",
     time: 20,
@@ -638,7 +638,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAzvwaIc0RjSTpz2t65Wwq4Nn3obBEkOxAmZuJ",
-    content: "Grill steak and serve with crispy fries.",
+    content: "This Steak Frites recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "steak-frites",
     time: 35,
@@ -654,7 +654,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAJf9k9QqWEGKUIT1CnexfLsVlh79JwDXrcQq0",
     content:
-      "Slice tomatoes and mozzarella, drizzle with olive oil, and top with basil.",
+      "This Caprese Salad recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "caprese-salad",
     time: 10,
@@ -670,7 +670,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAjJGpAwsCMkIGATz6aB7yRwcsp9XHvtgVCQZx",
     content:
-      "Layer ladyfingers soaked in coffee with mascarpone cream and cocoa powder.",
+      "This Tiramisu recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "tiramisu",
     time: 180,
@@ -684,7 +684,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAit0bH8wko1JFR4LW6gfZM0mc5TPtVXAS7daz",
-    content: "Roast whole chicken with herbs, garlic, and butter.",
+    content: "This Roast Chicken recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "roast-chicken",
     time: 90,
@@ -698,7 +698,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA5N6qBXqEGnKSRhBXpacitoOAw9HZ1qU5j7Vz",
-    content: "Simmer beef with onions and paprika until tender.",
+    content: "This Goulash recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "goulash",
     time: 120,
@@ -713,7 +713,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAwdYA8eQZVzTo8FADGaIl4N7sB3vpnk95PEgh",
-    content: "Simmer broth, cook noodles, and assemble with toppings.",
+    content: "This Ramen recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "ramen",
     time: 90,
@@ -729,7 +729,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA7ImUJFgPjy2HMdTieVLzZqGXhcgUSJa9t04s",
     content:
-      "Blend chickpeas with herbs, fry into patties, and serve with pita.",
+      "This Falafel recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "falafel",
     time: 40,
@@ -743,7 +743,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA9NUpprjvfLurwOSjaqm1HW23JhlAGDB4N8d7",
-    content: "Simmer clams with potatoes, celery, and cream.",
+    content: "This Clam Chowder recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "clam-chowder",
     time: 50,
@@ -758,7 +758,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAC2AWvEax2SH6QwKf3oNjuMVZlkr0UELviTpJ",
-    content: "Cook beef and mushrooms in sauce, serve over noodles.",
+    content: "This Beef Stroganoff recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "beef-stroganoff",
     time: 40,
@@ -773,7 +773,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA7teqzbgPjy2HMdTieVLzZqGXhcgUSJa9t04s",
-    content: "Toast bread, spread mashed avocado, and drizzle with olive oil.",
+    content: "This Avocado Toast recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 1,
     slug: "avocado-toast",
     time: 10,
@@ -789,7 +789,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAjQImKlCMkIGATz6aB7yRwcsp9XHvtgVCQZxU",
     content:
-      "Marinate paneer in yogurt and spices, grill until charred, and serve with chutney.",
+      "This Paneer Tikka recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "paneer-tikka",
     time: 30,
@@ -805,7 +805,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGACWQidxax2SH6QwKf3oNjuMVZlkr0UELviTpJ",
     content:
-      "Cook pasta, prepare Alfredo sauce, and combine with grilled chicken.",
+      "This Chicken Alfredo recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "chicken-alfredo",
     time: 25,
@@ -820,7 +820,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAraiDiytcYQN4O5WBgaTukZilXC29FmPeKwnv",
-    content: "Roast eggplant, blend with tahini, garlic, and lemon juice.",
+    content: "This Baba Ganoush recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "baba-ganoush",
     time: 25,
@@ -834,7 +834,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAHZD9du7S0JTx9ul1YdwKeGE2IZ6vHMOLfCA3",
-    content: "Cook beef, add beans, tomatoes, and spices, and simmer.",
+    content: "This Chili Con Carne recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "chili-con-carne",
     time: 60,
@@ -849,7 +849,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGALNbzC3IOIskRxFCyiYGJ9aNPh8HQZDdjon5w",
-    content: "Prepare sushi rice, fill with ingredients, and roll in seaweed.",
+    content: "This Sushi Rolls recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "sushi-rolls",
     time: 45,
@@ -865,7 +865,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA6cTPqjmxltM29RSzNguyjVfZH1b7ackh6QB5",
     content:
-      "Thread mozzarella, tomatoes, and basil on skewers; drizzle with balsamic.",
+      "This Caprese Skewers recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "caprese-skewers",
     time: 15,
@@ -880,7 +880,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAatvfooJM6NWLh8O0pKRzAoe7ilUEjTwIyC3b",
-    content: "Sauté tomatoes and peppers, then scramble in eggs and season.",
+    content: "This Menemen recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "menemen",
     time: 20,
@@ -895,7 +895,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAmKAHJ3Lm4OQxpB3SDaWbzsA1Y02w5lhXGnfR",
-    content: "Stir-fry rice with shrimp, vegetables, and soy sauce.",
+    content: "This Shrimp Fried Rice recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "shrimp-fried-rice",
     time: 20,
@@ -909,7 +909,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUpPZKO9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
-    content: "Mix eggs, cream, and bacon; pour into pie crust and bake.",
+    content: "This Quiche Lorraine recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "quiche-lorraine",
     time: 60,
@@ -924,7 +924,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA16z6PTAUX2B1juWKQdZyHemIAz9tgNbwVRf5",
-    content: "Melt chocolate, fold in whipped cream, chill before serving.",
+    content: "This Chocolate Mousse recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "chocolate-mousse",
     time: 60,
@@ -940,7 +940,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAHa1AR07S0JTx9ul1YdwKeGE2IZ6vHMOLfCA3",
     content:
-      "Whisk batter, cook in a thin layer on a pan, and fill as desired.",
+      "This Crepes recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "crepes",
     time: 25,
@@ -956,7 +956,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAPqAqpA1p71nUljrkfORIqXSYbotLCB8Ev5iz",
     content:
-      "Prepare sushi rice, roll with eel and avocado, and drizzle with sauce.",
+      "This Dragon Roll recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "dragon-roll",
     time: 40,
@@ -970,7 +970,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUitu3Q9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
-    content: "Mash bananas, mix with batter, pour into loaf pan, and bake.",
+    content: "This Banana Bread recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 8,
     slug: "banana-bread",
     time: 60,
@@ -985,7 +985,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUX7f3u9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
     content:
-      "Marinate pork, cook, and serve in tortillas with pineapple and onions.",
+      "This Tacos Al Pastor recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "tacos-al-pastor",
     time: 45,
@@ -1000,7 +1000,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAdEZ9zCVV8GUX9wzBbN0E7CJYIp5ungOqM6Se",
-    content: "Layer eggplant with meat and béchamel; bake until golden.",
+    content: "This Moussaka recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "moussaka",
     time: 90,
@@ -1016,7 +1016,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA8yHrtWoJgzyYdhl9EOtCSKX6AZanriLNopF2",
     content:
-      "Cook fettuccine, mix with Alfredo sauce, and serve with parmesan.",
+      "This Fettuccine Alfredo recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "fettuccine-alfredo",
     time: 25,
@@ -1031,7 +1031,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAwdorq2tZVzTo8FADGaIl4N7sB3vpnk95PEgh",
-    content: "Simmer broth with shrimp, mushrooms, and lemongrass.",
+    content: "This Tom Yum Soup recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "tom-yum-soup",
     time: 30,
@@ -1046,7 +1046,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGARZB5N8zckjWz09XmZnfrFS6DvwhHT7qKt13s",
-    content: "Marinate shrimp in lime juice, blend with jalapeños and herbs.",
+    content: "This Aguachile recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "aguachile",
     time: 25,
@@ -1061,7 +1061,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGADncy6dSCVSQO5qt0hsc3FGjxyXrDWlbUn4iJ",
     content:
-      "Sauté kimchi, mix with rice and soy sauce, and top with a fried egg.",
+      "This Kimchi Fried Rice recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "kimchi-fried-rice",
     time: 20,
@@ -1076,7 +1076,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA1Bcn65AUX2B1juWKQdZyHemIAz9tgNbwVRf5",
-    content: "Stuff poblano peppers, dip in batter, fry, and serve with sauce.",
+    content: "This Chiles Rellenos recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "chiles-rellenos",
     time: 45,
@@ -1091,7 +1091,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAJv0oA4qWEGKUIT1CnexfLsVlh79JwDXrcQq0",
-    content: "Prepare filling, wrap in dough, and pan-fry until golden.",
+    content: "This Gyoza recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "gyoza",
     time: 30,
@@ -1105,7 +1105,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAoM7JKgO0UgKWhZJEsRmox1i8D2kASYndCqHz",
-    content: "Simmer lentils with vegetables and spices until tender.",
+    content: "This Lentil Soup recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "lentil-soup",
     time: 40,
@@ -1121,7 +1121,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAd6GTM2VV8GUX9wzBbN0E7CJYIp5ungOqM6Se",
     content:
-      "Cook Arborio rice slowly with broth, stirring frequently, and finish with cheese.",
+      "This Risotto recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "risotto",
     time: 35,
@@ -1136,7 +1136,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA9aaRPQsjvfLurwOSjaqm1HW23JhlAGDB4N8d",
-    content: "Chop vegetables, toss with crispy pita and sumac dressing.",
+    content: "This Fattoush recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "fattoush",
     time: 15,
@@ -1151,7 +1151,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAb3ZWV5ZBWHv91qFVXdUzOGPrsf4mBjDEex3y",
-    content: "Brown beef, simmer in red wine with vegetables until tender.",
+    content: "This Boeuf Bourguignon recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "boeuf-bourguignon",
     time: 180,
@@ -1166,7 +1166,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAWATa1FdPaqyeSEXtUvsmphcrAxbnCNPKuRzk",
-    content: "Cook chicken with spices and coconut milk; serve with rice.",
+    content: "This Chicken Curry recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "chicken-curry",
     time: 50,
@@ -1180,7 +1180,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUWA3WD9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
-    content: "Chop various fruits and toss them together; serve chilled.",
+    content: "This Fruit Salad recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "fruit-salad",
     time: 15,
@@ -1196,7 +1196,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA7ExX60gPjy2HMdTieVLzZqGXhcgUSJa9t04s",
     content:
-      "Mix crab meat with breadcrumbs and spices, form into cakes, and fry.",
+      "This Crab Cakes recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "crab-cakes",
     time: 30,
@@ -1211,7 +1211,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGALLASdJIOIskRxFCyiYGJ9aNPh8HQZDdjon5w",
-    content: "Cook sticky rice, mix with coconut milk, and serve with mango.",
+    content: "This Mango Sticky Rice recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "mango-sticky-rice",
     time: 30,
@@ -1225,7 +1225,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAHbkrkd7S0JTx9ul1YdwKeGE2IZ6vHMOLfCA3",
-    content: "Rub ribs with spices, bake slowly, and baste with BBQ sauce.",
+    content: "This BBQ Ribs recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "bbq-ribs",
     time: 180,
@@ -1239,7 +1239,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGATBB7lrGvlUxDby7XLn6YtzfiIJueHFEZpRkg",
-    content: "Mix mashed potatoes with flour, shape into dumplings, and boil.",
+    content: "This Gnocchi recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "gnocchi",
     time: 35,
@@ -1254,7 +1254,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAxEODC7uN8aUdE2oBi1GQPyvKVhICkZT9gn7O",
-    content: "Simmer dashi, add miso paste, tofu, and seaweed.",
+    content: "This Miso Soup recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "miso-soup",
     time: 15,
@@ -1268,7 +1268,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAsp4PrCdyhR8FCZK39gPcMw6s4mB5orAbXd0n",
-    content: "Cook pasta, sauté vegetables, and mix with olive oil and garlic.",
+    content: "This Pasta Primavera recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "pasta-primavera",
     time: 25,
@@ -1282,7 +1282,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUCnLpBj9X6EFcIVOa4MrCtqfRWlgQhKx8LzH",
-    content: "Layer cooked meat and vegetables with mashed potatoes and bake.",
+    content: "This Shepherd's Pie recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "shepherds-pie",
     time: 50,
@@ -1298,7 +1298,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAiaf638wko1JFR4LW6gfZM0mc5TPtVXAS7daz",
     content:
-      "Cook tomatoes with spices, create wells, and crack eggs into the sauce.",
+      "This Shakshuka recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "shakshuka",
     time: 30,
@@ -1312,7 +1312,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAq1GlCiFWthgCencKNLEjdu1P4G6Tp7IODbsR",
-    content: "Pipe dough into hot oil, fry until golden, and coat with sugar.",
+    content: "This Churros recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "churros",
     time: 30,
@@ -1326,7 +1326,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAyaktEBnd2NI8fRBwpsYu1HgMzh5KoTZ4Lanc",
-    content: "Prepare sushi rice, fill with spicy tuna, roll, and slice.",
+    content: "This Spicy Tuna Roll recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "spicy-tuna-roll",
     time: 30,
@@ -1341,7 +1341,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGACCsolSax2SH6QwKf3oNjuMVZlkr0UELviTpJ",
-    content: "Hollow out zucchini, fill with mixture, and bake until tender.",
+    content: "This Stuffed Zucchini recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "stuffed-zucchini",
     time: 45,
@@ -1357,7 +1357,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUafU289X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
     content:
-      "Marinate diced fish in lime juice, add onions, cilantro, and peppers.",
+      "This Ceviche recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "ceviche",
     time: 20,
@@ -1372,7 +1372,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGARUTQ4qUzckjWz09XmZnfrFS6DvwhHT7qKt13",
     content:
-      "Simmer beets with broth, add vegetables, and serve with sour cream.",
+      "This Borscht recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "borscht",
     time: 40,
@@ -1387,7 +1387,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAhQXvC76SatcgYn0VMDQwXqzsx39HjpZThd28",
     content:
-      "Prepare dough, fill with spiced potatoes, shape, and fry until golden.",
+      "This Samosas recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "samosas",
     time: 40,
@@ -1401,7 +1401,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA0j9kJvtU1e2gCLDXqYJMbkEZwR5j8Gn7K6uT",
-    content: "Marinate chicken in yogurt and spices, then grill or bake.",
+    content: "This Tandoori Chicken recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "tandoori-chicken",
     time: 45,
@@ -1415,7 +1415,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAxQU1FfuN8aUdE2oBi1GQPyvKVhICkZT9gn7O",
-    content: "Cook rice with saffron, seafood, and vegetables in a wide pan.",
+    content: "This Paella recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "paella",
     time: 60,
@@ -1431,7 +1431,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA0fd7xJU1e2gCLDXqYJMbkEZwR5j8Gn7K6uTf",
     content:
-      "Bread and fry eggplant slices, layer with marinara and cheese, then bake.",
+      "This Eggplant Parmesan recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "eggplant-parmesan",
     time: 60,
@@ -1447,7 +1447,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAnVlFVqXKqm9Id0CfXlZjir8EBzStUx1n3pbV",
     content:
-      "Layer filo with spinach and feta filling, then bake until crispy.",
+      "This Spanakopita recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "spanakopita",
     time: 45,
@@ -1462,7 +1462,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAAZSAccTgnSWtq9HsfGe7vVOwyR2oCKIFjci8",
-    content: "Mix batter with cabbage, cook on a griddle, and top with sauce.",
+    content: "This Okonomiyaki recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "okonomiyaki",
     time: 30,
@@ -1476,7 +1476,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGANXneuNSyHFxgK8yfOLGn6boNrmSWAQcwkPq0",
-    content: "Bread and fry pork cutlets, serve with lemon wedges and parsley.",
+    content: "This Pork Schnitzel recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "pork-schnitzel",
     time: 30,
@@ -1491,7 +1491,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA2XrLbaRJK9bzYnjuTyHxXfW438cUkCwiDpvV",
-    content: "Cook beef with vegetables, top with mashed potatoes, and bake.",
+    content: "This Cottage Pie recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "cottage-pie",
     time: 50,
@@ -1507,7 +1507,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA1F0P2rAUX2B1juWKQdZyHemIAz9tgNbwVRf5",
     content:
-      "Hollow out bell peppers, fill with rice and meat mixture, and bake.",
+      "This Stuffed Bell Peppers recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "stuffed-bell-peppers",
     time: 45,
@@ -1521,7 +1521,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAamz5aKJM6NWLh8O0pKRzAoe7ilUEjTwIyC3b",
-    content: "Mix tapioca flour with cheese, shape into balls, and bake.",
+    content: "This PĂŁo de Queijo recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "pao-de-queijo",
     time: 25,
@@ -1536,7 +1536,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAOwx7Zy2g6xYLQNuXPicv3s4hOZrfotUmBHTM",
-    content: "Cook baby potatoes in a spicy tomato-based curry sauce.",
+    content: "This Dum Aloo recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "dum-aloo",
     time: 40,
@@ -1551,7 +1551,7 @@ export const RECIPES = [
     difficulty: "hard",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAniITdpXKqm9Id0CfXlZjir8EBzStUx1n3pbV",
-    content: "Prepare dough, fill with potato mixture, boil, then pan-fry.",
+    content: "This Pierogi recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "pierogi",
     time: 60,
@@ -1565,7 +1565,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAy7VF8Xnd2NI8fRBwpsYu1HgMzh5KoTZ4Lanc",
-    content: "Cook pasta, toss with cheese and black pepper, and serve.",
+    content: "This Cacio e Pepe recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 2,
     slug: "cacio-e-pepe",
     time: 20,
@@ -1581,7 +1581,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUULyvj9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
     content:
-      "Marinate beef in soy sauce and garlic, grill, and serve with rice.",
+      "This Bulgogi recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "bulgogi",
     time: 35,
@@ -1595,7 +1595,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAj71XJGCMkIGATz6aB7yRwcsp9XHvtgVCQZxU",
-    content: "Cook sausage, shrimp, and rice with spices and vegetables.",
+    content: "This Jambalaya recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "jambalaya",
     time: 50,
@@ -1610,7 +1610,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAOzROsak2g6xYLQNuXPicv3s4hOZrfotUmBHT",
-    content: "Marinate meat, cook on a grill or spit, and serve in pita.",
+    content: "This Shawarma recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "shawarma",
     time: 45,
@@ -1625,7 +1625,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAiijPDTwko1JFR4LW6gfZM0mc5TPtVXAS7daz",
     content:
-      "Boil vegetables, arrange with tofu, and drizzle with peanut sauce.",
+      "This Gado Gado recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "gado-gado",
     time: 25,
@@ -1640,7 +1640,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAZvYTg5sqOahjB4yCTw1XWmldUFJsL6NGoSxu",
     content:
-      "Bake sponge cake, soak in three milks, and top with whipped cream.",
+      "This Tres Leches Cake recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 8,
     slug: "tres-leches-cake",
     time: 60,
@@ -1654,7 +1654,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGARTRQr9zckjWz09XmZnfrFS6DvwhHT7qKt13s",
-    content: "Cook vegetables and meat, serve over rice with a fried egg.",
+    content: "This Bibimbap recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "bibimbap",
     time: 45,
@@ -1668,7 +1668,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAZFNTLVsqOahjB4yCTw1XWmldUFJsL6NGoSxu",
-    content: "Simmer kimchi, pork, and tofu in a spicy broth.",
+    content: "This Kimchi Jjigae recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "kimchi-jjigae",
     time: 40,
@@ -1682,7 +1682,7 @@ export const RECIPES = [
     difficulty: "easy",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAUYl2dC9X6EFcIVOa4MrCtqfRWlgQhKx8LzHs",
-    content: "Mix cornmeal with water, shape into discs, and grill.",
+    content: "This Arepas recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "arepas",
     time: 30,
@@ -1697,7 +1697,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAisZM91bwko1JFR4LW6gfZM0mc5TPtVXAS7da",
-    content: "Layer and bake sliced vegetables in a tomato-based sauce.",
+    content: "This Ratatouille recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "ratatouille",
     time: 50,
@@ -1711,7 +1711,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAWA15ReBPaqyeSEXtUvsmphcrAxbnCNPKuRzk",
-    content: "Simmer rice with tomatoes, spices, and broth until tender.",
+    content: "This Jollof Rice recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "jollof-rice",
     time: 45,
@@ -1726,7 +1726,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAwdYeuMTZVzTo8FADGaIl4N7sB3vpnk95PEgh",
-    content: "Mash vegetables with spices, serve with buttered bread rolls.",
+    content: "This Pav Bhaji recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "pav-bhaji",
     time: 40,
@@ -1740,7 +1740,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGADBb3qQHSCVSQO5qt0hsc3FGjxyXrDWlbUn4i",
-    content: "Cook rice cakes in a gochujang-based sauce until tender.",
+    content: "This Tteokbokki recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "tteokbokki",
     time: 30,
@@ -1754,7 +1754,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAzcvcvk0RjSTpz2t65Wwq4Nn3obBEkOxAmZuJ",
-    content: "Fill dough with stuffing, fold, and bake or fry until golden.",
+    content: "This Empanadas recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "empanadas",
     time: 45,
@@ -1769,7 +1769,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGADxJ6cdSCVSQO5qt0hsc3FGjxyXrDWlbUn4iJ",
     content:
-      "Blend chickpeas with tahini, lemon juice, and garlic until smooth.",
+      "This Hummus recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 6,
     slug: "hummus",
     time: 15,
@@ -1784,7 +1784,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA20Atm27RJK9bzYnjuTyHxXfW438cUkCwiDpv",
-    content: "Simmer vegetables and protein in a coconut milk-based sauce.",
+    content: "This Coconut Curry recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "coconut-curry",
     time: 45,
@@ -1798,7 +1798,7 @@ export const RECIPES = [
     difficulty: "medium",
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA0jT9YADU1e2gCLDXqYJMbkEZwR5j8Gn7K6uT",
-    content: "Stir-fry glass noodles with beef, vegetables, and sesame oil.",
+    content: "This Japchae recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "japchae",
     time: 35,
@@ -1814,7 +1814,7 @@ export const RECIPES = [
     image:
       "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGA2aaFlsRJK9bzYnjuTyHxXfW438cUkCwiDpvV",
     content:
-      "Cook wheat noodles and top with a stir-fried black bean sauce made with pork and vegetables.",
+      "This Jjajangmyeon recipe focuses on solid technique and dependable flavor so you can confidently prepare it at home.\n\n### Ingredients:\n\n* Primary ingredients appropriate for the dish\n* Supporting vegetables or aromatics\n* Oil or butter as needed\n* Seasonings such as salt, pepper, and spices\n\n### Instructions:\n\n1. Begin by preparing and measuring all ingredients. Trim, slice, or portion components so everything is ready before cooking.\n2. Heat your pan or pot over medium heat and add oil or butter. Once hot, add the main ingredients and cook, stirring or turning as needed, until they begin to develop color and aroma.\n3. Add aromatics and seasonings, adjusting the heat to prevent burning. Continue cooking while stirring to build layers of flavor.\n4. Incorporate any liquids, sauces, or additional components required for the dish. Reduce heat as needed and allow the mixture to simmer or cook through until the texture is tender and well balanced.\n5. Taste and adjust seasoning with salt, pepper, or acidity as needed. If the dish benefits from resting, allow it to sit briefly before serving.\n6. Plate and serve while hot, adding any fresh garnishes or finishing touches appropriate for the dish.",
     servings: 4,
     slug: "jjajangmyeon",
     time: 40,

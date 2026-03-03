@@ -29,17 +29,15 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
     fetchNextPage,
     hasNextPage,
   } = props.type === "all"
-    ? // biome-ignore lint/correctness/useHookAtTopLevel: explanation
-      api.public.recipe.getInfiniteAllRecipes.useInfiniteQuery(
+    ? api.public.recipe.getInfiniteAllRecipes.useInfiniteQuery(
         {
           sortBy: sortBy as "title" | "createdAt",
         },
         {
           getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
-        }
+        },
       )
-    : // biome-ignore lint/correctness/useHookAtTopLevel: explanation
-      api.public.recipe[
+    : api.public.recipe[
         props.type === "category"
           ? "getInfiniteRecipesByCategory"
           : "getInfiniteRecipesByCuisine"
@@ -50,7 +48,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
         },
         {
           getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
-        }
+        },
       );
 
   useEffect(() => {

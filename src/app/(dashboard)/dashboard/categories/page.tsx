@@ -1,52 +1,57 @@
 "use client";
 
 import { Columns3, Plus, X } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ReactNode, use, useEffect, useMemo, useRef, useState } from "react";
-import { toast } from "sonner";
+import { ReactNode, use, useEffect, useMemo, useState } from "react";
 
 import {
   AddCategoryForm,
-  ConditionalDialog,
   DataTable,
   DropdownActions,
   EditCategoryForm,
-  ErrorCatcher,
+  GenericConfirmModal,
+  GenericModal,
   MultiSelect,
 } from "@/components/dashboard";
-import {
-  Badge,
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DropdownMenuItem,
-  Input,
-} from "@/components/ui";
+import { Badge, Button, DropdownMenuItem, Input } from "@/components/ui";
 import { Path } from "@/config";
-import { PaginationContext, UserContext } from "@/context";
-import { api } from "@/trpc/react";
+import { CategoriesContext, PaginationContext } from "@/context";
+import {
+  searchItems,
+  sortItems,
+  useCategoriesActions,
+  useColumnsToggler,
+  useSearchQuery,
+} from "@/utils";
 
 export default function () {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { query, setQuery, clearQuery } = useSearchQuery();
   const {
+    sort,
     pagination,
     setTotalItemsCount,
     handleChangePage,
     handleChangeLimit,
   } = use(PaginationContext)!;
-  const { settings } = use(UserContext)!;
-  const [editedCategory, setEditedCategory] = useState<number | null>(null);
+  const { categories, categoriesLoading, refreshCategories } =
+    use(CategoriesContext)!;
+
+  const [action, setAction] = useState<
+    | {
+        type: "publish" | "unpublish" | "delete" | "edit";
+        categoryId: number;
+      }
+    | { type: "add" }
+    | null
+  >(null);
+
+  const clearAction = () => setAction(null);
 
   const {
-    data: categories,
-    isLoading,
-    error,
-  } = api.authorized.category.getCategories.useQuery();
-  const deleteCategory = api.authorized.category.deleteCategory.useMutation();
+    handleDeleteCategory,
+    handlePublishCategory,
+    handleUnpublishCategory,
+  } = useCategoriesActions();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
@@ -54,46 +59,34 @@ export default function () {
 
     if (
       (pagination.currentPage - 1) * pagination.itemsPerPage >
-      categories.length
+      categories.size
     )
       redirect(Path.DASHBOARD_CATEGORIES);
 
-    setTotalItemsCount(categories.length);
+    setTotalItemsCount(categories.size);
   }, [categories]);
 
-  async function handleDeleteCategory(id: number) {
-    try {
-      await deleteCategory.mutateAsync(id);
-
-      toast.success("Category was deleted.");
-    } catch (error) {
-      toast.error(
-        (error as Error)?.message ??
-          "There was an error while deleting the category."
-      );
-    }
-  }
-
-  const clearSearch = () => {
-    setSearchTerm("");
-  };
-
-  const [sortField, setSortField] = useState<string | undefined>(undefined);
-  const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
+  type ColumnLabel =
+    | "Name"
+    | "Slug"
+    | "Description"
+    | "Status"
+    | "Published at"
+    | "Actions";
 
   const columns: {
-    label: string;
-    render: (category: NonNullable<typeof categories>[number]) => ReactNode;
+    label: ColumnLabel;
+    render: (category: Category) => ReactNode;
     sortKey?: string;
-    hidden?: boolean;
+    defaultHidden?: boolean;
   }[] = [
     {
-      label: "Name",
+      label: "Name" as const,
       sortKey: "name",
       render: ({ name }) => name,
     },
     {
-      label: "Slug",
+      label: "Slug" as const,
       sortKey: "slug",
       render: ({ slug }) => (
         <span className="text-muted-foreground">{slug}</span>
@@ -105,23 +98,46 @@ export default function () {
       render: ({ description }) => description,
     },
     {
+      label: "Status",
+      render: ({ publishedAt }) =>
+        publishedAt ? (
+          <Badge variant="secondary">Published</Badge>
+        ) : (
+          <Badge variant="secondary">Draft</Badge>
+        ),
+    },
+    {
+      label: "Published at",
+      sortKey: "publishedAt",
+      render: ({ publishedAt }) =>
+        publishedAt ? new Date(publishedAt).toLocaleString() : null,
+      defaultHidden: true,
+    },
+    {
       label: "Actions",
-      render: ({ id }) => (
+      render: ({ id, publishedAt }) => (
         <DropdownActions>
-          <DropdownMenuItem>
-            {settings.formsInModals ? (
-              <button type="button" onClick={() => setEditedCategory(id)}>
-                Edit Category
-              </button>
-            ) : (
-              <Link href={`${Path.DASHBOARD_CATEGORIES}/edit/${id}`}>
-                Edit Category
-              </Link>
-            )}
+          <DropdownMenuItem
+            onClick={() => setAction({ type: "edit", categoryId: id })}
+          >
+            Edit Category
           </DropdownMenuItem>
+          {publishedAt ? (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "unpublish", categoryId: id })}
+            >
+              Unpublish Category
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem
+              onClick={() => setAction({ type: "publish", categoryId: id })}
+            >
+              Publish Category
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             className="text-red-600"
-            onClick={() => handleDeleteCategory(id)}
+            onClick={() => setAction({ type: "delete", categoryId: id })}
           >
             Delete Category
           </DropdownMenuItem>
@@ -130,90 +146,52 @@ export default function () {
     },
   ];
 
-  const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
-
-  const toggleColumn = (toggledColumn: string) => {
-    setHiddenColumns((prev) => {
-      if (prev.includes(toggledColumn)) {
-        return prev.filter((column) => column !== toggledColumn);
-      }
-      return [...prev, toggledColumn];
-    });
-  };
+  const { hiddenColumns, toggleColumn } = useColumnsToggler(
+    columns
+      .filter((column) => column.defaultHidden)
+      .map((column) => column.label),
+  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
 
-    const filteredCategories =
-      searchTerm !== ""
-        ? categories?.filter((category) =>
-            category.name.toLowerCase().includes(searchTerm.toLowerCase())
-          )
-        : [...categories];
+    const filteredCategories = searchItems(
+      [...categories.values()],
+      ["name", "slug", "description"],
+      query,
+    );
 
-    if (sortField !== undefined) {
-      if (sortField === "id") {
-        if (sortDir === "asc") {
-          filteredCategories.sort((a, b) => a.id - b.id);
-        } else {
-          filteredCategories.sort((a, b) => b.id - a.id);
-        }
-      } else {
-        if (sortDir === "asc") {
-          filteredCategories.sort((a, b) => {
-            const aValue = (
-              a[sortField as keyof typeof a] as string
-            ).toUpperCase();
-            const bValue = (
-              b[sortField as keyof typeof b] as string
-            ).toUpperCase();
-            return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-          });
-        } else {
-          filteredCategories.sort((a, b) => {
-            const aValue = (
-              a[sortField as keyof typeof a] as string
-            ).toUpperCase();
-            const bValue = (
-              b[sortField as keyof typeof b] as string
-            ).toUpperCase();
-            return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
-          });
-        }
-      }
-    }
+    sortItems(filteredCategories, sort.key as keyof Category, sort.order);
 
     return filteredCategories;
   }, [
     pagination.currentPage,
     pagination.itemsPerPage,
-    searchTerm,
+    query,
     categories,
-    sortDir,
-    sortField,
+    sort.key,
+    sort.order,
   ]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
-    if (!categories || categories.length === filteredCategories.length) return;
+    if (categories.size === filteredCategories.length) return;
 
     handleChangePage(1);
     handleChangeLimit(10);
     setTotalItemsCount(filteredCategories.length);
   }, [filteredCategories.length]);
 
-  const addCategoryDialogCloseRef = useRef<HTMLButtonElement>(null);
-
   return (
-    <ErrorCatcher errors={[error] as (Error | null)[]}>
+    <div>
       <div className="mb-6 flex flex-col items-center justify-between md:flex-row">
         <div className="mb-4 w-full md:mb-0 md:w-1/3">
           <Input
             type="search"
             placeholder="Search categories..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
             className="w-full"
           />
         </div>
@@ -223,7 +201,7 @@ export default function () {
             options={columns.map((column) => ({
               label: column.label,
               value: column.label,
-              checked: !column.hidden,
+              checked: !hiddenColumns.includes(column.label),
             }))}
             toggleOption={toggleColumn}
           >
@@ -231,66 +209,107 @@ export default function () {
               <Columns3 className="absolute size-5" />
             </Button>
           </MultiSelect>
-          <ConditionalDialog
-            title="Add category"
-            trigger={
-              <Button className="relative aspect-square" variant="secondary">
-                <Plus className="absolute size-5 stroke-2 text-foreground" />
-              </Button>
-            }
-            dialogRef={addCategoryDialogCloseRef}
-            showDialog={settings.formsInModals}
-            content={
-              <AddCategoryForm
-                onSubmit={() => addCategoryDialogCloseRef.current?.click()}
-              />
-            }
-            link={Path.DASHBOARD_NEW_CATEGORY}
-          />
+          <Button
+            className="relative aspect-square"
+            variant="secondary"
+            onClick={() => setAction({ type: "add" })}
+          >
+            <Plus className="absolute size-5 stroke-2 text-foreground" />
+          </Button>
         </div>
       </div>
       <div className="mb-6 empty:hidden">
-        {searchTerm && (
+        {query && (
           <Badge
             variant="outline"
             className="cursor-pointer"
             tabIndex={0}
-            onClick={clearSearch}
+            onClick={clearQuery}
           >
-            Query: {searchTerm} <X className="h-4 text-red-600" />
+            Query: {query} <X className="h-4 text-red-600" />
           </Badge>
         )}
       </div>
 
       <DataTable
-        isLoading={isLoading}
+        isLoading={categoriesLoading}
         hiddenColumns={hiddenColumns}
         columns={columns}
         data={filteredCategories.slice(
           (pagination.currentPage - 1) * pagination.itemsPerPage,
-          pagination.currentPage * pagination.itemsPerPage
+          pagination.currentPage * pagination.itemsPerPage,
         )}
-        sortDir={sortDir}
-        sortField={sortField}
-        setSortDir={setSortDir}
-        setSortField={setSortField}
       />
 
-      <Dialog
-        open={editedCategory !== null}
-        onOpenChange={() => setEditedCategory(null)}
-      >
-        <DialogContent className="max-h-[calc(100%_-_4rem)] overflow-auto sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Edit Category</DialogTitle>
-          </DialogHeader>
-          <EditCategoryForm
-            categoryId={editedCategory!}
-            onSubmit={() => setEditedCategory(null)}
-          />
-          <DialogClose />
-        </DialogContent>
-      </Dialog>
-    </ErrorCatcher>
+      {action?.type === "add" && (
+        <GenericModal
+          title="New category"
+          open={action?.type === "add"}
+          handleClose={clearAction}
+          content={
+            <AddCategoryForm
+              onSubmit={() => {
+                clearAction();
+                refreshCategories();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "edit" && (
+        <GenericModal
+          title="Edit category"
+          open={action?.type === "edit"}
+          handleClose={clearAction}
+          content={
+            <EditCategoryForm
+              categoryId={action?.categoryId}
+              onSubmit={() => {
+                clearAction();
+                refreshCategories();
+              }}
+            />
+          }
+        />
+      )}
+
+      {action?.type === "publish" && (
+        <GenericConfirmModal
+          title="Publish category?"
+          open={action?.type === "publish"}
+          handleClose={clearAction}
+          handleConfirm={() => {
+            handlePublishCategory(action?.categoryId!);
+            clearAction();
+          }}
+        />
+      )}
+
+      {action?.type === "unpublish" && (
+        <GenericConfirmModal
+          title="Unpublish category?"
+          open={action?.type === "unpublish"}
+          handleClose={clearAction}
+          handleConfirm={() => {
+            handleUnpublishCategory(action?.categoryId!);
+            clearAction();
+          }}
+        />
+      )}
+
+      {action?.type === "delete" && (
+        <GenericConfirmModal
+          title="Delete category?"
+          open={action?.type === "delete"}
+          description="This action cannot be undone."
+          handleClose={clearAction}
+          handleConfirm={() => {
+            handleDeleteCategory(action?.categoryId!);
+            clearAction();
+          }}
+        />
+      )}
+    </div>
   );
 }

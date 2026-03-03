@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 import {
@@ -14,21 +13,11 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  Switch,
   Textarea,
 } from "@/components/ui";
-import { api } from "@/trpc/react";
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  slug: z.string().min(2, {
-    message: "Slug must be at least 2 characters.",
-  }),
-  description: z.string().min(2, {
-    message: "Description must be at least 2 characters.",
-  }),
-});
+import { categoryFormSchema } from "@/constants";
+import { useCategoriesActions } from "@/utils";
 
 export namespace AddCategoryForm {
   export interface Props {
@@ -37,36 +26,24 @@ export namespace AddCategoryForm {
 }
 
 export function AddCategoryForm({ onSubmit }: AddCategoryForm.Props) {
-  const addCategory = api.authorized.category.addCategory.useMutation();
+  const { handleCreateCategory } = useCategoriesActions();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof categoryFormSchema>>({
+    resolver: zodResolver(categoryFormSchema),
     defaultValues: {
       name: "",
       slug: "",
       description: "",
+      published: false,
     },
   });
-
-  async function handleSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await addCategory.mutateAsync(values);
-
-      toast.success("Category was added.");
-
-      onSubmit?.();
-    } catch (error) {
-      toast.error(
-        (error as Error)?.message ??
-          "There was an error while adding the category.",
-      );
-    }
-  }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit)}
+        onSubmit={form.handleSubmit((values) =>
+          handleCreateCategory(values, onSubmit),
+        )}
         className="min-w-1 space-y-8"
       >
         <FormField
@@ -105,6 +82,21 @@ export function AddCategoryForm({ onSubmit }: AddCategoryForm.Props) {
                 <Textarea {...field} className="resize-none" />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="published"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+              <FormLabel>Publish</FormLabel>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
