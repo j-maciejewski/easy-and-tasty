@@ -3,7 +3,7 @@
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { LoaderCircle, Plus, X } from "lucide-react";
+import { Image, LoaderCircle, Plus, X } from "lucide-react";
 import { redirect } from "next/navigation";
 import { use, useMemo, useRef } from "react";
 import { Resolver, useForm } from "react-hook-form";
@@ -34,18 +34,23 @@ import { CategoriesContext, CuisinesContext } from "@/context";
 import { api } from "@/trpc/react";
 import { useRecipesActions } from "@/utils";
 
-export namespace EditRecipeForm {
+export namespace RecipeForm {
   export interface Props {
-    recipeId: number;
+    recipeId?: number;
     onSubmit?: () => void;
   }
 }
 
-export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
-  const { handleUpdateRecipe } = useRecipesActions();
+export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
+  const isEditMode = recipeId !== undefined;
+  const { handleCreateRecipe, handleUpdateRecipe } = useRecipesActions();
 
-  const { data, isLoading } =
-    api.authorized.recipe.getRecipe.useQuery(recipeId);
+  const { data, isLoading } = api.authorized.recipe.getRecipe.useQuery(
+    recipeId!,
+    {
+      enabled: isEditMode,
+    },
+  );
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
 
   const { categories } = use(CategoriesContext)!;
@@ -73,41 +78,61 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
     resolver: zodResolver(recipeFormSchema) as Resolver<
       z.infer<typeof recipeFormSchema>
     >,
-    values: data
+    ...(isEditMode
       ? {
-          title: data.title,
-          description: data.description,
-          cuisines: data.cuisineIds,
-          categories: data.categoryIds,
-          content: data.content,
-          difficulty: data.difficulty,
-          time: data.time,
-          servings: data.servings,
-          image: data.image,
-          published: Boolean(data.publishedAt),
+          values: data
+            ? {
+                title: data.title,
+                description: data.description,
+                cuisines: data.cuisineIds,
+                categories: data.categoryIds,
+                content: data.content,
+                difficulty: data.difficulty,
+                time: data.time,
+                servings: data.servings,
+                image: data.image,
+                published: Boolean(data.publishedAt),
+              }
+            : {
+                title: "",
+                description: "",
+                cuisines: [],
+                categories: [],
+                content: "",
+                difficulty: "medium",
+                time: 0,
+                servings: 0,
+                image: "",
+                published: false,
+              },
         }
       : {
-          title: "",
-          description: "",
-          cuisines: [],
-          categories: [],
-          content: "",
-          difficulty: "medium",
-          time: 0,
-          servings: 0,
-          image: "",
-          published: false,
-        },
+          defaultValues: {
+            title: "",
+            image: "",
+            description: "",
+            content: "",
+            time: 1,
+            servings: 1,
+            cuisines: [],
+            categories: [],
+            published: false,
+          },
+        }),
   });
 
   async function handleSubmit(values: z.infer<typeof recipeFormSchema>) {
-    await handleUpdateRecipe(recipeId, values, onSubmit);
+    if (isEditMode) {
+      await handleUpdateRecipe(recipeId, values, onSubmit);
+    } else {
+      await handleCreateRecipe(values, onSubmit);
+    }
   }
 
-  if (isLoading)
+  if (isEditMode && isLoading)
     return <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />;
 
-  if (!data) redirect(Path.DASHBOARD_RECIPES);
+  if (isEditMode && !data) redirect(Path.DASHBOARD_RECIPES);
 
   return (
     <Form {...form}>
@@ -137,14 +162,21 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
               <FormControl>
                 <div>
                   <label htmlFor="image-input">
-                    <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
-                      {/** biome-ignore lint/performance/noImgElement: explanation */}
-                      <img
-                        src={field.value}
-                        className="mx-auto max-h-80 object-cover"
-                        alt="recipe"
-                      />
-                    </div>
+                    {field.value ? (
+                      <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
+                        {/** biome-ignore lint/performance/noImgElement: explanation */}
+                        <img
+                          src={field.value}
+                          className="mx-auto max-h-80 object-cover"
+                          alt="recipe"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border p-5 text-foreground/50 text-sm">
+                        <Image className="size-14 stroke-1" />
+                        Click to add image
+                      </div>
+                    )}
                   </label>
                   <Input
                     id="image-input"
@@ -188,6 +220,7 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
                   />
                 </div>
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -233,7 +266,7 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
                       for (const item of dataTransfer.items) {
                         if (
                           item.kind === "file" &&
-                          ["image/png", "image/jpeg"].includes(item.type)
+                          item.type.startsWith("image/")
                         ) {
                           const file = item.getAsFile();
 
@@ -296,6 +329,7 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
                   field.onChange(val);
                 }}
                 value={field.value}
+                defaultValue={field.value}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -319,7 +353,12 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
             <FormItem>
               <FormLabel>Time</FormLabel>
               <FormControl>
-                <Input {...field} type="number" />
+                <Input
+                  {...field}
+                  type="number"
+                  value={field.value}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -332,7 +371,12 @@ export function EditRecipeForm({ recipeId, onSubmit }: EditRecipeForm.Props) {
             <FormItem>
               <FormLabel>Servings</FormLabel>
               <FormControl>
-                <Input {...field} type="number" />
+                <Input
+                  {...field}
+                  type="number"
+                  value={field.value}
+                  onChange={(e) => field.onChange(Number(e.target.value))}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -26,48 +26,64 @@ import { pageFormSchema } from "@/constants";
 import { api } from "@/trpc/react";
 import { usePagesActions } from "@/utils";
 
-export namespace EditPageForm {
+export namespace PageForm {
   export interface Props {
-    pageId: number;
+    pageId?: number;
     onSubmit?: () => void;
   }
 }
 
-export function EditPageForm({ pageId, onSubmit }: EditPageForm.Props) {
-  const { handleUpdatePage } = usePagesActions();
+export function PageForm({ pageId, onSubmit }: PageForm.Props) {
+  const { handleCreatePage, handleUpdatePage } = usePagesActions();
   const richTextRef = useRef<ReactCodeMirrorRef>(null);
 
-  const { data, isLoading } = api.authorized.page.getPageById.useQuery(pageId);
+  const isEditMode = pageId !== undefined;
+
+  const { data, isLoading } = api.authorized.page.getPageById.useQuery(
+    pageId!,
+    {
+      enabled: isEditMode,
+    },
+  );
 
   const form = useForm<z.infer<typeof pageFormSchema>>({
     resolver: zodResolver(pageFormSchema),
-    values: data
-      ? {
-          title: data.title,
-          slug: data.slug,
-          image: data.image ?? "",
-          description: data.description,
-          content: data.content,
-          published: Boolean(data.publishedAt),
-        }
-      : {
-          title: "",
-          slug: "",
-          image: "",
-          description: "",
-          content: "",
-          published: false,
-        },
+    values:
+      isEditMode && data
+        ? {
+            title: data.title,
+            slug: data.slug,
+            image: data.image ?? "",
+            description: data.description,
+            content: data.content,
+            published: Boolean(data.publishedAt),
+          }
+        : undefined,
+    defaultValues: {
+      title: "",
+      slug: "",
+      image: "",
+      description: "",
+      content: "",
+      published: false,
+    },
   });
 
   async function handleSubmit(values: z.infer<typeof pageFormSchema>) {
-    await handleUpdatePage(pageId, values, onSubmit);
+    if (isEditMode) {
+      await handleUpdatePage(pageId, values, onSubmit);
+    } else {
+      await handleCreatePage(values, onSubmit);
+    }
   }
 
-  if (isLoading)
+  if (isEditMode && isLoading) {
     return <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />;
+  }
 
-  if (!data) redirect(Path.DASHBOARD_PAGES);
+  if (isEditMode && !data) {
+    redirect(Path.DASHBOARD_PAGES);
+  }
 
   return (
     <Form {...form}>

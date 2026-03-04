@@ -1,19 +1,12 @@
 "use client";
 import { createContext, ReactNode, useMemo } from "react";
 
-interface IUserContext {
-  settings: {};
-}
+// TODO: make use of it or remove
 
-const UserContext = createContext<IUserContext | null>(null);
+const UserContext = createContext<null>(null);
 
 const UserProvider = ({ ...rest }: { children: ReactNode }) => {
-  const value = useMemo(
-    () => ({
-      settings: {},
-    }),
-    [],
-  );
+  const value = useMemo(() => null, []);
 
   return <UserContext value={value} {...rest} />;
 };

@@ -27,7 +27,7 @@ export const Header = () => {
   )?.[1];
 
   return (
-    <header className="bg-background shadow-sm">
+    <header className="bg-card shadow-sm">
       <div className="mx-auto flex items-center px-4 py-4 sm:px-6 lg:px-8">
         <SidebarTrigger className="size-9 text-foreground" />
         <Separator orientation="vertical" className="mx-4 min-h-6" />

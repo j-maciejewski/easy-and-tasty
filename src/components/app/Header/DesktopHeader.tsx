@@ -109,7 +109,6 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
         <NavigationMenu viewport={false}>
           <NavigationMenuList className="flex h-fit w-full flex-wrap gap-3 whitespace-nowrap px-4 text-sm tracking-wider">
             {navigation.map((link, idx) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               <NavigationMenuItem key={idx}>
                 {link.href ? (
                   <NavigationMenuLink
@@ -123,7 +122,6 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
                     <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger>
                     <NavigationMenuContent className="w-[200px]!">
                       {link.sublinks?.map((sublink, _idx) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: explanation
                         <NavigationMenuLink asChild key={_idx}>
                           {sublink.href ? (
                             <Link href={sublink.href}>{sublink.label}</Link>

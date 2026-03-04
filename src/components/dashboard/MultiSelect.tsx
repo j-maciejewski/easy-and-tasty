@@ -38,7 +38,6 @@ export const MultiSelect = <T extends string | number | (string | number)>({
         )}
         {options.map((option, idx) => (
           <DropdownMenuCheckboxItem
-            // biome-ignore lint/suspicious/noArrayIndexKey: explanation
             key={idx}
             checked={option.checked}
             onCheckedChange={() => toggleOption(option.value)}

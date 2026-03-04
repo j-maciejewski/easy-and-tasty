@@ -40,7 +40,7 @@ export const Pagination = () => {
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-between">
+    <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
       <span className="text-nowrap text-muted-foreground text-sm">
         Showing <span className="font-semibold">{startItem}</span> to{" "}
         <span className="font-semibold">{endItem}</span> of{" "}
@@ -50,7 +50,7 @@ export const Pagination = () => {
         value={`${itemsPerPage}`}
         onValueChange={(value) => handleChangeLimit(Number(value))}
       >
-        <SelectTrigger className="mr-4 ml-auto h-10 w-[180px] border">
+        <SelectTrigger className="ml-auto w-45 rounded-lg border bg-card">
           <SelectValue>Results shown: {itemsPerPage}</SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -60,35 +60,34 @@ export const Pagination = () => {
         </SelectContent>
       </Select>
       {totalPages !== 1 && (
-        <PaginationRoot className="mx-0 h-10 w-fit rounded-lg border">
-          <PaginationContent className="gap-0 [&>li:not(:first-child)]:border-l-2">
+        <PaginationRoot className="mx-0 h-9 w-fit rounded-lg border bg-card">
+          <PaginationContent className="gap-0 [&>li:not(:first-child)]:border-l">
             <PaginationItem>
               <PaginationPrevious
                 disabled={currentPage === 1}
-                className="h-10 rounded-r-none"
+                className="h-8.5 rounded-r-none"
                 onClick={() => handleChangePage(currentPage - 1)}
               />
             </PaginationItem>
             {tiles.map((number, idx) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               <PaginationItem key={idx}>
                 {number !== null ? (
                   <PaginationButton
-                    className="size-10 rounded-none"
+                    className="size-8.5 rounded-none"
                     onClick={() => handleChangePage(number)}
                     isActive={currentPage === number}
                   >
                     {number}
                   </PaginationButton>
                 ) : (
-                  <PaginationEllipsis className="size-10" />
+                  <PaginationEllipsis className="size-8.5" />
                 )}
               </PaginationItem>
             ))}
             <PaginationItem>
               <PaginationNext
                 disabled={currentPage === totalPages}
-                className="h-10 rounded-l-none"
+                className="h-8.5 rounded-l-none"
                 onClick={() => handleChangePage(currentPage + 1)}
               />
             </PaginationItem>

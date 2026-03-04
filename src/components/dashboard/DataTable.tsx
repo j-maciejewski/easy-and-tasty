@@ -83,7 +83,6 @@ export const DataTable = <T,>({
                 </TableRow>
               ))
             : data.map((item, idx) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: explanation
                 <TableRow key={idx}>
                   {columns
                     .filter((column) => !hiddenColumns.includes(column.label))

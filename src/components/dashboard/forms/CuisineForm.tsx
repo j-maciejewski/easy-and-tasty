@@ -1,4 +1,5 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -22,49 +23,59 @@ import { cuisineFormSchema } from "@/constants";
 import { api } from "@/trpc/react";
 import { useCuisinesActions } from "@/utils";
 
-export namespace EditCuisineForm {
+export namespace CuisineForm {
   export interface Props {
-    cuisineId: number;
+    cuisineId?: number;
     onSubmit?: () => void;
   }
 }
 
-export function EditCuisineForm({
-  cuisineId,
-  onSubmit,
-}: EditCuisineForm.Props) {
-  const { handleUpdateCuisine } = useCuisinesActions();
+export function CuisineForm({ cuisineId, onSubmit }: CuisineForm.Props) {
+  const { handleCreateCuisine, handleUpdateCuisine } = useCuisinesActions();
 
-  const { data, isLoading } =
-    api.authorized.cuisine.getCuisine.useQuery(cuisineId);
+  const isEditMode = cuisineId !== undefined;
+
+  const { data, isLoading } = api.authorized.cuisine.getCuisine.useQuery(
+    cuisineId!,
+    {
+      enabled: isEditMode,
+    },
+  );
 
   const form = useForm<z.infer<typeof cuisineFormSchema>>({
     resolver: zodResolver(cuisineFormSchema),
-    values: data
-      ? {
-          name: data.name,
-          slug: data.slug,
-          description: data.description,
-          published: Boolean(data.publishedAt),
-        }
-      : {
-          name: "",
-          slug: "",
-          description: "",
-          published: false,
-        },
+    values:
+      isEditMode && data
+        ? {
+            name: data.name,
+            slug: data.slug,
+            description: data.description,
+            published: Boolean(data.publishedAt),
+          }
+        : undefined,
+    defaultValues: {
+      name: "",
+      slug: "",
+      description: "",
+      published: false,
+    },
   });
 
-  if (isLoading)
+  if (isEditMode && isLoading) {
     return <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />;
+  }
 
-  if (!data) redirect(Path.DASHBOARD_RECIPES);
+  if (isEditMode && !data) {
+    redirect(Path.DASHBOARD_CUISINES);
+  }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((values) =>
-          handleUpdateCuisine(cuisineId, values, onSubmit),
+          isEditMode
+            ? handleUpdateCuisine(cuisineId, values, onSubmit)
+            : handleCreateCuisine(values, onSubmit),
         )}
         className="min-w-1 space-y-8"
       >

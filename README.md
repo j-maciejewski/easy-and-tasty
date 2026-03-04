@@ -40,7 +40,7 @@ A modern recipe sharing platform built with Next.js 16, React 19, and TypeScript
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/easy-and-tasty.git
+git clone https://github.com/j-maciejewski/easy-and-tasty.git
 cd easy-and-tasty
 ```
 

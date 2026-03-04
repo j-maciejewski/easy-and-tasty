@@ -87,7 +87,6 @@ export const MobileNavigation = ({
         {navigation.map((link, idx) =>
           link.href ? (
             <li
-              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               key={idx}
               className="relative border-t last:border-b hover:bg-gray-100"
             >
@@ -101,7 +100,6 @@ export const MobileNavigation = ({
             </li>
           ) : (
             <NavigationGroup
-              // biome-ignore lint/suspicious/noArrayIndexKey: explanation
               key={idx}
               label={link.label}
               sublinks={link.sublinks!}

@@ -23,49 +23,59 @@ import { categoryFormSchema } from "@/constants";
 import { api } from "@/trpc/react";
 import { useCategoriesActions } from "@/utils";
 
-export namespace EditCategoryForm {
+export namespace CategoryForm {
   export interface Props {
-    categoryId: number;
+    categoryId?: number;
     onSubmit?: () => void;
   }
 }
 
-export function EditCategoryForm({
-  categoryId,
-  onSubmit,
-}: EditCategoryForm.Props) {
-  const { handleUpdateCategory } = useCategoriesActions();
+export function CategoryForm({ categoryId, onSubmit }: CategoryForm.Props) {
+  const { handleCreateCategory, handleUpdateCategory } = useCategoriesActions();
 
-  const { data, isLoading } =
-    api.authorized.category.getCategory.useQuery(categoryId);
+  const isEditMode = categoryId !== undefined;
+
+  const { data, isLoading } = api.authorized.category.getCategory.useQuery(
+    categoryId!,
+    {
+      enabled: isEditMode,
+    },
+  );
 
   const form = useForm<z.infer<typeof categoryFormSchema>>({
     resolver: zodResolver(categoryFormSchema),
-    values: data
-      ? {
-          name: data.name,
-          slug: data.slug,
-          description: data.description,
-          published: Boolean(data.publishedAt),
-        }
-      : {
-          name: "",
-          slug: "",
-          description: "",
-          published: false,
-        },
+    values:
+      isEditMode && data
+        ? {
+            name: data.name,
+            slug: data.slug,
+            description: data.description,
+            published: Boolean(data.publishedAt),
+          }
+        : undefined,
+    defaultValues: {
+      name: "",
+      slug: "",
+      description: "",
+      published: false,
+    },
   });
 
-  if (isLoading)
+  if (isEditMode && isLoading) {
     return <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />;
+  }
 
-  if (!data) redirect(Path.DASHBOARD_RECIPES);
+  if (isEditMode && !data) {
+    redirect(Path.DASHBOARD_CATEGORIES);
+  }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((values) =>
-          handleUpdateCategory(categoryId, values, onSubmit),
+          isEditMode
+            ? handleUpdateCategory(categoryId, values, onSubmit)
+            : handleCreateCategory(values, onSubmit),
         )}
         className="min-w-1 space-y-8"
       >

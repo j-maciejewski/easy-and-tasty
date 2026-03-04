@@ -35,7 +35,8 @@
         "noRedeclare": "off",
         "noAssignInExpressions": "off",
         "noDuplicateAtImportRules": "error",
-        "noNonNullAssertedOptionalChain": "off"
+        "noNonNullAssertedOptionalChain": "off",
+        "noArrayIndexKey": "off"
       },
       "complexity": {
         "useLiteralKeys": "off"
