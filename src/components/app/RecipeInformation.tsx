@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { Drumstick, Timer } from "lucide-react";
 
-import { Separator } from "@/components/ui";
 import { getDifficultyIcon } from "@/utils";
 
 import { Rating } from "./Rating";

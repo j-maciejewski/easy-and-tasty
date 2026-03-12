@@ -2,7 +2,6 @@ import {
   Bookmark,
   LayoutDashboardIcon as Dashboard,
   LogOut,
-  Settings,
 } from "lucide-react";
 import Link from "next/link";
 import { Session } from "next-auth";

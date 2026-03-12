@@ -10,6 +10,7 @@ import {
   RecipeComments,
   RecipeInformation,
   RecipesList,
+  RecipeViewTracker,
 } from "@/components/app";
 import { Separator } from "@/components/ui";
 import { getRecipe, getSuggestedRecipes } from "@/lib/data";
@@ -52,6 +53,7 @@ export default async function ({
 
   return (
     <div className="flex max-lg:flex-col max-lg:gap-4 lg:gap-10">
+      <RecipeViewTracker recipeId={recipe.id} />
       <div className="grow">
         <Breadcrumbs
           paths={[{ label: "Recipe" }, { label: recipe.title, active: true }]}

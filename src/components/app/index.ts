@@ -17,6 +17,7 @@ export { RecipeComments } from "./RecipeComments";
 export { RecipeInformation } from "./RecipeInformation";
 export { RecipesCarousel } from "./RecipesCarousel";
 export { RecipesList } from "./RecipesList";
+export { RecipeViewTracker } from "./RecipeViewTracker";
 export { ScrollableRecipes } from "./ScrollableRecipes";
 // RecipesGroupPreview moved to server.ts - import directly for server components
 export { ShareDialog } from "./ShareDialog";

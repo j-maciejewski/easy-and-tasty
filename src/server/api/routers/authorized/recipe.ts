@@ -1,4 +1,4 @@
-import { and, desc, eq, ilike, sql } from "drizzle-orm";
+import { and, desc, eq, gte, ilike, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
@@ -9,11 +9,215 @@ import {
   recipe_categories,
   recipe_cuisines,
   recipe_ratings,
+  recipe_views,
   recipes,
+  users,
 } from "@/server/db/schema";
 import { parseSlug } from "@/utils";
 
 export const authorizedRecipeRouter = createTRPCRouter({
+  getSummaryStats: authorizedProcedure.query(async ({ ctx }) => {
+    const formatDayKey = (value: Date) => {
+      const year = value.getFullYear();
+      const month = `${value.getMonth() + 1}`.padStart(2, "0");
+      const day = `${value.getDate()}`.padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    };
+
+    const now = new Date();
+    const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const last7d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const last30d = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+    const [comments24h, comments7d, comments30d] = await Promise.all([
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(comments)
+        .where(gte(comments.createdAt, last24h)),
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(comments)
+        .where(gte(comments.createdAt, last7d)),
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(comments)
+        .where(gte(comments.createdAt, last30d)),
+    ]);
+
+    const [bookmarks24h, bookmarks7d, bookmarks30d] = await Promise.all([
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(recipe_bookmarks)
+        .where(gte(recipe_bookmarks.createdAt, last24h)),
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(recipe_bookmarks)
+        .where(gte(recipe_bookmarks.createdAt, last7d)),
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(recipe_bookmarks)
+        .where(gte(recipe_bookmarks.createdAt, last30d)),
+    ]);
+
+    const [views24h, views7d, views30d] = await Promise.all([
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(recipe_views)
+        .where(gte(recipe_views.viewedAt, last24h)),
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(recipe_views)
+        .where(gte(recipe_views.viewedAt, last7d)),
+      ctx.db
+        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
+        .from(recipe_views)
+        .where(gte(recipe_views.viewedAt, last30d)),
+    ]);
+
+    const [commentsByDay, bookmarksByDay, viewsByDay] = await Promise.all([
+      ctx.db
+        .select({
+          day: sql<string>`TO_CHAR(${comments.createdAt}, 'YYYY-MM-DD')`,
+          count: sql<number>`CAST(COUNT(*) as int)`,
+        })
+        .from(comments)
+        .where(gte(comments.createdAt, last30d))
+        .groupBy(sql`TO_CHAR(${comments.createdAt}, 'YYYY-MM-DD')`)
+        .orderBy(sql`TO_CHAR(${comments.createdAt}, 'YYYY-MM-DD') ASC`),
+      ctx.db
+        .select({
+          day: sql<string>`TO_CHAR(${recipe_bookmarks.createdAt}, 'YYYY-MM-DD')`,
+          count: sql<number>`CAST(COUNT(*) as int)`,
+        })
+        .from(recipe_bookmarks)
+        .where(gte(recipe_bookmarks.createdAt, last30d))
+        .groupBy(sql`TO_CHAR(${recipe_bookmarks.createdAt}, 'YYYY-MM-DD')`)
+        .orderBy(sql`TO_CHAR(${recipe_bookmarks.createdAt}, 'YYYY-MM-DD') ASC`),
+      ctx.db
+        .select({
+          day: sql<string>`TO_CHAR(${recipe_views.viewedAt}, 'YYYY-MM-DD')`,
+          count: sql<number>`CAST(COUNT(*) as int)`,
+        })
+        .from(recipe_views)
+        .where(gte(recipe_views.viewedAt, last30d))
+        .groupBy(sql`TO_CHAR(${recipe_views.viewedAt}, 'YYYY-MM-DD')`)
+        .orderBy(sql`TO_CHAR(${recipe_views.viewedAt}, 'YYYY-MM-DD') ASC`),
+    ]);
+
+    const commentsMap = new Map(
+      commentsByDay.map((entry) => [entry.day, entry.count]),
+    );
+    const bookmarksMap = new Map(
+      bookmarksByDay.map((entry) => [entry.day, entry.count]),
+    );
+    const viewsMap = new Map(
+      viewsByDay.map((entry) => [entry.day, entry.count]),
+    );
+
+    const trend = Array.from({ length: 30 }, (_, idx) => {
+      const day = new Date(now);
+      day.setDate(now.getDate() - (29 - idx));
+      const key = formatDayKey(day);
+
+      return {
+        day: key,
+        comments: commentsMap.get(key) ?? 0,
+        bookmarks: bookmarksMap.get(key) ?? 0,
+        views: viewsMap.get(key) ?? 0,
+      };
+    });
+
+    const [recentComments, recentBookmarks, recentViews] = await Promise.all([
+      ctx.db
+        .select({
+          id: comments.id,
+          text: comments.text,
+          createdAt: comments.createdAt,
+          recipe: {
+            id: recipes.id,
+            title: recipes.title,
+            slug: recipes.slug,
+          },
+          user: {
+            id: users.id,
+            name: users.name,
+            email: users.email,
+          },
+        })
+        .from(comments)
+        .innerJoin(recipes, eq(comments.recipeId, recipes.id))
+        .leftJoin(users, eq(comments.userId, users.id))
+        .orderBy(desc(comments.createdAt))
+        .limit(8),
+      ctx.db
+        .select({
+          id: recipe_bookmarks.id,
+          createdAt: recipe_bookmarks.createdAt,
+          recipe: {
+            id: recipes.id,
+            title: recipes.title,
+            slug: recipes.slug,
+          },
+          user: {
+            id: users.id,
+            name: users.name,
+            email: users.email,
+          },
+        })
+        .from(recipe_bookmarks)
+        .innerJoin(recipes, eq(recipe_bookmarks.recipeId, recipes.id))
+        .leftJoin(users, eq(recipe_bookmarks.userId, users.id))
+        .orderBy(desc(recipe_bookmarks.createdAt))
+        .limit(8),
+      ctx.db
+        .select({
+          id: recipe_views.id,
+          viewedAt: recipe_views.viewedAt,
+          ipAddress: recipe_views.ipAddress,
+          recipe: {
+            id: recipes.id,
+            title: recipes.title,
+            slug: recipes.slug,
+          },
+          user: {
+            id: users.id,
+            name: users.name,
+            email: users.email,
+          },
+        })
+        .from(recipe_views)
+        .innerJoin(recipes, eq(recipe_views.recipeId, recipes.id))
+        .leftJoin(users, eq(recipe_views.userId, users.id))
+        .orderBy(desc(recipe_views.viewedAt))
+        .limit(8),
+    ]);
+
+    return {
+      totals: {
+        comments: {
+          last24h: comments24h[0]?.count ?? 0,
+          last7d: comments7d[0]?.count ?? 0,
+          last30d: comments30d[0]?.count ?? 0,
+        },
+        bookmarks: {
+          last24h: bookmarks24h[0]?.count ?? 0,
+          last7d: bookmarks7d[0]?.count ?? 0,
+          last30d: bookmarks30d[0]?.count ?? 0,
+        },
+        views: {
+          last24h: views24h[0]?.count ?? 0,
+          last7d: views7d[0]?.count ?? 0,
+          last30d: views30d[0]?.count ?? 0,
+        },
+      },
+      trend,
+      recentComments,
+      recentBookmarks,
+      recentViews,
+    };
+  }),
+
   getRecipe: authorizedProcedure
     .input(z.number())
     .query(async ({ ctx, input }) => {
@@ -353,6 +557,10 @@ export const authorizedRecipeRouter = createTRPCRouter({
         await tx
           .delete(recipe_bookmarks)
           .where(eq(recipe_bookmarks.recipeId, recipeId));
+
+        await tx
+          .delete(recipe_views)
+          .where(eq(recipe_views.recipeId, recipeId));
 
         await tx
           .delete(recipe_categories)

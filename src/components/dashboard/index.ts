@@ -14,6 +14,7 @@ export { SeoSection } from "./SeoSection";
 export { SessionWrapper } from "./SessionWrapper";
 export { Sidebar } from "./Sidebar";
 export { SortableNavigation } from "./SortableNavigation";
+export { SummaryStats } from "./SummaryStats";
 export { ToggleThemeButton } from "./ToggleThemeButton";
 export { Modal } from "./Modal";
 

@@ -105,6 +105,22 @@ export const recipe_bookmarks = createTable("recipe_bookmark", {
   recipeId: integer("recipe_id")
     .notNull()
     .references(() => recipes.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+export const recipe_views = createTable("recipe_view", {
+  id: serial("id").primaryKey(),
+  recipeId: integer("recipe_id")
+    .notNull()
+    .references(() => recipes.id),
+  userId: text("user_id").references(() => users.id),
+  viewedAt: timestamp("viewed_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: varchar("user_agent", { length: 512 }),
 });
 
 export const recipe_categories = createTable("recipe_category", {

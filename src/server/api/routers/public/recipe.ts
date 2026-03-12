@@ -4,6 +4,7 @@ import {
   desc,
   eq,
   gt,
+  gte,
   ilike,
   isNotNull,
   lt,
@@ -19,10 +20,53 @@ import {
   recipe_categories,
   recipe_cuisines,
   recipe_ratings,
+  recipe_views,
   recipes,
 } from "@/server/db/schema";
 
 export const publicRecipeRouter = createTRPCRouter({
+  addRecipeView: publicProcedure
+    .input(
+      z.object({
+        recipeId: z.number().positive(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const dedupeWindowMinutes = 30;
+      const dedupeSince = new Date(
+        Date.now() - dedupeWindowMinutes * 60 * 1000,
+      );
+
+      const ipAddress =
+        ctx.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+        ctx.headers.get("x-real-ip")?.trim() ??
+        null;
+      const userAgent = ctx.headers.get("user-agent") ?? null;
+
+      const recentView = await ctx.db
+        .select({ id: recipe_views.id })
+        .from(recipe_views)
+        .where(
+          and(
+            eq(recipe_views.recipeId, input.recipeId),
+            gte(recipe_views.viewedAt, dedupeSince),
+            sql`${recipe_views.ipAddress} IS NOT DISTINCT FROM ${ipAddress}`,
+            sql`${recipe_views.userAgent} IS NOT DISTINCT FROM ${userAgent}`,
+          ),
+        )
+        .limit(1);
+
+      if (recentView.length > 0) {
+        return;
+      }
+
+      await ctx.db.insert(recipe_views).values({
+        recipeId: input.recipeId,
+        ipAddress,
+        userAgent,
+      });
+    }),
+
   getRecipeBySlug: publicProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {

@@ -6,6 +6,7 @@ export * from "./badge";
 export * from "./button";
 export * from "./card";
 export * from "./carousel";
+export * from "./chart";
 export * from "./collapsible";
 export * from "./dialog";
 export * from "./dropdown-menu";

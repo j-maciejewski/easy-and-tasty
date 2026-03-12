@@ -1,3 +1,5 @@
+import { SummaryStats } from "@/components/dashboard";
+
 export default function () {
-  return null;
+  return <SummaryStats />;
 }
