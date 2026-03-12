@@ -1,4 +1,5 @@
 export { publicCategoryRouter } from "./category";
+export { publicCommentRouter } from "./comment";
 export { publicCuisineRouter } from "./cuisine";
 export { publicNavigationRouter } from "./navigation";
 export { publicPageRouter } from "./page";

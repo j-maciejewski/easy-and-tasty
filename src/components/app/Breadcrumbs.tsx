@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 
+import { BookmarkButton } from "./BookmarkButton";
 import { ShareDialog } from "./ShareDialog";
 
 interface BreadcrumbsProps {
@@ -14,9 +15,14 @@ interface BreadcrumbsProps {
     text: string;
     type: "recipe" | "article";
   };
+  recipeId?: number;
 }
 
-export const Breadcrumbs = ({ paths, shareConfig }: BreadcrumbsProps) => {
+export const Breadcrumbs = ({
+  paths,
+  shareConfig,
+  recipeId,
+}: BreadcrumbsProps) => {
   if (paths.length === 0) return null;
 
   return (
@@ -44,7 +50,10 @@ export const Breadcrumbs = ({ paths, shareConfig }: BreadcrumbsProps) => {
           </li>
         ))}
       </ul>
-      {shareConfig && <ShareDialog shareConfig={shareConfig} />}
+      <div className="flex items-center gap-2">
+        {recipeId && <BookmarkButton recipeId={recipeId} />}
+        {shareConfig && <ShareDialog shareConfig={shareConfig} />}
+      </div>
     </div>
   );
 };

@@ -3,7 +3,6 @@
 
 import { sql } from "drizzle-orm";
 import {
-  type AnyPgColumn,
   boolean,
   integer,
   json,
@@ -79,7 +78,6 @@ export const comments = createTable("comment", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  replyId: integer("reply_id").references((): AnyPgColumn => comments.id),
   recipeId: integer("recipe_id")
     .notNull()
     .references(() => recipes.id),

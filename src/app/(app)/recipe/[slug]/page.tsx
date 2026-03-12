@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import {
   Breadcrumbs,
   MarkdownContent,
+  RateRecipe,
+  RecipeComments,
   RecipeInformation,
   RecipesList,
 } from "@/components/app";
@@ -58,9 +60,32 @@ export default async function ({
             text: "Check out this awesome recipe!",
             type: "recipe",
           }}
+          recipeId={recipe.id}
         />
         <h2 className="mb-4 font-semibold text-2xl">{recipe.title}</h2>
-        <RecipeInformation recipe={recipe} className="justify-start! mb-4" />
+        <RecipeInformation recipe={recipe} className="justify-start! mb-2" />
+        {recipe.createdAt && (
+          <div className="mb-4 text-muted-foreground text-xs">
+            <span>
+              Added on{" "}
+              {new Date(recipe.createdAt).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+            {recipe.updatedAt && recipe.updatedAt !== recipe.createdAt && (
+              <span className="ml-2">
+                • Updated on{" "}
+                {new Date(recipe.updatedAt).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+            )}
+          </div>
+        )}
         <div className="mb-4 max-h-[700px] overflow-hidden rounded-lg">
           <Image
             src={recipe.image}
@@ -90,6 +115,10 @@ export default async function ({
             </Link>
           ))}
         </div>
+        <div className="mt-8 border-primary border-l-4 bg-muted/20 py-4 pl-6">
+          <RateRecipe recipeId={recipe.id} />
+        </div>
+        <RecipeComments recipeId={recipe.id} />
       </div>
       <Separator orientation="horizontal" className="lg:hidden" />
       <RecipesList

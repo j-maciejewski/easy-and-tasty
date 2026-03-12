@@ -17,8 +17,8 @@ export const RecipesList = ({
   subheading,
 }: RecipesListProps) => {
   return (
-    <div className={clsx("@container text-gray-600 text-sm", className)}>
-      <h3 className="font-semibold text-base">{heading}</h3>
+    <div className={clsx("@container text-sm", className)}>
+      <h3 className="font-semibold text-xl">{heading}</h3>
       {subheading && <p className="mt-2 text-sm">{subheading}</p>}
       <div
         className={

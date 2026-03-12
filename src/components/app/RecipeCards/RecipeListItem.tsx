@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Card, CardHeader, Separator } from "@/components/ui";
+import { Card, CardHeader } from "@/components/ui";
 
 import { Rating } from "../Rating";
 
@@ -24,15 +24,12 @@ export const RecipeListItem = ({ recipe }: RecipesListItemProps) => {
             className="size-20 min-w-20 rounded-l-lg object-cover"
           />
           <CardHeader className="grow p-2 text-sm">
-            <h6 className="font-medium text-base">{recipe.title}</h6>
-            <div className="mt-1 flex gap-2 text-gray-600 text-sm">
+            <h6 className="font-medium text-sm">{recipe.title}</h6>
+            <div className="flex gap-2">
               <Rating rating={recipe.avgRating} />
               {recipe.ratingsCount !== 0 && (
                 <>
-                  <Separator
-                    orientation="vertical"
-                    className="h-auto bg-gray-500/90"
-                  />
+                  <div className="h-4 w-px bg-gray-400" />
                   <p className="whitespace-nowrap">
                     {recipe.ratingsCount} Ratings
                   </p>

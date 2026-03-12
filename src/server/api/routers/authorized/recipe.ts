@@ -84,6 +84,14 @@ export const authorizedRecipeRouter = createTRPCRouter({
             sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`.as(
               "ratings_count",
             ),
+          commentsCount:
+            sql<number>`CAST(COUNT(DISTINCT ${comments.id}) as int)`.as(
+              "comments_count",
+            ),
+          bookmarksCount:
+            sql<number>`CAST(COUNT(DISTINCT ${recipe_bookmarks.userId}) as int)`.as(
+              "bookmarks_count",
+            ),
           categoryIds: sql<
             number[]
           >`COALESCE(json_agg(DISTINCT ${recipe_categories.categoryId} ORDER BY ${recipe_categories.categoryId} NULLS LAST) FILTER (WHERE ${recipe_categories.categoryId} IS NOT NULL), '[]')`.as(
@@ -98,6 +106,8 @@ export const authorizedRecipeRouter = createTRPCRouter({
         .from(recipes)
         .where(ilike(recipes.title, `%${input.title}%`))
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+        .leftJoin(comments, eq(comments.recipeId, recipes.id))
+        .leftJoin(recipe_bookmarks, eq(recipe_bookmarks.recipeId, recipes.id))
         .leftJoin(recipe_categories, eq(recipe_categories.recipeId, recipes.id))
         .leftJoin(recipe_cuisines, eq(recipe_cuisines.recipeId, recipes.id))
         .groupBy(recipes.id)
@@ -111,6 +121,16 @@ export const authorizedRecipeRouter = createTRPCRouter({
             if (input.orderBy === "ratings_count") {
               if (input.orderDir === "desc") return sql`ratings_count DESC`;
               return sql`ratings_count ASC`;
+            }
+
+            if (input.orderBy === "comments_count") {
+              if (input.orderDir === "desc") return sql`comments_count DESC`;
+              return sql`comments_count ASC`;
+            }
+
+            if (input.orderBy === "bookmarks_count") {
+              if (input.orderDir === "desc") return sql`bookmarks_count DESC`;
+              return sql`bookmarks_count ASC`;
             }
 
             return input.orderDir === "desc"

@@ -2,7 +2,7 @@ import { ChevronRight, Timer } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button, Separator } from "@/components/ui";
+import { Button } from "@/components/ui";
 
 import { Rating } from "../Rating";
 
@@ -28,16 +28,19 @@ export const RecipeCardFull = ({ recipe }: RecipeCardFullProps) => {
           {recipe.title}
         </h3>
         <p className="mb-4 text-gray-600 text-sm">{recipe.description}</p>
-        <div className="flex justify-center gap-4 text-gray-600 text-sm">
-          <Rating rating={recipe.avgRating} />
-          {recipe.ratingsCount !== 0 && (
-            <>
-              <Separator orientation="vertical" />
-              <p className="whitespace-nowrap font-semibold">
-                {recipe.ratingsCount} Ratings
-              </p>
-            </>
-          )}
+        <div className="flex justify-center gap-2 text-gray-600 text-sm">
+          <div className="flex gap-2">
+            <Rating rating={recipe.avgRating} />
+            {recipe.ratingsCount !== 0 && (
+              <>
+                <div className="h-4 w-px bg-gray-400" />
+                <p className="whitespace-nowrap">
+                  {recipe.ratingsCount} Ratings
+                </p>
+              </>
+            )}
+          </div>
+          <div className="h-4 w-px bg-gray-400" />
           <div className="flex items-center">
             <Timer className="mr-1 size-4" />
             <span className="whitespace-nowrap">{recipe.time} minutes</span>

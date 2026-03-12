@@ -14,7 +14,7 @@ const EmptyStar = (
 const FilledStar = <Star className="size-4 fill-yellow-300 text-yellow-300" />;
 
 export const Rating = ({ rating }: RatingProps) => {
-  const scorePercent = (rating / 5) * 100;
+  const scorePercent = Number.isFinite(rating) ? (rating / 5) * 100 : 0;
 
   return (
     <Tooltip>
@@ -25,9 +25,9 @@ export const Rating = ({ rating }: RatingProps) => {
               <Fragment key={idx}>{EmptyStar}</Fragment>
             ))}
           </div>
-          {!!rating && (
+          {!!scorePercent && (
             <div
-              className="absolute top-0 h-full gap-px overflow-hidden"
+              className="absolute top-0 flex h-full gap-px overflow-hidden"
               style={{ display: "-webkit-box", width: `${scorePercent}%` }}
             >
               {[...Array(5).keys()].map((idx) => (

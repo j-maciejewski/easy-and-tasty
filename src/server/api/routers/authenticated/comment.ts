@@ -8,19 +8,38 @@ export const authenticatedCommentRouter = createTRPCRouter({
   addComment: authenticatedProcedure
     .input(
       z.object({
-        text: z.string().min(1),
-        userId: z.number().positive(),
+        text: z.string().min(1).max(256),
         recipeId: z.number().positive(),
-        replyId: z.number().positive().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(comments).values({
         text: input.text,
         recipeId: input.recipeId,
-        replyId: input.replyId,
-        userId: "1",
+        userId: ctx.user.id,
       });
+    }),
+
+  editComment: authenticatedProcedure
+    .input(
+      z.object({
+        commentId: z.number().positive(),
+        text: z.string().min(1).max(256),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(comments)
+        .set({
+          text: input.text,
+          updatedAt: new Date(),
+        })
+        .where(
+          and(
+            eq(comments.id, input.commentId),
+            eq(comments.userId, ctx.user.id),
+          ),
+        );
     }),
 
   deleteComment: authenticatedProcedure
@@ -28,7 +47,9 @@ export const authenticatedCommentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: commentId }) => {
       await ctx.db
         .delete(comments)
-        .where(and(eq(comments.id, commentId), eq(comments.userId, "1")));
+        .where(
+          and(eq(comments.id, commentId), eq(comments.userId, ctx.user.id)),
+        );
     }),
 
   likeComment: authenticatedProcedure
@@ -36,7 +57,7 @@ export const authenticatedCommentRouter = createTRPCRouter({
     .mutation(async ({ ctx, input: commentId }) => {
       await ctx.db.insert(comment_likes).values({
         commentId,
-        userId: "1",
+        userId: ctx.user.id,
       });
     }),
 
@@ -48,7 +69,7 @@ export const authenticatedCommentRouter = createTRPCRouter({
         .where(
           and(
             eq(comment_likes.commentId, commentId),
-            eq(comment_likes.userId, "1"),
+            eq(comment_likes.userId, ctx.user.id),
           ),
         );
     }),

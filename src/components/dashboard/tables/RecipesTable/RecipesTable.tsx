@@ -36,7 +36,7 @@ export const RecipesTable = () => {
   const { categories, categoriesLoading } = use(CategoriesContext)!;
   const { cuisines, cuisinesLoading } = use(CuisinesContext)!;
 
-  const { pagination, handleChangePage, setTotalItemsCount } =
+  const { pagination, sort, handleChangePage, setTotalItemsCount } =
     use(PaginationContext)!;
   const { query, setQuery, debouncedQuery, clearQuery } =
     useDebouncedSearchQuery(() => handleChangePage(1));
@@ -50,8 +50,8 @@ export const RecipesTable = () => {
     refetch: refetchRecipes,
   } = api.authorized.recipe.getRecipes.useQuery({
     title: debouncedQuery,
-    orderBy: "createdAt",
-    orderDir: "desc",
+    orderBy: sort.key ?? "createdAt",
+    orderDir: sort.order,
     page: pagination.currentPage,
     limit: pagination.itemsPerPage,
   });
@@ -116,7 +116,13 @@ export const RecipesTable = () => {
     },
     {
       label: "Comments",
-      render: () => "0",
+      render: ({ commentsCount }) => commentsCount,
+      sortKey: "comments_count",
+    },
+    {
+      label: "Bookmarks",
+      render: ({ bookmarksCount }) => bookmarksCount,
+      sortKey: "bookmarks_count",
     },
     {
       label: "Votes",
@@ -130,14 +136,17 @@ export const RecipesTable = () => {
     {
       label: "Created At",
       render: ({ createdAt }) => <DateCell date={createdAt} />,
+      defaultHidden: true,
     },
     {
       label: "Updated At",
       render: ({ updatedAt }) => <DateCell date={updatedAt} />,
+      defaultHidden: true,
     },
     {
       label: "Published At",
       render: ({ publishedAt }) => <DateCell date={publishedAt} />,
+      defaultHidden: true,
     },
     {
       label: "Actions",

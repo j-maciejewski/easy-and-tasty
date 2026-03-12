@@ -10,7 +10,6 @@ import {
   RecipesList,
   ScrollableRecipes,
 } from "@/components/app";
-import { RecipesGroupPreview } from "@/components/app/RecipesGroupPreview";
 import { Separator } from "@/components/ui";
 import { getSeo, getSuggestedRecipes } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
@@ -63,7 +62,6 @@ export default async function () {
             subheading="Easy and quick to make breakfast recipes"
           />
           <Separator orientation="horizontal" />
-          <RecipesGroupPreview cuisine={{ name: "Italian", slug: "italian" }} />
           <RecipesList heading="All Recipes" recipes={recipes} />
         </>
       ) : (

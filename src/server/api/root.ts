@@ -16,6 +16,7 @@ import {
 } from "./routers/authorized";
 import {
   publicCategoryRouter,
+  publicCommentRouter,
   publicCuisineRouter,
   publicNavigationRouter,
   publicPageRouter,
@@ -36,6 +37,7 @@ export const appRouter = createTRPCRouter({
     user: publicUserRouter,
     cuisine: publicCuisineRouter,
     category: publicCategoryRouter,
+    comment: publicCommentRouter,
     navigation: publicNavigationRouter,
     page: publicPageRouter,
     seo: publicSeoRouter,

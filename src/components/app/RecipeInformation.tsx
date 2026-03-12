@@ -19,25 +19,25 @@ export const RecipeInformation = ({
   return (
     <div
       className={clsx(
-        "flex flex-wrap items-center justify-center gap-y-2 text-gray-600 text-sm",
+        "flex flex-wrap items-center justify-center gap-y-2 text-gray-600 text-xs",
         className,
       )}
     >
-      <Drumstick />
+      <Drumstick className="w-5" />
       <span className="ml-2 whitespace-nowrap tracking-normal">
         {`${recipe.servings} servings`}
       </span>
-      <Separator orientation="vertical" className="mx-2 h-4" />
+      <div className="mx-2 h-4 w-px bg-gray-400" />
       <div className="contents">
-        <Timer className="mr-1" />
+        <Timer className="mr-1 w-5" />
         <span className="whitespace-nowrap">{recipe.time} minutes</span>
       </div>
-      <Separator orientation="vertical" className="mx-2 h-4" />
+      <div className="mx-2 h-4 w-px bg-gray-400" />
       {getDifficultyIcon(recipe.difficulty)}
       <span className="ml-2 capitalize tracking-normal">
         {recipe.difficulty}
       </span>
-      <Separator orientation="vertical" className="mx-2 h-4" />
+      <div className="mx-2 h-4 w-px bg-gray-400" />
       <div className="flex items-center justify-center">
         <Rating rating={recipe.avgRating} />
         <span className="ml-2 whitespace-nowrap tracking-normal">

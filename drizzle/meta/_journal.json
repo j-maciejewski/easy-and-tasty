@@ -43,6 +43,13 @@
       "when": 1772295525168,
       "tag": "0005_wooden_black_crow",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1772709039930,
+      "tag": "0006_workable_deathstrike",
+      "breakpoints": true
     }
   ]
 }

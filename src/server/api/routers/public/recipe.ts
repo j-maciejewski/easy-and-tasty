@@ -15,6 +15,7 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import {
   categories,
   cuisines,
+  recipe_bookmarks,
   recipe_categories,
   recipe_cuisines,
   recipe_ratings,
@@ -38,9 +39,11 @@ export const publicRecipeRouter = createTRPCRouter({
               servings: recipes.servings,
               slug: recipes.slug,
               time: recipes.time,
+              createdAt: recipes.createdAt,
+              updatedAt: recipes.updatedAt,
               publishedAt: recipes.publishedAt,
               avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-              ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+              ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
               categories: sql<{ name: string; slug: string }[]>`
 				COALESCE(
 					jsonb_agg(DISTINCT jsonb_build_object('name', ${categories.name}, 'slug', ${categories.slug}))
@@ -101,7 +104,7 @@ export const publicRecipeRouter = createTRPCRouter({
           time: recipes.time,
           publishedAt: recipes.publishedAt,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
@@ -150,7 +153,7 @@ export const publicRecipeRouter = createTRPCRouter({
           difficulty: recipes.difficulty,
           servings: recipes.servings,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
@@ -233,7 +236,7 @@ export const publicRecipeRouter = createTRPCRouter({
           difficulty: recipes.difficulty,
           servings: recipes.servings,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
@@ -276,7 +279,7 @@ export const publicRecipeRouter = createTRPCRouter({
           difficulty: recipes.difficulty,
           servings: recipes.servings,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
@@ -376,7 +379,7 @@ export const publicRecipeRouter = createTRPCRouter({
           difficulty: recipes.difficulty,
           servings: recipes.servings,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
@@ -416,7 +419,7 @@ export const publicRecipeRouter = createTRPCRouter({
           difficulty: recipes.difficulty,
           servings: recipes.servings,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-          ratingsCount: sql<number>`CAST(COUNT(${recipe_ratings.id}) as int)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
@@ -487,5 +490,31 @@ export const publicRecipeRouter = createTRPCRouter({
             )
         )[0]?.count ?? 0
       );
+    }),
+
+  isRecipeBookmarked: publicProcedure
+    .input(
+      z.object({
+        recipeId: z.number().positive(),
+        userId: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      if (!input.userId) {
+        return false;
+      }
+
+      const bookmark = await ctx.db
+        .select()
+        .from(recipe_bookmarks)
+        .where(
+          and(
+            eq(recipe_bookmarks.recipeId, input.recipeId),
+            eq(recipe_bookmarks.userId, input.userId),
+          ),
+        )
+        .limit(1);
+
+      return bookmark.length > 0;
     }),
 });

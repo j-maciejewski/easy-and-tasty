@@ -1,6 +1,6 @@
 import {
+  Bookmark,
   LayoutDashboardIcon as Dashboard,
-  Heart,
   LogOut,
   Settings,
 } from "lucide-react";
@@ -53,15 +53,12 @@ export const AvatarDropdown = ({ user }: AvatarDropdownProps) => {
             </DropdownMenuItem>
           </Link>
         )}
-        <DropdownMenuItem className="cursor-pointer">
-          <Heart className="mr-2 h-4 w-4" />
-          <span>Liked Recipes</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
-          <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
+        <Link href="/bookmarks">
+          <DropdownMenuItem className="cursor-pointer">
+            <Bookmark className="mr-2 h-4 w-4" />
+            <span>My Bookmarks</span>
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem
           className="cursor-pointer text-red-600 focus:text-red-600"
           onClick={() => signOut()}
