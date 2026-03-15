@@ -52,14 +52,14 @@ export const SignUpForm = ({ setView, type }: AuthFormProps) => {
   }, [state?.success, router.push]);
 
   return (
-    <Card className="mx-auto min-w-[350px] max-w-sm">
+    <Card className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/10">
       <CardHeader>
         <Link href="/">
           <Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />
         </Link>
-        <CardTitle className="text-xl">Sign Up</CardTitle>
+        <CardTitle className="text-xl">Sign up</CardTitle>
         <CardDescription>
-          Enter your information to create an account
+          Enter your details to create your account.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -91,7 +91,11 @@ export const SignUpForm = ({ setView, type }: AuthFormProps) => {
             Create an account
           </Button>
         </form>
-        <Separator className="my-4" />
+        <div className="my-4 flex items-center gap-3 text-muted-foreground text-xs tracking-wide">
+          <Separator className="flex-1" />
+          <span>or</span>
+          <Separator className="flex-1" />
+        </div>
         <Button
           type="button"
           variant="outline"
@@ -100,7 +104,7 @@ export const SignUpForm = ({ setView, type }: AuthFormProps) => {
           disabled={isLoading}
         >
           <Google className="h-5 w-5" />
-          Sign up with Google
+          Continue with Google
         </Button>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}

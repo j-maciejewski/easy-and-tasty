@@ -125,8 +125,6 @@ export const SummaryStats = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="font-semibold text-2xl">Summary</h1>
-
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
@@ -311,7 +309,7 @@ export const SummaryStats = () => {
                   key={comment.id}
                   className="space-y-1 border-b pb-3 last:border-0 last:pb-0"
                 >
-                  <p className="line-clamp-2 text-muted-foreground">
+                  <p className="line-clamp-2 break-all break-all text-muted-">
                     {comment.text}
                   </p>
                   <div className="flex items-center justify-between gap-2 text-xs">

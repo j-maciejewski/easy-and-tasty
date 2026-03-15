@@ -12,6 +12,7 @@ export namespace GenericModal {
     content: React.ReactNode;
     open: boolean;
     handleClose: () => void;
+    className?: string;
   }
 }
 
@@ -20,6 +21,7 @@ export const GenericModal = ({
   content,
   open,
   handleClose,
+  className,
 }: GenericModal.Props) => {
   const isControlled = open !== undefined;
 
@@ -31,7 +33,11 @@ export const GenericModal = ({
       }}
       defaultOpen={isControlled ? undefined : true}
     >
-      <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-md">
+      <DialogContent
+        className={
+          className ?? "max-h-[calc(100%-4rem)] overflow-auto sm:max-w-md"
+        }
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

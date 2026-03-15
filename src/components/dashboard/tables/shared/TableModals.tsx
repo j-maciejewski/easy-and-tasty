@@ -6,6 +6,7 @@ import { GenericConfirmModal, GenericModal } from "@/components/dashboard";
 interface FormConfig<TFormProps = any> {
   addTitle?: string;
   editTitle?: string;
+  modalClassName?: string;
   form: React.ComponentType<
     TFormProps & { onSubmit: () => void | Promise<void> }
   >;
@@ -59,6 +60,7 @@ export const TableModals = <TAction extends { type: string }>({
         title={title}
         open={true}
         handleClose={onClose}
+        className={formConfig.modalClassName}
         content={<FormComponent {...formProps} onSubmit={onClose} />}
       />
     );

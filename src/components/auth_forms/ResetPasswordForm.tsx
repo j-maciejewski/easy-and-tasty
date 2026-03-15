@@ -19,13 +19,15 @@ import { AuthFormProps, VIEWS } from "./types";
 
 export const ResetPasswordForm = ({ setView, type }: AuthFormProps) => {
   return (
-    <Card className="mx-auto min-w-[350px] max-w-sm">
+    <Card className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/10">
       <CardHeader>
         <Link href="/">
           <Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />
         </Link>
-        <CardTitle className="text-xl">Reset password</CardTitle>
-        <CardDescription>Enter the email of your account</CardDescription>
+        <CardTitle className="text-xl">Forgot your password?</CardTitle>
+        <CardDescription>
+          Enter the email address linked to your account.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
@@ -39,7 +41,7 @@ export const ResetPasswordForm = ({ setView, type }: AuthFormProps) => {
             />
           </div>
           <Button type="submit" className="w-full font-semibold">
-            Reset password
+            Send reset link
           </Button>
         </div>
         <div className="mt-4 flex items-center space-x-4 text-center text-sm">

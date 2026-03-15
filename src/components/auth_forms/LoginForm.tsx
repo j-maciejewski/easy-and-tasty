@@ -54,14 +54,14 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
       });
 
       if (result?.error) {
-        setError("Invalid email or password");
+        setError("Invalid email or password.");
         return;
       }
 
       router.push(callbackUrl);
       router.refresh();
     } catch (_error) {
-      setError("Something went wrong");
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -79,14 +79,14 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
   };
 
   return (
-    <Card className="mx-auto min-w-[350px] max-w-sm">
+    <Card className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/10">
       <CardHeader>
         <Link href="/">
           <Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />
         </Link>
         <CardTitle className="text-2xl">Log in</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your details to sign in to your account.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -94,7 +94,7 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
           <Alert className="mb-4 border-green-500 text-green-500">
             <CheckCircle2 className="h-4 w-4" />
             <AlertDescription>
-              Account created successfully! You can now sign in.
+              Account created successfully. You can now sign in.
             </AlertDescription>
           </Alert>
         )}
@@ -118,7 +118,7 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
             <div className="flex items-center">
               <Label htmlFor="password">Password</Label>
               <AuthLink
-                text="Forgot your password?"
+                text="Forgot password?"
                 className="ml-auto inline-block text-sm underline"
                 {...(type === "modal"
                   ? { callback: () => setView!(VIEWS.FORGOT_PASSWORD) }
@@ -131,7 +131,11 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
             Log in
           </Button>
         </form>
-        <Separator className="my-4" />
+        <div className="my-4 flex items-center gap-3 text-muted-foreground text-xs tracking-wide">
+          <Separator className="flex-1" />
+          <span>or</span>
+          <Separator className="flex-1" />
+        </div>
         <Button
           type="button"
           variant="outline"
@@ -140,7 +144,7 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
           disabled={isLoading}
         >
           <Google className="h-5 w-5" />
-          Log in with Google
+          Continue with Google
         </Button>
         <div className="mt-4 text-center text-sm">
           Don't have an account?{" "}

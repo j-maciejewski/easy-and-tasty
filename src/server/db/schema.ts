@@ -178,6 +178,7 @@ export const staticPageTypeEnum = pgEnum("staticPageType", [
   "categories",
   "cuisines",
   "recipes",
+  "articles",
 ]);
 
 export const seo = createTable("seo", {

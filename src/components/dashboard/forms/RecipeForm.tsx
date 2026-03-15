@@ -3,7 +3,7 @@
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { Image, LoaderCircle, Plus, X } from "lucide-react";
+import { LoaderCircle, Plus, X } from "lucide-react";
 import { redirect } from "next/navigation";
 import { use, useMemo, useRef } from "react";
 import { Resolver, useForm } from "react-hook-form";
@@ -33,6 +33,8 @@ import { recipeFormSchema } from "@/constants";
 import { CategoriesContext, CuisinesContext } from "@/context";
 import { api } from "@/trpc/react";
 import { useRecipesActions } from "@/utils";
+
+import { ImageUploadField } from "./ImageUploadField";
 
 export namespace RecipeForm {
   export interface Props {
@@ -160,65 +162,12 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
             <FormItem>
               <FormLabel>Image</FormLabel>
               <FormControl>
-                <div>
-                  <label htmlFor="image-input">
-                    {field.value ? (
-                      <div className="mt-2 flex max-h-80 cursor-pointer overflow-hidden rounded-lg border">
-                        {/** biome-ignore lint/performance/noImgElement: explanation */}
-                        <img
-                          src={field.value}
-                          className="mx-auto max-h-80 object-cover"
-                          alt="recipe"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border p-5 text-foreground/50 text-sm">
-                        <Image className="size-14 stroke-1" />
-                        Click to add image
-                      </div>
-                    )}
-                  </label>
-                  <Input
-                    id="image-input"
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    className="hidden"
-                    onChange={async (evt) => {
-                      const file = evt.target.files?.[0];
-
-                      if (
-                        !file ||
-                        !["image/png", "image/jpeg"].includes(file.type)
-                      )
-                        return;
-
-                      const formData = new FormData();
-
-                      formData.append("file", file);
-
-                      const response = await fetch("/api/upload", {
-                        method: "POST",
-                        body: formData,
-                      });
-
-                      const message = (await response.json()) as
-                        | {
-                            data: {
-                              name: string;
-                              url: string;
-                            };
-                            error: null;
-                          }
-                        | { data: null; error: string };
-
-                      if (message.data) {
-                        field.onChange(message.data.url);
-                      } else {
-                        console.log(message.error);
-                      }
-                    }}
-                  />
-                </div>
+                <ImageUploadField
+                  value={field.value}
+                  onChange={field.onChange}
+                  alt="recipe"
+                  inputId="recipe-image-input"
+                />
               </FormControl>
 
               <FormMessage />

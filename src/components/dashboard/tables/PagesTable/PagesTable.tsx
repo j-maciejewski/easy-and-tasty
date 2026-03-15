@@ -1,9 +1,22 @@
 "use client";
 
 import { redirect } from "next/navigation";
-import { use, useEffect, useMemo } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 
-import { DataTable, ErrorCatcher, PageForm } from "@/components/dashboard";
+import {
+  DataTable,
+  ErrorCatcher,
+  HomeSectionsEditor,
+  PageForm,
+  SeoContent,
+} from "@/components/dashboard";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui";
 import { Path } from "@/config";
 import { PaginationContext } from "@/context";
 import { api } from "@/trpc/react";
@@ -32,6 +45,8 @@ import {
 } from "../shared";
 
 export const PagesTable = () => {
+  const [isHomeSectionsOpen, setHomeSectionsOpen] = useState(false);
+  const [isSeoOpen, setSeoOpen] = useState(false);
   const { query, setQuery, clearQuery } = useSearchQuery();
   const {
     sort,
@@ -187,6 +202,15 @@ export const PagesTable = () => {
                 hiddenColumns={hiddenColumns}
                 toggleColumn={toggleColumn}
               />
+              <Button
+                variant="outline"
+                onClick={() => setHomeSectionsOpen(true)}
+              >
+                Home sections
+              </Button>
+              <Button variant="outline" onClick={() => setSeoOpen(true)}>
+                Static pages SEO
+              </Button>
               <AddButton onClick={() => setAction({ type: "add" })} />
             </>
           }
@@ -214,6 +238,8 @@ export const PagesTable = () => {
             form: {
               addTitle: "New page",
               editTitle: "Edit page",
+              modalClassName:
+                "max-h-[calc(100%-4rem)] overflow-auto sm:max-w-5xl",
               form: PageForm,
               getFormProps: (action) => ({ pageId: action.id }),
             },
@@ -241,6 +267,24 @@ export const PagesTable = () => {
             },
           }}
         />
+
+        <Dialog open={isHomeSectionsOpen} onOpenChange={setHomeSectionsOpen}>
+          <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>Home Sections</DialogTitle>
+            </DialogHeader>
+            <HomeSectionsEditor inModal />
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={isSeoOpen} onOpenChange={setSeoOpen}>
+          <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>Static Pages SEO</DialogTitle>
+            </DialogHeader>
+            <SeoContent />
+          </DialogContent>
+        </Dialog>
       </div>
     </ErrorCatcher>
   );

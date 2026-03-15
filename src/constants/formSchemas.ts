@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { pageSectionsSchema } from "@/constants/pageSections";
 import { difficultyEnum } from "@/server/db/schema";
 
 export const categoryFormSchema = z.object({
@@ -66,8 +67,6 @@ export const pageFormSchema = z.object({
   description: z.string().min(2, {
     message: "Description must be at least 2 characters.",
   }),
-  content: z.string().min(2, {
-    message: "Content must be at least 2 characters.",
-  }),
+  sections: pageSectionsSchema,
   published: z.boolean(),
 });

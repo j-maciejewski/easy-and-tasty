@@ -57,6 +57,13 @@
       "when": 1773339473555,
       "tag": "0007_vengeful_frightful_four",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1773504000000,
+      "tag": "0008_hushed_articles_seo",
+      "breakpoints": true
     }
   ]
 }

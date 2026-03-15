@@ -1,19 +1,16 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ArrowDown,
   ArrowUp,
   GripVertical,
-  LoaderCircle,
   Pencil,
   Plus,
+  Save,
   Trash2,
 } from "lucide-react";
-import { redirect } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import {
   Button,
@@ -22,53 +19,37 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Switch,
+  Separator,
   Textarea,
 } from "@/components/ui";
-import { Path } from "@/config";
 import {
   articleFeedModeEnum,
-  type PageSection,
-  pageFormSchema,
-  pageSectionSchema,
-  pageSectionTypeEnum,
-  parsePageSections,
+  defaultHomeSections,
+  type HomeSection,
+  homeSectionSchema,
+  homeSectionTypeEnum,
   recipeFeedModeEnum,
 } from "@/constants";
 import { api } from "@/trpc/react";
-import { usePagesActions } from "@/utils";
-
-import { ImageUploadField } from "./ImageUploadField";
-
-export namespace PageForm {
-  export interface Props {
-    pageId?: number;
-    onSubmit?: () => void;
-  }
-}
 
 type SectionDraft = {
   id: string;
-  type: PageSection["type"];
-  content?: string;
+  type: HomeSection["type"];
   title?: string;
   text?: string;
   image?: string;
   href?: string;
   offset?: number;
   limit?: number;
+  subtitle?: string;
+  tone?: "tomato" | "sage" | "amber";
   heading?: string;
   subheading?: string;
   recipeFeed?: {
@@ -89,28 +70,22 @@ type SectionDraft = {
   };
 };
 
-const sectionLabels: Record<PageSection["type"], string> = {
-  markdown: "Markdown",
+const sectionLabels: Record<HomeSection["type"], string> = {
   banner: "Banner",
   recipe_full_card: "Recipe Full Card",
   recipe_grid: "Recipe Grid",
   recipe_carousel: "Recipe Carousel",
   articles_list: "Articles List",
+  cta: "Call To Action",
   scrollable_recipes: "Scrollable Recipes",
-  recipes_list: "Recipes List",
   separator: "Separator",
+  recipes_list: "Recipes List",
 };
 
-function createDefaultSection(type: PageSection["type"]): PageSection {
+function createDefaultSection(type: HomeSection["type"]): HomeSection {
   const id = crypto.randomUUID();
 
   switch (type) {
-    case "markdown":
-      return {
-        id,
-        type,
-        content: "## New section\n\nStart writing here.",
-      };
     case "banner":
       return {
         id,
@@ -134,7 +109,7 @@ function createDefaultSection(type: PageSection["type"]): PageSection {
       return {
         id,
         type,
-        offset: 0,
+        offset: 1,
         limit: 3,
         recipeFeed: {
           mode: "random",
@@ -164,6 +139,14 @@ function createDefaultSection(type: PageSection["type"]): PageSection {
           limit: 6,
         },
       };
+    case "cta":
+      return {
+        id,
+        type,
+        title: "Explore more recipes",
+        subtitle: "Find your next favorite dish",
+        tone: "tomato",
+      };
     case "scrollable_recipes":
       return {
         id,
@@ -176,22 +159,22 @@ function createDefaultSection(type: PageSection["type"]): PageSection {
           limit: 6,
         },
       };
+    case "separator":
+      return {
+        id,
+        type,
+      };
     case "recipes_list":
       return {
         id,
         type,
-        heading: "More recipes",
-        subheading: "Browse related recipes",
+        heading: "All recipes",
+        subheading: "Browse every recipe in one place",
         recipeFeed: {
           mode: "random",
           recipeIds: [],
           limit: 6,
         },
-      };
-    case "separator":
-      return {
-        id,
-        type,
       };
   }
 }
@@ -210,10 +193,8 @@ function parseArticleIds(value: string) {
     .filter((id) => Number.isInteger(id) && id > 0);
 }
 
-function getSectionSummary(section: PageSection) {
+function getSectionSummary(section: HomeSection) {
   switch (section.type) {
-    case "markdown":
-      return section.content.slice(0, 80);
     case "banner":
       return `${section.title} -> ${section.href}`;
     case "recipe_full_card":
@@ -221,232 +202,167 @@ function getSectionSummary(section: PageSection) {
     case "recipe_grid":
       return `${section.recipeFeed?.mode ?? "random"} | From index ${section.offset}, show ${section.limit}`;
     case "recipe_carousel":
-      return `${section.recipeFeed?.mode ?? "random"} | Featured carousel`;
+      return `${section.recipeFeed?.mode ?? "random"} | Featured recipes carousel`;
     case "articles_list":
       return `${section.articleFeed?.mode ?? "most_recent"} | ${section.heading}`;
+    case "cta":
+      return `${section.title} (${section.tone})`;
     case "scrollable_recipes":
-      return `${section.recipeFeed?.mode ?? "random"} | ${section.heading}`;
-    case "recipes_list":
       return `${section.recipeFeed?.mode ?? "random"} | ${section.heading}`;
     case "separator":
       return "Horizontal divider";
+    case "recipes_list":
+      return `${section.recipeFeed?.mode ?? "random"} | ${section.heading}`;
   }
 }
 
-export function PageForm({ pageId, onSubmit }: PageForm.Props) {
-  const { handleCreatePage, handleUpdatePage } = usePagesActions();
-  const isEditMode = pageId !== undefined;
+export namespace HomeSectionsEditor {
+  export interface Props {
+    inModal?: boolean;
+  }
+}
 
-  const { data, isLoading } = api.authorized.page.getPageById.useQuery(
-    pageId!,
-    {
-      enabled: isEditMode,
-    },
-  );
+export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
+  const { data, isLoading } = api.authorized.home.getSections.useQuery();
+  const updateSections = api.authorized.home.updateSections.useMutation();
+
+  const sourceSections = useMemo(() => data ?? defaultHomeSections, [data]);
+  const [sections, setSections] = useState<HomeSection[]>(sourceSections);
 
   const [draft, setDraft] = useState<SectionDraft | null>(null);
-  const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [draggedSectionId, setDraggedSectionId] = useState<string | null>(null);
 
-  const form = useForm<z.infer<typeof pageFormSchema>>({
-    resolver: zodResolver(pageFormSchema),
-    values:
-      isEditMode && data
-        ? {
-            title: data.title,
-            slug: data.slug,
-            image: data.image ?? "",
-            description: data.description,
-            sections: parsePageSections(data.content),
-            published: Boolean(data.publishedAt),
-          }
-        : undefined,
-    defaultValues: {
-      title: "",
-      slug: "",
-      image: "",
-      description: "",
-      sections: [createDefaultSection("markdown")],
-      published: false,
-    },
-  });
+  const sectionsChanged =
+    JSON.stringify(sourceSections) !== JSON.stringify(sections);
 
-  const sections = form.watch("sections");
-
-  function setSections(nextSections: PageSection[]) {
-    form.setValue("sections", nextSections, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-  }
+  useEffect(() => {
+    setSections(sourceSections);
+  }, [sourceSections]);
 
   function moveSection(index: number, direction: "up" | "down") {
-    const nextIndex = direction === "up" ? index - 1 : index + 1;
-    if (nextIndex < 0 || nextIndex >= sections.length) return;
+    setSections((prev) => {
+      const nextIndex = direction === "up" ? index - 1 : index + 1;
+      if (nextIndex < 0 || nextIndex >= prev.length) return prev;
 
-    const clone = [...sections];
-    [clone[index], clone[nextIndex]] = [clone[nextIndex]!, clone[index]!];
+      const clone = [...prev];
+      [clone[index], clone[nextIndex]] = [clone[nextIndex]!, clone[index]!];
 
-    setSections(clone);
+      return clone;
+    });
   }
 
   function moveSectionById(sourceId: string, targetId: string) {
     if (sourceId === targetId) return;
 
-    const sourceIndex = sections.findIndex(({ id }) => id === sourceId);
-    const targetIndex = sections.findIndex(({ id }) => id === targetId);
+    setSections((prev) => {
+      const sourceIndex = prev.findIndex(({ id }) => id === sourceId);
+      const targetIndex = prev.findIndex(({ id }) => id === targetId);
 
-    if (sourceIndex < 0 || targetIndex < 0) return;
+      if (sourceIndex < 0 || targetIndex < 0) return prev;
 
-    const clone = [...sections];
-    const [moved] = clone.splice(sourceIndex, 1);
-    if (!moved) return;
-    clone.splice(targetIndex, 0, moved);
-    setSections(clone);
+      const clone = [...prev];
+      const [moved] = clone.splice(sourceIndex, 1);
+      if (!moved) return prev;
+      clone.splice(targetIndex, 0, moved);
+
+      return clone;
+    });
   }
 
   function openAddDialog() {
-    setDraft(createDefaultSection("markdown"));
-    setEditingSectionId(null);
+    const defaultSection = createDefaultSection("banner");
+    setDraft(defaultSection);
+    setEditingId(null);
     setDialogOpen(true);
   }
 
-  function openEditDialog(section: PageSection) {
+  function openEditDialog(section: HomeSection) {
     setDraft({ ...section });
-    setEditingSectionId(section.id);
+    setEditingId(section.id);
     setDialogOpen(true);
   }
 
-  function handleDraftTypeChange(type: PageSection["type"]) {
+  function handleDraftTypeChange(type: HomeSection["type"]) {
     if (!draft) return;
 
-    const nextSection = createDefaultSection(type);
-    setDraft({ ...nextSection, id: draft.id });
+    const newSection = createDefaultSection(type);
+    setDraft({ ...newSection, id: draft.id });
   }
 
   function saveDraft() {
     if (!draft) return;
 
-    const parsed = pageSectionSchema.safeParse(draft);
+    const parsed = homeSectionSchema.safeParse(draft);
 
     if (!parsed.success) {
-      form.setError("sections", {
-        message: parsed.error.issues[0]?.message ?? "Invalid section data.",
-      });
+      toast.error(parsed.error.issues[0]?.message ?? "Invalid section data.");
       return;
     }
 
     const section = parsed.data;
 
-    if (editingSectionId) {
-      setSections(
-        sections.map((item) => (item.id === editingSectionId ? section : item)),
-      );
-    } else {
-      setSections([...sections, section]);
-    }
+    setSections((prev) => {
+      if (editingId) {
+        return prev.map((item) => (item.id === editingId ? section : item));
+      }
+
+      return [...prev, section];
+    });
 
     setDialogOpen(false);
-    setEditingSectionId(null);
+    setEditingId(null);
     setDraft(null);
   }
 
-  async function handleSubmit(values: z.infer<typeof pageFormSchema>) {
-    if (isEditMode) {
-      await handleUpdatePage(pageId, values, onSubmit);
-    } else {
-      await handleCreatePage(values, onSubmit);
+  async function handleSaveSections() {
+    try {
+      await updateSections.mutateAsync(sections);
+      toast.success("Home sections saved.");
+    } catch (error) {
+      toast.error((error as Error).message ?? "Failed to save sections.");
     }
   }
 
-  if (isEditMode && isLoading) {
-    return <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />;
-  }
-
-  if (isEditMode && !data) {
-    redirect(Path.DASHBOARD_PAGES);
-  }
+  if (isLoading) return "Loading...";
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((values) => handleSubmit(values))}
-        className="min-w-1 space-y-8"
-      >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Title</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Slug</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <ImageUploadField
-                  value={field.value}
-                  onChange={field.onChange}
-                  alt="page"
-                  inputId="page-image-input"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea {...field} className="resize-none" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormItem>
-          <div className="mb-3 flex items-center justify-between">
-            <FormLabel>Sections</FormLabel>
-            <Button type="button" variant="outline" onClick={openAddDialog}>
-              <Plus className="mr-2 size-4" />
-              Add section
-            </Button>
+    <div className="space-y-4">
+      {!inModal && (
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="font-semibold text-2xl">Home Sections</h1>
+            <p className="text-foreground/70 text-sm">
+              Build the homepage by combining banners, cards, carousels, and
+              other section blocks.
+            </p>
           </div>
-          <div className="space-y-2 rounded-lg border p-3">
-            {sections.map((section, index) => (
-              <div
-                key={section.id}
-                className="flex items-center gap-2 rounded-md border px-3 py-2"
-              >
+          <Button variant="outline" onClick={openAddDialog}>
+            <Plus className="mr-2 size-4" />
+            Add section
+          </Button>
+        </div>
+      )}
+
+      {inModal && (
+        <div className="flex justify-end">
+          <Button variant="outline" onClick={openAddDialog}>
+            <Plus className="mr-2 size-4" />
+            Add section
+          </Button>
+        </div>
+      )}
+
+      <div className="rounded-lg border bg-background">
+        {sections.length === 0 ? (
+          <p className="p-4 text-foreground/70 text-sm italic">
+            No sections yet. Add your first section.
+          </p>
+        ) : (
+          sections.map((section, index) => (
+            <div key={section.id}>
+              <div className="flex items-center gap-3 p-4">
                 <button
                   type="button"
                   draggable
@@ -463,7 +379,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                 >
                   <GripVertical className="size-4 text-foreground/40" />
                 </button>
-                <div className="min-w-0 grow">
+                <div className="min-w-0 flex-1">
                   <p className="font-medium text-sm">
                     {sectionLabels[section.type]}
                   </p>
@@ -471,95 +387,77 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     {getSectionSummary(section)}
                   </p>
                 </div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  disabled={index === 0}
-                  onClick={() => moveSection(index, "up")}
-                >
-                  <ArrowUp className="size-4" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  disabled={index === sections.length - 1}
-                  onClick={() => moveSection(index, "down")}
-                >
-                  <ArrowDown className="size-4" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => openEditDialog(section)}
-                >
-                  <Pencil className="size-4" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() =>
-                    setSections(
-                      sections.filter((item) => item.id !== section.id),
-                    )
-                  }
-                  disabled={sections.length <= 1}
-                >
-                  <Trash2 className="size-4" />
-                </Button>
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={index === 0}
+                    onClick={() => moveSection(index, "up")}
+                  >
+                    <ArrowUp className="size-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={index === sections.length - 1}
+                    onClick={() => moveSection(index, "down")}
+                  >
+                    <ArrowDown className="size-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => openEditDialog(section)}
+                  >
+                    <Pencil className="size-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() =>
+                      setSections((prev) =>
+                        prev.filter((item) => item.id !== section.id),
+                      )
+                    }
+                  >
+                    <Trash2 className="size-4" />
+                  </Button>
+                </div>
               </div>
-            ))}
-          </div>
-          <FormMessage>{form.formState.errors.sections?.message}</FormMessage>
-        </FormItem>
+              {index !== sections.length - 1 && <Separator />}
+            </div>
+          ))
+        )}
+      </div>
 
-        <FormField
-          control={form.control}
-          name="published"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-              <FormLabel>Publish</FormLabel>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" className="text-white">
-          Submit
-        </Button>
-      </form>
+      <Button disabled={!sectionsChanged} onClick={handleSaveSections}>
+        <Save className="mr-2 size-4" />
+        Save sections
+      </Button>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>
-              {editingSectionId ? "Edit section" : "Add section"}
+              {editingId ? "Edit section" : "Add section"}
             </DialogTitle>
           </DialogHeader>
 
           {draft && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <FormLabel>Section type</FormLabel>
+                <Label>Section type</Label>
                 <Select
                   value={draft.type}
                   onValueChange={(value) =>
-                    handleDraftTypeChange(value as PageSection["type"])
+                    handleDraftTypeChange(value as HomeSection["type"])
                   }
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {pageSectionTypeEnum.options.map((type) => (
+                    {homeSectionTypeEnum.options.map((type) => (
                       <SelectItem key={type} value={type}>
                         {sectionLabels[type]}
                       </SelectItem>
@@ -568,26 +466,10 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                 </Select>
               </div>
 
-              {draft.type === "markdown" && (
-                <div className="space-y-2">
-                  <FormLabel>Content</FormLabel>
-                  <Textarea
-                    className="min-h-48"
-                    value={draft.content ?? ""}
-                    onChange={(evt) =>
-                      setDraft((prev) => ({
-                        ...prev!,
-                        content: evt.target.value,
-                      }))
-                    }
-                  />
-                </div>
-              )}
-
               {draft.type === "banner" && (
                 <>
                   <div className="space-y-2">
-                    <FormLabel>Title</FormLabel>
+                    <Label>Title</Label>
                     <Input
                       value={draft.title ?? ""}
                       onChange={(evt) =>
@@ -599,7 +481,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <FormLabel>Text</FormLabel>
+                    <Label>Text</Label>
                     <Textarea
                       value={draft.text ?? ""}
                       onChange={(evt) =>
@@ -611,7 +493,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <FormLabel>Image URL</FormLabel>
+                    <Label>Image URL</Label>
                     <Input
                       value={draft.image ?? ""}
                       onChange={(evt) =>
@@ -623,7 +505,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <FormLabel>Link</FormLabel>
+                    <Label>Link</Label>
                     <Input
                       value={draft.href ?? ""}
                       onChange={(evt) =>
@@ -640,7 +522,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
               {draft.type === "recipe_full_card" && (
                 <>
                   <div className="space-y-2">
-                    <FormLabel>Recipe source</FormLabel>
+                    <Label>Recipe source</Label>
                     <Select
                       value={draft.recipeFeed?.mode ?? "random"}
                       onValueChange={(value) =>
@@ -673,7 +555,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   </div>
                   {draft.recipeFeed?.mode === "specific" ? (
                     <div className="space-y-2">
-                      <FormLabel>Recipe IDs (comma-separated)</FormLabel>
+                      <Label>Recipe IDs (comma-separated)</Label>
                       <Input
                         value={(draft.recipeFeed.recipeIds ?? []).join(", ")}
                         onChange={(evt) =>
@@ -690,7 +572,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <FormLabel>Fetched recipes count</FormLabel>
+                      <Label>Fetched recipes count</Label>
                       <Input
                         type="number"
                         min={1}
@@ -716,10 +598,10 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                 <>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <FormLabel>Offset (0-5)</FormLabel>
+                      <Label>Offset (0-5)</Label>
                       <Input
                         type="number"
-                        value={draft.offset ?? 0}
+                        value={draft.offset ?? 1}
                         min={0}
                         max={5}
                         onChange={(evt) =>
@@ -731,7 +613,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <FormLabel>Limit (1-3)</FormLabel>
+                      <Label>Limit (1-3)</Label>
                       <Input
                         type="number"
                         value={draft.limit ?? 3}
@@ -747,7 +629,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <FormLabel>Recipe source</FormLabel>
+                    <Label>Recipe source</Label>
                     <Select
                       value={draft.recipeFeed?.mode ?? "random"}
                       onValueChange={(value) =>
@@ -780,7 +662,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   </div>
                   {draft.recipeFeed?.mode === "specific" ? (
                     <div className="space-y-2">
-                      <FormLabel>Recipe IDs (comma-separated)</FormLabel>
+                      <Label>Recipe IDs (comma-separated)</Label>
                       <Input
                         value={(draft.recipeFeed.recipeIds ?? []).join(", ")}
                         onChange={(evt) =>
@@ -797,7 +679,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <FormLabel>Fetched recipes count</FormLabel>
+                      <Label>Fetched recipes count</Label>
                       <Input
                         type="number"
                         min={1}
@@ -824,7 +706,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                 draft.type === "recipes_list") && (
                 <>
                   <div className="space-y-2">
-                    <FormLabel>Recipe source</FormLabel>
+                    <Label>Recipe source</Label>
                     <Select
                       value={draft.recipeFeed?.mode ?? "random"}
                       onValueChange={(value) =>
@@ -857,7 +739,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   </div>
                   {draft.recipeFeed?.mode === "specific" ? (
                     <div className="space-y-2">
-                      <FormLabel>Recipe IDs (comma-separated)</FormLabel>
+                      <Label>Recipe IDs (comma-separated)</Label>
                       <Input
                         value={(draft.recipeFeed.recipeIds ?? []).join(", ")}
                         onChange={(evt) =>
@@ -874,7 +756,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <FormLabel>Fetched recipes count</FormLabel>
+                      <Label>Fetched recipes count</Label>
                       <Input
                         type="number"
                         min={1}
@@ -899,7 +781,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
               {draft.type === "articles_list" && (
                 <>
                   <div className="space-y-2">
-                    <FormLabel>Article source</FormLabel>
+                    <Label>Article source</Label>
                     <Select
                       value={draft.articleFeed?.mode ?? "most_recent"}
                       onValueChange={(value) =>
@@ -926,7 +808,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   </div>
                   {draft.articleFeed?.mode === "specific" ? (
                     <div className="space-y-2">
-                      <FormLabel>Article IDs (comma-separated)</FormLabel>
+                      <Label>Article IDs (comma-separated)</Label>
                       <Input
                         value={(draft.articleFeed.articleIds ?? []).join(", ")}
                         onChange={(evt) =>
@@ -943,7 +825,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      <FormLabel>Fetched articles count</FormLabel>
+                      <Label>Fetched articles count</Label>
                       <Input
                         type="number"
                         min={1}
@@ -965,10 +847,60 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                 </>
               )}
 
+              {draft.type === "cta" && (
+                <>
+                  <div className="space-y-2">
+                    <Label>Title</Label>
+                    <Input
+                      value={draft.title ?? ""}
+                      onChange={(evt) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          title: evt.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Subtitle</Label>
+                    <Input
+                      value={draft.subtitle ?? ""}
+                      onChange={(evt) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          subtitle: evt.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Tone</Label>
+                    <Select
+                      value={draft.tone ?? "tomato"}
+                      onValueChange={(value) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          tone: value as "tomato" | "sage" | "amber",
+                        }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="tomato">Tomato</SelectItem>
+                        <SelectItem value="sage">Sage</SelectItem>
+                        <SelectItem value="amber">Amber</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </>
+              )}
+
               {draft.type === "scrollable_recipes" && (
                 <>
                   <div className="space-y-2">
-                    <FormLabel>Heading</FormLabel>
+                    <Label>Heading</Label>
                     <Input
                       value={draft.heading ?? ""}
                       onChange={(evt) =>
@@ -980,7 +912,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <FormLabel>Subheading</FormLabel>
+                    <Label>Subheading</Label>
                     <Input
                       value={draft.subheading ?? ""}
                       onChange={(evt) =>
@@ -998,7 +930,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                 draft.type === "articles_list") && (
                 <>
                   <div className="space-y-2">
-                    <FormLabel>Heading</FormLabel>
+                    <Label>Heading</Label>
                     <Input
                       value={draft.heading ?? ""}
                       onChange={(evt) =>
@@ -1010,7 +942,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <FormLabel>Subheading</FormLabel>
+                    <Label>Subheading</Label>
                     <Input
                       value={draft.subheading ?? ""}
                       onChange={(evt) =>
@@ -1027,19 +959,13 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
           )}
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setDialogOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
               Cancel
             </Button>
-            <Button type="button" onClick={saveDraft}>
-              Save section
-            </Button>
+            <Button onClick={saveDraft}>Save section</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Form>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ import {
   gt,
   gte,
   ilike,
+  inArray,
   isNotNull,
   lt,
   sql,
@@ -156,6 +157,100 @@ export const publicRecipeRouter = createTRPCRouter({
         .groupBy(recipes.id)
         .orderBy(sql`RANDOM()`)
         .limit(recipesCount);
+    }),
+
+  getRecipesForSection: publicProcedure
+    .input(
+      z.object({
+        mode: z.enum([
+          "random",
+          "most_recent",
+          "most_liked",
+          "most_viewed",
+          "most_bookmarked",
+          "specific",
+        ]),
+        recipeIds: z.array(z.number().int().positive()).default([]),
+        limit: z.number().int().min(1).max(24).default(6),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      const baseQuery = ctx.db
+        .select({
+          id: recipes.id,
+          title: recipes.title,
+          description: recipes.description,
+          image: recipes.image,
+          difficulty: recipes.difficulty,
+          servings: recipes.servings,
+          slug: recipes.slug,
+          time: recipes.time,
+          publishedAt: recipes.publishedAt,
+          avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
+          viewsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_views.id}) as int)`,
+          bookmarksCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_bookmarks.id}) as int)`,
+        })
+        .from(recipes)
+        .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+        .leftJoin(recipe_views, eq(recipe_views.recipeId, recipes.id))
+        .leftJoin(recipe_bookmarks, eq(recipe_bookmarks.recipeId, recipes.id))
+        .where(
+          and(
+            isNotNull(recipes.publishedAt),
+            input.mode === "specific"
+              ? input.recipeIds.length
+                ? inArray(recipes.id, input.recipeIds)
+                : sql`1 = 0`
+              : undefined,
+          ),
+        )
+        .groupBy(recipes.id);
+
+      if (input.mode === "specific") {
+        if (!input.recipeIds.length) return [];
+
+        return baseQuery.orderBy(
+          sql`array_position(ARRAY[${sql.join(
+            input.recipeIds.map((id) => sql`${id}`),
+            sql`, `,
+          )}]::int[], ${recipes.id})`,
+        );
+      }
+
+      if (input.mode === "most_recent") {
+        return baseQuery.orderBy(desc(recipes.createdAt)).limit(input.limit);
+      }
+
+      if (input.mode === "most_liked") {
+        return baseQuery
+          .orderBy(
+            desc(sql`COALESCE(AVG(${recipe_ratings.score}), 0)`),
+            desc(sql`COUNT(DISTINCT ${recipe_ratings.id})`),
+            desc(recipes.createdAt),
+          )
+          .limit(input.limit);
+      }
+
+      if (input.mode === "most_viewed") {
+        return baseQuery
+          .orderBy(
+            desc(sql`COUNT(DISTINCT ${recipe_views.id})`),
+            desc(recipes.createdAt),
+          )
+          .limit(input.limit);
+      }
+
+      if (input.mode === "most_bookmarked") {
+        return baseQuery
+          .orderBy(
+            desc(sql`COUNT(DISTINCT ${recipe_bookmarks.id})`),
+            desc(recipes.createdAt),
+          )
+          .limit(input.limit);
+      }
+
+      return baseQuery.orderBy(sql`RANDOM()`).limit(input.limit);
     }),
 
   getRecipesByQuery: publicProcedure

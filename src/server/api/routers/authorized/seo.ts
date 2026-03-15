@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { revalidateTag } from "next/cache";
 import { z } from "zod";
 
 import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
@@ -31,10 +31,17 @@ export const authorizedSeoRouter = createTRPCRouter({
     )
     .mutation(
       async ({ ctx, input: { title, description, image, pageType } }) => {
-        return ctx.db
-          .update(seo)
-          .set({ title, description, image })
-          .where(eq(seo.pageType, pageType));
+        const result = await ctx.db
+          .insert(seo)
+          .values({ pageType, title, description, image })
+          .onConflictDoUpdate({
+            target: seo.pageType,
+            set: { title, description, image },
+          });
+
+        revalidateTag("seo");
+
+        return result;
       },
     ),
 });

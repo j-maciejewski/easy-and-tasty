@@ -26,14 +26,11 @@ export default async function () {
     <div className="w-full">
       <Breadcrumbs paths={[{ label: "All recipes", active: true }]} />
       <h2 className="mb-4 font-semibold text-2xl tracking-normal">
-        All recipes
+        Explore all recipes
       </h2>
       <Separator className="my-4" />
       {recipesCount !== 0 ? (
         <>
-          <h4 className="mb-2 text-center font-semibold text-xl tracking-normal">
-            Explore all recipes
-          </h4>
           <div className="mb-4 flex justify-between">
             <p className="content-center text-md">
               {recipesCount && `Recipes: ${recipesCount}`}

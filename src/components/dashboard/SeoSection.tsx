@@ -23,7 +23,7 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
   return (
     <Dialog>
       <div className="space-y-3">
-        <div className="mb-4 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <h2 className="font-semibold text-xl">{label}</h2>
           <DialogTrigger asChild>
             <Button variant="ghost" className="size-6">
@@ -31,30 +31,34 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
             </Button>
           </DialogTrigger>
         </div>
-        <div className="space-y-2">
-          <h6 className="font-semibold text-base">Title</h6>
-          {data?.title ? (
-            <p className="text-foreground/75 text-sm">{data.title}</p>
-          ) : (
-            <p className="text-foreground/75 text-sm italic">No title</p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <h6 className="font-semibold text-base">Description</h6>
-          {data?.description ? (
-            <p className="text-foreground/75 text-sm">{data.description}</p>
-          ) : (
-            <p className="text-foreground/75 text-sm italic">No description</p>
-          )}
-        </div>
-        <div className="space-y-2">
-          <h6 className="font-semibold text-base">Image</h6>
-          {data?.image ? (
-            // biome-ignore lint/performance/noImgElement: explanation
-            <img src={data.image} alt={data.title} className="max-w-[400px]" />
-          ) : (
-            <p className="text-foreground/75 text-sm italic">No image</p>
-          )}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <h6 className="font-semibold text-base">Title</h6>
+            {data?.title ? (
+              <p className="text-foreground/75 text-sm">{data.title}</p>
+            ) : (
+              <p className="text-foreground/75 text-sm italic">No title</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <h6 className="font-semibold text-base">Description</h6>
+            {data?.description ? (
+              <p className="text-foreground/75 text-sm">{data.description}</p>
+            ) : (
+              <p className="text-foreground/75 text-sm italic">
+                No description
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <h6 className="font-semibold text-base">Image</h6>
+            {data?.image ? (
+              // biome-ignore lint/performance/noImgElement: explanation
+              <img src={data.image} alt={data.title} className="max-w-100" />
+            ) : (
+              <p className="text-foreground/75 text-sm italic">No image</p>
+            )}
+          </div>
         </div>
         <DialogContent>
           <DialogHeader>

@@ -21,6 +21,13 @@ export const getNavigation = cache(
   }),
 );
 
+export const getHomeSections = cache(
+  next_cache(() => api.public.home.getSections(), ["home-page-config"], {
+    revalidate: REVALIDATE_TIME,
+    tags: ["home-page-config"],
+  }),
+);
+
 export const getRecipe = cache(
   next_cache((slug: string) => api.public.recipe.getRecipeBySlug(slug), [], {
     revalidate: REVALIDATE_TIME,
@@ -30,6 +37,13 @@ export const getRecipe = cache(
 export const getPage = cache(
   next_cache((slug: string) => api.public.page.getPage(slug), [], {
     revalidate: REVALIDATE_TIME,
+  }),
+);
+
+export const getTotalPagesCount = cache(
+  next_cache(() => api.public.page.getTotalPagesCount(), [], {
+    revalidate: REVALIDATE_TIME,
+    tags: ["pages-count"],
   }),
 );
 

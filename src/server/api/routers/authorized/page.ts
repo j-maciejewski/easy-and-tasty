@@ -1,6 +1,7 @@
 import { eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 
+import { pageSectionsSchema, stringifyPageSections } from "@/constants";
 import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import { pages } from "@/server/db/schema";
 
@@ -35,7 +36,7 @@ export const authorizedPageRouter = createTRPCRouter({
         image: z.string(),
         slug: z.string().min(1),
         description: z.string().min(1),
-        content: z.string().min(1),
+        sections: pageSectionsSchema,
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -44,7 +45,7 @@ export const authorizedPageRouter = createTRPCRouter({
         image: input.image,
         slug: input.slug,
         description: input.description,
-        content: input.content,
+        content: stringifyPageSections(input.sections),
       });
     }),
 
@@ -56,7 +57,7 @@ export const authorizedPageRouter = createTRPCRouter({
         image: z.string(),
         slug: z.string().min(1),
         description: z.string().min(1),
-        content: z.string().min(1),
+        sections: pageSectionsSchema,
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -67,7 +68,7 @@ export const authorizedPageRouter = createTRPCRouter({
           image: input.image,
           slug: input.slug,
           description: input.description,
-          content: input.content,
+          content: stringifyPageSections(input.sections),
         })
         .where(eq(pages.id, input.id));
     }),

@@ -25,7 +25,7 @@ export default async function () {
     <div className="w-full">
       <Breadcrumbs paths={[{ label: "Categories", active: true }]} />
 
-      <h2 className="text-center font-semibold text-base tracking-normal">
+      <h2 className="my-4 text-center font-semibold text-xl tracking-normal">
         Browse all categories
       </h2>
 

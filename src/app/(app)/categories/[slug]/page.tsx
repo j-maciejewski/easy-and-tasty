@@ -57,9 +57,6 @@ export default async function ({
       <Separator className="my-4" />
       {recipesCount !== 0 ? (
         <>
-          <h4 className="mb-2 text-center font-semibold text-xl tracking-normal">
-            Explore {category.name} recipes
-          </h4>
           <div className="mb-4 flex justify-between">
             <p className="content-center text-md">
               {recipesCount && `Recipes: ${recipesCount}`}

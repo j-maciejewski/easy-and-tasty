@@ -1,6 +1,7 @@
 export enum Path {
   // App
   HOME = "/",
+  ARTICLES = "/articles",
   CUISINES = "/cuisines",
   CATEGORIES = "/categories",
   RECIPE = "/recipe",
