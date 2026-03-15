@@ -39,7 +39,7 @@ export const authorizedSeoRouter = createTRPCRouter({
             set: { title, description, image },
           });
 
-        revalidateTag("seo");
+        revalidateTag("seo", "max");
 
         return result;
       },
