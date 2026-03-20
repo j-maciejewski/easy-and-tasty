@@ -143,11 +143,11 @@ function PaginationEllipsis({
 
 export {
   Pagination,
-  PaginationContent,
-  PaginationLink,
-  PaginationItem,
   PaginationButton,
-  PaginationPrevious,
-  PaginationNext,
+  PaginationContent,
   PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 };

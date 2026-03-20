@@ -65,4 +65,4 @@ const CuisinesProvider = ({
   return <CuisinesContext value={value} {...rest} />;
 };
 
-export { CuisinesProvider, CuisinesContext };
+export { CuisinesContext, CuisinesProvider };

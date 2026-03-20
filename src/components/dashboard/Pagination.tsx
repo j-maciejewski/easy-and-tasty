@@ -50,10 +50,10 @@ export const Pagination = () => {
         value={`${itemsPerPage}`}
         onValueChange={(value) => handleChangeLimit(Number(value))}
       >
-        <SelectTrigger className="ml-auto w-45 rounded-lg border bg-card">
+        <SelectTrigger className="ml-auto w-45 rounded-lg border bg-card!">
           <SelectValue>Results shown: {itemsPerPage}</SelectValue>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-card">
           <SelectItem value={"10"}>10</SelectItem>
           <SelectItem value={"20"}>20</SelectItem>
           <SelectItem value={"50"}>50</SelectItem>

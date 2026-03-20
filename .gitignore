@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+/docs
+
 # database
 /prisma/db.sqlite
 /prisma/db.sqlite-journal

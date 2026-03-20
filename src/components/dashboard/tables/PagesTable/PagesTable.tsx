@@ -202,15 +202,10 @@ export const PagesTable = () => {
                 hiddenColumns={hiddenColumns}
                 toggleColumn={toggleColumn}
               />
-              <Button
-                variant="outline"
-                onClick={() => setHomeSectionsOpen(true)}
-              >
+              <Button onClick={() => setHomeSectionsOpen(true)}>
                 Home sections
               </Button>
-              <Button variant="outline" onClick={() => setSeoOpen(true)}>
-                Static pages SEO
-              </Button>
+              <Button onClick={() => setSeoOpen(true)}>Static pages SEO</Button>
               <AddButton onClick={() => setAction({ type: "add" })} />
             </>
           }

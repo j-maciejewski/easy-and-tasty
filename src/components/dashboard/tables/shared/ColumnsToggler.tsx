@@ -24,7 +24,7 @@ export const ColumnsToggler = <T extends string>({
       }))}
       toggleOption={toggleColumn}
     >
-      <Button variant="ghost" className="relative aspect-square">
+      <Button className="relative aspect-square">
         <Columns3 className="absolute size-5" />
       </Button>
     </MultiSelect>

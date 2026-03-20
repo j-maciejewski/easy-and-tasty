@@ -11,4 +11,4 @@ const UserProvider = ({ ...rest }: { children: ReactNode }) => {
   return <UserContext value={value} {...rest} />;
 };
 
-export { UserProvider, UserContext };
+export { UserContext, UserProvider };

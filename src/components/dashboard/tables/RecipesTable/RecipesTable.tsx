@@ -84,10 +84,7 @@ export const RecipesTable = () => {
       render: ({ categoryIds }) => (
         <div className="inline-flex gap-2">
           {categoryIds.map((id) => (
-            <Badge
-              key={id}
-              className="border-rose-500/25 bg-rose-500/15 text-rose-700 dark:border-rose-400/30 dark:bg-rose-400/20 dark:text-rose-300"
-            >
+            <Badge key={id} className="border-rose-700 bg-rose-700 text-white">
               {categories?.get(id)?.name}
             </Badge>
           ))}
@@ -99,10 +96,7 @@ export const RecipesTable = () => {
       render: ({ cuisineIds }) => (
         <div className="inline-flex gap-2">
           {cuisineIds.map((id) => (
-            <Badge
-              key={id}
-              className="border-cyan-500/25 bg-cyan-500/15 text-cyan-700 dark:border-cyan-400/30 dark:bg-cyan-400/20 dark:text-cyan-300"
-            >
+            <Badge key={id} className="border-cyan-700 bg-cyan-700 text-white">
               {cuisines?.get(id)?.name}
             </Badge>
           ))}

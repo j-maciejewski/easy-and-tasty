@@ -68,4 +68,4 @@ const CategoriesProvider = ({
   return <CategoriesContext value={value} {...rest} />;
 };
 
-export { CategoriesProvider, CategoriesContext };
+export { CategoriesContext, CategoriesProvider };

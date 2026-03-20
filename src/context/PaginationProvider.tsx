@@ -103,4 +103,4 @@ const PaginationProvider = ({ children }: { children: ReactNode }) => {
   return <PaginationContext value={context}>{children}</PaginationContext>;
 };
 
-export { PaginationProvider, PaginationContext };
+export { PaginationContext, PaginationProvider };

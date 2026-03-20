@@ -2,13 +2,13 @@
 
 import clsx from "clsx";
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui";
+import { useTheme } from "@/context/ThemeProvider";
 import { useIsClient } from "@/hooks";
 
 export function ToggleThemeButton({ className }: { className?: string }) {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const isClient = useIsClient();
 
   if (!isClient) return null;
@@ -17,10 +17,10 @@ export function ToggleThemeButton({ className }: { className?: string }) {
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
       className={clsx("[&>svg]:size-5", className)}
     >
-      {theme === "dark" ? <Moon /> : <Sun />}
+      {resolvedTheme === "dark" ? <Moon /> : <Sun />}
       <span className="sr-only">Toggle theme</span>
     </Button>
   );

@@ -47,4 +47,4 @@ const AuthDataProvider = (props: { children: ReactNode }) => {
 
 const AuthDataContext = createContext<IAuthDataContext | undefined>(undefined);
 
-export { AuthDataProvider, AuthDataContext };
+export { AuthDataContext, AuthDataProvider };
