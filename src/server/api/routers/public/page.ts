@@ -30,6 +30,15 @@ export const publicPageRouter = createTRPCRouter({
     });
   }),
 
+  getPagesSlugs: publicProcedure.query(({ ctx }) => {
+    return ctx.db.query.pages.findMany({
+      columns: {
+        slug: true,
+      },
+      where: isNotNull(pages.publishedAt),
+    });
+  }),
+
   getArticlesForSection: publicProcedure
     .input(
       z.object({
