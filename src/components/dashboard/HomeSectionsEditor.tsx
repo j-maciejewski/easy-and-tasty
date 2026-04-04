@@ -39,6 +39,8 @@ import {
 } from "@/constants";
 import { api } from "@/trpc/react";
 
+import { ImageUploadField } from "./forms/ImageUploadField";
+
 type SectionDraft = {
   id: string;
   type: HomeSection["type"];
@@ -493,15 +495,17 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Image URL</Label>
-                    <Input
-                      value={draft.image ?? ""}
-                      onChange={(evt) =>
+                    <Label>Image</Label>
+                    <ImageUploadField
+                      value={draft.image}
+                      onChange={(value) =>
                         setDraft((prev) => ({
                           ...prev!,
-                          image: evt.target.value,
+                          image: value,
                         }))
                       }
+                      alt="banner"
+                      inputId="home-banner-image-input"
                     />
                   </div>
                   <div className="space-y-2">

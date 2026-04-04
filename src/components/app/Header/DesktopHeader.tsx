@@ -72,7 +72,18 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
             </Link>
           </div>
           <Searchbar />
-          {session.status === "loading" && <div className="invisible" />}
+          {session.status === "loading" && (
+            <Button
+              variant="ghost"
+              className="invisible relative h-10 w-10 rounded-full"
+            >
+              <Avatar className="h-10 w-10">
+                <AvatarFallback>
+                  <User className="size-5" />
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          )}
 
           {session?.status === "authenticated" && (
             <AvatarDropdown user={session.data.user} />

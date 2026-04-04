@@ -453,7 +453,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
           control={form.control}
           name="published"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-input p-3 shadow-sm">
               <FormLabel>Publish</FormLabel>
               <FormControl>
                 <Switch

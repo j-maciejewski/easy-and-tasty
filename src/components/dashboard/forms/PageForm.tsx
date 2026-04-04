@@ -520,7 +520,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
           control={form.control}
           name="published"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-card p-3 shadow-sm">
               <FormLabel>Publish</FormLabel>
               <FormControl>
                 <Switch
@@ -611,15 +611,17 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <FormLabel>Image URL</FormLabel>
-                    <Input
-                      value={draft.image ?? ""}
-                      onChange={(evt) =>
+                    <FormLabel>Image</FormLabel>
+                    <ImageUploadField
+                      value={draft.image}
+                      onChange={(value) =>
                         setDraft((prev) => ({
                           ...prev!,
-                          image: evt.target.value,
+                          image: value,
                         }))
                       }
+                      alt="banner"
+                      inputId="banner-image-input"
                     />
                   </div>
                   <div className="space-y-2">
