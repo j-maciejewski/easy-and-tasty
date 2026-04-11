@@ -31,7 +31,7 @@ import logo from "@/public/logo.png";
 import { Searchbar } from "./Searchbar";
 
 interface DesktopHeaderProps {
-  navigation: Navigation;
+  navigation: HeaderNavigation;
 }
 
 export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
@@ -63,7 +63,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
       <header data-is-scrolled={isScrolled}>
         <div
           className={`width-content mx-auto flex items-center justify-between px-4 py-2 transition-all duration-300 ${
-            isScrolled ? "h-[65px]" : "h-20"
+            isScrolled ? "h-16.25" : "h-20"
           }`}
         >
           <div>
@@ -131,7 +131,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
                 ) : (
                   <>
                     <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger>
-                    <NavigationMenuContent className="w-[200px]!">
+                    <NavigationMenuContent className="w-50!">
                       {link.sublinks?.map((sublink, _idx) => (
                         <NavigationMenuLink asChild key={_idx}>
                           {sublink.href ? (

@@ -20,9 +20,9 @@ export const useRecipesActions = () => {
       utils.authorized.recipe.getRecipes.invalidate(),
       utils.authorized.recipe.getRecipe.invalidate(),
       utils.authorized.recipe.getSummaryStats.invalidate(),
-      utils.public.recipe.getRecipes.invalidate(),
-      utils.public.recipe.getRecipe.invalidate(),
-      utils.public.recipe.getRecipePaths.invalidate(),
+      utils.public.recipe.getRecipesSlugs.invalidate(),
+      utils.public.recipe.getRecipeBySlug.invalidate(),
+      utils.public.recipe.getRandomRecipes.invalidate(),
       utils.public.comment.getCommentsByRecipeId.invalidate(),
     ]);
   }

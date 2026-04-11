@@ -13,7 +13,7 @@ declare global {
     ratingsCount: number;
   };
 
-  type Navigation = {
+  type HeaderNavigation = {
     label: string;
     href?: string;
     sublinks?: { label: string; href: string }[];

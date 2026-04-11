@@ -12,12 +12,6 @@ export const publicNavigationRouter = createTRPCRouter({
       where: eq(config.configType, "header_navigation"),
     });
 
-    return (
-      (data?.data as {
-        label: string;
-        href?: string;
-        sublinks: { label: string; href: string }[];
-      }[]) ?? []
-    );
+    return (data?.data as HeaderNavigation) ?? [];
   }),
 });

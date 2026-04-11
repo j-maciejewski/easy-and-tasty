@@ -32,11 +32,11 @@ const NavigationGroup = ({ label, sublinks }: NavigationGroupProps) => {
           )}
         />
       </li>
-      <li className="[&:last-child]:border-b">
+      <li className="last:border-b">
         <ul
           className={clsx(
             "flex flex-col overflow-hidden transition-all duration-300",
-            isOpen ? "h-[calc-size(auto,_size)]" : "h-0",
+            isOpen ? "h-[calc-size(auto,size)]" : "h-0",
           )}
         >
           {sublinks.map((sublink) => (
@@ -59,7 +59,7 @@ const NavigationGroup = ({ label, sublinks }: NavigationGroupProps) => {
 };
 
 interface MobileNavigationProps {
-  navigation: Navigation;
+  navigation: HeaderNavigation;
   handleClose: () => void;
 }
 

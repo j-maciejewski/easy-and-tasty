@@ -3,7 +3,7 @@ import { AuthDataProvider } from "@/context";
 import { getNavigation } from "@/lib/data";
 
 export default async function ({ children }: React.PropsWithChildren) {
-  const navigation = await getNavigation();
+  const navigation = (await getNavigation()) as HeaderNavigation;
 
   return (
     <div

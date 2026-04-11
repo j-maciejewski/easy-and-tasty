@@ -6,7 +6,7 @@ import { DesktopHeader } from "./DesktopHeader";
 import { MobileHeader } from "./MobileHeader";
 
 interface HeaderProps {
-  navigation: Navigation;
+  navigation: HeaderNavigation;
 }
 
 export const Header = ({ navigation }: HeaderProps) => {

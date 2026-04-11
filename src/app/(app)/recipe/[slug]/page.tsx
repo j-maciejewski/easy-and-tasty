@@ -88,14 +88,14 @@ export default async function ({
             )}
           </div>
         )}
-        <div className="mb-4 max-h-[700px] overflow-hidden rounded-lg">
+        <div className="mb-4 max-h-175 overflow-hidden rounded-lg">
           <Image
             src={recipe.image}
             width={900}
             height={700}
             alt={recipe.title}
             loading="lazy"
-            className="mx-auto max-h-[700px] min-h-full w-full object-cover max-sm:w-full"
+            className="mx-auto max-h-175 min-h-full w-full object-cover max-sm:w-full"
           />
         </div>
         <article className="prose prose-slate mt-6 max-w-full">

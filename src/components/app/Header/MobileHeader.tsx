@@ -15,7 +15,7 @@ import { MobileNavigation } from "./MobileNavigation";
 import { MobileSearch } from "./MobileSearch";
 
 interface MobileHeaderProps {
-  navigation: Navigation;
+  navigation: HeaderNavigation;
 }
 
 export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
@@ -66,7 +66,7 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
           scrollDirection === "down" ? "-translate-y-full" : "translate-y-0",
         )}
       >
-        <div className="mx-auto flex h-16 max-w-[1000px] items-center justify-between px-4">
+        <div className="mx-auto flex h-16 max-w-250 items-center justify-between px-4">
           <div>
             <Link href={Path.HOME}>
               <Image
