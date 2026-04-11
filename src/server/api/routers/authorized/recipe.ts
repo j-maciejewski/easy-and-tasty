@@ -400,6 +400,22 @@ export const authorizedRecipeRouter = createTRPCRouter({
         const insertedRecipeId = result[0]?.insertedId;
 
         if (insertedRecipeId) {
+          await tx.execute(sql`
+            SELECT setval(
+              pg_get_serial_sequence('"easy-and-tasty_recipe_cuisine"', 'id'),
+              COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_cuisine"), 0) + 1,
+              false
+            )
+          `);
+
+          await tx.execute(sql`
+            SELECT setval(
+              pg_get_serial_sequence('"easy-and-tasty_recipe_category"', 'id'),
+              COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_category"), 0) + 1,
+              false
+            )
+          `);
+
           await tx.insert(recipe_cuisines).values(
             input.cuisines.map((cuisineId) => ({
               recipeId: insertedRecipeId,
@@ -475,6 +491,22 @@ export const authorizedRecipeRouter = createTRPCRouter({
           .groupBy(recipes.id);
 
         if (results[0]) {
+          await tx.execute(sql`
+            SELECT setval(
+              pg_get_serial_sequence('"easy-and-tasty_recipe_cuisine"', 'id'),
+              COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_cuisine"), 0) + 1,
+              false
+            )
+          `);
+
+          await tx.execute(sql`
+            SELECT setval(
+              pg_get_serial_sequence('"easy-and-tasty_recipe_category"', 'id'),
+              COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_category"), 0) + 1,
+              false
+            )
+          `);
+
           for (const categoryId of input.categories) {
             if (!results[0].categoryIds.includes(categoryId)) {
               await tx.insert(recipe_categories).values({

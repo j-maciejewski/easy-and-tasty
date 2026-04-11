@@ -222,6 +222,8 @@ export const RecipesTable = () => {
             form: {
               addTitle: "New recipe",
               editTitle: "Edit recipe",
+              modalClassName:
+                "max-h-[calc(100%-4rem)] overflow-auto sm:max-w-5xl",
               form: RecipeForm,
               getFormProps: (action) => ({ recipeId: action.id }),
             },

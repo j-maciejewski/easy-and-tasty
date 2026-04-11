@@ -39,7 +39,7 @@ export function ImageUploadPreview({
           />
         </div>
       ) : (
-        <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border p-5 text-foreground/50 text-sm">
+        <div className="flex cursor-pointer flex-col items-center justify-center rounded-lg border bg-input p-5 text-foreground/50 text-sm">
           <ImageIcon className="size-14 stroke-1" />
           Click to add image
         </div>

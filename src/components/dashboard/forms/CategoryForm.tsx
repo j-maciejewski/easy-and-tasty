@@ -128,6 +128,7 @@ export function CategoryForm({ categoryId, onSubmit }: CategoryForm.Props) {
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-orange-500/70"
                 />
               </FormControl>
             </FormItem>

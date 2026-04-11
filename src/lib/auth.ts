@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
           where: eq(users.email, credentials.email),
         });
 
-        if (!user || !user.password) {
+        if (!user?.password) {
           return null;
         }
 

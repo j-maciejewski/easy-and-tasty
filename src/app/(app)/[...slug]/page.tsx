@@ -4,7 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import {
+  ArticleComments,
   ArticlesList,
+  ArticleViewTracker,
   Banner,
   Breadcrumbs,
   FullWidthWrapper,
@@ -16,7 +18,7 @@ import {
 } from "@/components/app";
 import { Separator } from "@/components/ui";
 import { type PageSection, parsePageSections } from "@/constants";
-import { getPage } from "@/lib/data";
+import { getArticle } from "@/lib/data";
 import { parseMetadata, parseSlug } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
@@ -25,7 +27,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string[] }>;
 }): Promise<Metadata> {
-  const page = await getPage(parseSlug((await params).slug));
+  const page = await getArticle(parseSlug((await params).slug));
 
   if (!page) return {};
 
@@ -39,7 +41,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const pages = await api.public.page.getPages();
+  const pages = await api.public.article.getArticles();
 
   return pages.map((page) => ({
     slug: page.slug.split("/").slice(1),
@@ -51,9 +53,9 @@ export default async function ({
 }: {
   params: Promise<{ slug: string[] }>;
 }) {
-  const page = await getPage(parseSlug((await params).slug));
+  const page = await getArticle(parseSlug((await params).slug));
   const sections = parsePageSections(page?.content);
-  const latestArticles = (await api.public.page.getPages()).filter(
+  const latestArticles = (await api.public.article.getArticles()).filter(
     (article) => article.slug !== page?.slug,
   );
 
@@ -63,7 +65,7 @@ export default async function ({
   >();
   const sectionArticlesMap = new Map<
     string,
-    Awaited<ReturnType<typeof api.public.page.getArticlesForSection>>
+    Awaited<ReturnType<typeof api.public.article.getArticlesForSection>>
   >();
 
   await Promise.all(
@@ -102,7 +104,7 @@ export default async function ({
         return;
       }
 
-      const sectionArticles = await api.public.page.getArticlesForSection({
+      const sectionArticles = await api.public.article.getArticlesForSection({
         mode: section.articleFeed?.mode ?? "most_recent",
         articleIds: section.articleFeed?.articleIds ?? [],
         limit: section.articleFeed?.limit ?? 6,
@@ -228,6 +230,7 @@ export default async function ({
   return (
     <div className="flex max-lg:flex-col max-lg:gap-4 lg:gap-10">
       <div className="grow">
+        <ArticleViewTracker articleId={page.id} />
         <Breadcrumbs
           paths={[{ label: "Article" }, { label: page.title, active: true }]}
           shareConfig={{
@@ -255,6 +258,7 @@ export default async function ({
         <div className="space-y-4">
           {sections.map((section) => renderSection(section))}
         </div>
+        <ArticleComments articleId={page.id} />
       </div>
       <Separator orientation="horizontal" className="lg:hidden" />
       <ArticlesList

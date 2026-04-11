@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       api.public.recipe.getRecipesSlugs(),
       api.public.category.getCategoriesSlugs(),
       api.public.cuisine.getCuisinesSlugs(),
-      api.public.page.getPagesSlugs(),
+      api.public.article.getArticlesSlugs(),
     ]);
 
   const staticRoutes: MetadataRoute.Sitemap = [

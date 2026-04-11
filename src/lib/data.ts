@@ -34,16 +34,16 @@ export const getRecipe = cache(
   }),
 );
 
-export const getPage = cache(
-  next_cache((slug: string) => api.public.page.getPage(slug), [], {
+export const getArticle = cache(
+  next_cache((slug: string) => api.public.article.getArticle(slug), [], {
     revalidate: REVALIDATE_TIME,
   }),
 );
 
-export const getTotalPagesCount = cache(
-  next_cache(() => api.public.page.getTotalPagesCount(), [], {
+export const getTotalArticlesCount = cache(
+  next_cache(() => api.public.article.getTotalArticlesCount(), [], {
     revalidate: REVALIDATE_TIME,
-    tags: ["pages-count"],
+    tags: ["articles-count"],
   }),
 );
 

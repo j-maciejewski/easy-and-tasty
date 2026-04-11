@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 import { Breadcrumbs, InfiniteArticleList } from "@/components/app";
 import { Separator } from "@/components/ui";
-import { getSeo, getTotalPagesCount } from "@/lib/data";
+import { getSeo, getTotalArticlesCount } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function () {
-  const articlesCount = await getTotalPagesCount();
+  const articlesCount = await getTotalArticlesCount();
 
   return (
     <div className="w-full">

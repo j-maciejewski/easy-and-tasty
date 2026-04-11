@@ -37,7 +37,7 @@ export default async function () {
 
   const articlesBySection = new Map<
     string,
-    Awaited<ReturnType<typeof api.public.page.getArticlesForSection>>
+    Awaited<ReturnType<typeof api.public.article.getArticlesForSection>>
   >();
 
   await Promise.all(
@@ -78,7 +78,7 @@ export default async function () {
         return;
       }
 
-      const articles = await api.public.page.getArticlesForSection({
+      const articles = await api.public.article.getArticlesForSection({
         mode: section.articleFeed?.mode ?? "most_recent",
         articleIds: section.articleFeed?.articleIds ?? [],
         limit: section.articleFeed?.limit ?? 6,

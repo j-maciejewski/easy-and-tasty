@@ -36,5 +36,5 @@ export { RecipeForm } from "./forms/RecipeForm";
 // Tables
 export { CategoriesTable } from "./tables/CategoriesTable/CategoriesTable";
 export { CuisinesTable } from "./tables/CuisinesTable/CuisinesTable";
-export { PagesTable } from "./tables/PagesTable/PagesTable";
+export { ArticlesTable } from "./tables/ArticlesTable/ArticlesTable";
 export { RecipesTable } from "./tables/RecipesTable/RecipesTable";

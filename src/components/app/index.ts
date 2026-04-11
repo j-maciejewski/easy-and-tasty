@@ -1,8 +1,10 @@
 // Client Components and Mixed Components (safe to import anywhere)
 
 export { ArticleCard } from "./ArticleCard";
+export { ArticleComments } from "./ArticleComments";
 export { ArticleListItem } from "./ArticleListItem";
 export { ArticlesList } from "./ArticlesList";
+export { ArticleViewTracker } from "./ArticleViewTracker";
 export { AvatarDropdown } from "./AvatarDropdown";
 export { Banner } from "./Banner";
 export { BookmarkButton } from "./BookmarkButton";

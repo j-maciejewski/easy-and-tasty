@@ -18,6 +18,10 @@ export const ArticlesList = ({
   subheading,
   variant = "list",
 }: ArticlesListProps) => {
+  if (!articles.length) {
+    return <div className={clsx("@container text-sm", className)} />;
+  }
+
   return (
     <div className={clsx("@container text-sm", className)}>
       {heading && <h3 className="font-semibold text-xl">{heading}</h3>}

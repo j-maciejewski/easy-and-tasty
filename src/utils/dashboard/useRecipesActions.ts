@@ -7,11 +7,25 @@ import { api } from "@/trpc/react";
 type RecipePayload = z.infer<typeof recipeFormSchema>;
 
 export const useRecipesActions = () => {
+  const utils = api.useUtils();
+
   const addRecipe = api.authorized.recipe.addRecipe.useMutation();
   const editRecipe = api.authorized.recipe.editRecipe.useMutation();
   const deleteRecipe = api.authorized.recipe.deleteRecipe.useMutation();
   const publishRecipe = api.authorized.recipe.publishRecipe.useMutation();
   const unpublishRecipe = api.authorized.recipe.unpublishRecipe.useMutation();
+
+  async function invalidateRecipeQueries() {
+    await Promise.all([
+      utils.authorized.recipe.getRecipes.invalidate(),
+      utils.authorized.recipe.getRecipe.invalidate(),
+      utils.authorized.recipe.getSummaryStats.invalidate(),
+      utils.public.recipe.getRecipes.invalidate(),
+      utils.public.recipe.getRecipe.invalidate(),
+      utils.public.recipe.getRecipePaths.invalidate(),
+      utils.public.comment.getCommentsByRecipeId.invalidate(),
+    ]);
+  }
 
   async function handleCreateRecipe(
     values: RecipePayload,
@@ -19,6 +33,7 @@ export const useRecipesActions = () => {
   ) {
     try {
       await addRecipe.mutateAsync(values);
+      await invalidateRecipeQueries();
 
       toast.success("Recipe was added.");
       onSuccess?.();
@@ -37,6 +52,7 @@ export const useRecipesActions = () => {
   ) {
     try {
       await editRecipe.mutateAsync({ id: recipeId, ...values });
+      await invalidateRecipeQueries();
 
       toast.success("Recipe was modified.");
       onSuccess?.();
@@ -51,6 +67,7 @@ export const useRecipesActions = () => {
   async function handleDeleteRecipe(id: number, onSuccess?: () => void) {
     try {
       await deleteRecipe.mutateAsync(id);
+      await invalidateRecipeQueries();
 
       toast.success("Recipe was deleted.");
       onSuccess?.();
@@ -65,6 +82,7 @@ export const useRecipesActions = () => {
   async function handlePublishRecipe(id: number, onSuccess?: () => void) {
     try {
       await publishRecipe.mutateAsync(id);
+      await invalidateRecipeQueries();
 
       toast.success("Recipe was published.");
       onSuccess?.();
@@ -79,6 +97,7 @@ export const useRecipesActions = () => {
   async function handleUnpublishRecipe(id: number, onSuccess?: () => void) {
     try {
       await unpublishRecipe.mutateAsync(id);
+      await invalidateRecipeQueries();
 
       toast.success("Recipe was unpublished.");
       onSuccess?.();

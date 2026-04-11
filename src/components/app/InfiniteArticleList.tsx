@@ -13,7 +13,7 @@ export const InfiniteArticleList = () => {
   const sortBy = searchParams.get("sortBy") || "createdAt";
 
   const { data, error, isLoading, isFetching, fetchNextPage, hasNextPage } =
-    api.public.page.getInfinitePages.useInfiniteQuery(
+    api.public.article.getInfiniteArticles.useInfiniteQuery(
       {
         sortBy: sortBy as "title" | "createdAt",
       },
@@ -55,7 +55,7 @@ export const InfiniteArticleList = () => {
   return (
     <>
       <ArticlesList
-        articles={data.pages.flatMap((page) => page.pages)}
+        articles={data.pages.flatMap((page) => page.articles)}
         variant="cards"
       />
       {isFetching && (

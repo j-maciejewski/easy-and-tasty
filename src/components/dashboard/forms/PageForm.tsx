@@ -48,7 +48,7 @@ import {
   recipeFeedModeEnum,
 } from "@/constants";
 import { api } from "@/trpc/react";
-import { usePagesActions } from "@/utils";
+import { useArticlesActions } from "@/utils";
 
 import { ImageUploadField } from "./ImageUploadField";
 
@@ -234,10 +234,10 @@ function getSectionSummary(section: PageSection) {
 }
 
 export function PageForm({ pageId, onSubmit }: PageForm.Props) {
-  const { handleCreatePage, handleUpdatePage } = usePagesActions();
+  const { handleCreateArticle, handleUpdateArticle } = useArticlesActions();
   const isEditMode = pageId !== undefined;
 
-  const { data, isLoading } = api.authorized.page.getPageById.useQuery(
+  const { data, isLoading } = api.authorized.article.getArticleById.useQuery(
     pageId!,
     {
       enabled: isEditMode,
@@ -355,9 +355,9 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
 
   async function handleSubmit(values: z.infer<typeof pageFormSchema>) {
     if (isEditMode) {
-      await handleUpdatePage(pageId, values, onSubmit);
+      await handleUpdateArticle(pageId, values, onSubmit);
     } else {
-      await handleCreatePage(values, onSubmit);
+      await handleCreateArticle(values, onSubmit);
     }
   }
 
@@ -366,7 +366,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
   }
 
   if (isEditMode && !data) {
-    redirect(Path.DASHBOARD_PAGES);
+    redirect(Path.DASHBOARD_ARTICLES);
   }
 
   return (
@@ -526,6 +526,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-orange-500/70"
                 />
               </FormControl>
             </FormItem>

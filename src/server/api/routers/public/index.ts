@@ -1,9 +1,9 @@
+export { publicArticleRouter } from "./article";
 export { publicCategoryRouter } from "./category";
 export { publicCommentRouter } from "./comment";
 export { publicCuisineRouter } from "./cuisine";
 export { publicHomeRouter } from "./home";
 export { publicNavigationRouter } from "./navigation";
-export { publicPageRouter } from "./page";
 export { publicRecipeRouter } from "./recipe";
 export { publicSeoRouter } from "./seo";
 export { publicUserRouter } from "./user";

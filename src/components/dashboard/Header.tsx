@@ -16,7 +16,7 @@ const breadcrumbsLabels = new Map<Path | RegExp, string>([
   [Path.DASHBOARD_USERS, "Users"],
   [Path.DASHBOARD_NAVIGATION, "Navigation"],
   [Path.DASHBOARD_SETTINGS, "Settings"],
-  [Path.DASHBOARD_PAGES, "Pages"],
+  [Path.DASHBOARD_ARTICLES, "Articles"],
 ]);
 
 export const Header = () => {

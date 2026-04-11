@@ -97,6 +97,31 @@ export const comment_likes = createTable("comment_like", {
     .references(() => comments.id),
 });
 
+export const article_comments = createTable("article_comment", {
+  id: serial("id").primaryKey(),
+  text: varchar("text", { length: 256 }).notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  articleId: integer("article_id")
+    .notNull()
+    .references(() => articles.id),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updatedAt", { withTimezone: true }),
+});
+
+export const article_comment_likes = createTable("article_comment_like", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  articleCommentId: integer("article_comment_id")
+    .notNull()
+    .references(() => article_comments.id),
+});
+
 export const recipe_bookmarks = createTable("recipe_bookmark", {
   id: serial("id").primaryKey(),
   userId: text("user_id")
@@ -115,6 +140,19 @@ export const recipe_views = createTable("recipe_view", {
   recipeId: integer("recipe_id")
     .notNull()
     .references(() => recipes.id),
+  userId: text("user_id").references(() => users.id),
+  viewedAt: timestamp("viewed_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: varchar("user_agent", { length: 512 }),
+});
+
+export const article_views = createTable("article_view", {
+  id: serial("id").primaryKey(),
+  articleId: integer("article_id")
+    .notNull()
+    .references(() => articles.id),
   userId: text("user_id").references(() => users.id),
   viewedAt: timestamp("viewed_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -159,7 +197,7 @@ export const cuisines = createTable("cuisine", {
   publishedAt: timestamp("publishedAt", { withTimezone: true }),
 });
 
-export const pages = createTable("page", {
+export const articles = createTable("article", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 256 }).notNull().unique(),
   image: varchar("image", { length: 1024 }),

@@ -6,6 +6,7 @@ import {
   RECIPES,
   USERS,
 } from "drizzle/seed/data";
+import { sql } from "drizzle-orm";
 
 import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
@@ -35,11 +36,31 @@ export const seedRouter = createTRPCRouter({
     return ctx.db.insert(recipes).values(RECIPES);
   }),
 
-  seedRecipeCuisines: authenticatedProcedure.mutation(({ ctx }) => {
-    return ctx.db.insert(recipe_cuisines).values(RECIPE_CUISINES);
+  seedRecipeCuisines: authenticatedProcedure.mutation(async ({ ctx }) => {
+    await ctx.db
+      .insert(recipe_cuisines)
+      .values(RECIPE_CUISINES.map(({ id: _id, ...value }) => value));
+
+    await ctx.db.execute(sql`
+      SELECT setval(
+        pg_get_serial_sequence('"easy-and-tasty_recipe_cuisine"', 'id'),
+        COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_cuisine"), 1),
+        true
+      )
+    `);
   }),
 
-  seedRecipeCategories: authenticatedProcedure.mutation(({ ctx }) => {
-    return ctx.db.insert(recipe_categories).values(RECIPE_CATEGORIES);
+  seedRecipeCategories: authenticatedProcedure.mutation(async ({ ctx }) => {
+    await ctx.db
+      .insert(recipe_categories)
+      .values(RECIPE_CATEGORIES.map(({ id: _id, ...value }) => value));
+
+    await ctx.db.execute(sql`
+      SELECT setval(
+        pg_get_serial_sequence('"easy-and-tasty_recipe_category"', 'id'),
+        COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_category"), 1),
+        true
+      )
+    `);
   }),
 });

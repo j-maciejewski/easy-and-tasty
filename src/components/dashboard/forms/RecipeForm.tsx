@@ -196,8 +196,8 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
               <FormControl>
                 <CodeMirror
                   {...field}
-                  className="overflow-hidden rounded-lg border px-3 py-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>div]:bg-transparent [&>div]:outline-0!"
-                  height="200px"
+                  className="overflow-hidden rounded-lg border ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>div]:bg-input! [&>div]:outline-0!"
+                  height="320px"
                   extensions={[markdown({ base: markdownLanguage })]}
                   theme="dark"
                   basicSetup={{
@@ -346,7 +346,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                         key={option.label}
                         variant="outline"
                         tabIndex={0}
-                        className="cursor-pointer"
+                        className="cursor-pointer text-nowrap bg-input"
                         onClick={() => {
                           field.onChange(
                             field.value.filter(
@@ -378,7 +378,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                     <div>
                       <Badge
                         variant="outline"
-                        className="h-full cursor-pointer"
+                        className="h-full cursor-pointer bg-input"
                       >
                         <Plus className="size-3" />
                       </Badge>
@@ -405,7 +405,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                         key={option.label}
                         variant="outline"
                         tabIndex={0}
-                        className="cursor-pointer text-nowrap"
+                        className="cursor-pointer text-nowrap bg-input"
                         onClick={() => {
                           field.onChange(
                             field.value.filter(
@@ -437,7 +437,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                     <div>
                       <Badge
                         variant="outline"
-                        className="h-full cursor-pointer"
+                        className="h-full cursor-pointer bg-input"
                       >
                         <Plus className="size-3" />
                       </Badge>
@@ -459,6 +459,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  className="data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-orange-500/70"
                 />
               </FormControl>
             </FormItem>

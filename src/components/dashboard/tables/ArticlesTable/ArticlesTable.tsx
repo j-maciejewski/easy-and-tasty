@@ -124,20 +124,20 @@ export const ArticlesTable = () => {
         <TableDropdownActions
           actions={[
             {
-              label: "Edit Page",
+              label: "Edit Article",
               onClick: () => setAction({ type: "edit", id: page.id }),
             },
             page.publishedAt
               ? {
-                  label: "Unpublish Page",
+                  label: "Unpublish Article",
                   onClick: () => setAction({ type: "unpublish", id: page.id }),
                 }
               : {
-                  label: "Publish Page",
+                  label: "Publish Article",
                   onClick: () => setAction({ type: "publish", id: page.id }),
                 },
             {
-              label: "Delete Page",
+              label: "Delete Article",
               onClick: () => setAction({ type: "delete", id: page.id }),
               variant: "destructive",
             },
@@ -231,29 +231,29 @@ export const ArticlesTable = () => {
           onClose={clearAction}
           config={{
             form: {
-              addTitle: "New page",
-              editTitle: "Edit page",
+              addTitle: "New article",
+              editTitle: "Edit article",
               modalClassName:
                 "max-h-[calc(100%-4rem)] overflow-auto sm:max-w-5xl",
               form: PageForm,
               getFormProps: (action) => ({ pageId: action.id }),
             },
             publish: {
-              title: "Publish page?",
+              title: "Publish article?",
               onConfirm: async (action) => {
                 await handlePublishArticle(action.id);
                 await refetch();
               },
             },
             unpublish: {
-              title: "Unpublish page?",
+              title: "Unpublish article?",
               onConfirm: async (action) => {
                 await handleUnpublishArticle(action.id);
                 await refetch();
               },
             },
             delete: {
-              title: "Delete page?",
+              title: "Delete article?",
               description: "This action cannot be undone.",
               onConfirm: async (action) => {
                 await handleDeleteArticle(action.id);

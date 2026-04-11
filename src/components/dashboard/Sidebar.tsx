@@ -44,8 +44,8 @@ const items: { label: string; url: string; icon: FC }[] = [
     icon: Book,
   },
   {
-    label: "Pages",
-    url: Path.DASHBOARD_PAGES,
+    label: "Articles",
+    url: Path.DASHBOARD_ARTICLES,
     icon: FileText,
   },
   {

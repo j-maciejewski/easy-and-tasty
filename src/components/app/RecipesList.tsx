@@ -16,6 +16,10 @@ export const RecipesList = ({
   heading,
   subheading,
 }: RecipesListProps) => {
+  if (!recipes.length) {
+    return <div className={clsx("@container text-sm", className)} />;
+  }
+
   return (
     <div className={clsx("@container text-sm", className)}>
       <h3 className="font-semibold text-xl">{heading}</h3>
