@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (
-    [Path.LOGIN, Path.SIGN_UP, Path.FORGOT_PASSWORD].includes(
+    [Path.LOGIN, Path.SIGN_UP, Path.RESET_PASSWORD].includes(
       pathname.toLowerCase() as Path,
     ) &&
     token

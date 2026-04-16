@@ -95,6 +95,21 @@ export const isAuthenticated = middleware(async ({ ctx, next }) => {
   });
 });
 
+export const isAuthorized = middleware(async ({ ctx, next }) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session || session.user.role !== "editor") {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "You don't have permission to access this resource",
+    });
+  }
+
+  return next({
+    ctx,
+  });
+});
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -106,4 +121,6 @@ export const publicProcedure = t.procedure;
 
 // TODO: Configure authenticated and authorized procedures
 export const authenticatedProcedure = t.procedure.use(isAuthenticated);
-export const authorizedProcedure = t.procedure.use(isAuthenticated);
+export const authorizedProcedure = t.procedure
+  .use(isAuthenticated)
+  .use(isAuthorized);

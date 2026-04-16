@@ -24,7 +24,7 @@ import {
  */
 export const createTable = pgTableCreator((name) => `easy-and-tasty_${name}`);
 
-export const roleEnum = pgEnum("role", ["viewer", "editor", "admin"]);
+export const roleEnum = pgEnum("role", ["viewer", "editor"]);
 
 export const users = createTable("user", {
   id: text("id")
