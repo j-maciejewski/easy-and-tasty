@@ -10,13 +10,11 @@ import { ToggleThemeButton } from "./ToggleThemeButton";
 const breadcrumbsLabels = new Map<Path | RegExp, string>([
   [Path.DASHBOARD, "Summary"],
   [Path.DASHBOARD_RECIPES, "Recipes"],
-  [Path.DASHBOARD_HOME, "Home"],
+  [Path.DASHBOARD_ARTICLES, "Articles"],
   [Path.DASHBOARD_CATEGORIES, "Categories"],
   [Path.DASHBOARD_CUISINES, "Cuisines"],
   [Path.DASHBOARD_USERS, "Users"],
   [Path.DASHBOARD_NAVIGATION, "Navigation"],
-  [Path.DASHBOARD_SETTINGS, "Settings"],
-  [Path.DASHBOARD_ARTICLES, "Articles"],
 ]);
 
 export const Header = () => {

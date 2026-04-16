@@ -13,16 +13,10 @@ export enum Path {
 
   // Dashboard
   DASHBOARD = "/dashboard",
-  DASHBOARD_HOME = "/dashboard/home",
   DASHBOARD_RECIPES = "/dashboard/recipes",
-  DASHBOARD_NEW_RECIPE = "/dashboard/recipes/new",
   DASHBOARD_CUISINES = "/dashboard/cuisines",
-  DASHBOARD_NEW_CUISINE = "/dashboard/cuisines/new",
   DASHBOARD_CATEGORIES = "/dashboard/categories",
-  DASHBOARD_NEW_CATEGORY = "/dashboard/categories/new",
   DASHBOARD_USERS = "/dashboard/users",
   DASHBOARD_ARTICLES = "/dashboard/articles",
-  DASHBOARD_ADD_ARTICLE = "/dashboard/articles/new",
   DASHBOARD_NAVIGATION = "/dashboard/navigation",
-  DASHBOARD_SETTINGS = "/dashboard/settings",
 }
