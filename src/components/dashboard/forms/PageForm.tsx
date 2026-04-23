@@ -477,6 +477,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   size="icon"
                   disabled={index === 0}
                   onClick={() => moveSection(index, "up")}
+                  aria-label="Move section up"
                 >
                   <ArrowUp className="size-4" />
                 </Button>
@@ -486,6 +487,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   size="icon"
                   disabled={index === sections.length - 1}
                   onClick={() => moveSection(index, "down")}
+                  aria-label="Move section down"
                 >
                   <ArrowDown className="size-4" />
                 </Button>
@@ -494,6 +496,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   variant="ghost"
                   size="icon"
                   onClick={() => openEditDialog(section)}
+                  aria-label="Edit section"
                 >
                   <Pencil className="size-4" />
                 </Button>
@@ -507,6 +510,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                     )
                   }
                   disabled={sections.length <= 1}
+                  aria-label="Delete section"
                 >
                   <Trash2 className="size-4" />
                 </Button>

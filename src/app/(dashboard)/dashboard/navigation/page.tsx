@@ -153,6 +153,7 @@ export default function () {
           variant="ghost"
           size="icon"
           onClick={handleAdd}
+          aria-label="Add navigation item"
         >
           <Plus className="absolute size-5 stroke-2 text-foreground" />
         </Button>

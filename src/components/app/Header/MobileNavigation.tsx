@@ -79,6 +79,7 @@ export const MobileNavigation = ({
           type="button"
           variant="ghost"
           className="absolute top-[50%] right-3 aspect-square size-10 translate-y-[-50%] p-0"
+          aria-label="Close navigation menu"
         >
           <X className="absolute size-5" />
         </Button>

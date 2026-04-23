@@ -26,7 +26,11 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
         <div className="flex items-center gap-2">
           <h2 className="font-semibold text-xl">{label}</h2>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="size-6">
+            <Button
+              variant="ghost"
+              className="size-6"
+              aria-label={`Edit SEO for ${label}`}
+            >
               <Pencil className="size-4" />
             </Button>
           </DialogTrigger>

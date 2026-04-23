@@ -283,6 +283,7 @@ export const RecipeComments = ({
                           isLiked && "text-red-500 hover:text-red-600",
                         )}
                         onClick={() => handleLikeToggle(comment.id, isLiked)}
+                        aria-label={isLiked ? "Unlike comment" : "Like comment"}
                       >
                         <Heart
                           className={cn("h-4 w-4", isLiked && "fill-current")}
@@ -300,6 +301,7 @@ export const RecipeComments = ({
                               size="sm"
                               className="h-8 gap-1"
                               disabled
+                              aria-label="Sign in to like this comment"
                             >
                               <Heart className="h-4 w-4" />
                               <span className="text-xs">
@@ -324,6 +326,7 @@ export const RecipeComments = ({
                           onClick={() =>
                             handleEditComment(comment.id, comment.text)
                           }
+                          aria-label="Edit comment"
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
@@ -333,6 +336,7 @@ export const RecipeComments = ({
                           className="h-8 w-8"
                           onClick={() => handleDeleteComment(comment.id)}
                           disabled={deleteComment.isPending}
+                          aria-label="Delete comment"
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>

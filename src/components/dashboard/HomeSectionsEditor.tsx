@@ -395,6 +395,7 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
                     size="icon"
                     disabled={index === 0}
                     onClick={() => moveSection(index, "up")}
+                    aria-label="Move section up"
                   >
                     <ArrowUp className="size-4" />
                   </Button>
@@ -403,6 +404,7 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
                     size="icon"
                     disabled={index === sections.length - 1}
                     onClick={() => moveSection(index, "down")}
+                    aria-label="Move section down"
                   >
                     <ArrowDown className="size-4" />
                   </Button>
@@ -410,6 +412,7 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
                     variant="ghost"
                     size="icon"
                     onClick={() => openEditDialog(section)}
+                    aria-label="Edit section"
                   >
                     <Pencil className="size-4" />
                   </Button>
@@ -421,6 +424,7 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
                         prev.filter((item) => item.id !== section.id),
                       )
                     }
+                    aria-label="Delete section"
                   >
                     <Trash2 className="size-4" />
                   </Button>

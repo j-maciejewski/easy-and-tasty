@@ -87,6 +87,7 @@ export const RateRecipe = ({ recipeId, className }: RateRecipeProps) => {
             onMouseLeave={() => setHoveredStar(null)}
             onClick={() => handleRating(star)}
             disabled={rateRecipe.isPending || unrateRecipe.isPending}
+            aria-label={`Rate ${star} out of 5`}
           >
             <Star
               className={cn(

@@ -80,6 +80,13 @@ export const BookmarkButton = ({
           className={cn("size-6", className)}
           onClick={handleBookmarkToggle}
           disabled={bookmarkRecipe.isPending || unbookmarkRecipe.isPending}
+          aria-label={
+            session
+              ? isBookmarked
+                ? "Remove recipe bookmark"
+                : "Bookmark recipe"
+              : "Sign in to bookmark recipe"
+          }
         >
           <Bookmark
             className={cn("absolute size-4", isBookmarked && "fill-current")}
@@ -89,7 +96,7 @@ export const BookmarkButton = ({
       <TooltipContent>
         {session
           ? isBookmarked
-            ? "Remove bookmark"
+            ? "Remove recipe bookmark"
             : "Bookmark recipe"
           : "Sign in to bookmark"}
       </TooltipContent>

@@ -85,6 +85,7 @@ export const MobileSearch = ({ handleClose }: MobileSearchProps) => {
           type="button"
           variant="ghost"
           className="absolute top-[50%] right-3 aspect-square h-10 translate-y-[-50%] p-0"
+          aria-label="Close search"
         >
           <X className="absolute size-5" />
         </Button>

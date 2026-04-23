@@ -63,7 +63,11 @@ export const ShareDialog = ({ shareConfig }: ShareDialogProps) => {
       <Tooltip>
         <TooltipTrigger asChild>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="size-6">
+            <Button
+              variant="ghost"
+              className="size-6"
+              aria-label={`Share ${type}`}
+            >
               <Share2 className="absolute size-4" />
             </Button>
           </DialogTrigger>

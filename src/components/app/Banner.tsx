@@ -24,7 +24,7 @@ export const Banner = ({
       <Link href={href} className="relative block">
         <Image
           src={image}
-          alt={"test"}
+          alt={title}
           width={2000}
           height={500}
           className="w-full object-cover max-md:h-48 md:h-120"

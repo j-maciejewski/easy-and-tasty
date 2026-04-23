@@ -56,6 +56,7 @@ export const SortableNavigation = ({
                   size="icon"
                   className="size-6"
                   onClick={() => handleEdit(props.item)}
+                  aria-label={`Edit navigation item ${props.item.label}`}
                 >
                   <Pencil className="size-4 text-foreground/75" />
                 </Button>
@@ -64,6 +65,7 @@ export const SortableNavigation = ({
                   size="icon"
                   className="size-6"
                   onClick={() => handleDelete(props.item)}
+                  aria-label={`Delete navigation item ${props.item.label}`}
                 >
                   <Trash2 className="size-4 text-foreground/75" />
                 </Button>

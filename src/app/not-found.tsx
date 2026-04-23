@@ -9,7 +9,7 @@ export default function () {
     <div className="width-content mx-auto flex w-full grow flex-col items-center justify-center max-sm:p-4 max-xl:max-w-250 md:p-6">
       <Image
         src={Image404}
-        alt="404 image"
+        alt="Illustration for page not found"
         className="mb-6 max-md:size-40 md:size-60"
       />
 

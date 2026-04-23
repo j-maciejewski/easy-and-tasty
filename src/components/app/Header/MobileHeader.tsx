@@ -71,7 +71,7 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
             <Link href={Path.HOME}>
               <Image
                 src={logo}
-                alt="icon"
+                alt="Easy and Tasty logo"
                 className="mr-2 lg:hidden"
                 height={35}
                 priority
@@ -88,6 +88,7 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
               variant="ghost"
               className="relative aspect-square"
               onClick={() => setIsSearchOpen(true)}
+              aria-label="Open recipe search"
             >
               <Search className="absolute size-5" />
             </Button>
@@ -95,6 +96,7 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
               variant="ghost"
               className="relative aspect-square"
               onClick={() => setIsNavigationOpen(true)}
+              aria-label="Open navigation menu"
             >
               <Menu className="absolute size-5" />
             </Button>

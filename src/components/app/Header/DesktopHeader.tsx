@@ -68,7 +68,12 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
         >
           <div>
             <Link href={Path.HOME}>
-              <Image src={logo} alt="logo" height={35} priority />
+              <Image
+                src={logo}
+                alt="Easy and Tasty logo"
+                height={35}
+                priority
+              />
             </Link>
           </div>
           <Searchbar />
@@ -76,6 +81,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
             <Button
               variant="ghost"
               className="invisible relative h-10 w-10 rounded-full"
+              aria-label="User menu"
             >
               <Avatar className="h-10 w-10">
                 <AvatarFallback>
@@ -94,6 +100,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
                 <Button
                   variant="ghost"
                   className="relative h-10 w-10 rounded-full"
+                  aria-label="Open authentication dialog"
                 >
                   <Avatar className="h-10 w-10">
                     <AvatarFallback>

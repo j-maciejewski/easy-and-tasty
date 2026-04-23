@@ -1,8 +1,6 @@
 "use client";
 
 import { AlertCircle, CheckCircle2 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
@@ -12,17 +10,12 @@ import {
   Alert,
   AlertDescription,
   Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Label,
   Separator,
 } from "@/components/ui";
 import { Path } from "@/config";
-import logo from "@/public/logo.png";
 
+import { AuthFormWrapper } from "./AuthFormWrapper";
 import { AuthInput } from "./AuthInput";
 import { AuthLink } from "./AuthLink";
 import { AuthFormProps, VIEWS } from "./types";
@@ -84,86 +77,77 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
   };
 
   return (
-    <Card
-      className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/20"
-      data-view="auth"
+    <AuthFormWrapper
+      type={type}
+      title="Log in"
+      titleClassName="text-2xl"
+      description="Enter your details to sign in to your account."
     >
-      <CardHeader>
-        <Link href="/">
-          <Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />
-        </Link>
-        <CardTitle className="text-2xl">Log in</CardTitle>
-        <CardDescription>
-          Enter your details to sign in to your account.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {registered && (
-          <Alert className="mb-4 border-green-500 text-green-500">
-            <CheckCircle2 className="h-4 w-4" />
-            <AlertDescription>
-              Account created successfully. You can now sign in.
-            </AlertDescription>
-          </Alert>
-        )}
-        {error && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        <form className="grid gap-4" onSubmit={handleCredentialsLogIn}>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <AuthInput
-              name="email"
-              type="email"
-              placeholder="max@example.com"
-              required
-            />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <AuthLink
-                text="Forgot password?"
-                className="ml-auto inline-block text-sm underline"
-                {...(type === "modal"
-                  ? { callback: () => setView!(VIEWS.FORGOT_PASSWORD) }
-                  : { href: "/reset-password" })}
-              />
-            </div>
-            <AuthInput name="password" type="password" required />
-          </div>
-          <Button type="submit" className="w-full font-semibold">
-            Log in
-          </Button>
-        </form>
-        <div className="my-4 flex items-center gap-3 text-muted-foreground text-xs tracking-wide">
-          <Separator className="flex-1" />
-          <span>or</span>
-          <Separator className="flex-1" />
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          className="flex w-full items-center justify-center gap-2"
-          onClick={handleGoogleSignIn}
-          disabled={isLoading}
-        >
-          <Google className="h-5 w-5" />
-          Continue with Google
-        </Button>
-        <div className="mt-4 text-center text-sm">
-          Don't have an account?{" "}
-          <AuthLink
-            text="Sign up"
-            {...(type === "modal"
-              ? { callback: () => setView!(VIEWS.REGISTER) }
-              : { href: "/sign-up" })}
+      {registered && (
+        <Alert className="mb-4 border-green-500 text-green-500">
+          <CheckCircle2 className="h-4 w-4" />
+          <AlertDescription>
+            Account created successfully. You can now sign in.
+          </AlertDescription>
+        </Alert>
+      )}
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <form className="grid gap-4" onSubmit={handleCredentialsLogIn}>
+        <div className="grid gap-2">
+          <Label htmlFor="email">Email</Label>
+          <AuthInput
+            name="email"
+            type="email"
+            placeholder="max@example.com"
+            required
           />
         </div>
-      </CardContent>
-    </Card>
+        <div className="grid gap-2">
+          <div className="flex items-center">
+            <Label htmlFor="password">Password</Label>
+            <AuthLink
+              text="Forgot password?"
+              className="ml-auto inline-block text-sm underline"
+              {...(type === "modal"
+                ? { callback: () => setView!(VIEWS.FORGOT_PASSWORD) }
+                : { href: "/reset-password" })}
+            />
+          </div>
+          <AuthInput name="password" type="password" required />
+        </div>
+        <Button type="submit" className="w-full font-semibold">
+          Log in
+        </Button>
+      </form>
+      <div className="my-4 flex items-center gap-3 text-muted-foreground text-xs tracking-wide">
+        <Separator className="flex-1" />
+        <span>or</span>
+        <Separator className="flex-1" />
+      </div>
+      <Button
+        type="button"
+        variant="outline"
+        className="flex w-full items-center justify-center gap-2"
+        onClick={handleGoogleSignIn}
+        disabled={isLoading}
+      >
+        <Google className="h-5 w-5" />
+        Continue with Google
+      </Button>
+      <div className="mt-4 text-center text-sm">
+        Don't have an account?{" "}
+        <AuthLink
+          text="Sign up"
+          {...(type === "modal"
+            ? { callback: () => setView!(VIEWS.REGISTER) }
+            : { href: "/sign-up" })}
+        />
+      </div>
+    </AuthFormWrapper>
   );
 };
