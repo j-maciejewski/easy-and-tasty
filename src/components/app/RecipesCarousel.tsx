@@ -37,7 +37,7 @@ export const RecipesCarousel = ({ recipes }: RecipesCarouselProps) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="left-4 bg-red-500 max-md:hidden" />
+      <CarouselPrevious className="left-4 max-md:hidden" />
       <CarouselNext className="right-4 max-md:hidden" />
     </Carousel>
   );

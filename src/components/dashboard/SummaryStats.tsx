@@ -180,9 +180,19 @@ export const SummaryStats = () => {
 
   return (
     <Tabs defaultValue="recipes">
-      <TabsList>
-        <TabsTrigger value="recipes">Recipes</TabsTrigger>
-        <TabsTrigger value="articles">Articles</TabsTrigger>
+      <TabsList className="h-10 p-1">
+        <TabsTrigger
+          value="recipes"
+          className="px-4 data-[state=active]:bg-card data-[state=active]:text-foreground"
+        >
+          Recipes
+        </TabsTrigger>
+        <TabsTrigger
+          value="articles"
+          className="px-4 data-[state=active]:bg-card data-[state=active]:text-foreground"
+        >
+          Articles
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="recipes" className="mt-4 space-y-6">

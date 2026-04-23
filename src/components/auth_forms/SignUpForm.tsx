@@ -21,6 +21,7 @@ import {
   Label,
   Separator,
 } from "@/components/ui";
+import { Path } from "@/config";
 import logo from "@/public/logo.png";
 
 import { AuthInput } from "./AuthInput";
@@ -30,7 +31,11 @@ import { AuthFormProps, VIEWS } from "./types";
 export const SignUpForm = ({ setView, type }: AuthFormProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const defaultCallbackUrl = type === "page" ? Path.POST_LOGIN : Path.HOME;
+  const callbackUrl =
+    searchParams.get("from") ||
+    searchParams.get("callbackUrl") ||
+    defaultCallbackUrl;
   const [state, formAction] = useActionState(register, undefined);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -52,7 +57,10 @@ export const SignUpForm = ({ setView, type }: AuthFormProps) => {
   }, [state?.success, router.push]);
 
   return (
-    <Card className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/10">
+    <Card
+      className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/20"
+      data-view="auth"
+    >
       <CardHeader>
         <Link href="/">
           <Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />

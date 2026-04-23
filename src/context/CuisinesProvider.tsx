@@ -53,6 +53,7 @@ const CuisinesProvider = ({
     [broadcast],
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const value = useMemo(
     () => ({
       cuisines: new Map(cuisines.map((cuisine) => [cuisine.id, cuisine])),

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 import { RecipeCard } from "@/components/app";
+import { Path } from "@/config";
 import { api } from "@/trpc/react";
 
 export default function BookmarksPage() {
@@ -36,7 +37,7 @@ export default function BookmarksPage() {
             Please sign in to view your bookmarked recipes
           </p>
           <Link
-            href="/api/auth/signin"
+            href={Path.LOGIN}
             className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground text-sm ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Sign In

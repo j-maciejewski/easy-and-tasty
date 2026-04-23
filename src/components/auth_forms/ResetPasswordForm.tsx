@@ -19,7 +19,10 @@ import { AuthFormProps, VIEWS } from "./types";
 
 export const ResetPasswordForm = ({ setView, type }: AuthFormProps) => {
   return (
-    <Card className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/10">
+    <Card
+      className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/20"
+      data-view="auth"
+    >
       <CardHeader>
         <Link href="/">
           <Image src={logo} alt="logo" className="mx-auto mb-2" height={40} />

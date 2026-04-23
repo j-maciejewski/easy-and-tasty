@@ -69,7 +69,12 @@ export const RateRecipe = ({ recipeId, className }: RateRecipeProps) => {
   }
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div
+      className={cn(
+        "mt-8 flex flex-col gap-2 border-primary border-l-4 bg-muted/20 py-4 pl-6",
+        className,
+      )}
+    >
       <p className="font-medium text-sm">Rate this recipe</p>
       <div className="flex items-center gap-0">
         {[1, 2, 3, 4, 5].map((star) => (

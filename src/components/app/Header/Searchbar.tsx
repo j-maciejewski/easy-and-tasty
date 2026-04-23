@@ -65,7 +65,7 @@ export const Searchbar = () => {
       <Input
         type="search"
         placeholder="Search recipes..."
-        className="peer/input h-fit w-full rounded-lg bg-background py-2 pl-8 focus-visible:ring-primary/75 md:w-[300px] lg:w-[360px]"
+        className="peer/input h-fit w-full rounded-lg bg-input py-2 pl-8 focus-visible:ring-primary/75 md:w-[300px] lg:w-[360px]"
         value={query}
         onChange={handleChange}
       />

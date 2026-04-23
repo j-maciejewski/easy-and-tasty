@@ -117,9 +117,7 @@ export default async function ({
             </Link>
           ))}
         </div>
-        <div className="mt-8 border-primary border-l-4 bg-muted/20 py-4 pl-6">
-          <RateRecipe recipeId={recipe.id} />
-        </div>
+        <RateRecipe recipeId={recipe.id} />
         <RecipeComments recipeId={recipe.id} />
       </div>
       <Separator orientation="horizontal" className="lg:hidden" />

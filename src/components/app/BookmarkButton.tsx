@@ -90,7 +90,7 @@ export const BookmarkButton = ({
         {session
           ? isBookmarked
             ? "Remove bookmark"
-            : "Bookmark this recipe"
+            : "Bookmark recipe"
           : "Sign in to bookmark"}
       </TooltipContent>
     </Tooltip>

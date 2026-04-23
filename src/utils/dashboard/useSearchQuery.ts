@@ -19,6 +19,7 @@ export const useDebouncedSearchQuery = (onChange?: () => void) => {
     setDebouncedQuery("");
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query);

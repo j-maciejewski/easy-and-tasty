@@ -54,6 +54,7 @@ const CategoriesProvider = ({
     [broadcast],
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   const value = useMemo(
     () => ({
       categories: new Map(

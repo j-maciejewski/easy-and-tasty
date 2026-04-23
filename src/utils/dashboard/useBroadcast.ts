@@ -8,6 +8,7 @@ export function useBroadcastChannel<T>(
 ): (data: T[]) => void {
   const channelRef = useRef<BroadcastChannel | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
     if (typeof BroadcastChannel === "undefined") {
       return;
