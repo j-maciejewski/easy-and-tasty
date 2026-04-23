@@ -54,7 +54,7 @@
     --ring: oklch(0.75 0.23 25);
   }
 
-  html.light [data-view="auth"] {
+  [data-view="auth"] {
     --background: oklch(1 0 0);
     --foreground: oklch(0.09 0.005 49);
     --card: oklch(1 0 0);
@@ -77,7 +77,7 @@
     --sidebar: oklch(0.97 0.006 85);
   }
 
-  html.dark [data-view="auth"] {
+  html.dark:not(.ignore-theme) [data-view="auth"] {
     --background: oklch(0.18 0.005 49);
     --foreground: oklch(0.93 0.008 85);
     --card: oklch(0.22 0.006 49);

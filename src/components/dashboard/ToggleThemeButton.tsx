@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Moon, Sun } from "lucide-react";
 
 import { Button } from "@/components/ui";
-import { useTheme } from "@/context/ThemeProvider";
+import { useTheme } from "@/context";
 import { useIsClient } from "@/hooks";
 
 export function ToggleThemeButton({ className }: { className?: string }) {

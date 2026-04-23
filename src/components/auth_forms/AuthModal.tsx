@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { LoginForm } from "./LoginForm";
 import { ResetPasswordForm } from "./ResetPasswordForm";
@@ -9,6 +9,14 @@ import { VIEWS } from "./types";
 
 export const AuthModal = () => {
   const [view, setView] = useState<VIEWS>(VIEWS.LOGIN);
+
+  useEffect(() => {
+    document.querySelector("html")?.classList.add("ignore-theme");
+
+    return () => {
+      document.querySelector("html")?.classList.remove("ignore-theme");
+    };
+  }, []);
 
   const View =
     view === VIEWS.REGISTER
