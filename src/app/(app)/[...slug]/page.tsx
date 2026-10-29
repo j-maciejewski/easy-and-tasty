@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import {
@@ -13,6 +12,7 @@ import {
   RecipeCard,
   RecipeCardFull,
   RecipesCarousel,
+  RecipesList,
   ScrollableRecipes,
 } from "@/components/app";
 import { RetryImage } from "@/components/app/RetryImage";
@@ -131,7 +131,10 @@ export default async function ({
     switch (section.type) {
       case "markdown":
         return (
-          <div key={section.id} className="prose max-w-none">
+          <div
+            key={section.id}
+            className="prose prose-lg max-w-[68ch] prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary"
+          >
             <MarkdownContent>{section.content}</MarkdownContent>
           </div>
         );
@@ -152,7 +155,7 @@ export default async function ({
         if (!sectionRecipes.length) return null;
 
         return (
-          <div key={section.id} className="space-y-4">
+          <div key={section.id} className="space-y-6">
             {sectionRecipes.map((recipe) => (
               <RecipeCardFull key={recipe.id} recipe={recipe} />
             ))}
@@ -170,7 +173,7 @@ export default async function ({
         return (
           <div
             key={section.id}
-            className="grid gap-4 max-md:grid-cols-1 md:grid-cols-3"
+            className="grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3"
           >
             {recipeGrid.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
@@ -205,23 +208,12 @@ export default async function ({
         );
       case "recipes_list":
         return (
-          <div key={section.id} className="text-sm">
-            <h3 className="font-semibold text-xl">{section.heading}</h3>
-            {section.subheading && (
-              <p className="mt-2 text-sm">{section.subheading}</p>
-            )}
-            <div className="mt-4 flex flex-col gap-2">
-              {(sectionRecipesMap.get(section.id) ?? []).map((recipe) => (
-                <Link
-                  key={recipe.id}
-                  href={`/recipe/${recipe.slug}`}
-                  className="rounded-md border p-3 transition-colors hover:bg-accent"
-                >
-                  {recipe.title}
-                </Link>
-              ))}
-            </div>
-          </div>
+          <RecipesList
+            key={section.id}
+            heading={section.heading}
+            subheading={section.subheading}
+            recipes={sectionRecipesMap.get(section.id) ?? []}
+          />
         );
       case "separator":
         return <Separator key={section.id} orientation="horizontal" />;
@@ -229,45 +221,53 @@ export default async function ({
   }
 
   return (
-    <div className="flex max-lg:flex-col max-lg:gap-4 lg:gap-10">
-      <div className="grow">
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14">
+      <div className="min-w-0">
         <ArticleViewTracker articleId={page.id} />
         <Breadcrumbs
-          paths={[{ label: "Article" }, { label: page.title, active: true }]}
+          paths={[
+            { label: "Articles", href: "/articles" },
+            { label: page.title, active: true },
+          ]}
           shareConfig={{
             path: `/${page.slug}`,
             text: "Check out this awesome article!",
             type: "article",
           }}
         />
-        <h2 className="mb-4 font-semibold text-2xl">{page.title}</h2>
-        <p className="mb-4 text-foreground/70 text-sm">
-          Created at {formattedCreatedAt}
-        </p>
+        <h1 className="max-w-3xl font-bold font-display text-4xl leading-[1.05] tracking-tight md:text-6xl">
+          {page.title}
+        </h1>
+        <time
+          dateTime={new Date(page.createdAt).toISOString()}
+          className="mt-4 block text-muted-foreground text-sm"
+        >
+          {formattedCreatedAt}
+        </time>
         {page.image && (
-          <div className="mb-4 max-h-175 overflow-hidden rounded-lg">
+          <div className="mt-8 overflow-hidden rounded-3xl bg-muted">
             <RetryImage
               src={page.image}
-              width={900}
-              height={700}
+              width={1200}
+              height={675}
               alt={page.title}
-              sizes="(max-width: 900px) 100vw, 900px"
+              sizes="(max-width: 1024px) 100vw, 900px"
               priority
-              className="mx-auto max-h-175 min-h-full w-full object-cover max-sm:w-full"
+              className="aspect-video w-full object-cover"
             />
           </div>
         )}
-        <div className="space-y-4">
+        <div className="mt-10 space-y-10">
           {sections.map((section, index) => renderSection(section, index))}
         </div>
         <ArticleComments articleId={page.id} />
       </div>
-      <Separator orientation="horizontal" className="lg:hidden" />
-      <ArticlesList
-        heading="Read our other latest articles"
-        articles={latestArticles.slice(0, 6)}
-        className="mb-4 min-w-[20rem] lg:pt-4"
-      />
+      <aside className="lg:sticky lg:top-28 lg:self-start">
+        <ArticlesList
+          heading="More to read"
+          articles={latestArticles.slice(0, 6)}
+        />
+      </aside>
     </div>
   );
 }

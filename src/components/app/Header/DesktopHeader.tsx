@@ -59,7 +59,11 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
   }, []);
 
   return (
-    <div className={"fixed top-0 left-0 z-50 w-full bg-white shadow-lg"}>
+    <div
+      className={
+        "fixed top-0 left-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/85"
+      }
+    >
       <header data-is-scrolled={isScrolled}>
         <div
           className={`width-content mx-auto flex items-center justify-between px-4 py-2 transition-all duration-300 ${
@@ -122,22 +126,26 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
       <nav
         className={`transition-all duration-300 ${
           isScrolled ? "h-0 overflow-hidden opacity-0" : "h-12 opacity-100"
-        } width-content mx-auto flex items-center justify-between text-black`}
+        } width-content mx-auto flex items-center justify-between`}
       >
         <NavigationMenu viewport={false}>
-          <NavigationMenuList className="flex h-fit w-full flex-wrap gap-3 whitespace-nowrap px-4 text-sm tracking-wider">
+          <NavigationMenuList className="flex h-fit w-full flex-wrap gap-1 whitespace-nowrap px-2">
             {navigation.map((link, idx) => (
               <NavigationMenuItem key={idx}>
                 {link.href ? (
                   <NavigationMenuLink
                     asChild
-                    className={navigationMenuTriggerStyle()}
+                    className={navigationMenuTriggerStyle({
+                      className: "rounded-full bg-transparent",
+                    })}
                   >
                     <Link href={link.href}>{link.label}</Link>
                   </NavigationMenuLink>
                 ) : (
                   <>
-                    <NavigationMenuTrigger>{link.label}</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="rounded-full bg-transparent">
+                      {link.label}
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent className="w-50!">
                       {link.sublinks?.map((sublink, _idx) => (
                         <NavigationMenuLink asChild key={_idx}>

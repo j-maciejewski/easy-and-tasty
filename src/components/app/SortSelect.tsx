@@ -8,7 +8,6 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Separator,
 } from "@/components/ui";
 
 export const SortSelect = () => {
@@ -26,8 +25,11 @@ export const SortSelect = () => {
 
   return (
     <Select onValueChange={handleChange} value={sortBy}>
-      <SelectTrigger className="w-[180px] bg-white">
-        Sort by <Separator orientation="vertical" />{" "}
+      <SelectTrigger
+        aria-label="Sort recipes"
+        className="h-10 w-44 rounded-full border-transparent bg-card px-4"
+      >
+        <span className="text-muted-foreground">Sort:</span>
         <SelectValue placeholder="Newest" />
       </SelectTrigger>
       <SelectContent>

@@ -1,6 +1,7 @@
-import { Merienda } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 
-export const merienda = Merienda({
+export const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-bricolage",
 });

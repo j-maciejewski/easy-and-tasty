@@ -9,11 +9,11 @@ interface RatingProps {
   rating: number;
 }
 
-const EmptyStar = (
-  <Star className="size-4 fill-gray-300 stroke-[1.75] text-gray-500" />
-);
+const EmptyStar = <Star className="size-4 fill-border stroke-0 text-border" />;
 
-const FilledStar = <Star className="size-4 fill-yellow-300 text-yellow-300" />;
+const FilledStar = (
+  <Star className="size-4 fill-saffron stroke-0 text-saffron" />
+);
 
 export const Rating = ({ rating }: RatingProps) => {
   const scorePercent = Number.isFinite(rating) ? (rating / 5) * 100 : 0;

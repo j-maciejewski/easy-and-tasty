@@ -1,115 +1,82 @@
-import clsx from "clsx";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
 
+const linkGroups = [
+  {
+    heading: "Find a recipe",
+    links: [
+      { label: "All recipes", href: "/all-recipes" },
+      { label: "Categories", href: "/categories" },
+      { label: "Cuisines", href: "/cuisines" },
+      { label: "Articles", href: "/articles" },
+    ],
+  },
+  {
+    heading: "Help",
+    links: [
+      { label: "Contact", href: "#" },
+      { label: "FAQ", href: "#" },
+      { label: "Privacy policy", href: "#" },
+    ],
+  },
+];
+
+const socialLinks = [
+  { label: "Facebook", href: "#", Icon: Facebook },
+  { label: "Twitter", href: "#", Icon: Twitter },
+  { label: "Instagram", href: "#", Icon: Instagram },
+];
+
 export const Footer = () => {
   return (
-    <footer className={clsx("w-full bg-white px-4 py-8 shadow-lg")}>
+    <footer className="w-full bg-ink px-4 pt-14 pb-8 text-white/70">
       <div className="width-content mx-auto">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          <div>
-            <h3 className="mb-4 font-semibold text-primary">About us</h3>
-            <p className="text-gray-600 text-sm">
-              We're passionate home cooks sharing our favorite tried-and-true
-              recipes, from quick weeknight dinners to impressive weekend
-              feasts. Our goal is to inspire you to get creative in the kitchen
-              and discover the joy of cooking delicious meals for yourself and
-              your loved ones.
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr_1fr]">
+          <div className="max-w-md">
+            <p className="font-display font-semibold text-2xl text-white tracking-tight">
+              Home cooking, without the fuss.
             </p>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-semibold text-primary">Quick links</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
+            <p className="mt-3 text-sm leading-relaxed">
+              We're home cooks sharing the recipes we make again and again, from
+              quick weeknight dinners to slow weekend feasts.
+            </p>
+            <div className="mt-6 flex gap-2">
+              {socialLinks.map(({ label, href, Icon }) => (
                 <Link
-                  href="/categories"
-                  className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
+                  key={label}
+                  href={href}
+                  className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-primary"
                 >
-                  Categories
+                  <Icon className="size-4" aria-hidden />
+                  <span className="sr-only">{label}</span>
                 </Link>
-              </li>
-              <li>
-                <Link
-                  href="/cuisines"
-                  className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
-                >
-                  Cuisines
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/all-recipes"
-                  className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
-                >
-                  All recipes
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-semibold text-primary">Help & Support</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  href="#"
-                  className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="relative text-gray-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:text-primary/95 hover:after:w-full"
-                >
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#"
-                  className="relative text-gray-600 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-semibold text-primary">Follow us</h3>
-            <div className="flex gap-4">
-              <Link
-                href="#"
-                className="text-gray-600 transition-all duration-300 hover:text-primary/95"
-              >
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link
-                href="#"
-                className="text-gray-600 transition-all duration-300 hover:text-primary/95"
-              >
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link
-                href="#"
-                className="text-gray-600 transition-all duration-300 hover:text-primary/95"
-              >
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </Link>
+              ))}
             </div>
           </div>
+
+          {linkGroups.map((group) => (
+            <div key={group.heading}>
+              <h3 className="mb-4 font-semibold text-sm text-white">
+                {group.heading}
+              </h3>
+              <ul className="space-y-2.5 text-sm">
+                {group.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="underline-offset-4 hover:text-white hover:underline"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-8 border-gray-600 border-t pt-8 text-center text-gray-600 text-sm">
-          &copy; {new Date().getFullYear()}{" "}
-          <span className="text-primary">easy and tasty</span>. All rights
-          reserved.
+        <div className="mt-12 border-white/15 border-t pt-6 text-sm">
+          &copy; {new Date().getFullYear()} easy and tasty. All rights reserved.
         </div>
       </div>
     </footer>

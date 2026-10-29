@@ -12,7 +12,6 @@ import {
   RecipeViewTracker,
 } from "@/components/app";
 import { RetryImage } from "@/components/app/RetryImage";
-import { Separator } from "@/components/ui";
 import { getRecipe, getSuggestedRecipes } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
@@ -51,12 +50,22 @@ export default async function ({
     notFound();
   }
 
+  const formatDate = (date: Date) =>
+    new Date(date).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+
   return (
-    <div className="flex max-lg:flex-col max-lg:gap-4 lg:gap-10">
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14">
       <RecipeViewTracker recipeId={recipe.id} />
-      <div className="grow">
+      <div className="min-w-0">
         <Breadcrumbs
-          paths={[{ label: "Recipe" }, { label: recipe.title, active: true }]}
+          paths={[
+            { label: "All recipes", href: "/all-recipes" },
+            { label: recipe.title, active: true },
+          ]}
           shareConfig={{
             path: `/recipe/${recipe.slug}`,
             text: "Check out this awesome recipe!",
@@ -64,69 +73,70 @@ export default async function ({
           }}
           recipeId={recipe.id}
         />
-        <h2 className="mb-4 font-semibold text-2xl">{recipe.title}</h2>
-        <RecipeInformation recipe={recipe} className="justify-start! mb-2" />
-        {recipe.createdAt && (
-          <div className="mb-4 text-muted-foreground text-xs">
-            <span>
-              Added on{" "}
-              {new Date(recipe.createdAt).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </span>
-            {recipe.updatedAt && recipe.updatedAt !== recipe.createdAt && (
-              <span className="ml-2">
-                • Updated on{" "}
-                {new Date(recipe.updatedAt).toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
-            )}
-          </div>
+        <h1 className="max-w-3xl font-bold font-display text-4xl leading-[1.05] tracking-tight md:text-6xl">
+          {recipe.title}
+        </h1>
+        {recipe.description && (
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+            {recipe.description}
+          </p>
         )}
-        <div className="mb-4 max-h-175 overflow-hidden rounded-lg">
+        {recipe.createdAt && (
+          <p className="mt-3 text-muted-foreground text-sm">
+            Added {formatDate(recipe.createdAt)}
+            {recipe.updatedAt &&
+              recipe.updatedAt !== recipe.createdAt &&
+              `, updated ${formatDate(recipe.updatedAt)}`}
+          </p>
+        )}
+        <div className="mt-8 overflow-hidden rounded-3xl bg-muted">
           <RetryImage
             src={recipe.image}
-            width={900}
-            height={700}
+            width={1200}
+            height={800}
             alt={recipe.title}
-            sizes="(max-width: 900px) 100vw, 900px"
+            sizes="(max-width: 1024px) 100vw, 900px"
             priority
-            className="mx-auto max-h-175 min-h-full w-full object-cover max-sm:w-full"
+            className="aspect-3/2 w-full object-cover"
           />
         </div>
-        <article className="prose prose-slate mt-6 max-w-full">
+        <RecipeInformation recipe={recipe} className="mt-4" />
+        <article className="prose prose-lg mt-10 max-w-[68ch] prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary">
           <MarkdownContent>{recipe.content}</MarkdownContent>
         </article>
-        <div className="mt-6 flex select-none flex-wrap gap-4 font-bold text-sm text-white">
-          {recipe.categories.map((category) => (
-            <Link key={category.name} href={`/categories/${category.slug}`}>
-              <div className="rounded bg-primary px-2 py-1 hover:bg-primary/75">
-                {category.name}
-              </div>
-            </Link>
-          ))}
-          {recipe.cuisines.map((cuisine) => (
-            <Link key={cuisine.name} href={`/cuisines/${cuisine.slug}`}>
-              <div className="rounded bg-primary px-2 py-1 hover:bg-primary/75">
-                {cuisine.name}
-              </div>
-            </Link>
-          ))}
-        </div>
+        {(recipe.categories.length > 0 || recipe.cuisines.length > 0) && (
+          <ul
+            aria-label="Categories and cuisines"
+            className="mt-10 flex flex-wrap gap-2 text-sm"
+          >
+            {recipe.categories.map((category) => (
+              <li key={category.name}>
+                <Link
+                  href={`/categories/${category.slug}`}
+                  className="block rounded-full border border-basil/30 px-3.5 py-1.5 font-medium text-basil transition-colors hover:bg-basil hover:text-white"
+                >
+                  {category.name}
+                </Link>
+              </li>
+            ))}
+            {recipe.cuisines.map((cuisine) => (
+              <li key={cuisine.name}>
+                <Link
+                  href={`/cuisines/${cuisine.slug}`}
+                  className="block rounded-full border border-basil/30 px-3.5 py-1.5 font-medium text-basil transition-colors hover:bg-basil hover:text-white"
+                >
+                  {cuisine.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
         <RateRecipe recipeId={recipe.id} />
         <RecipeComments recipeId={recipe.id} />
       </div>
-      <Separator orientation="horizontal" className="lg:hidden" />
-      <RecipesList
-        heading="Try out our other recipes!"
-        className="mb-4 min-w-[20rem] lg:pt-4"
-        recipes={recipes}
-      />
+      <aside className="lg:sticky lg:top-28 lg:self-start">
+        <RecipesList heading="Cook this next" recipes={recipes} />
+      </aside>
     </div>
   );
 }

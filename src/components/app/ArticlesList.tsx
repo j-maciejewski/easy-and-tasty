@@ -2,6 +2,7 @@ import clsx from "clsx";
 
 import { ArticleCard } from "./ArticleCard";
 import { ArticleListItem } from "./ArticleListItem";
+import { SectionHeading } from "./SectionHeading";
 
 interface ArticlesListProps {
   articles: ArticleListItem.Article[];
@@ -19,21 +20,20 @@ export const ArticlesList = ({
   variant = "list",
 }: ArticlesListProps) => {
   if (!articles.length) {
-    return <div className={clsx("@container text-sm", className)} />;
+    return <div className={clsx("@container", className)} />;
   }
 
   return (
-    <div className={clsx("@container text-sm", className)}>
-      {heading && <h3 className="font-semibold text-xl">{heading}</h3>}
-      {subheading && <p className="mt-2 text-sm">{subheading}</p>}
+    <div className={clsx("@container", className)}>
+      <SectionHeading heading={heading} subheading={subheading} />
       {variant === "cards" ? (
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {articles.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
         </div>
       ) : (
-        <div className="mt-4 @max-lg:flex @lg:grid @lg:grid-cols-2 @max-lg:flex-col gap-3">
+        <div className="-mx-2 @max-lg:flex @lg:grid @lg:grid-cols-2 @max-lg:flex-col gap-1">
           {articles.map((article) => (
             <ArticleListItem key={article.id} article={article} />
           ))}

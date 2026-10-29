@@ -1,8 +1,7 @@
-import { Timer } from "lucide-react";
 import Link from "next/link";
 
-import { Rating } from "../Rating";
 import { RetryImage } from "../RetryImage";
+import { RecipeMeta } from "./RecipeMeta";
 
 interface RecipeCardProps {
   recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt" | "publishedAt"> &
@@ -10,42 +9,24 @@ interface RecipeCardProps {
 }
 export const RecipeCard = ({ recipe }: RecipeCardProps) => {
   return (
-    <Link href={`/recipe/${recipe.slug}`}>
-      <div className="card m-px overflow-hidden transition-colors duration-200 hover:bg-gray-100">
-        <div className="w-full">
-          <RetryImage
-            src={recipe.image}
-            width={400}
-            height={300}
-            alt={recipe.title}
-            loading="lazy"
-            className="max-h-75 min-h-75 w-full object-cover"
-          />
-        </div>
-        <div className="flex grow flex-col items-start justify-center p-3 text-center max-md:bottom-0 max-md:w-full max-md:px-4">
-          <h3 className="mb-2 font-medium text-base text-foreground tracking-wide max-md:mb-2">
-            {recipe.title}
-          </h3>
-          <div className="flex justify-center gap-2 text-gray-600 text-sm">
-            <div className="flex gap-2">
-              <Rating rating={recipe.avgRating} />
-              {recipe.ratingsCount !== 0 && (
-                <>
-                  <div className="h-4 w-px bg-gray-400" />
-                  <p className="whitespace-nowrap">
-                    {recipe.ratingsCount} Ratings
-                  </p>
-                </>
-              )}
-            </div>
-            <div className="h-4 w-px bg-gray-400" />
-            <div className="flex items-center">
-              <Timer className="mr-1 size-4" />
-              <span className="whitespace-nowrap">{recipe.time} minutes</span>
-            </div>
-          </div>
-        </div>
+    <Link
+      href={`/recipe/${recipe.slug}`}
+      className="group block rounded-2xl outline-offset-4"
+    >
+      <div className="aspect-4/3 overflow-hidden rounded-2xl bg-muted">
+        <RetryImage
+          src={recipe.image}
+          width={480}
+          height={360}
+          alt={recipe.title}
+          loading="lazy"
+          className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.04] motion-reduce:transition-none"
+        />
       </div>
+      <h3 className="mt-3 line-clamp-2 font-display font-semibold text-lg leading-snug decoration-2 decoration-primary underline-offset-4 group-hover:underline">
+        {recipe.title}
+      </h3>
+      <RecipeMeta recipe={recipe} className="mt-1.5" />
     </Link>
   );
 };

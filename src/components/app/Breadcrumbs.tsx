@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 import { BookmarkButton } from "./BookmarkButton";
@@ -26,32 +26,35 @@ export const Breadcrumbs = ({
   if (paths.length === 0) return null;
 
   return (
-    <div className="mb-4 flex items-center justify-between">
-      <ul className="flex text-gray-600 text-sm">
-        <li className="items-center font-semibold">
-          <Link href="/" className="hover:text-gray-800">
-            Home
-          </Link>
-        </li>
-        {paths.map((path) => (
-          <li
-            key={path.label}
-            className="items-end pl-1 font-semibold before:mr-1 before:content-['\00BB']"
-          >
-            {path.href ? (
-              <Link href={path.href} className="hover:text-black">
-                {path.label}
-              </Link>
-            ) : (
-              <span className={clsx({ "text-black": path.active })}>
-                {path.label}
-              </span>
-            )}
+    <div className="mb-6 flex items-center justify-between gap-4">
+      <nav aria-label="Breadcrumb" className="min-w-0">
+        <ol className="flex items-center gap-1 text-muted-foreground text-sm">
+          <li>
+            <Link href="/" className="hover:text-foreground">
+              Home
+            </Link>
           </li>
-        ))}
-      </ul>
-      <div className="flex items-center gap-2">
-        {recipeId && <BookmarkButton recipeId={recipeId} />}
+          {paths.map((path) => (
+            <li key={path.label} className="flex min-w-0 items-center gap-1">
+              <ChevronRight className="size-3.5 shrink-0" aria-hidden />
+              {path.href ? (
+                <Link href={path.href} className="hover:text-foreground">
+                  {path.label}
+                </Link>
+              ) : (
+                <span
+                  className="truncate text-foreground"
+                  aria-current={path.active ? "page" : undefined}
+                >
+                  {path.label}
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+      <div className="flex shrink-0 items-center gap-1">
+        {recipeId && <BookmarkButton recipeId={recipeId} className="size-9" />}
         {shareConfig && <ShareDialog shareConfig={shareConfig} />}
       </div>
     </div>

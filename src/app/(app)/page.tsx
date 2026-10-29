@@ -17,8 +17,6 @@ import { getHomeSections, getSeo } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
-import { merienda } from "../fonts";
-
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getSeo("home");
 
@@ -89,16 +87,16 @@ export default async function () {
   );
 
   const ctaToneClasses: Record<"tomato" | "sage" | "amber", string> = {
-    tomato: "bg-red-300 text-white",
-    sage: "bg-green-300 text-green-950",
-    amber: "bg-amber-300 text-amber-950",
+    tomato: "bg-primary text-primary-foreground",
+    sage: "bg-basil text-white",
+    amber: "bg-saffron text-ink",
   };
 
   function renderSection(section: HomeSection, index: number) {
     switch (section.type) {
       case "banner":
         return (
-          <FullWidthWrapper key={section.id}>
+          <FullWidthWrapper key={section.id} className="first:-mt-4">
             <Banner
               title={section.title}
               text={section.text}
@@ -113,7 +111,7 @@ export default async function () {
         if (!recipes.length) return null;
 
         return (
-          <div key={section.id} className="space-y-4">
+          <div key={section.id} className="space-y-6">
             {recipes.map((recipe) => (
               <RecipeCardFull key={recipe.id} recipe={recipe} />
             ))}
@@ -132,7 +130,7 @@ export default async function () {
         return (
           <div
             key={section.id}
-            className="grid gap-4 max-md:grid-cols-1 md:grid-cols-3"
+            className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"
           >
             {recipeGrid.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
@@ -163,18 +161,18 @@ export default async function () {
           <FullWidthWrapper
             key={section.id}
             className={clsx(
-              "flex h-40 flex-col items-center justify-center gap-3 font-bold",
+              "py-14 md:py-20",
               ctaToneClasses[section.tone],
             )}
           >
-            <div className="flex flex-col items-center p-4 text-center">
-              <span className={clsx("mb-2 text-xl", merienda.className)}>
+            <div className="width-content mx-auto px-4">
+              <p className="max-w-3xl font-bold font-display text-3xl leading-tight tracking-tight md:text-5xl">
                 {section.title}
-              </span>
+              </p>
               {section.subtitle && (
-                <span className="font-normal text-base">
+                <p className="mt-4 max-w-2xl text-lg opacity-90">
                   {section.subtitle}
-                </span>
+                </p>
               )}
             </div>
           </FullWidthWrapper>
@@ -207,7 +205,7 @@ export default async function () {
   }
 
   return (
-    <div className="flex w-full grow flex-col gap-4">
+    <div className="flex w-full grow flex-col gap-14 md:gap-20">
       {homeSections.map((section, index) => renderSection(section, index))}
     </div>
   );

@@ -13,21 +13,16 @@ export default function () {
         className="mb-6 max-md:size-40 md:size-60"
       />
 
-      <h2 className="mb-8 text-center font-bold text-6xl text-primary">
+      <h1 className="mb-4 text-center font-bold font-display text-5xl text-primary tracking-tight md:text-6xl">
         Page not found
-      </h2>
-      <p className="mb-8 text-center text-gray-600 text-lg">
-        The page you are looking for may have been moved or deleted
+      </h1>
+      <p className="mb-8 max-w-md text-center text-lg text-muted-foreground">
+        This page may have moved, or the link may be wrong. Head back home to
+        find something to cook.
       </p>
-      <Link href="/">
-        <Button
-          variant="default"
-          size="lg"
-          className="rounded-full font-semibold text-xl"
-        >
-          Back to home
-        </Button>
-      </Link>
+      <Button asChild size="lg" className="rounded-full px-6 font-semibold">
+        <Link href="/">Back to home</Link>
+      </Button>
     </div>
   );
 }

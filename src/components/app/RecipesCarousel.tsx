@@ -20,6 +20,7 @@ export interface RecipesCarouselProps {
 export const RecipesCarousel = ({ recipes }: RecipesCarouselProps) => {
   return (
     <Carousel
+      className="overflow-hidden rounded-3xl"
       opts={{ duration: 75, loop: true }}
       plugins={[
         Autoplay({

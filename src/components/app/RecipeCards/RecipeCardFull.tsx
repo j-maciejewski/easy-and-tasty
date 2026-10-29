@@ -1,10 +1,9 @@
-import { ChevronRight, Timer } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui";
 
-import { Rating } from "../Rating";
 import { RetryImage } from "../RetryImage";
+import { RecipeMeta } from "./RecipeMeta";
 
 interface RecipeCardFullProps {
   recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
@@ -12,54 +11,35 @@ interface RecipeCardFullProps {
 }
 export const RecipeCardFull = ({ recipe }: RecipeCardFullProps) => {
   return (
-    <div className="card m-px flex overflow-hidden">
-      <div className="max-md:w-full md:w-2/5 md:min-w-[40%]">
+    <div className="grid overflow-hidden rounded-3xl bg-card md:grid-cols-[3fr_2fr]">
+      <Link
+        href={`/recipe/${recipe.slug}`}
+        tabIndex={-1}
+        aria-hidden
+        className="relative block aspect-4/3 overflow-hidden md:aspect-auto md:min-h-80"
+      >
         <RetryImage
           src={recipe.image}
-          width={400}
-          height={300}
+          width={800}
+          height={560}
           alt={recipe.title}
           loading="lazy"
-          className="max-h-[300px] min-h-[300px] w-full object-cover max-sm:w-full md:max-h-64"
+          className="absolute inset-0 size-full object-cover"
         />
-      </div>
-      <div className="flex grow flex-col justify-center text-center max-md:w-full max-md:p-3 max-md:px-4 lg:p-8 xl:p-10">
-        <h3 className="mb-4 text-center font-medium text-base text-foreground tracking-wide max-md:mb-2 md:text-2xl xl:text-4xl">
+      </Link>
+      <div className="flex flex-col justify-center gap-4 p-6 md:p-10">
+        <h3 className="font-display font-semibold text-2xl leading-tight tracking-tight lg:text-4xl">
           {recipe.title}
         </h3>
-        <p className="mb-4 text-gray-600 text-sm">{recipe.description}</p>
-        <div className="flex justify-center gap-2 text-gray-600 text-sm">
-          <div className="flex gap-2">
-            <Rating rating={recipe.avgRating} />
-            {recipe.ratingsCount !== 0 && (
-              <>
-                <div className="h-4 w-px bg-gray-400" />
-                <p className="whitespace-nowrap">
-                  {recipe.ratingsCount} Ratings
-                </p>
-              </>
-            )}
-          </div>
-          <div className="h-4 w-px bg-gray-400" />
-          <div className="flex items-center">
-            <Timer className="mr-1 size-4" />
-            <span className="whitespace-nowrap">{recipe.time} minutes</span>
-          </div>
-        </div>
-        <div className="mx-auto mt-10 ml-auto">
-          <Link href={`/recipe/${recipe.slug}`}>
-            <Button
-              type="button"
-              className="pointer-events-auto block w-fit cursor-pointer rounded-full text-center font-semibold"
-              asChild
-            >
-              <span className="flex">
-                See Recipe
-                <ChevronRight className="h-5 stroke-[3px]" />
-              </span>
-            </Button>
-          </Link>
-        </div>
+        {recipe.description && (
+          <p className="line-clamp-4 text-base text-muted-foreground">
+            {recipe.description}
+          </p>
+        )}
+        <RecipeMeta recipe={recipe} />
+        <Button asChild size="lg" className="mt-2 w-fit rounded-full px-6">
+          <Link href={`/recipe/${recipe.slug}`}>Get the recipe</Link>
+        </Button>
       </div>
     </div>
   );

@@ -1,8 +1,13 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import { Breadcrumbs, InfiniteRecipeList, SortSelect } from "@/components/app";
-import { Separator } from "@/components/ui";
+import {
+  Breadcrumbs,
+  EmptyState,
+  InfiniteRecipeList,
+  PageHeading,
+  SortSelect,
+} from "@/components/app";
 import { getSeo, getTotalRecipesCount } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
 
@@ -25,26 +30,33 @@ export default async function () {
   return (
     <div className="w-full">
       <Breadcrumbs paths={[{ label: "All recipes", active: true }]} />
-      <h2 className="mb-4 font-semibold text-2xl tracking-normal">
-        Explore all recipes
-      </h2>
-      <Separator className="my-4" />
+      <PageHeading
+        title={"All recipes"}
+        description={
+          "Every recipe on the site, newest first. Sort them however suits you."
+        }
+      >
+        {recipesCount !== 0 && (
+          <Suspense>
+            <SortSelect />
+          </Suspense>
+        )}
+      </PageHeading>
       {recipesCount !== 0 ? (
         <>
-          <div className="mb-4 flex justify-between">
-            <p className="content-center text-md">
-              {recipesCount && `Recipes: ${recipesCount}`}
-            </p>
-            <Suspense>
-              <SortSelect />
-            </Suspense>
-          </div>
+          <p className="mb-6 text-muted-foreground text-sm">
+            {recipesCount} {recipesCount === 1 ? "recipe" : "recipes"}
+          </p>
           <Suspense>
             <InfiniteRecipeList type="all" />
           </Suspense>
         </>
       ) : (
-        "No recipes found"
+        <EmptyState
+          title="No recipes here yet"
+          description="New recipes are added regularly. Browse everything we have in the meantime."
+          action={{ label: "Browse all recipes", href: "/all-recipes" }}
+        />
       )}
     </div>
   );

@@ -206,8 +206,8 @@ export const ArticleComments = ({
   };
 
   return (
-    <div className="mt-8">
-      <h3 className="mb-4 font-semibold text-xl">
+    <div className="mt-12 border-t pt-10">
+      <h3 className="mb-5 font-display font-semibold text-2xl tracking-tight">
         Comments ({comments.length})
       </h3>
 

@@ -41,11 +41,18 @@ export const InfiniteArticleList = () => {
   }, [hasNextPage, isFetching, fetchNextPage]);
 
   if (isLoading) {
-    return <LoaderCircle className="mx-auto my-4 animate-spin text-gray-500" />;
+    return (
+      <LoaderCircle className="mx-auto my-4 animate-spin text-muted-foreground" />
+    );
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <p className="text-destructive">
+        Articles couldn't be loaded: {error.message}. Refresh the page to try
+        again.
+      </p>
+    );
   }
 
   if (!data) {
@@ -59,7 +66,7 @@ export const InfiniteArticleList = () => {
         variant="cards"
       />
       {isFetching && (
-        <LoaderCircle className="mx-auto my-4 animate-spin text-gray-500" />
+        <LoaderCircle className="mx-auto my-4 animate-spin text-muted-foreground" />
       )}
     </>
   );

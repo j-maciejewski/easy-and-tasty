@@ -38,7 +38,7 @@ export const AvatarDropdown = ({ user }: AvatarDropdownProps) => {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-white" align="end" forceMount>
+      <DropdownMenuContent className="w-56 rounded-xl" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="font-medium text-sm leading-none">{user.name}</p>
@@ -59,11 +59,11 @@ export const AvatarDropdown = ({ user }: AvatarDropdownProps) => {
         <Link href="/bookmarks">
           <DropdownMenuItem className="cursor-pointer">
             <Bookmark className="mr-2 h-4 w-4" />
-            <span>My Bookmarks</span>
+            <span>Saved recipes</span>
           </DropdownMenuItem>
         </Link>
         <DropdownMenuItem
-          className="cursor-pointer text-red-600 focus:text-red-600"
+          className="cursor-pointer text-destructive focus:text-destructive"
           onClick={() => signOut()}
         >
           <LogOut className="mr-2 h-4 w-4" />

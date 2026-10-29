@@ -32,16 +32,24 @@ export const Searchbar = () => {
   const SearchResults = useMemo(() => {
     if (isLoading || query !== debouncedValue) {
       return (
-        <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />
+        <LoaderCircle className="mx-auto my-3 animate-spin text-muted-foreground" />
       );
     }
 
     if (data !== undefined && data.length === 0) {
-      return <div className="px-4 py-2 italic">No results</div>;
+      return (
+        <div className="px-4 py-3 text-muted-foreground text-sm">
+          No recipes match that. Try a single ingredient, like "chicken".
+        </div>
+      );
     }
 
     if (error) {
-      return <div className="px-4 py-2 italic">An error occured</div>;
+      return (
+        <div className="px-4 py-3 text-destructive text-sm">
+          Search isn't available right now. Try again in a moment.
+        </div>
+      );
     }
 
     return (
@@ -50,9 +58,9 @@ export const Searchbar = () => {
           <Link
             key={recipe.id}
             href={`/recipe/${recipe.slug}`}
-            className="text-sm hover:bg-gray-50 [&:not(:last-child)>div]:border-b"
+            className="block rounded-xl px-3 py-2.5 text-sm hover:bg-accent focus-visible:bg-accent"
           >
-            <div className="p-3 hover:bg-gray-100">{recipe.title}</div>
+            {recipe.title}
           </Link>
         ))}
       </>
@@ -60,18 +68,19 @@ export const Searchbar = () => {
   }, [isLoading, data, error, query, debouncedValue]);
 
   return (
-    <div className={"relative mr-4 max-sm:w-full"}>
-      <Search className="absolute top-2.5 left-2.5 h-4 w-4 text-muted-foreground" />
+    <div className={"relative mx-6 max-sm:w-full"}>
+      <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         type="search"
-        placeholder="Search recipes..."
-        className="peer/input h-fit w-full rounded-lg bg-input py-2 pl-8 focus-visible:ring-primary/75 md:w-[300px] lg:w-[360px]"
+        aria-label="Search recipes"
+        placeholder="Search recipes, e.g. lasagne"
+        className="peer/input h-11 w-full rounded-full border-transparent bg-muted pl-10 shadow-none focus-visible:border-ring focus-visible:bg-card focus-visible:ring-primary/30 md:w-80 lg:w-[28rem]"
         value={query}
         onChange={handleChange}
       />
       {query.length >= 3 && (
         <div className="absolute top-full z-50 hidden w-full hover:block peer-focus/input:block">
-          <div className="mt-2 max-h-64 overflow-auto rounded-lg border bg-white shadow-inner">
+          <div className="mt-2 max-h-80 overflow-auto rounded-2xl border bg-popover p-1.5 shadow-lg">
             {SearchResults}
           </div>
         </div>

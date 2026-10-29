@@ -68,11 +68,18 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
   }, [hasNextPage, fetchNextPage]);
 
   if (isLoading) {
-    return <LoaderCircle className="mx-auto my-4 animate-spin text-gray-500" />;
+    return (
+      <LoaderCircle className="mx-auto my-4 animate-spin text-muted-foreground" />
+    );
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return (
+      <p className="text-destructive">
+        Recipes couldn't be loaded: {error.message}. Refresh the page to try
+        again.
+      </p>
+    );
   }
 
   if (!recipes) {
@@ -81,7 +88,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-x-6 gap-y-10">
         {recipes.pages
           .flatMap((page) => page.recipes)
           .map((recipe) => (
@@ -89,7 +96,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
           ))}
       </div>
       {isFetching && (
-        <LoaderCircle className="mx-auto my-4 animate-spin text-gray-500" />
+        <LoaderCircle className="mx-auto my-4 animate-spin text-muted-foreground" />
       )}
     </>
   );

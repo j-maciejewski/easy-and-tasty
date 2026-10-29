@@ -1,8 +1,12 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import { Breadcrumbs, InfiniteArticleList } from "@/components/app";
-import { Separator } from "@/components/ui";
+import {
+  Breadcrumbs,
+  EmptyState,
+  InfiniteArticleList,
+  PageHeading,
+} from "@/components/app";
 import { getSeo, getTotalArticlesCount } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
 
@@ -25,16 +29,20 @@ export default async function () {
   return (
     <div className="w-full">
       <Breadcrumbs paths={[{ label: "Articles", active: true }]} />
-      <h2 className="mb-4 font-semibold text-2xl tracking-normal">
-        Explore the latest articles
-      </h2>
-      <Separator />
+      <PageHeading
+        title="Articles"
+        description="Kitchen know-how, ingredient guides and the stories behind our recipes."
+      />
       {articlesCount !== 0 ? (
         <Suspense>
           <InfiniteArticleList />
         </Suspense>
       ) : (
-        "No articles found"
+        <EmptyState
+          title="No articles yet"
+          description="We're writing the first ones now. Find something to cook in the meantime."
+          action={{ label: "Browse all recipes", href: "/all-recipes" }}
+        />
       )}
     </div>
   );

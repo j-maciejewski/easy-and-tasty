@@ -1,12 +1,14 @@
 "use client";
 
 import { Bookmark } from "lucide-react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import { RecipeCard } from "@/components/app";
+import { EmptyState, PageHeading, RecipeCard } from "@/components/app";
 import { Path } from "@/config";
 import { api } from "@/trpc/react";
+
+const recipeGridClassName =
+  "grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3";
 
 export default function BookmarksPage() {
   const { data: session, status } = useSession();
@@ -15,13 +17,23 @@ export default function BookmarksPage() {
       enabled: !!session,
     });
 
+  const heading = (
+    <PageHeading
+      title="Saved recipes"
+      description="Everything you've bookmarked, ready for your next shop."
+    />
+  );
+
   if (status === "loading" || isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-4 font-semibold text-2xl">My Bookmarks</h1>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="w-full">
+        {heading}
+        <div className={recipeGridClassName}>
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-96 animate-pulse rounded-lg bg-muted" />
+            <div key={i}>
+              <div className="aspect-4/3 animate-pulse rounded-2xl bg-muted" />
+              <div className="mt-3 h-5 w-3/4 animate-pulse rounded-full bg-muted" />
+            </div>
           ))}
         </div>
       </div>
@@ -30,43 +42,31 @@ export default function BookmarksPage() {
 
   if (!session) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-4 font-semibold text-2xl">My Bookmarks</h1>
-        <div className="rounded-lg border bg-card p-8 text-center">
-          <p className="mb-4 text-muted-foreground">
-            Please sign in to view your bookmarked recipes
-          </p>
-          <Link
-            href={Path.LOGIN}
-            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground text-sm ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            Sign In
-          </Link>
-        </div>
+      <div className="w-full">
+        {heading}
+        <EmptyState
+          icon={Bookmark}
+          title="Sign in to see your saved recipes"
+          description="Bookmark recipes as you browse and they'll be waiting for you here."
+          action={{ label: "Sign in", href: Path.LOGIN }}
+        />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="mb-4 font-semibold text-2xl">My Bookmarks</h1>
+    <div className="w-full">
+      {heading}
 
       {!bookmarkedRecipes || bookmarkedRecipes.length === 0 ? (
-        <div className="rounded-lg border bg-card p-8 text-center">
-          <Bookmark className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
-          <p className="mb-2 font-medium text-lg">No bookmarks yet</p>
-          <p className="mb-4 text-muted-foreground">
-            Start bookmarking your favorite recipes to see them here
-          </p>
-          <Link
-            href="/all-recipes"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground text-sm ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            Browse Recipes
-          </Link>
-        </div>
+        <EmptyState
+          icon={Bookmark}
+          title="No saved recipes yet"
+          description="Tap the bookmark icon on any recipe to keep it here."
+          action={{ label: "Browse all recipes", href: "/all-recipes" }}
+        />
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={recipeGridClassName}>
           {bookmarkedRecipes.map((recipe) => (
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}

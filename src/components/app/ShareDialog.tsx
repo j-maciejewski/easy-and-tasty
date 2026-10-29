@@ -65,7 +65,7 @@ export const ShareDialog = ({ shareConfig }: ShareDialogProps) => {
           <DialogTrigger asChild>
             <Button
               variant="ghost"
-              className="size-6"
+              className="size-9"
               aria-label={`Share ${type}`}
             >
               <Share2 className="absolute size-4" />

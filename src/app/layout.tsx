@@ -9,6 +9,8 @@ import { TRPCReactProvider } from "@/trpc/react";
 import "@/styles/globals.css";
 import { Metadata } from "next";
 
+import { bricolage } from "./fonts";
+
 export const metadata: Metadata = {
   title: APP_NAME,
   description: APP_DESCRIPTION,
@@ -19,7 +21,7 @@ export default function ({ children }: React.PropsWithChildren) {
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable}`}
+      className={`${GeistSans.variable} ${bricolage.variable}`}
       suppressHydrationWarning
     >
       <body className="overflow-x-hidden!">

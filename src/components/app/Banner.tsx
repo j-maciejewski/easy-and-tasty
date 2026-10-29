@@ -1,8 +1,6 @@
 import clsx from "clsx";
 import Link from "next/link";
 
-import { merienda } from "@/app/fonts";
-
 import { RetryImage } from "./RetryImage";
 
 interface BannerProps {
@@ -23,32 +21,30 @@ export const Banner = ({
   priority,
 }: BannerProps) => {
   return (
-    <div className={clsx("w-full text-foreground", className)}>
-      <Link href={href} className="relative block">
+    <div className={clsx("w-full", className)}>
+      <Link href={href} className="group relative block">
         <RetryImage
           src={image}
           alt={title}
           width={2000}
-          height={500}
+          height={700}
           sizes="100vw"
           priority={priority}
-          className="w-full object-cover max-md:h-48 md:h-120"
+          className="h-72 w-full object-cover md:h-[34rem]"
         />
-        <div className="absolute bottom-5 left-[50%] max-w-160 translate-x-[-50%] bg-secondary/90 p-3 md:w-[calc(100%-2rem)]">
-          <div className="flex flex-col items-center p-3 ring ring-primary">
-            <span
-              className={clsx(
-                "text-center font-semibold text-2xl",
-                merienda.className,
-              )}
-            >
+        <div className="width-content mx-auto px-4 max-md:-mt-12 md:absolute md:inset-x-0 md:bottom-10">
+          <div className="relative max-w-xl rounded-3xl bg-primary p-6 text-primary-foreground md:p-8">
+            <span className="block font-bold font-display text-3xl leading-[1.05] tracking-tight md:text-5xl">
               {title}
             </span>
             {text && (
-              <span className="mt-2 text-justify text-base max-md:hidden">
+              <span className="mt-3 block text-base text-primary-foreground/90 max-md:line-clamp-3 md:text-lg">
                 {text}
               </span>
             )}
+            <span className="mt-5 inline-block font-semibold underline decoration-2 underline-offset-4 group-hover:decoration-4">
+              Start cooking
+            </span>
           </div>
         </div>
       </Link>

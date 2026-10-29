@@ -1,9 +1,7 @@
 import Link from "next/link";
 
-import { Card, CardHeader } from "@/components/ui";
-
-import { Rating } from "../Rating";
 import { RetryImage } from "../RetryImage";
+import { RecipeMeta } from "./RecipeMeta";
 
 interface RecipesListItemProps {
   recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
@@ -12,33 +10,24 @@ interface RecipesListItemProps {
 
 export const RecipeListItem = ({ recipe }: RecipesListItemProps) => {
   return (
-    <Link key={recipe.id} href={`/recipe/${recipe.slug}`}>
-      <Card className="card py-0 transition-colors duration-200 hover:bg-gray-100">
-        <div className="flex items-center gap-2 rounded-lg">
-          <RetryImage
-            src={recipe.image}
-            width={80}
-            height={80}
-            alt={recipe.title}
-            loading="lazy"
-            className="size-20 min-w-20 rounded-l-lg object-cover"
-          />
-          <CardHeader className="grow p-2 text-sm">
-            <h6 className="font-medium text-sm">{recipe.title}</h6>
-            <div className="flex gap-2">
-              <Rating rating={recipe.avgRating} />
-              {recipe.ratingsCount !== 0 && (
-                <>
-                  <div className="h-4 w-px bg-gray-400" />
-                  <p className="whitespace-nowrap">
-                    {recipe.ratingsCount} Ratings
-                  </p>
-                </>
-              )}
-            </div>
-          </CardHeader>
-        </div>
-      </Card>
+    <Link
+      href={`/recipe/${recipe.slug}`}
+      className="group flex items-center gap-3 rounded-2xl p-2 transition-colors hover:bg-card"
+    >
+      <RetryImage
+        src={recipe.image}
+        width={96}
+        height={96}
+        alt={recipe.title}
+        loading="lazy"
+        className="size-20 shrink-0 rounded-xl object-cover"
+      />
+      <div className="min-w-0">
+        <h3 className="line-clamp-2 font-display font-semibold text-base leading-snug group-hover:text-primary">
+          {recipe.title}
+        </h3>
+        <RecipeMeta recipe={recipe} className="mt-1 text-xs" />
+      </div>
     </Link>
   );
 };
