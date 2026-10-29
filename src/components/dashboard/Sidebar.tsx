@@ -80,7 +80,7 @@ export const Sidebar = () => {
           <Link href={Path.HOME}>
             <SidebarMenuButton
               size="lg"
-              className="pointer-events-none font-semibold text-2xl"
+              className="pointer-events-none text-2xl font-semibold"
             >
               <ChefHat className="ml-1 size-6!" />
               <span>easy and tasty</span>

@@ -44,14 +44,14 @@ export const RecipeInformation = ({
   return (
     <dl
       className={clsx(
-        "grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-border sm:grid-cols-4",
+        "bg-border grid grid-cols-2 gap-px overflow-hidden rounded-2xl sm:grid-cols-4",
         className,
       )}
     >
       {items.map((item) => (
-        <div key={item.label} className="flex flex-col gap-1 bg-card p-4">
+        <div key={item.label} className="bg-card flex flex-col gap-1 p-4">
           <dt className="text-muted-foreground text-xs">{item.label}</dt>
-          <dd className="flex items-center gap-2 font-display font-semibold text-lg">
+          <dd className="font-display flex items-center gap-2 text-lg font-semibold">
             <span className="text-primary">{item.icon}</span>
             {item.value}
           </dd>

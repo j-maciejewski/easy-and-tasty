@@ -1,12 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.8/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
   "formatter": {
     "indentStyle": "space"
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "a11y": {
         "useSemanticElements": "off",
         "noSvgWithoutTitle": "off"
@@ -42,7 +42,7 @@
         "useLiteralKeys": "off"
       },
       "nursery": {
-        "useSortedClasses": "warn"
+        "useTailwindSortedClasses": "warn"
       },
       "style": {
         "noNonNullAssertion": "off",

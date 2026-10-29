@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 
 import {
   ArticleComments,
@@ -19,7 +20,7 @@ import { RetryImage } from "@/components/app/RetryImage";
 import { Separator } from "@/components/ui";
 import { type PageSection, parsePageSections } from "@/constants";
 import { getArticle } from "@/lib/data";
-import { parseMetadata, parseSlug } from "@/lib/utils";
+import { getImageTransitionName, parseMetadata, parseSlug } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
 export async function generateMetadata({
@@ -133,7 +134,7 @@ export default async function ({
         return (
           <div
             key={section.id}
-            className="prose prose-lg max-w-[68ch] prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary"
+            className="prose prose-lg prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary max-w-[68ch]"
           >
             <MarkdownContent>{section.content}</MarkdownContent>
           </div>
@@ -235,27 +236,33 @@ export default async function ({
             type: "article",
           }}
         />
-        <h1 className="max-w-3xl font-bold font-display text-4xl leading-[1.05] tracking-tight md:text-6xl">
+        <h1 className="font-display max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight md:text-6xl">
           {page.title}
         </h1>
         <time
           dateTime={new Date(page.createdAt).toISOString()}
-          className="mt-4 block text-muted-foreground text-sm"
+          className="text-muted-foreground mt-4 block text-sm"
         >
           {formattedCreatedAt}
         </time>
         {page.image && (
-          <div className="mt-8 overflow-hidden rounded-3xl bg-muted">
-            <RetryImage
-              src={page.image}
-              width={1200}
-              height={675}
-              alt={page.title}
-              sizes="(max-width: 1024px) 100vw, 900px"
-              priority
-              className="aspect-video w-full object-cover"
-            />
-          </div>
+          <ViewTransition
+            name={getImageTransitionName(page.slug)}
+            share="morph"
+            default="none"
+          >
+            <div className="bg-muted mt-8 overflow-hidden rounded-3xl">
+              <RetryImage
+                src={page.image}
+                width={1200}
+                height={675}
+                alt={page.title}
+                sizes="(max-width: 1024px) 100vw, 900px"
+                priority
+                className="aspect-video w-full object-cover"
+              />
+            </div>
+          </ViewTransition>
         )}
         <div className="mt-10 space-y-10">
           {sections.map((section, index) => renderSection(section, index))}

@@ -287,3 +287,33 @@
     padding-top: 6rem;
   }
 }
+
+/* Shared image morph between a card and its detail page hero */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(.morph) {
+    animation-duration: 400ms;
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+
+/* Snapshots aren't clipped like an img, so cover would paint the cropped
+   part of a differently shaped image outside the box */
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s;
+    animation-delay: 0s;
+  }
+}

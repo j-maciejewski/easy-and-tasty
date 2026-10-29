@@ -24,7 +24,7 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
     <Dialog>
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <h2 className="font-semibold text-xl">{label}</h2>
+          <h2 className="text-xl font-semibold">{label}</h2>
           <DialogTrigger asChild>
             <Button
               variant="ghost"
@@ -37,7 +37,7 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
         </div>
         <div className="space-y-4">
           <div className="space-y-2">
-            <h6 className="font-semibold text-base">Title</h6>
+            <h6 className="text-base font-semibold">Title</h6>
             {data?.title ? (
               <p className="text-foreground/75 text-sm">{data.title}</p>
             ) : (
@@ -45,7 +45,7 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
             )}
           </div>
           <div className="space-y-2">
-            <h6 className="font-semibold text-base">Description</h6>
+            <h6 className="text-base font-semibold">Description</h6>
             {data?.description ? (
               <p className="text-foreground/75 text-sm">{data.description}</p>
             ) : (
@@ -55,7 +55,7 @@ export const SeoSection = ({ label, type, data }: SeoSection.Props) => {
             )}
           </div>
           <div className="space-y-2">
-            <h6 className="font-semibold text-base">Image</h6>
+            <h6 className="text-base font-semibold">Image</h6>
             {data?.image ? (
               // biome-ignore lint/performance/noImgElement: explanation
               <img src={data.image} alt={data.title} className="max-w-100" />

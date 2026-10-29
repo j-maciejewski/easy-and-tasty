@@ -62,7 +62,7 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
     <>
       <header
         className={clsx(
-          "fixed top-0 z-50 w-full border-b bg-card transition-transform duration-300 md:hidden",
+          "bg-card fixed top-0 z-50 w-full border-b transition-transform duration-300 md:hidden",
           scrollDirection === "down" ? "-translate-y-full" : "translate-y-0",
         )}
       >

@@ -27,9 +27,9 @@ export const Header = () => {
   return (
     <header className="bg-card shadow-sm">
       <div className="mx-auto flex items-center px-4 py-4 sm:px-6 lg:px-8">
-        <SidebarTrigger className="size-9 text-foreground" />
+        <SidebarTrigger className="text-foreground size-9" />
         <Separator orientation="vertical" className="mx-4 min-h-6" />
-        <h3 className="mr-auto font-semibold text-foreground text-lg">
+        <h3 className="text-foreground mr-auto text-lg font-semibold">
           {label}
         </h3>
         <ToggleThemeButton />

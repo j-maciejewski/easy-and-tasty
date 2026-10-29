@@ -71,11 +71,11 @@ export const RateRecipe = ({ recipeId, className }: RateRecipeProps) => {
   return (
     <div
       className={cn(
-        "mt-10 flex flex-col gap-2 rounded-2xl bg-card p-5",
+        "bg-card mt-10 flex flex-col gap-2 rounded-2xl p-5",
         className,
       )}
     >
-      <p className="font-display font-semibold text-lg">Cooked it? Rate it</p>
+      <p className="font-display text-lg font-semibold">Cooked it? Rate it</p>
       <div className="flex items-center gap-0">
         {[1, 2, 3, 4, 5].map((star) => (
           <Button
@@ -100,7 +100,7 @@ export const RateRecipe = ({ recipeId, className }: RateRecipeProps) => {
           </Button>
         ))}
         {userRating && (
-          <span className="ml-2 text-muted-foreground text-sm">
+          <span className="text-muted-foreground ml-2 text-sm">
             Your rating: {userRating}/5
           </span>
         )}

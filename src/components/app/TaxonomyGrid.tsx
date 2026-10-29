@@ -12,13 +12,13 @@ export const TaxonomyGrid = ({ items, basePath }: TaxonomyGridProps) => {
         <li key={slug}>
           <Link
             href={`${basePath}/${slug}`}
-            className="group flex h-full flex-col rounded-2xl bg-card p-5 transition-colors hover:bg-primary hover:text-primary-foreground"
+            className="group bg-card hover:bg-primary hover:text-primary-foreground flex h-full flex-col rounded-2xl p-5 transition-colors"
           >
-            <span className="font-display font-semibold text-xl tracking-tight">
+            <span className="font-display text-xl font-semibold tracking-tight">
               {name}
             </span>
             {description && (
-              <span className="mt-1.5 line-clamp-2 text-muted-foreground text-sm group-hover:text-primary-foreground/85">
+              <span className="text-muted-foreground group-hover:text-primary-foreground/85 mt-1.5 line-clamp-2 text-sm">
                 {description}
               </span>
             )}

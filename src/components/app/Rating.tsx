@@ -9,10 +9,10 @@ interface RatingProps {
   rating: number;
 }
 
-const EmptyStar = <Star className="size-4 fill-border stroke-0 text-border" />;
+const EmptyStar = <Star className="fill-border text-border size-4 stroke-0" />;
 
 const FilledStar = (
-  <Star className="size-4 fill-saffron stroke-0 text-saffron" />
+  <Star className="fill-saffron text-saffron size-4 stroke-0" />
 );
 
 export const Rating = ({ rating }: RatingProps) => {

@@ -1,5 +1,6 @@
-import { Facebook, Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
+
+import { Facebook, Instagram, Twitter } from "@/components/icons";
 
 const linkGroups = [
   {
@@ -29,11 +30,11 @@ const socialLinks = [
 
 export const Footer = () => {
   return (
-    <footer className="w-full bg-ink px-4 pt-14 pb-8 text-white/70">
+    <footer className="bg-ink w-full px-4 pt-14 pb-8 text-white/70">
       <div className="width-content mx-auto">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr_1fr]">
           <div className="max-w-md">
-            <p className="font-display font-semibold text-2xl text-white tracking-tight">
+            <p className="font-display text-2xl font-semibold tracking-tight text-white">
               Home cooking, without the fuss.
             </p>
             <p className="mt-3 text-sm leading-relaxed">
@@ -45,7 +46,7 @@ export const Footer = () => {
                 <Link
                   key={label}
                   href={href}
-                  className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-primary"
+                  className="hover:bg-primary flex size-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors"
                 >
                   <Icon className="size-4" aria-hidden />
                   <span className="sr-only">{label}</span>
@@ -56,7 +57,7 @@ export const Footer = () => {
 
           {linkGroups.map((group) => (
             <div key={group.heading}>
-              <h3 className="mb-4 font-semibold text-sm text-white">
+              <h3 className="mb-4 text-sm font-semibold text-white">
                 {group.heading}
               </h3>
               <ul className="space-y-2.5 text-sm">
@@ -75,7 +76,7 @@ export const Footer = () => {
           ))}
         </div>
 
-        <div className="mt-12 border-white/15 border-t pt-6 text-sm">
+        <div className="mt-12 border-t border-white/15 pt-6 text-sm">
           &copy; {new Date().getFullYear()} easy and tasty. All rights reserved.
         </div>
       </div>

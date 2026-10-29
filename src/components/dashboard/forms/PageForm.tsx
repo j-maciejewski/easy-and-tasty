@@ -461,13 +461,13 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
                   className="cursor-grab"
                   aria-label="Drag to reorder section"
                 >
-                  <GripVertical className="size-4 text-foreground/40" />
+                  <GripVertical className="text-foreground/40 size-4" />
                 </button>
                 <div className="min-w-0 grow">
-                  <p className="font-medium text-sm">
+                  <p className="text-sm font-medium">
                     {sectionLabels[section.type]}
                   </p>
-                  <p className="truncate text-foreground/70 text-xs">
+                  <p className="text-foreground/70 truncate text-xs">
                     {getSectionSummary(section)}
                   </p>
                 </div>
@@ -524,7 +524,7 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
           control={form.control}
           name="published"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-card p-3 shadow-sm">
+            <FormItem className="bg-card flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
               <FormLabel>Publish</FormLabel>
               <FormControl>
                 <Switch

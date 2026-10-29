@@ -49,8 +49,8 @@ export const DataTable = <T,>({
                 <TableHead
                   key={column.label}
                   className={cn(
-                    "select-none text-foreground/50",
-                    column.sortKey && "cursor-pointer hover:bg-muted",
+                    "text-foreground/50 select-none",
+                    column.sortKey && "hover:bg-muted cursor-pointer",
                   )}
                   {...(column.sortKey
                     ? {

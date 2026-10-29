@@ -22,11 +22,11 @@ export const PageHeading = ({
       )}
     >
       <div className="max-w-2xl">
-        <h1 className="font-display font-semibold text-4xl tracking-tight md:text-5xl">
+        <h1 className="font-display text-4xl font-semibold tracking-tight md:text-5xl">
           {title}
         </h1>
         {description && (
-          <p className="mt-3 text-lg text-muted-foreground">{description}</p>
+          <p className="text-muted-foreground mt-3 text-lg">{description}</p>
         )}
       </div>
       {children && <div className="flex items-center gap-3">{children}</div>}

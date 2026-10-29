@@ -24,7 +24,7 @@ export const RecipesList = ({
   return (
     <div className={clsx("@container", className)}>
       <SectionHeading heading={heading} subheading={subheading} />
-      <div className="-mx-2 @max-lg:flex @lg:grid @lg:grid-cols-2 @max-lg:flex-col gap-1">
+      <div className="-mx-2 gap-1 @max-lg:flex @max-lg:flex-col @lg:grid @lg:grid-cols-2">
         {recipes.map((recipe) => (
           <RecipeListItem key={recipe.id} recipe={recipe} />
         ))}

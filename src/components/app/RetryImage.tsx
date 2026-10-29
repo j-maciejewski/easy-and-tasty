@@ -1,6 +1,7 @@
 "use client";
 
 import Image, { type ImageProps } from "next/image";
+import { useEffect, useRef } from "react";
 
 const RETRY_DELAYS = [3000, 8000, 15000];
 
@@ -8,6 +9,10 @@ const RETRY_DELAYS = [3000, 8000, 15000];
 // exceed the image optimizer's 7s upstream timeout. By the time we retry, the
 // CDN has usually cached it, so re-request instead of leaving a broken image.
 export const RetryImage = ({ onError, ...props }: ImageProps) => {
+  const retryTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => () => clearTimeout(retryTimeout.current), []);
+
   return (
     <Image
       {...props}
@@ -17,7 +22,7 @@ export const RetryImage = ({ onError, ...props }: ImageProps) => {
 
         if (attempt < RETRY_DELAYS.length) {
           image.dataset.retry = String(attempt + 1);
-          setTimeout(() => {
+          retryTimeout.current = setTimeout(() => {
             const srcset = image.getAttribute("srcset");
             if (srcset) image.setAttribute("srcset", srcset);
             image.setAttribute("src", image.getAttribute("src") ?? "");

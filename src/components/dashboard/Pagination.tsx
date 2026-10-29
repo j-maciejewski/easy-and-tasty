@@ -41,7 +41,7 @@ export const Pagination = () => {
 
   return (
     <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-      <span className="text-nowrap text-muted-foreground text-sm">
+      <span className="text-muted-foreground text-sm text-nowrap">
         Showing <span className="font-semibold">{startItem}</span> to{" "}
         <span className="font-semibold">{endItem}</span> of{" "}
         <span className="font-semibold">{totalItemsCount}</span> results
@@ -50,7 +50,7 @@ export const Pagination = () => {
         value={`${itemsPerPage}`}
         onValueChange={(value) => handleChangeLimit(Number(value))}
       >
-        <SelectTrigger className="ml-auto w-45 rounded-lg border bg-card!">
+        <SelectTrigger className="bg-card! ml-auto w-45 rounded-lg border">
           <SelectValue>Results shown: {itemsPerPage}</SelectValue>
         </SelectTrigger>
         <SelectContent className="bg-card">
@@ -60,7 +60,7 @@ export const Pagination = () => {
         </SelectContent>
       </Select>
       {totalPages !== 1 && (
-        <PaginationRoot className="mx-0 h-9 w-fit rounded-lg border bg-card">
+        <PaginationRoot className="bg-card mx-0 h-9 w-fit rounded-lg border">
           <PaginationContent className="gap-0 [&>li:not(:first-child)]:border-l">
             <PaginationItem>
               <PaginationPrevious

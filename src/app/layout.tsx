@@ -1,7 +1,5 @@
 import { GeistSans } from "geist/font/sans";
 
-// import { unstable_ViewTransition as ViewTransition } from "react";
-
 import { TooltipProvider } from "@/components/ui";
 import { APP_DESCRIPTION, APP_NAME } from "@/consts";
 import { NextAuthProvider } from "@/context";
@@ -29,7 +27,6 @@ export default function ({ children }: React.PropsWithChildren) {
           <TRPCReactProvider>
             <TooltipProvider delayDuration={300} disableHoverableContent>
               {children}
-              {/* <ViewTransition>{children}</ViewTransition> */}
             </TooltipProvider>
           </TRPCReactProvider>
         </NextAuthProvider>

@@ -17,10 +17,10 @@ const NavigationGroup = ({ label, sublinks }: NavigationGroupProps) => {
 
   return (
     <>
-      <li className="relative border-t hover:bg-accent">
+      <li className="hover:bg-accent relative border-t">
         <Button
           variant="ghost"
-          className="block aspect-square h-13 w-full rounded-none px-4 py-3.5 text-left font-display font-medium text-lg hover:no-underline"
+          className="font-display block aspect-square h-13 w-full rounded-none px-4 py-3.5 text-left text-lg font-medium hover:no-underline"
           onClick={() => setIsOpen(!isOpen)}
         >
           {label}
@@ -42,7 +42,7 @@ const NavigationGroup = ({ label, sublinks }: NavigationGroupProps) => {
           {sublinks.map((sublink) => (
             <li
               key={sublink.href}
-              className="relative border-t hover:bg-accent"
+              className="hover:bg-accent relative border-t"
             >
               <Link
                 href={sublink.href}
@@ -69,12 +69,12 @@ export const MobileNavigation = ({
 }: MobileNavigationProps) => {
   return (
     <nav
-      className="slide-in-from-right fixed top-0 right-0 left-0 z-100 flex h-full w-full animate-in flex-col bg-card duration-300"
+      className="slide-in-from-right animate-in bg-card fixed top-0 right-0 left-0 z-100 flex h-full w-full flex-col duration-300"
       role="dialog"
       aria-label="Navigation menu"
     >
       <div className="relative flex h-16 min-h-16 items-center justify-between border-b px-4">
-        <h2 className="font-display font-semibold text-xl">Menu</h2>
+        <h2 className="font-display text-xl font-semibold">Menu</h2>
         <Button
           onClick={handleClose}
           type="button"
@@ -90,11 +90,11 @@ export const MobileNavigation = ({
           link.href ? (
             <li
               key={idx}
-              className="relative border-t last:border-b hover:bg-accent"
+              className="hover:bg-accent relative border-t last:border-b"
             >
               <Link
                 href={link.href}
-                className="block h-full w-full px-4 py-3.5 font-display font-medium text-lg"
+                className="font-display block h-full w-full px-4 py-3.5 text-lg font-medium"
                 onClick={handleClose}
               >
                 {link.label}

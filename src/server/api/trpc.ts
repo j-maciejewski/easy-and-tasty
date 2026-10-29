@@ -98,7 +98,7 @@ export const isAuthenticated = middleware(async ({ ctx, next }) => {
 export const isAuthorized = middleware(async ({ ctx, next }) => {
   const session = await getServerSession(authOptions);
 
-  if (!session || session.user.role !== "editor") {
+  if (session?.user.role !== "editor") {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "You don't have permission to access this resource",

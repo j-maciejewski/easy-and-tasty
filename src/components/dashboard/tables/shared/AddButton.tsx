@@ -9,7 +9,7 @@ interface AddButtonProps {
 export const AddButton = ({ onClick }: AddButtonProps) => {
   return (
     <Button className="relative aspect-square" onClick={onClick}>
-      <Plus className="absolute size-5 stroke-2 text-foreground" />
+      <Plus className="text-foreground absolute size-5 stroke-2" />
     </Button>
   );
 };

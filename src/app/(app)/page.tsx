@@ -160,13 +160,10 @@ export default async function () {
         return (
           <FullWidthWrapper
             key={section.id}
-            className={clsx(
-              "py-14 md:py-20",
-              ctaToneClasses[section.tone],
-            )}
+            className={clsx("py-14 md:py-20", ctaToneClasses[section.tone])}
           >
             <div className="width-content mx-auto px-4">
-              <p className="max-w-3xl font-bold font-display text-3xl leading-tight tracking-tight md:text-5xl">
+              <p className="font-display max-w-3xl text-3xl leading-tight font-bold tracking-tight md:text-5xl">
                 {section.title}
               </p>
               {section.subtitle && (

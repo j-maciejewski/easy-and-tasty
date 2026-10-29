@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 
 import {
   Breadcrumbs,
@@ -13,7 +14,7 @@ import {
 } from "@/components/app";
 import { RetryImage } from "@/components/app/RetryImage";
 import { getRecipe, getSuggestedRecipes } from "@/lib/data";
-import { parseMetadata } from "@/lib/utils";
+import { getImageTransitionName, parseMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
 export async function generateMetadata({
@@ -73,35 +74,41 @@ export default async function ({
           }}
           recipeId={recipe.id}
         />
-        <h1 className="max-w-3xl font-bold font-display text-4xl leading-[1.05] tracking-tight md:text-6xl">
+        <h1 className="font-display max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight md:text-6xl">
           {recipe.title}
         </h1>
         {recipe.description && (
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-2xl text-lg">
             {recipe.description}
           </p>
         )}
         {recipe.createdAt && (
-          <p className="mt-3 text-muted-foreground text-sm">
+          <p className="text-muted-foreground mt-3 text-sm">
             Added {formatDate(recipe.createdAt)}
             {recipe.updatedAt &&
               recipe.updatedAt !== recipe.createdAt &&
               `, updated ${formatDate(recipe.updatedAt)}`}
           </p>
         )}
-        <div className="mt-8 overflow-hidden rounded-3xl bg-muted">
-          <RetryImage
-            src={recipe.image}
-            width={1200}
-            height={800}
-            alt={recipe.title}
-            sizes="(max-width: 1024px) 100vw, 900px"
-            priority
-            className="aspect-3/2 w-full object-cover"
-          />
-        </div>
+        <ViewTransition
+          name={getImageTransitionName(`recipe/${recipe.slug}`)}
+          share="morph"
+          default="none"
+        >
+          <div className="bg-muted mt-8 overflow-hidden rounded-3xl">
+            <RetryImage
+              src={recipe.image}
+              width={1200}
+              height={800}
+              alt={recipe.title}
+              sizes="(max-width: 1024px) 100vw, 900px"
+              priority
+              className="aspect-3/2 w-full object-cover"
+            />
+          </div>
+        </ViewTransition>
         <RecipeInformation recipe={recipe} className="mt-4" />
-        <article className="prose prose-lg mt-10 max-w-[68ch] prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary">
+        <article className="prose prose-lg prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary mt-10 max-w-[68ch]">
           <MarkdownContent>{recipe.content}</MarkdownContent>
         </article>
         {(recipe.categories.length > 0 || recipe.cuisines.length > 0) && (
@@ -113,7 +120,7 @@ export default async function ({
               <li key={category.name}>
                 <Link
                   href={`/categories/${category.slug}`}
-                  className="block rounded-full border border-basil/30 px-3.5 py-1.5 font-medium text-basil transition-colors hover:bg-basil hover:text-white"
+                  className="border-basil/30 text-basil hover:bg-basil block rounded-full border px-3.5 py-1.5 font-medium transition-colors hover:text-white"
                 >
                   {category.name}
                 </Link>
@@ -123,7 +130,7 @@ export default async function ({
               <li key={cuisine.name}>
                 <Link
                   href={`/cuisines/${cuisine.slug}`}
-                  className="block rounded-full border border-basil/30 px-3.5 py-1.5 font-medium text-basil transition-colors hover:bg-basil hover:text-white"
+                  className="border-basil/30 text-basil hover:bg-basil block rounded-full border px-3.5 py-1.5 font-medium transition-colors hover:text-white"
                 >
                   {cuisine.name}
                 </Link>

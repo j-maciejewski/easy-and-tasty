@@ -205,7 +205,7 @@ export const RecipeComments = ({
 
   return (
     <div className="mt-12 border-t pt-10">
-      <h3 className="mb-5 font-display font-semibold text-2xl tracking-tight">
+      <h3 className="font-display mb-5 text-2xl font-semibold tracking-tight">
         Comments ({comments.length})
       </h3>
 
@@ -232,7 +232,7 @@ export const RecipeComments = ({
           </div>
         </div>
       ) : (
-        <div className="mb-6 rounded-lg border bg-muted/50 p-4 text-center">
+        <div className="bg-muted/50 mb-6 rounded-lg border p-4 text-center">
           <p className="text-muted-foreground text-sm">
             Please sign in to leave a comment
           </p>
@@ -243,7 +243,7 @@ export const RecipeComments = ({
 
       {/* Comments List */}
       {comments.length === 0 ? (
-        <div className="py-8 text-center text-muted-foreground">
+        <div className="text-muted-foreground py-8 text-center">
           No comments yet. Be the first to share your thoughts!
         </div>
       ) : (
@@ -253,7 +253,7 @@ export const RecipeComments = ({
             const isLiked = comment.isLikedByUser;
 
             return (
-              <div key={comment.id} className="rounded-lg border bg-card p-4">
+              <div key={comment.id} className="bg-card rounded-lg border p-4">
                 <div className="mb-2 flex items-start justify-between">
                   <div>
                     <p className="font-medium">
@@ -338,7 +338,7 @@ export const RecipeComments = ({
                           disabled={deleteComment.isPending}
                           aria-label="Delete comment"
                         >
-                          <Trash2 className="h-4 w-4 text-destructive" />
+                          <Trash2 className="text-destructive h-4 w-4" />
                         </Button>
                       </>
                     )}
@@ -377,7 +377,7 @@ export const RecipeComments = ({
                     </div>
                   </div>
                 ) : (
-                  <p className="wrap-break-word break-all text-sm">
+                  <p className="text-sm wrap-break-word break-all">
                     {comment.text}
                   </p>
                 )}

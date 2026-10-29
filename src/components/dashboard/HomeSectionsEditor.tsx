@@ -334,7 +334,7 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
       {!inModal && (
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="font-semibold text-2xl">Home Sections</h1>
+            <h1 className="text-2xl font-semibold">Home Sections</h1>
             <p className="text-foreground/70 text-sm">
               Build the homepage by combining banners, cards, carousels, and
               other section blocks.
@@ -356,9 +356,9 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
         </div>
       )}
 
-      <div className="rounded-lg border bg-background">
+      <div className="bg-background rounded-lg border">
         {sections.length === 0 ? (
-          <p className="p-4 text-foreground/70 text-sm italic">
+          <p className="text-foreground/70 p-4 text-sm italic">
             No sections yet. Add your first section.
           </p>
         ) : (
@@ -379,13 +379,13 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
                   className="cursor-grab"
                   aria-label="Drag to reorder section"
                 >
-                  <GripVertical className="size-4 text-foreground/40" />
+                  <GripVertical className="text-foreground/40 size-4" />
                 </button>
                 <div className="min-w-0 flex-1">
-                  <p className="font-medium text-sm">
+                  <p className="text-sm font-medium">
                     {sectionLabels[section.type]}
                   </p>
-                  <p className="truncate text-foreground/70 text-xs">
+                  <p className="text-foreground/70 truncate text-xs">
                     {getSectionSummary(section)}
                   </p>
                 </div>

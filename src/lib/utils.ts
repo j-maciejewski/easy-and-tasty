@@ -35,3 +35,7 @@ export function parseMetadata(
     },
   };
 }
+
+export function getImageTransitionName(path: string) {
+  return `image-${path.replace(/[^\w-]/g, "-")}`;
+}

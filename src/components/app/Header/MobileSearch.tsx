@@ -37,14 +37,14 @@ export const MobileSearch = ({ handleClose }: MobileSearchProps) => {
     if (isLoading || query !== debouncedValue) {
       return (
         <div className="flex h-full w-full items-center justify-center">
-          <LoaderCircle className="animate-spin text-muted-foreground" />
+          <LoaderCircle className="text-muted-foreground animate-spin" />
         </div>
       );
     }
 
     if (data !== undefined && data.length === 0) {
       return (
-        <div className="px-4 py-3 text-muted-foreground text-sm">
+        <div className="text-muted-foreground px-4 py-3 text-sm">
           No recipes match that. Try a single ingredient, like "chicken".
         </div>
       );
@@ -52,7 +52,7 @@ export const MobileSearch = ({ handleClose }: MobileSearchProps) => {
 
     if (error) {
       return (
-        <div className="px-4 py-3 text-destructive text-sm">
+        <div className="text-destructive px-4 py-3 text-sm">
           Search isn't available right now. Try again in a moment.
         </div>
       );
@@ -63,7 +63,7 @@ export const MobileSearch = ({ handleClose }: MobileSearchProps) => {
         {data?.map((recipe) => (
           <li
             key={recipe.id}
-            className="relative border-t hover:bg-accent [&:last-child]:border-b"
+            className="hover:bg-accent relative border-t [&:last-child]:border-b"
           >
             <Link
               href={`/recipe/${recipe.slug}`}
@@ -79,13 +79,13 @@ export const MobileSearch = ({ handleClose }: MobileSearchProps) => {
   }, [isLoading, data, error, query, debouncedValue, handleClose]);
 
   return (
-    <div className="slide-in-from-right fixed top-0 right-0 left-0 z-[100] flex h-full w-full animate-in flex-col bg-card duration-300">
+    <div className="slide-in-from-right animate-in bg-card fixed top-0 right-0 left-0 z-[100] flex h-full w-full flex-col duration-300">
       <div className="relative flex h-16 min-h-16 items-center justify-between">
-        <Search className="absolute top-[50%] left-5 size-5 translate-y-[-50%] text-muted-foreground" />
+        <Search className="text-muted-foreground absolute top-[50%] left-5 size-5 translate-y-[-50%]" />
         <Input
           aria-label="Search recipes"
           placeholder="Search recipes"
-          className="peer/input h-full w-full rounded-none border-0 border-b bg-card pr-4 pl-14 font-medium text-lg shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="peer/input bg-card h-full w-full rounded-none border-0 border-b pr-4 pl-14 text-lg font-medium shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
           value={query}
           onChange={handleChange}
         />
@@ -101,7 +101,7 @@ export const MobileSearch = ({ handleClose }: MobileSearchProps) => {
       </div>
       <div className="flex grow flex-col overflow-auto">
         {query.length >= 3 && (
-          <div className="h-full overflow-auto bg-card">{SearchResults}</div>
+          <div className="bg-card h-full overflow-auto">{SearchResults}</div>
         )}
       </div>
     </div>

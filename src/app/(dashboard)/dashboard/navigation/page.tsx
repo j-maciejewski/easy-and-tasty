@@ -155,7 +155,7 @@ export default function () {
           onClick={handleAdd}
           aria-label="Add navigation item"
         >
-          <Plus className="absolute size-5 stroke-2 text-foreground" />
+          <Plus className="text-foreground absolute size-5 stroke-2" />
         </Button>
       </div>
       {navigation.length ? (

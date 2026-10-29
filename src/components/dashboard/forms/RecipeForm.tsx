@@ -196,7 +196,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
               <FormControl>
                 <CodeMirror
                   {...field}
-                  className="overflow-hidden rounded-lg border ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&>div]:bg-input! [&>div]:outline-0!"
+                  className="ring-offset-background focus-visible:ring-ring [&>div]:bg-input! overflow-hidden rounded-lg border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none [&>div]:outline-0!"
                   height="320px"
                   extensions={[markdown({ base: markdownLanguage })]}
                   theme="dark"
@@ -346,7 +346,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                         key={option.label}
                         variant="outline"
                         tabIndex={0}
-                        className="cursor-pointer text-nowrap bg-input"
+                        className="bg-input cursor-pointer text-nowrap"
                         onClick={() => {
                           field.onChange(
                             field.value.filter(
@@ -378,7 +378,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                     <div>
                       <Badge
                         variant="outline"
-                        className="h-full cursor-pointer bg-input"
+                        className="bg-input h-full cursor-pointer"
                       >
                         <Plus className="size-3" />
                       </Badge>
@@ -405,7 +405,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                         key={option.label}
                         variant="outline"
                         tabIndex={0}
-                        className="cursor-pointer text-nowrap bg-input"
+                        className="bg-input cursor-pointer text-nowrap"
                         onClick={() => {
                           field.onChange(
                             field.value.filter(
@@ -437,7 +437,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                     <div>
                       <Badge
                         variant="outline"
-                        className="h-full cursor-pointer bg-input"
+                        className="bg-input h-full cursor-pointer"
                       >
                         <Plus className="size-3" />
                       </Badge>
@@ -453,7 +453,7 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
           control={form.control}
           name="published"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border bg-input p-3 shadow-sm">
+            <FormItem className="bg-input flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
               <FormLabel>Publish</FormLabel>
               <FormControl>
                 <Switch

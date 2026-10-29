@@ -1,8 +1,9 @@
 "use client";
 
-import { Check, Copy, Facebook, Share2, Twitter } from "lucide-react";
+import { Check, Copy, Share2 } from "lucide-react";
 import { useState } from "react";
 
+import { Facebook, Twitter } from "@/components/icons";
 import {
   Button,
   Dialog,

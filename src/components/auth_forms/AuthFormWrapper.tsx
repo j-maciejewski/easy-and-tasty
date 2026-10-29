@@ -32,7 +32,7 @@ export const AuthFormWrapper = ({
 }: AuthFormWrapperProps) => {
   return (
     <Card
-      className="mx-auto min-w-100 max-w-sm bg-linear-to-b from-primary/20"
+      className="from-primary/20 mx-auto max-w-sm min-w-100 bg-linear-to-b"
       data-view="auth"
     >
       <CardHeader>

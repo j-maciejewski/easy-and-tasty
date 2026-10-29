@@ -14,7 +14,7 @@ export const SearchBar = ({ placeholder, value, onChange }: SearchBarProps) => {
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-card"
+        className="bg-card w-full"
       />
     </div>
   );

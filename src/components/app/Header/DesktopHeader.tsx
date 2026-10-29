@@ -61,7 +61,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
   return (
     <div
       className={
-        "fixed top-0 left-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/85"
+        "bg-card/95 supports-[backdrop-filter]:bg-card/85 fixed top-0 left-0 z-50 w-full border-b backdrop-blur"
       }
     >
       <header data-is-scrolled={isScrolled}>
@@ -113,7 +113,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
                   </Avatar>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="all- w-fit p-0 *:data-[slot=card]:border-none">
+              <DialogContent className="w-fit p-0 *:data-[slot=card]:border-none">
                 <VisuallyHidden.Root>
                   <DialogTitle>Authentication Modal</DialogTitle>
                 </VisuallyHidden.Root>
@@ -129,7 +129,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
         } width-content mx-auto flex items-center justify-between`}
       >
         <NavigationMenu viewport={false}>
-          <NavigationMenuList className="flex h-fit w-full flex-wrap gap-1 whitespace-nowrap px-2">
+          <NavigationMenuList className="flex h-fit w-full flex-wrap gap-1 px-2 whitespace-nowrap">
             {navigation.map((link, idx) => (
               <NavigationMenuItem key={idx}>
                 {link.href ? (

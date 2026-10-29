@@ -32,13 +32,13 @@ export const Searchbar = () => {
   const SearchResults = useMemo(() => {
     if (isLoading || query !== debouncedValue) {
       return (
-        <LoaderCircle className="mx-auto my-3 animate-spin text-muted-foreground" />
+        <LoaderCircle className="text-muted-foreground mx-auto my-3 animate-spin" />
       );
     }
 
     if (data !== undefined && data.length === 0) {
       return (
-        <div className="px-4 py-3 text-muted-foreground text-sm">
+        <div className="text-muted-foreground px-4 py-3 text-sm">
           No recipes match that. Try a single ingredient, like "chicken".
         </div>
       );
@@ -46,7 +46,7 @@ export const Searchbar = () => {
 
     if (error) {
       return (
-        <div className="px-4 py-3 text-destructive text-sm">
+        <div className="text-destructive px-4 py-3 text-sm">
           Search isn't available right now. Try again in a moment.
         </div>
       );
@@ -58,7 +58,7 @@ export const Searchbar = () => {
           <Link
             key={recipe.id}
             href={`/recipe/${recipe.slug}`}
-            className="block rounded-xl px-3 py-2.5 text-sm hover:bg-accent focus-visible:bg-accent"
+            className="hover:bg-accent focus-visible:bg-accent block rounded-xl px-3 py-2.5 text-sm"
           >
             {recipe.title}
           </Link>
@@ -69,18 +69,18 @@ export const Searchbar = () => {
 
   return (
     <div className={"relative mx-6 max-sm:w-full"}>
-      <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
+      <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2" />
       <Input
         type="search"
         aria-label="Search recipes"
         placeholder="Search recipes, e.g. lasagne"
-        className="peer/input h-11 w-full rounded-full border-transparent bg-muted pl-10 shadow-none focus-visible:border-ring focus-visible:bg-card focus-visible:ring-primary/30 md:w-80 lg:w-[28rem]"
+        className="peer/input bg-muted focus-visible:border-ring focus-visible:bg-card focus-visible:ring-primary/30 h-11 w-full rounded-full border-transparent pl-10 shadow-none md:w-80 lg:w-[28rem]"
         value={query}
         onChange={handleChange}
       />
       {query.length >= 3 && (
-        <div className="absolute top-full z-50 hidden w-full hover:block peer-focus/input:block">
-          <div className="mt-2 max-h-80 overflow-auto rounded-2xl border bg-popover p-1.5 shadow-lg">
+        <div className="absolute top-full z-50 hidden w-full peer-focus/input:block hover:block">
+          <div className="bg-popover mt-2 max-h-80 overflow-auto rounded-2xl border p-1.5 shadow-lg">
             {SearchResults}
           </div>
         </div>

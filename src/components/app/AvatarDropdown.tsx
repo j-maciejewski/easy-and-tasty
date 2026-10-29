@@ -41,7 +41,7 @@ export const AvatarDropdown = ({ user }: AvatarDropdownProps) => {
       <DropdownMenuContent className="w-56 rounded-xl" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="font-medium text-sm leading-none">{user.name}</p>
+            <p className="text-sm leading-none font-medium">{user.name}</p>
             <p className="text-muted-foreground text-xs leading-none">
               {user.email}
             </p>
@@ -63,7 +63,7 @@ export const AvatarDropdown = ({ user }: AvatarDropdownProps) => {
           </DropdownMenuItem>
         </Link>
         <DropdownMenuItem
-          className="cursor-pointer text-destructive focus:text-destructive"
+          className="text-destructive focus:text-destructive cursor-pointer"
           onClick={() => signOut()}
         >
           <LogOut className="mr-2 h-4 w-4" />

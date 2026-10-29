@@ -1,6 +1,9 @@
 import Link from "next/link";
 
+import { getImageTransitionName } from "@/lib/utils";
+
 import { RetryImage } from "./RetryImage";
+import { SharedImage, SharedImageScope } from "./SharedImage";
 
 export namespace ArticleListItem {
   export interface Article {
@@ -24,33 +27,37 @@ export const ArticleListItem = ({ article }: ArticleListItem.Props) => {
   }).format(new Date(article.createdAt));
 
   return (
-    <Link
-      href={`/${article.slug}`}
-      className="group flex items-center gap-3 rounded-2xl p-2 transition-colors hover:bg-card"
-    >
-      <div className="size-20 shrink-0 overflow-hidden rounded-xl bg-muted">
-        {article.image && (
-          <RetryImage
-            src={article.image}
-            width={160}
-            height={160}
-            alt={article.title}
-            loading="lazy"
-            className="size-full object-cover"
-          />
-        )}
-      </div>
-      <div className="min-w-0">
-        <h3 className="line-clamp-2 font-display font-semibold text-base leading-snug group-hover:text-primary">
-          {article.title}
-        </h3>
-        <time
-          dateTime={new Date(article.createdAt).toISOString()}
-          className="mt-1 block text-muted-foreground text-xs"
-        >
-          {formattedDate}
-        </time>
-      </div>
-    </Link>
+    <SharedImageScope>
+      <Link
+        href={`/${article.slug}`}
+        className="group hover:bg-card flex items-center gap-3 rounded-2xl p-2 transition-colors"
+      >
+        <SharedImage name={getImageTransitionName(article.slug)}>
+          <div className="bg-muted size-20 shrink-0 overflow-hidden rounded-xl">
+            {article.image && (
+              <RetryImage
+                src={article.image}
+                width={160}
+                height={160}
+                alt={article.title}
+                loading="lazy"
+                className="size-full object-cover"
+              />
+            )}
+          </div>
+        </SharedImage>
+        <div className="min-w-0">
+          <h3 className="font-display group-hover:text-primary line-clamp-2 text-base leading-snug font-semibold">
+            {article.title}
+          </h3>
+          <time
+            dateTime={new Date(article.createdAt).toISOString()}
+            className="text-muted-foreground mt-1 block text-xs"
+          >
+            {formattedDate}
+          </time>
+        </div>
+      </Link>
+    </SharedImageScope>
   );
 };

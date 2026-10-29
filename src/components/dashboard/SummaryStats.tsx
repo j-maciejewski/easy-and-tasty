@@ -183,13 +183,13 @@ export const SummaryStats = () => {
       <TabsList className="h-10 p-1">
         <TabsTrigger
           value="recipes"
-          className="px-4 data-[state=active]:bg-card data-[state=active]:text-foreground"
+          className="data-[state=active]:bg-card data-[state=active]:text-foreground px-4"
         >
           Recipes
         </TabsTrigger>
         <TabsTrigger
           value="articles"
-          className="px-4 data-[state=active]:bg-card data-[state=active]:text-foreground"
+          className="data-[state=active]:bg-card data-[state=active]:text-foreground px-4"
         >
           Articles
         </TabsTrigger>
@@ -403,7 +403,7 @@ export const SummaryStats = () => {
                   </LineChart>
                 </ChartContainer>
               ) : (
-                <div className="flex h-80 items-center justify-center rounded-xl border border-dashed text-muted-foreground text-sm">
+                <div className="text-muted-foreground flex h-80 items-center justify-center rounded-xl border border-dashed text-sm">
                   No activity recorded in the last 30 days yet.
                 </div>
               )}
@@ -425,7 +425,7 @@ export const SummaryStats = () => {
                     key={comment.id}
                     className="space-y-1 border-b pb-3 last:border-0 last:pb-0"
                   >
-                    <p className="line-clamp-2 break-all text-muted-foreground">
+                    <p className="text-muted-foreground line-clamp-2 break-all">
                       {comment.text}
                     </p>
                     <div className="flex items-center justify-between gap-2 text-xs">
@@ -469,7 +469,7 @@ export const SummaryStats = () => {
                         {formatDateTime(bookmark.createdAt)}
                       </span>
                     </div>
-                    <p className="truncate text-muted-foreground text-xs">
+                    <p className="text-muted-foreground truncate text-xs">
                       {bookmark.user?.name ??
                         bookmark.user?.email ??
                         "Anonymous user"}
@@ -504,7 +504,7 @@ export const SummaryStats = () => {
                         {formatDateTime(view.viewedAt)}
                       </span>
                     </div>
-                    <p className="truncate text-muted-foreground text-xs">
+                    <p className="text-muted-foreground truncate text-xs">
                       {view.user?.name ??
                         view.user?.email ??
                         view.ipAddress ??
@@ -682,7 +682,7 @@ export const SummaryStats = () => {
                   </LineChart>
                 </ChartContainer>
               ) : (
-                <div className="flex h-80 items-center justify-center rounded-xl border border-dashed text-muted-foreground text-sm">
+                <div className="text-muted-foreground flex h-80 items-center justify-center rounded-xl border border-dashed text-sm">
                   No activity recorded in the last 30 days yet.
                 </div>
               )}
@@ -704,7 +704,7 @@ export const SummaryStats = () => {
                     key={comment.id}
                     className="space-y-1 border-b pb-3 last:border-0 last:pb-0"
                   >
-                    <p className="line-clamp-2 break-all text-muted-foreground">
+                    <p className="text-muted-foreground line-clamp-2 break-all">
                       {comment.text}
                     </p>
                     <div className="flex items-center justify-between gap-2 text-xs">
@@ -748,7 +748,7 @@ export const SummaryStats = () => {
                         {formatDateTime(view.viewedAt)}
                       </span>
                     </div>
-                    <p className="truncate text-muted-foreground text-xs">
+                    <p className="text-muted-foreground truncate text-xs">
                       {view.user?.name ??
                         view.user?.email ??
                         view.ipAddress ??

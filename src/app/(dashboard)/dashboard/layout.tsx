@@ -29,7 +29,7 @@ export default async function ({ children }: React.PropsWithChildren) {
         <SidebarProvider>
           <div className="flex h-screen w-full overflow-hidden">
             <Sidebar />
-            <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-background">
+            <div className="bg-background flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
               <Header />
               <main className="mx-auto w-full flex-1 px-6 py-8">
                 <Suspense>

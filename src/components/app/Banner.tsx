@@ -33,12 +33,12 @@ export const Banner = ({
           className="h-72 w-full object-cover md:h-[34rem]"
         />
         <div className="width-content mx-auto px-4 max-md:-mt-12 md:absolute md:inset-x-0 md:bottom-10">
-          <div className="relative max-w-xl rounded-3xl bg-primary p-6 text-primary-foreground md:p-8">
-            <span className="block font-bold font-display text-3xl leading-[1.05] tracking-tight md:text-5xl">
+          <div className="bg-primary text-primary-foreground relative max-w-xl rounded-3xl p-6 md:p-8">
+            <span className="font-display block text-3xl leading-[1.05] font-bold tracking-tight md:text-5xl">
               {title}
             </span>
             {text && (
-              <span className="mt-3 block text-base text-primary-foreground/90 max-md:line-clamp-3 md:text-lg">
+              <span className="text-primary-foreground/90 mt-3 block text-base max-md:line-clamp-3 md:text-lg">
                 {text}
               </span>
             )}

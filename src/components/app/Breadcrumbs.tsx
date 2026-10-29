@@ -28,7 +28,7 @@ export const Breadcrumbs = ({
   return (
     <div className="mb-6 flex items-center justify-between gap-4">
       <nav aria-label="Breadcrumb" className="min-w-0">
-        <ol className="flex items-center gap-1 text-muted-foreground text-sm">
+        <ol className="text-muted-foreground flex items-center gap-1 text-sm">
           <li>
             <Link href="/" className="hover:text-foreground">
               Home
@@ -43,7 +43,7 @@ export const Breadcrumbs = ({
                 </Link>
               ) : (
                 <span
-                  className="truncate text-foreground"
+                  className="text-foreground truncate"
                   aria-current={path.active ? "page" : undefined}
                 >
                   {path.label}

@@ -84,7 +84,7 @@ export const SignUpForm = ({ setView, type }: AuthFormProps) => {
           Create an account
         </Button>
       </form>
-      <div className="my-4 flex items-center gap-3 text-muted-foreground text-xs tracking-wide">
+      <div className="text-muted-foreground my-4 flex items-center gap-3 text-xs tracking-wide">
         <Separator className="flex-1" />
         <span>or</span>
         <Separator className="flex-1" />

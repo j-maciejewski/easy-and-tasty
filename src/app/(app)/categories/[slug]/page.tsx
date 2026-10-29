@@ -64,7 +64,7 @@ export default async function ({
       </PageHeading>
       {recipesCount !== 0 ? (
         <>
-          <p className="mb-6 text-muted-foreground text-sm">
+          <p className="text-muted-foreground mb-6 text-sm">
             {recipesCount} {recipesCount === 1 ? "recipe" : "recipes"}
           </p>
           <Suspense>

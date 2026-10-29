@@ -22,7 +22,7 @@ export const SortableNavigation = ({
   handleDelete: (item: Omit<NavigationItem, "children">) => void;
 }) => {
   return (
-    <div className="rounded-lg border bg-background p-4">
+    <div className="bg-background rounded-lg border p-4">
       <SortableTree
         items={navigation}
         onItemsChanged={(items) => setNavigation(items)}
@@ -37,16 +37,16 @@ export const SortableNavigation = ({
             showDragHandle={false}
             disableCollapseOnItemClick={true}
             hideCollapseButton={true}
-            className="text-sm [&>div]:my-1 [&>div]:rounded-lg [&>div]:border-border! [&>div]:p-2"
+            className="[&>div]:border-border! text-sm [&>div]:my-1 [&>div]:rounded-lg [&>div]:p-2"
           >
             <div
-              className="flex w-full items-center text-foreground text-sm"
+              className="text-foreground flex w-full items-center text-sm"
               ref={ref}
             >
               <GripVertical className="mr-1 h-4" />
               <span>{props.item.label}</span>
               {props.item.href && (
-                <span className="ml-2 text-foreground/50">
+                <span className="text-foreground/50 ml-2">
                   {props.item.href}
                 </span>
               )}
@@ -58,7 +58,7 @@ export const SortableNavigation = ({
                   onClick={() => handleEdit(props.item)}
                   aria-label={`Edit navigation item ${props.item.label}`}
                 >
-                  <Pencil className="size-4 text-foreground/75" />
+                  <Pencil className="text-foreground/75 size-4" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -67,7 +67,7 @@ export const SortableNavigation = ({
                   onClick={() => handleDelete(props.item)}
                   aria-label={`Delete navigation item ${props.item.label}`}
                 >
-                  <Trash2 className="size-4 text-foreground/75" />
+                  <Trash2 className="text-foreground/75 size-4" />
                 </Button>
               </div>
             </div>

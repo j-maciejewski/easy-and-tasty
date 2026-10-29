@@ -31,8 +31,8 @@ export default function BookmarksPage() {
         <div className={recipeGridClassName}>
           {[...Array(6)].map((_, i) => (
             <div key={i}>
-              <div className="aspect-4/3 animate-pulse rounded-2xl bg-muted" />
-              <div className="mt-3 h-5 w-3/4 animate-pulse rounded-full bg-muted" />
+              <div className="bg-muted aspect-4/3 animate-pulse rounded-2xl" />
+              <div className="bg-muted mt-3 h-5 w-3/4 animate-pulse rounded-full" />
             </div>
           ))}
         </div>

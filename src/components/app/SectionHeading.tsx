@@ -16,12 +16,12 @@ export const SectionHeading = ({
   return (
     <div className={clsx("mb-5 max-w-2xl", className)}>
       {heading && (
-        <h2 className="font-display font-semibold text-2xl tracking-tight md:text-3xl">
+        <h2 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
           {heading}
         </h2>
       )}
       {subheading && (
-        <p className="mt-1.5 text-base text-muted-foreground">{subheading}</p>
+        <p className="text-muted-foreground mt-1.5 text-base">{subheading}</p>
       )}
     </div>
   );

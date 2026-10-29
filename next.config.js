@@ -20,9 +20,6 @@ const config = {
     // Uploaded files are immutable, so keep optimized variants cached for 30 days
     minimumCacheTTL: 2592000,
   },
-  experimental: {
-    viewTransition: true,
-  },
   headers: async () => {
     return [
       {

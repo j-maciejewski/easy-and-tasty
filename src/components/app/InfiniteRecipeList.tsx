@@ -69,7 +69,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
 
   if (isLoading) {
     return (
-      <LoaderCircle className="mx-auto my-4 animate-spin text-muted-foreground" />
+      <LoaderCircle className="text-muted-foreground mx-auto my-4 animate-spin" />
     );
   }
 
@@ -96,7 +96,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
           ))}
       </div>
       {isFetching && (
-        <LoaderCircle className="mx-auto my-4 animate-spin text-muted-foreground" />
+        <LoaderCircle className="text-muted-foreground mx-auto my-4 animate-spin" />
       )}
     </>
   );

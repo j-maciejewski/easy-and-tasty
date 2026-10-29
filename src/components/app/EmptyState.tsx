@@ -17,17 +17,17 @@ export const EmptyState = ({
   action,
 }: EmptyStateProps) => {
   return (
-    <div className="flex flex-col items-start rounded-3xl bg-card p-8 md:p-12">
+    <div className="bg-card flex flex-col items-start rounded-3xl p-8 md:p-12">
       {Icon && (
-        <span className="mb-5 flex size-12 items-center justify-center rounded-full bg-accent text-basil">
+        <span className="bg-accent text-basil mb-5 flex size-12 items-center justify-center rounded-full">
           <Icon className="size-6" aria-hidden />
         </span>
       )}
-      <p className="font-display font-semibold text-2xl tracking-tight">
+      <p className="font-display text-2xl font-semibold tracking-tight">
         {title}
       </p>
       {description && (
-        <p className="mt-2 max-w-md text-muted-foreground">{description}</p>
+        <p className="text-muted-foreground mt-2 max-w-md">{description}</p>
       )}
       {action && (
         <Button asChild size="lg" className="mt-6 rounded-full px-6">

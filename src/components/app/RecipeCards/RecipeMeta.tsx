@@ -12,7 +12,7 @@ export const RecipeMeta = ({ recipe, className }: RecipeMetaProps) => {
   return (
     <div
       className={clsx(
-        "flex flex-wrap items-center gap-x-4 gap-y-1 text-muted-foreground text-sm",
+        "text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 text-sm",
         className,
       )}
     >

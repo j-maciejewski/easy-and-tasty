@@ -28,12 +28,9 @@ export const RecipesCarousel = ({ recipes }: RecipesCarouselProps) => {
         }),
       ]}
     >
-      <CarouselContent className="m-0">
+      <CarouselContent>
         {recipes.map((recipe) => (
-          <CarouselItem
-            key={recipe.id}
-            className="ml-0 px-0 max-md:pl-0 md:py-1"
-          >
+          <CarouselItem key={recipe.id} className="md:py-1">
             <RecipeCardFull recipe={recipe} />
           </CarouselItem>
         ))}
