@@ -1,7 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Card, CardContent } from "@/components/ui";
+
+import { RetryImage } from "./RetryImage";
 
 export namespace ArticleCard {
   export interface Props {
@@ -27,7 +28,7 @@ export const ArticleCard = ({ article }: ArticleCard.Props) => {
       <Card className="card m-px gap-0 overflow-hidden py-0 transition-colors duration-200 hover:bg-gray-100">
         {article.image && (
           <div className="overflow-hidden">
-            <Image
+            <RetryImage
               src={article.image}
               width={400}
               height={225}

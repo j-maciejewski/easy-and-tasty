@@ -94,7 +94,7 @@ export default async function () {
     amber: "bg-amber-300 text-amber-950",
   };
 
-  function renderSection(section: HomeSection) {
+  function renderSection(section: HomeSection, index: number) {
     switch (section.type) {
       case "banner":
         return (
@@ -104,6 +104,7 @@ export default async function () {
               text={section.text}
               image={section.image}
               href={section.href}
+              priority={index === 0}
             />
           </FullWidthWrapper>
         );
@@ -207,7 +208,7 @@ export default async function () {
 
   return (
     <div className="flex w-full grow flex-col gap-4">
-      {homeSections.map((section) => renderSection(section))}
+      {homeSections.map((section, index) => renderSection(section, index))}
     </div>
   );
 }

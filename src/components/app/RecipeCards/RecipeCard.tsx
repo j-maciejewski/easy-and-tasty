@@ -1,8 +1,8 @@
 import { Timer } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Rating } from "../Rating";
+import { RetryImage } from "../RetryImage";
 
 interface RecipeCardProps {
   recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt" | "publishedAt"> &
@@ -13,7 +13,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
     <Link href={`/recipe/${recipe.slug}`}>
       <div className="card m-px overflow-hidden transition-colors duration-200 hover:bg-gray-100">
         <div className="w-full">
-          <Image
+          <RetryImage
             src={recipe.image}
             width={400}
             height={300}

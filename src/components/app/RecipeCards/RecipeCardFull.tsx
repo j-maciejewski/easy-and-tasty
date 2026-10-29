@@ -1,10 +1,10 @@
 import { ChevronRight, Timer } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui";
 
 import { Rating } from "../Rating";
+import { RetryImage } from "../RetryImage";
 
 interface RecipeCardFullProps {
   recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
@@ -14,7 +14,7 @@ export const RecipeCardFull = ({ recipe }: RecipeCardFullProps) => {
   return (
     <div className="card m-px flex overflow-hidden">
       <div className="max-md:w-full md:w-2/5 md:min-w-[40%]">
-        <Image
+        <RetryImage
           src={recipe.image}
           width={400}
           height={300}

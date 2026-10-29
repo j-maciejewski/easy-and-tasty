@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Card, CardHeader } from "@/components/ui";
 
 import { Rating } from "../Rating";
+import { RetryImage } from "../RetryImage";
 
 interface RecipesListItemProps {
   recipe: Omit<Recipe, "content" | "createdAt" | "updatedAt"> &
@@ -15,7 +15,7 @@ export const RecipeListItem = ({ recipe }: RecipesListItemProps) => {
     <Link key={recipe.id} href={`/recipe/${recipe.slug}`}>
       <Card className="card py-0 transition-colors duration-200 hover:bg-gray-100">
         <div className="flex items-center gap-2 rounded-lg">
-          <Image
+          <RetryImage
             src={recipe.image}
             width={80}
             height={80}

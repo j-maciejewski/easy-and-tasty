@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -16,6 +15,7 @@ import {
   RecipesCarousel,
   ScrollableRecipes,
 } from "@/components/app";
+import { RetryImage } from "@/components/app/RetryImage";
 import { Separator } from "@/components/ui";
 import { type PageSection, parsePageSections } from "@/constants";
 import { getArticle } from "@/lib/data";
@@ -127,7 +127,7 @@ export default async function ({
     year: "numeric",
   }).format(new Date(page.createdAt));
 
-  function renderSection(section: PageSection) {
+  function renderSection(section: PageSection, index: number) {
     switch (section.type) {
       case "markdown":
         return (
@@ -143,6 +143,7 @@ export default async function ({
               text={section.text}
               image={section.image}
               href={section.href}
+              priority={index === 0}
             />
           </FullWidthWrapper>
         );
@@ -245,18 +246,19 @@ export default async function ({
         </p>
         {page.image && (
           <div className="mb-4 max-h-175 overflow-hidden rounded-lg">
-            <Image
+            <RetryImage
               src={page.image}
               width={900}
               height={700}
               alt={page.title}
-              loading="lazy"
+              sizes="(max-width: 900px) 100vw, 900px"
+              priority
               className="mx-auto max-h-175 min-h-full w-full object-cover max-sm:w-full"
             />
           </div>
         )}
         <div className="space-y-4">
-          {sections.map((section) => renderSection(section))}
+          {sections.map((section, index) => renderSection(section, index))}
         </div>
         <ArticleComments articleId={page.id} />
       </div>

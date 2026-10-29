@@ -1,8 +1,9 @@
 import clsx from "clsx";
-import Image from "next/image";
 import Link from "next/link";
 
 import { merienda } from "@/app/fonts";
+
+import { RetryImage } from "./RetryImage";
 
 interface BannerProps {
   className?: string;
@@ -10,6 +11,7 @@ interface BannerProps {
   text?: string;
   image: string;
   href: string;
+  priority?: boolean;
 }
 
 export const Banner = ({
@@ -18,15 +20,18 @@ export const Banner = ({
   text,
   image,
   href,
+  priority,
 }: BannerProps) => {
   return (
     <div className={clsx("w-full text-foreground", className)}>
       <Link href={href} className="relative block">
-        <Image
+        <RetryImage
           src={image}
           alt={title}
           width={2000}
           height={500}
+          sizes="100vw"
+          priority={priority}
           className="w-full object-cover max-md:h-48 md:h-120"
         />
         <div className="absolute bottom-5 left-[50%] max-w-160 translate-x-[-50%] bg-secondary/90 p-3 md:w-[calc(100%-2rem)]">

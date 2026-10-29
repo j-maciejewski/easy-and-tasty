@@ -1,7 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Card, CardContent } from "@/components/ui";
+
+import { RetryImage } from "./RetryImage";
 
 export namespace ArticleListItem {
   export interface Article {
@@ -30,7 +31,7 @@ export const ArticleListItem = ({ article }: ArticleListItem.Props) => {
         <div className="flex items-stretch">
           <div className="aspect-square w-25 shrink-0 overflow-hidden bg-muted/40">
             {article.image && (
-              <Image
+              <RetryImage
                 src={article.image}
                 width={400}
                 height={400}

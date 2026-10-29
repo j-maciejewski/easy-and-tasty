@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -12,6 +11,7 @@ import {
   RecipesList,
   RecipeViewTracker,
 } from "@/components/app";
+import { RetryImage } from "@/components/app/RetryImage";
 import { Separator } from "@/components/ui";
 import { getRecipe, getSuggestedRecipes } from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
@@ -89,12 +89,13 @@ export default async function ({
           </div>
         )}
         <div className="mb-4 max-h-175 overflow-hidden rounded-lg">
-          <Image
+          <RetryImage
             src={recipe.image}
             width={900}
             height={700}
             alt={recipe.title}
-            loading="lazy"
+            sizes="(max-width: 900px) 100vw, 900px"
+            priority
             className="mx-auto max-h-175 min-h-full w-full object-cover max-sm:w-full"
           />
         </div>
