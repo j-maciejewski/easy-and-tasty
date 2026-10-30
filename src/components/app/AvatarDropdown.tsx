@@ -18,56 +18,75 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+const itemClassName =
+  "focus:bg-muted focus:text-foreground gap-3 rounded-xl px-3 py-2.5 font-medium";
+
 interface AvatarDropdownProps {
   user: Session["user"];
 }
 
 export const AvatarDropdown = ({ user }: AvatarDropdownProps) => {
+  const initial = user.name ? user.name.charAt(0).toUpperCase() : "";
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-10 w-10 rounded-full"
+          className="data-[state=open]:ring-primary/30 hover:ring-primary/20 relative size-10 rounded-full p-0 ring-0 transition-shadow hover:ring-4 data-[state=open]:ring-4"
           aria-label="Open user menu"
         >
-          <Avatar className="h-10 w-10">
-            <AvatarFallback>
-              {user.name ? user.name.charAt(0).toUpperCase() : ""}
+          <Avatar className="size-10">
+            <AvatarFallback className="bg-primary/10 text-primary font-display font-semibold">
+              {initial}
             </AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 rounded-xl" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm leading-none font-medium">{user.name}</p>
-            <p className="text-muted-foreground text-xs leading-none">
+      <DropdownMenuContent
+        className="border-border/70 w-64 rounded-2xl p-2 shadow-[0_18px_40px_-20px_rgb(42_33_28/0.4)]"
+        align="end"
+        sideOffset={8}
+        forceMount
+      >
+        <DropdownMenuLabel className="flex items-center gap-3 px-3 py-2.5 font-normal">
+          <Avatar className="size-10">
+            <AvatarFallback className="bg-primary/10 text-primary font-display font-semibold">
+              {initial}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex min-w-0 flex-col gap-1">
+            <p className="font-display truncate text-sm leading-none font-semibold">
+              {user.name}
+            </p>
+            <p className="text-muted-foreground truncate text-xs leading-none">
               {user.email}
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="mx-1 my-1.5" />
         {user.role !== "viewer" && (
-          <Link href="/dashboard">
-            <DropdownMenuItem className="cursor-pointer">
-              <Dashboard className="mr-2 h-4 w-4" />
-              <span>Dashboard</span>
-            </DropdownMenuItem>
-          </Link>
-        )}
-        <Link href="/bookmarks">
-          <DropdownMenuItem className="cursor-pointer">
-            <Bookmark className="mr-2 h-4 w-4" />
-            <span>Saved recipes</span>
+          <DropdownMenuItem asChild className={itemClassName}>
+            <Link href="/dashboard">
+              <Dashboard />
+              Dashboard
+            </Link>
           </DropdownMenuItem>
-        </Link>
+        )}
+        <DropdownMenuItem asChild className={itemClassName}>
+          <Link href="/bookmarks">
+            <Bookmark />
+            Saved recipes
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="mx-1 my-1.5" />
         <DropdownMenuItem
-          className="text-destructive focus:text-destructive cursor-pointer"
+          variant="destructive"
+          className={itemClassName}
           onClick={() => signOut()}
         >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <LogOut />
+          Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

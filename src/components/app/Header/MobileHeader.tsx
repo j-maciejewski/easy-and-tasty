@@ -11,6 +11,7 @@ import { Path } from "@/config";
 import { useScrollDirection } from "@/hooks";
 import logo from "@/public/logo.png";
 
+import { AccountMenu } from "./AccountMenu";
 import { MobileNavigation } from "./MobileNavigation";
 import { MobileSearch } from "./MobileSearch";
 
@@ -62,31 +63,24 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
     <>
       <header
         className={clsx(
-          "bg-card fixed top-0 z-50 w-full border-b transition-transform duration-300 md:hidden print:hidden",
+          "bg-card/90 supports-[backdrop-filter]:bg-card/75 border-border/70 fixed top-0 z-50 w-full border-b backdrop-blur-lg backdrop-saturate-150 transition-transform duration-300 md:hidden print:hidden",
           scrollDirection === "down" ? "-translate-y-full" : "translate-y-0",
         )}
       >
         <div className="mx-auto flex h-16 max-w-250 items-center justify-between px-4">
-          <div>
-            <Link href={Path.HOME}>
-              <Image
-                src={logo}
-                alt="Easy and Tasty logo"
-                className="mr-2 lg:hidden"
-                height={35}
-                priority
-              />
-            </Link>
-          </div>
-          <div className="flex items-center gap-2">
-            {/* <Button asChild variant="link">
-						<Link href="/login" className="relative aspect-square">
-							<User2 className="absolute size-5" />
-						</Link>
-					</Button> */}
+          <Link href={Path.HOME} className="flex items-center">
+            <Image
+              src={logo}
+              alt="Easy and Tasty logo"
+              height={28}
+              className="h-7 w-auto"
+              priority
+            />
+          </Link>
+          <div className="flex items-center gap-1">
             <Button
               variant="ghost"
-              className="relative aspect-square"
+              className="relative size-10 rounded-full"
               onClick={() => setIsSearchOpen(true)}
               aria-label="Open recipe search"
             >
@@ -94,12 +88,15 @@ export const MobileHeader = ({ navigation }: MobileHeaderProps) => {
             </Button>
             <Button
               variant="ghost"
-              className="relative aspect-square"
+              className="relative size-10 rounded-full"
               onClick={() => setIsNavigationOpen(true)}
               aria-label="Open navigation menu"
             >
               <Menu className="absolute size-5" />
             </Button>
+            <div className="ml-1">
+              <AccountMenu />
+            </div>
           </div>
         </div>
       </header>

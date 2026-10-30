@@ -68,18 +68,18 @@ export const Searchbar = () => {
   }, [isLoading, data, error, query, debouncedValue]);
 
   return (
-    <div className={"relative mx-6 max-sm:w-full"}>
+    <div className="relative">
       <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2" />
       <Input
         type="search"
         aria-label="Search recipes"
-        placeholder="Search recipes, e.g. lasagne"
-        className="peer/input bg-muted focus-visible:border-ring focus-visible:bg-card focus-visible:ring-primary/30 h-11 w-full rounded-full border-transparent pl-10 shadow-none md:w-80 lg:w-[28rem]"
+        placeholder="Search recipes"
+        className="peer/input bg-muted focus-visible:border-ring focus-visible:bg-card focus-visible:ring-primary/30 h-10 w-56 rounded-full border-transparent pl-10 shadow-none transition-[width,background-color] duration-300 focus-visible:w-72 motion-reduce:transition-none xl:w-64 xl:focus-visible:w-80"
         value={query}
         onChange={handleChange}
       />
       {query.length >= 3 && (
-        <div className="absolute top-full z-50 hidden w-full peer-focus/input:block hover:block">
+        <div className="absolute top-full right-0 z-50 hidden w-80 peer-focus/input:block hover:block">
           <div className="bg-popover mt-2 max-h-80 overflow-auto rounded-2xl border p-1.5 shadow-lg">
             {SearchResults}
           </div>
