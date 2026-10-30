@@ -54,6 +54,11 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        // Surfaced to the client as `error` in the signIn() result
+        if (!user.emailVerified) {
+          throw new Error("EmailNotVerified");
+        }
+
         return {
           id: user.id,
           email: user.email,

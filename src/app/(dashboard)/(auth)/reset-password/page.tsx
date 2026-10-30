@@ -1,5 +1,15 @@
-import { ResetPasswordForm } from "@/components/auth_forms";
+import { NewPasswordForm, ResetPasswordForm } from "@/components/auth_forms";
 
-export default function () {
-  return <ResetPasswordForm type="page" />;
+interface ResetPasswordPageProps {
+  searchParams: Promise<{ token?: string }>;
+}
+
+export default async function ({ searchParams }: ResetPasswordPageProps) {
+  const { token } = await searchParams;
+
+  return token ? (
+    <NewPasswordForm token={token} />
+  ) : (
+    <ResetPasswordForm type="page" />
+  );
 }

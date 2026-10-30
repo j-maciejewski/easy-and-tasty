@@ -10,6 +10,7 @@ export enum Path {
   LOGIN = "/login",
   SIGN_UP = "/sign-up",
   RESET_PASSWORD = "/reset-password",
+  VERIFY_EMAIL = "/verify-email",
   POST_LOGIN = "/post-login",
 
   // Dashboard

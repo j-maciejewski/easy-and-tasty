@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
+import { resendVerificationEmail } from "@/actions/auth";
 import { Google } from "@/components/icons";
 import {
   Alert,
@@ -31,7 +32,10 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+  const [verificationResent, setVerificationResent] = useState(false);
   const registered = searchParams.get("registered") === "true";
+  const passwordReset = searchParams.get("reset") === "true";
 
   const handleCredentialsLogIn = async (
     e: React.FormEvent<HTMLFormElement>,
@@ -39,6 +43,7 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    setUnverifiedEmail(null);
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
@@ -50,6 +55,12 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
         password,
         redirect: false,
       });
+
+      if (result?.error === "EmailNotVerified") {
+        setUnverifiedEmail(email);
+        setVerificationResent(false);
+        return;
+      }
 
       if (result?.error) {
         setError("Invalid email or password.");
@@ -63,6 +74,20 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleResendVerification = async () => {
+    if (!unverifiedEmail) return;
+    setIsLoading(true);
+
+    const result = await resendVerificationEmail(unverifiedEmail);
+
+    if (result?.success) {
+      setVerificationResent(true);
+    } else {
+      setError(result?.errors?._form?.[0] ?? null);
+    }
+    setIsLoading(false);
   };
 
   const handleGoogleSignIn = async () => {
@@ -87,7 +112,34 @@ export const LoginForm = ({ setView, type }: AuthFormProps) => {
         <Alert className="mb-4 border-green-500 text-green-500">
           <CheckCircle2 className="h-4 w-4" />
           <AlertDescription>
-            Account created successfully. You can now sign in.
+            Account created successfully. Check your inbox to confirm your
+            email, then sign in.
+          </AlertDescription>
+        </Alert>
+      )}
+      {passwordReset && (
+        <Alert className="mb-4 border-green-500 text-green-500">
+          <CheckCircle2 className="h-4 w-4" />
+          <AlertDescription>
+            Your password has been updated. You can now sign in.
+          </AlertDescription>
+        </Alert>
+      )}
+      {unverifiedEmail && (
+        <Alert className="mb-4">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>
+            {verificationResent ? (
+              "We've sent you a new confirmation link."
+            ) : (
+              <span>
+                Please confirm your email before signing in.{" "}
+                <AuthLink
+                  text="Resend confirmation email"
+                  callback={handleResendVerification}
+                />
+              </span>
+            )}
           </AlertDescription>
         </Alert>
       )}

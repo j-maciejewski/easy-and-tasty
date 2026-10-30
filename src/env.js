@@ -14,6 +14,23 @@ export const env = createEnv({
       process.env.NODE_ENV === "production"
         ? z.string()
         : z.string().optional(),
+    SMTP_HOST:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
+    SMTP_PORT: z.coerce.number().default(465),
+    SMTP_USER:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
+    SMTP_PASSWORD:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
+    EMAIL_FROM:
+      process.env.NODE_ENV === "production"
+        ? z.string()
+        : z.string().optional(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -38,6 +55,11 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    SMTP_HOST: process.env.SMTP_HOST,
+    SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_USER: process.env.SMTP_USER,
+    SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+    EMAIL_FROM: process.env.EMAIL_FROM,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
