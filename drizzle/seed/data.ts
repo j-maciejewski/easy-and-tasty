@@ -1821,6 +1821,22 @@ export const RECIPES = [
     cuisines: [8], // Korean
     categories: [3], // Dinner
   },
+  {
+    id: 101,
+    title: "Rice Waffles with Ketchup",
+    description:
+      "Crunchy rice waffles topped with ketchup and fresh toppings for a quick, light snack.",
+    difficulty: "easy",
+    image:
+      "https://mf7wcpsx4r.ufs.sh/f/jf0z5ACMkIGAK8zlBorCFwEAT3if9jrp5uoZVhWqBsb8M2QJ",
+    content:
+      "These Rice Waffles with Ketchup are a no-cook snack ready in minutes, perfect when you want something crunchy and savory.\n\n### Ingredients:\n\n* 4 plain rice waffles (about 40 g)\n* 60 g ketchup\n* 40 g cheese, thinly sliced or grated (optional)\n* 1/2 small cucumber (about 80 g), thinly sliced\n* 1 tbsp (15 ml) chopped chives or spring onion\n* Pinch of black pepper or dried oregano\n\n### Instructions:\n\n1. Lay the rice waffles on a plate or board.\n2. Spread about 15 g of ketchup evenly over each waffle, leaving a small border so it doesn't drip.\n3. If using cheese, add it on top of the ketchup. For a warm version, place the waffles on a baking tray and bake at 180°C for 3–4 minutes until the cheese melts.\n4. Top with cucumber slices and sprinkle with chives.\n5. Finish with a pinch of black pepper or oregano and serve immediately, before the waffles soften.",
+    servings: 2,
+    slug: "rice-waffles-with-ketchup",
+    time: 5,
+    cuisines: [],
+    categories: [11], // Snacks
+  },
 ];
 
 export const RECIPE_CUISINES = [
@@ -2055,6 +2071,7 @@ export const RECIPE_CATEGORIES = [
   { id: 126, categoryId: 3, recipeId: 98 },
   { id: 127, categoryId: 3, recipeId: 99 },
   { id: 128, categoryId: 3, recipeId: 100 },
+  { id: 129, categoryId: 11, recipeId: 101 },
 ];
 
 /*
