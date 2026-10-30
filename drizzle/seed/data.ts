@@ -3289,6 +3289,130 @@ export const RECIPE_CATEGORIES = [
   { id: 259, categoryId: 30, recipeId: 155 },
 ];
 
+const occasionSections = ({
+  intro,
+  tips,
+  recipeIds,
+}: {
+  intro: string;
+  tips: string;
+  recipeIds: number[];
+}) =>
+  JSON.stringify([
+    { id: "markdown-intro", type: "markdown", content: intro },
+    {
+      id: "recipe-grid",
+      type: "recipe_grid",
+      offset: 0,
+      limit: 3,
+      recipeFeed: { mode: "specific", recipeIds, limit: recipeIds.length },
+    },
+    { id: "markdown-tips", type: "markdown", content: tips },
+    {
+      id: "recipes-list",
+      type: "recipes_list",
+      heading: "More recipes for the occasion",
+      recipeFeed: {
+        mode: "specific",
+        recipeIds: recipeIds.slice(3),
+        limit: recipeIds.length - 3,
+      },
+    },
+  ]);
+
+export const ARTICLES = [
+  {
+    title: "Comfort Food Classics",
+    slug: "comfort-food-classics",
+    image: "/mock/occasions/comfort-food-classics.webp",
+    description:
+      "Warm, hearty meals for cozy evenings and family gatherings, from slow-cooked stews to bubbling baked pasta.",
+    content: occasionSections({
+      intro:
+        "When the evenings draw in, nothing beats a dish that has been simmering for hours or bubbling away in the oven. Comfort food is about generous portions, rich sauces and the kind of smell that pulls everyone into the kitchen.\n\nThese classics come from all over the world, but they share the same promise: a warm plate and a second helping.",
+      tips: "## Make comfort food easier\n\n* **Cook once, eat twice.** Stews and braises taste even better the next day, so make a double batch.\n* **Brown properly.** Take the time to sear meat and caramelise onions; that's where the deep flavour comes from.\n* **Low and slow.** Keep the oven around 150 °C for braises so the meat turns tender without drying out.\n* **Freeze in portions.** Most of these dishes freeze well for up to 3 months.",
+      recipeIds: [55, 13, 64, 29, 25, 4, 78, 108],
+    }),
+    createdAt: new Date("2026-10-01T09:00:00Z"),
+    publishedAt: new Date("2026-10-01T09:00:00Z"),
+  },
+  {
+    title: "Lazy Weekend Brunch",
+    slug: "lazy-weekend-brunch",
+    image: "/mock/occasions/lazy-weekend-brunch.webp",
+    description:
+      "Slow mornings deserve a proper spread: eggs, pancakes, pastries and everything in between.",
+    content: occasionSections({
+      intro:
+        "Brunch is the best excuse to linger at the table. Whether you're feeding a crowd or treating yourself, a good brunch mixes something savoury, something sweet and plenty of coffee.\n\nHere are our favourite recipes for a slow weekend morning.",
+      tips: "## Brunch without the stress\n\n* **Prep the night before.** Batters, doughs and sauces can all be made ahead and chilled.\n* **Keep things warm.** Hold finished pancakes and crêpes in a 90 °C oven while you cook the rest.\n* **Eggs last.** Poached and scrambled eggs wait for no one, so cook them right before serving.",
+      recipeIds: [15, 20, 65, 41, 102, 39, 30, 105],
+    }),
+    createdAt: new Date("2026-10-04T09:00:00Z"),
+    publishedAt: new Date("2026-10-04T09:00:00Z"),
+  },
+  {
+    title: "Game Day Spread",
+    slug: "game-day-spread",
+    image: "/mock/occasions/game-day-spread.webp",
+    description:
+      "Crowd-pleasing finger food, sticky ribs and big pots of chili for watching the match with friends.",
+    content: occasionSections({
+      intro:
+        "Game day food needs to be easy to eat from the sofa, easy to share and ready before kick-off. Think sticky ribs, crispy snacks and a big pot of something that can sit on the hob all afternoon.\n\nThese recipes are built for feeding a crowd.",
+      tips: "## Plan for the crowd\n\n* **Count on 6–8 bites per guest per hour** when serving finger food.\n* **Make a dip station.** Guacamole and salsas can be made a few hours ahead.\n* **Let the slow cooker work.** Chili and pulled pork stay hot and only get better as the game goes on.",
+      recipeIds: [60, 14, 34, 17, 132, 96, 71, 127],
+    }),
+    createdAt: new Date("2026-10-08T09:00:00Z"),
+    publishedAt: new Date("2026-10-08T09:00:00Z"),
+  },
+  {
+    title: "Date Night In",
+    slug: "date-night-in",
+    image: "/mock/occasions/date-night-in.webp",
+    description:
+      "Restaurant-worthy dinners for two, plus desserts that make the evening feel special.",
+    content: occasionSections({
+      intro:
+        "Skip the reservation and cook something special at home. A great date-night dinner feels a little indulgent but doesn't keep you stuck in the kitchen all evening.\n\nPick a main, finish with a dessert you can make ahead, and light a candle.",
+      tips: "## Set the scene\n\n* **Make dessert first.** Tiramisu and mousse need a few hours in the fridge, so get them done early.\n* **Rest your steak.** Give it 5 minutes on a warm plate before slicing.\n* **Keep sides simple.** A green salad or crusty bread lets the main dish shine.",
+      recipeIds: [21, 19, 53, 144, 103, 23, 40],
+    }),
+    createdAt: new Date("2026-10-12T09:00:00Z"),
+    publishedAt: new Date("2026-10-12T09:00:00Z"),
+  },
+  {
+    title: "Holiday Feasts",
+    slug: "holiday-feasts",
+    image: "/mock/occasions/holiday-feasts.webp",
+    description:
+      "Show-stopping roasts, festive sides and rich desserts for the biggest meals of the year.",
+    content: occasionSections({
+      intro:
+        "Holiday cooking is about tradition and abundance: a centrepiece roast, dishes passed around the table and a dessert worth saving room for.\n\nThese recipes will carry you from the main event to the last slice of cake.",
+      tips: "## Keep the day on schedule\n\n* **Work backwards.** Write down when the roast needs to come out and plan every other dish around it.\n* **Use a thermometer.** Beef Wellington is perfect at 52 °C in the centre; roast chicken needs 74 °C in the thickest part of the thigh.\n* **Delegate.** Desserts and sides are great jobs for guests who offer to help.",
+      recipeIds: [103, 24, 55, 82, 151, 104, 109],
+    }),
+    createdAt: new Date("2026-10-16T09:00:00Z"),
+    publishedAt: new Date("2026-10-16T09:00:00Z"),
+  },
+  {
+    title: "Summer Barbecue",
+    slug: "summer-barbecue",
+    image: "/mock/occasions/summer-barbecue.webp",
+    description:
+      "Fire up the grill with smoky meats, fresh salads and cooling drinks for long summer evenings.",
+    content: occasionSections({
+      intro:
+        "Long evenings, a hot grill and a table full of friends: that's summer cooking at its best. A great barbecue balances smoky, charred meat with bright salads and something cold to drink.\n\nHere's everything you need for your next cookout.",
+      tips: "## Grill like a pro\n\n* **Set up two zones.** Keep one side of the grill hot for searing and the other cooler for finishing.\n* **Marinate overnight.** Jerk chicken and bulgogi need at least 4 hours, ideally 12.\n* **Keep salads cold.** Dress them just before serving so they stay crisp in the heat.",
+      recipeIds: [122, 60, 115, 9, 22, 8, 57, 129],
+    }),
+    createdAt: new Date("2026-10-20T09:00:00Z"),
+    publishedAt: new Date("2026-10-20T09:00:00Z"),
+  },
+];
+
 /*
 
 // RECIPE CATEGORIES AND CUISINES GENERATOR

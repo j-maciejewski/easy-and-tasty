@@ -1,4 +1,5 @@
 import {
+  ARTICLES,
   CATEGORIES,
   CUISINES,
   RECIPE_CATEGORIES,
@@ -10,6 +11,7 @@ import { sql } from "drizzle-orm";
 
 import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
+  articles,
   categories,
   cuisines,
   recipe_categories,
@@ -62,5 +64,9 @@ export const seedRouter = createTRPCRouter({
         true
       )
     `);
+  }),
+
+  seedArticles: authenticatedProcedure.mutation(({ ctx }) => {
+    return ctx.db.insert(articles).values(ARTICLES);
   }),
 });

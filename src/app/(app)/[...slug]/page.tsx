@@ -45,7 +45,7 @@ export async function generateStaticParams() {
   const pages = await api.public.article.getArticles();
 
   return pages.map((page) => ({
-    slug: page.slug.split("/").slice(1),
+    slug: page.slug.split("/"),
   }));
 }
 

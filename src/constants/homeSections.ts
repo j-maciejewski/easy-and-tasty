@@ -145,8 +145,8 @@ export const defaultHomeSections: HomeSection[] = [
     type: "banner",
     title: "Comfort Foods",
     text: "Warm, hearty meals perfect for cozy evenings and family gatherings. From creamy casseroles and slow-cooked stews to savory pies and baked classics, these recipes bring comfort and nostalgia to your table, making every bite feel like home.",
-    image: "/mock/banner.png",
-    href: "/comfort-foods",
+    image: "/mock/occasions/comfort-food-banner.webp",
+    href: "/comfort-food-classics",
   },
   {
     id: "featured-card",
