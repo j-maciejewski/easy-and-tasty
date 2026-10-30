@@ -1,14 +1,13 @@
 import {
   and,
+  asc,
   count,
   desc,
   eq,
-  gt,
   gte,
   ilike,
   inArray,
   isNotNull,
-  lt,
   sql,
 } from "drizzle-orm";
 import { z } from "zod";
@@ -24,6 +23,52 @@ import {
   recipe_views,
   recipes,
 } from "@/server/db/schema";
+
+// Cursor pagination needs a unique sort key, so recipes sharing a createdAt
+// or title (e.g. seeded in one insert) are tie-broken by id. createdAt is
+// passed around as Postgres text to keep its microsecond precision.
+const recipeCursorSchema = z.object({
+  value: z.string(),
+  id: z.number(),
+});
+
+type RecipeSortBy = "title" | "createdAt";
+
+const getRecipeCursorCondition = (
+  sortBy: RecipeSortBy,
+  cursor?: z.infer<typeof recipeCursorSchema>,
+) => {
+  if (!cursor) {
+    return undefined;
+  }
+
+  return sortBy === "createdAt"
+    ? sql`(${recipes.createdAt}, ${recipes.id}) < (${cursor.value}::timestamptz, ${cursor.id})`
+    : sql`(${recipes.title}, ${recipes.id}) > (${cursor.value}, ${cursor.id})`;
+};
+
+const getRecipeCursorOrder = (sortBy: RecipeSortBy) =>
+  sortBy === "createdAt"
+    ? [desc(recipes.createdAt), desc(recipes.id)]
+    : [asc(recipes.title), asc(recipes.id)];
+
+const getNextRecipeCursor = (
+  sortBy: RecipeSortBy,
+  results: { id: number; title: string; createdAtCursor: string }[],
+  limit: number,
+) => {
+  const lastResult = results[results.length - 1];
+
+  if (!lastResult || results.length < limit) {
+    return null;
+  }
+
+  return {
+    value:
+      sortBy === "createdAt" ? lastResult.createdAtCursor : lastResult.title,
+    id: lastResult.id,
+  };
+};
 
 export const publicRecipeRouter = createTRPCRouter({
   addRecipeView: publicProcedure
@@ -275,7 +320,7 @@ export const publicRecipeRouter = createTRPCRouter({
     .input(
       z.object({
         limit: z.number().default(12),
-        cursor: z.string().optional(),
+        cursor: recipeCursorSchema.optional(),
         sortBy: z.enum(["title", "createdAt"]).default("createdAt"),
       }),
     )
@@ -291,6 +336,7 @@ export const publicRecipeRouter = createTRPCRouter({
           time: recipes.time,
           difficulty: recipes.difficulty,
           servings: recipes.servings,
+          createdAtCursor: sql<string>`${recipes.createdAt}::text`,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
           ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
@@ -305,35 +351,20 @@ export const publicRecipeRouter = createTRPCRouter({
           and(
             isNotNull(recipes.publishedAt),
             isNotNull(categories.publishedAt),
-            input.cursor
-              ? input.sortBy === "createdAt"
-                ? lt(recipes[input.sortBy], new Date(input.cursor))
-                : input.sortBy === "title"
-                  ? gt(recipes.title, input.cursor)
-                  : undefined
-              : undefined,
+            getRecipeCursorCondition(input.sortBy, input.cursor),
           ),
         )
         .groupBy(recipes.id)
-        .orderBy(
-          input.sortBy === "createdAt"
-            ? desc(recipes.createdAt)
-            : recipes.title,
-        )
+        .orderBy(...getRecipeCursorOrder(input.sortBy))
         .limit(input.limit);
 
       const results = await query.execute();
 
-      const lastResult =
-        results.length > 0
-          ? (results[results.length - 1] as (typeof results)[number])
-          : null;
-
-      const nextCursor = lastResult
-        ? input.sortBy === "createdAt"
-          ? lastResult.createdAt.toISOString()
-          : lastResult.title
-        : null;
+      const nextCursor = getNextRecipeCursor(
+        input.sortBy,
+        results,
+        input.limit,
+      );
 
       return {
         recipes: results,
@@ -401,7 +432,7 @@ export const publicRecipeRouter = createTRPCRouter({
       z.object({
         slug: z.string(),
         limit: z.number().default(12),
-        cursor: z.string().optional(),
+        cursor: recipeCursorSchema.optional(),
         sortBy: z.enum(["title", "createdAt"]).default("createdAt"),
       }),
     )
@@ -417,6 +448,7 @@ export const publicRecipeRouter = createTRPCRouter({
           time: recipes.time,
           difficulty: recipes.difficulty,
           servings: recipes.servings,
+          createdAtCursor: sql<string>`${recipes.createdAt}::text`,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
           ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
@@ -432,35 +464,20 @@ export const publicRecipeRouter = createTRPCRouter({
             eq(categories.slug, input.slug),
             isNotNull(recipes.publishedAt),
             isNotNull(categories.publishedAt),
-            input.cursor
-              ? input.sortBy === "createdAt"
-                ? lt(recipes[input.sortBy], new Date(input.cursor))
-                : input.sortBy === "title"
-                  ? gt(recipes.title, input.cursor)
-                  : undefined
-              : undefined,
+            getRecipeCursorCondition(input.sortBy, input.cursor),
           ),
         )
         .groupBy(recipes.id)
-        .orderBy(
-          input.sortBy === "createdAt"
-            ? desc(recipes.createdAt)
-            : recipes.title,
-        )
+        .orderBy(...getRecipeCursorOrder(input.sortBy))
         .limit(input.limit);
 
       const results = await query.execute();
 
-      const lastResult =
-        results.length > 0
-          ? (results[results.length - 1] as (typeof results)[number])
-          : null;
-
-      const nextCursor = lastResult
-        ? input.sortBy === "createdAt"
-          ? lastResult.createdAt.toISOString()
-          : lastResult.title
-        : null;
+      const nextCursor = getNextRecipeCursor(
+        input.sortBy,
+        results,
+        input.limit,
+      );
 
       return {
         recipes: results,
@@ -541,7 +558,7 @@ export const publicRecipeRouter = createTRPCRouter({
       z.object({
         slug: z.string(),
         limit: z.number().default(12),
-        cursor: z.string().optional(),
+        cursor: recipeCursorSchema.optional(),
         sortBy: z.enum(["title", "createdAt"]).default("createdAt"),
       }),
     )
@@ -557,6 +574,7 @@ export const publicRecipeRouter = createTRPCRouter({
           time: recipes.time,
           difficulty: recipes.difficulty,
           servings: recipes.servings,
+          createdAtCursor: sql<string>`${recipes.createdAt}::text`,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
           ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
         })
@@ -569,35 +587,20 @@ export const publicRecipeRouter = createTRPCRouter({
             eq(cuisines.slug, input.slug),
             isNotNull(recipes.publishedAt),
             isNotNull(cuisines.publishedAt),
-            input.cursor
-              ? input.sortBy === "createdAt"
-                ? lt(recipes[input.sortBy], new Date(input.cursor))
-                : input.sortBy === "title"
-                  ? gt(recipes.title, input.cursor)
-                  : undefined
-              : undefined,
+            getRecipeCursorCondition(input.sortBy, input.cursor),
           ),
         )
         .groupBy(recipes.id)
-        .orderBy(
-          input.sortBy === "createdAt"
-            ? desc(recipes.createdAt)
-            : recipes.title,
-        )
+        .orderBy(...getRecipeCursorOrder(input.sortBy))
         .limit(input.limit);
 
       const results = await query.execute();
 
-      const lastResult =
-        results.length > 0
-          ? (results[results.length - 1] as (typeof results)[number])
-          : null;
-
-      const nextCursor = lastResult
-        ? input.sortBy === "createdAt"
-          ? lastResult.createdAt.toISOString()
-          : lastResult.title
-        : null;
+      const nextCursor = getNextRecipeCursor(
+        input.sortBy,
+        results,
+        input.limit,
+      );
 
       return {
         recipes: results,

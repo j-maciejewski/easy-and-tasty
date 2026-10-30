@@ -2,7 +2,7 @@
 
 import { LoaderCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { api } from "@/trpc/react";
 
@@ -19,6 +19,7 @@ export type InfiniteRecipeListProps =
 
 export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
   const searchParams = useSearchParams();
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   const sortBy = searchParams.get("sortBy") || "createdAt";
 
   const {
@@ -26,6 +27,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
     error,
     isLoading,
     isFetching,
+    isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
   } = props.type === "all"
@@ -34,7 +36,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
           sortBy: sortBy as "title" | "createdAt",
         },
         {
-          getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
+          getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
         },
       )
     : api.public.recipe[
@@ -47,25 +49,31 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
           sortBy: sortBy as "title" | "createdAt",
         },
         {
-          getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
+          getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
         },
       );
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-        hasNextPage
-      ) {
-        fetchNextPage();
-      }
-    };
+    const loadMore = loadMoreRef.current;
 
-    window.addEventListener("scroll", handleScroll);
+    if (!loadMore || !hasNextPage || isFetchingNextPage) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { rootMargin: "400px" },
+    );
+
+    observer.observe(loadMore);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
     };
-  }, [hasNextPage, fetchNextPage]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   if (isLoading) {
     return (
@@ -95,6 +103,7 @@ export const InfiniteRecipeList = (props: InfiniteRecipeListProps) => {
             <RecipeCard key={recipe.id} recipe={recipe} />
           ))}
       </div>
+      <div ref={loadMoreRef} />
       {isFetching && (
         <LoaderCircle className="text-muted-foreground mx-auto my-4 animate-spin" />
       )}
