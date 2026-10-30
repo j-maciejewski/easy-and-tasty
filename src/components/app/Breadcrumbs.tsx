@@ -2,6 +2,7 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 import { BookmarkButton } from "./BookmarkButton";
+import { PrintButton } from "./PrintButton";
 import { ShareDialog } from "./ShareDialog";
 
 interface BreadcrumbsProps {
@@ -16,17 +17,19 @@ interface BreadcrumbsProps {
     type: "recipe" | "article";
   };
   recipeId?: number;
+  printable?: boolean;
 }
 
 export const Breadcrumbs = ({
   paths,
   shareConfig,
   recipeId,
+  printable,
 }: BreadcrumbsProps) => {
   if (paths.length === 0) return null;
 
   return (
-    <div className="mb-6 flex items-center justify-between gap-4">
+    <div className="mb-6 flex items-center justify-between gap-4 print:hidden">
       <nav aria-label="Breadcrumb" className="min-w-0">
         <ol className="text-muted-foreground flex items-center gap-1 text-sm">
           <li>
@@ -55,6 +58,7 @@ export const Breadcrumbs = ({
       </nav>
       <div className="flex shrink-0 items-center gap-1">
         {recipeId && <BookmarkButton recipeId={recipeId} className="size-9" />}
+        {printable && shareConfig && <PrintButton type={shareConfig.type} />}
         {shareConfig && <ShareDialog shareConfig={shareConfig} />}
       </div>
     </div>

@@ -104,6 +104,7 @@ export default async function (props: RecipePageProps) {
             type: "recipe",
           }}
           recipeId={recipe.id}
+          printable
         />
         <h1 className="font-display max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight md:text-6xl">
           {recipe.title}
@@ -126,7 +127,7 @@ export default async function (props: RecipePageProps) {
           share="morph"
           default="none"
         >
-          <div className="bg-muted mt-8 overflow-hidden rounded-3xl">
+          <div className="bg-muted mt-8 overflow-hidden rounded-3xl print:mt-6 print:max-w-[12cm] print:rounded-xl">
             <RetryImage
               src={recipe.image}
               width={1200}
@@ -139,13 +140,13 @@ export default async function (props: RecipePageProps) {
           </div>
         </ViewTransition>
         <RecipeInformation recipe={recipe} className="mt-4" />
-        <article className="prose prose-lg prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary mt-10 max-w-[68ch]">
+        <article className="prose prose-lg prose-headings:font-display prose-a:text-primary prose-headings:tracking-tight prose-li:marker:text-primary print:prose-base mt-10 max-w-[68ch] print:mt-6 print:max-w-none">
           <MarkdownContent>{recipe.content}</MarkdownContent>
         </article>
         {(recipe.categories.length > 0 || recipe.cuisines.length > 0) && (
           <ul
             aria-label="Categories and cuisines"
-            className="mt-10 flex flex-wrap gap-2 text-sm"
+            className="mt-10 flex flex-wrap gap-2 text-sm print:hidden"
           >
             {recipe.categories.map((category) => (
               <li key={category.name}>
@@ -170,13 +171,20 @@ export default async function (props: RecipePageProps) {
           </ul>
         )}
         {!preview && (
-          <>
+          <div className="print:hidden">
             <RateRecipe recipeId={recipe.id} />
             <RecipeComments recipeId={recipe.id} />
-          </>
+          </div>
         )}
+        <p className="text-muted-foreground mt-8 hidden border-t pt-3 text-sm print:block">
+          Find this recipe online at{" "}
+          {`${process.env.NEXT_PUBLIC_APP_URL}/recipe/${recipe.slug}`.replace(
+            /^https?:\/\//,
+            "",
+          )}
+        </p>
       </div>
-      <aside className="lg:sticky lg:top-28 lg:self-start">
+      <aside className="lg:sticky lg:top-28 lg:self-start print:hidden">
         <RecipesList heading="Cook this next" recipes={recipes} />
       </aside>
     </div>

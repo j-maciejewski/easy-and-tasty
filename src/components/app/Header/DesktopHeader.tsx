@@ -61,7 +61,7 @@ export const DesktopHeader = ({ navigation }: DesktopHeaderProps) => {
   return (
     <div
       className={
-        "bg-card/95 supports-[backdrop-filter]:bg-card/85 fixed top-0 left-0 z-50 w-full border-b backdrop-blur"
+        "bg-card/95 supports-[backdrop-filter]:bg-card/85 fixed top-0 left-0 z-50 w-full border-b backdrop-blur print:hidden"
       }
     >
       <header data-is-scrolled={isScrolled}>

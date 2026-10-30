@@ -293,13 +293,34 @@
   animation: accordion-up 0.2s ease-out;
 }
 
-@media (width >= 48rem) {
+@media screen and (width >= 48rem) {
   body:has(header[data-is-scrolled="false"]) main {
     padding-top: 8rem;
   }
 
   body:has(header[data-is-scrolled="true"]) main {
     padding-top: 6rem;
+  }
+}
+
+@media print {
+  /* No page margin leaves no room for the browser's date, title and URL */
+  @page {
+    margin: 0;
+  }
+
+  body:has([data-view="app"]) {
+    background: white;
+  }
+
+  body:has([data-view="app"]) main {
+    margin-top: 0;
+  }
+
+  /* Stands in for the page margin, repeated on every printed page */
+  [data-view="app"] main > div {
+    padding: 1.5cm;
+    box-decoration-break: clone;
   }
 }
 

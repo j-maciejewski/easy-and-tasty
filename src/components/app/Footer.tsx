@@ -30,7 +30,7 @@ const socialLinks = [
 
 export const Footer = () => {
   return (
-    <footer className="bg-ink w-full px-4 pt-14 pb-8 text-white/70">
+    <footer className="bg-ink w-full px-4 pt-14 pb-8 text-white/70 print:hidden">
       <div className="width-content mx-auto">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-[2fr_1fr_1fr]">
           <div className="max-w-md">
