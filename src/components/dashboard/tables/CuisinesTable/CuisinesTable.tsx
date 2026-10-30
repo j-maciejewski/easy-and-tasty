@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { use, useEffect, useMemo } from "react";
 
 import { CuisineForm, DataTable } from "@/components/dashboard";
@@ -12,12 +13,14 @@ import {
   useCuisinesActions,
   useDebouncedSearchQuery,
   useModalAction,
+  useRowSelection,
   useStatusFilter,
 } from "@/utils";
 
 import {
   ActiveFilter,
   AddButton,
+  BulkActionsBar,
   ColumnsToggler,
   DateCell,
   getTableEmptyState,
@@ -42,8 +45,22 @@ export const CuisinesTable = () => {
 
   const { action, setAction, clearAction } = useModalAction<ModalAction>();
 
-  const { handleDeleteCuisine, handlePublishCuisine, handleUnpublishCuisine } =
-    useCuisinesActions();
+  const {
+    handleDeleteCuisine,
+    handlePublishCuisine,
+    handleUnpublishCuisine,
+    handleBulkSetPublishedCuisines,
+    handleBulkDeleteCuisines,
+  } = useCuisinesActions();
+
+  const { selectedKeys, setSelectedKeys, clearSelection } = useRowSelection([
+    pagination.currentPage,
+    pagination.itemsPerPage,
+    sort.key,
+    sort.order,
+    debouncedQuery,
+    status,
+  ]);
 
   const columns: TableColumn<Cuisine>[] = [
     {
@@ -190,6 +207,9 @@ export const CuisinesTable = () => {
           pagination.currentPage * pagination.itemsPerPage,
         )}
         getRowKey={({ id }) => id}
+        selectable
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
         emptyState={getTableEmptyState({
           entity: "cuisine",
           isFiltered: !!debouncedQuery || !!status,
@@ -197,6 +217,44 @@ export const CuisinesTable = () => {
           onClear: clearFilters,
           onAdd: () => setAction({ type: "add" }),
         })}
+      />
+
+      <BulkActionsBar
+        count={selectedKeys.length}
+        onClear={clearSelection}
+        actions={[
+          {
+            label: "Publish",
+            icon: Eye,
+            onClick: () =>
+              handleBulkSetPublishedCuisines(
+                selectedKeys,
+                true,
+                clearSelection,
+              ),
+          },
+          {
+            label: "Unpublish",
+            icon: EyeOff,
+            onClick: () =>
+              handleBulkSetPublishedCuisines(
+                selectedKeys,
+                false,
+                clearSelection,
+              ),
+          },
+          {
+            label: "Delete",
+            icon: Trash2,
+            variant: "destructive",
+            confirm: {
+              title: `Delete ${selectedKeys.length} ${selectedKeys.length === 1 ? "cuisine" : "cuisines"}?`,
+              description: "This action cannot be undone.",
+            },
+            onClick: () =>
+              handleBulkDeleteCuisines(selectedKeys, clearSelection),
+          },
+        ]}
       />
 
       <TableModals

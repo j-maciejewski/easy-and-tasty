@@ -108,6 +108,9 @@ export function PageForm({ pageId, onSubmit }: PageForm.Props) {
         title={isEditMode ? (data?.title ?? "Edit article") : "New article"}
         isPublished={isPublished}
         viewHref={isPublished && data ? `/${data.slug}` : undefined}
+        preview={
+          isEditMode && data ? { type: "article", id: pageId } : undefined
+        }
         isDirty={isDirty}
         isSubmitting={isSubmitting}
         submitLabel={isEditMode ? "Save changes" : "Create article"}

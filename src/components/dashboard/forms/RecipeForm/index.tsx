@@ -2,7 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Resolver, useForm, useFormState } from "react-hook-form";
 
 import {
@@ -19,7 +20,12 @@ import {
 import { getDashboardRecipePath, Path } from "@/config";
 import { recipeFormSchema } from "@/constants";
 import { api } from "@/trpc/react";
-import { useRecipesActions, useReturnTo, withReturnTo } from "@/utils";
+import {
+  parseSlug,
+  useRecipesActions,
+  useReturnTo,
+  withReturnTo,
+} from "@/utils";
 
 import { ImageUploadField } from "../ImageUploadField";
 import { EditorLayout, FormSection } from "../shared";
@@ -47,6 +53,24 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
       enabled: isEditMode,
     },
   );
+
+  const searchParams = useSearchParams();
+  const duplicateId = isEditMode
+    ? undefined
+    : Number(searchParams.get("duplicate")) || undefined;
+  const isDuplicate = duplicateId !== undefined;
+  const [isPrefilled, setIsPrefilled] = useState(false);
+
+  const { data: source, isLoading: sourceLoading } =
+    api.authorized.recipe.getRecipe.useQuery(duplicateId!, {
+      enabled: isDuplicate,
+    });
+  const copyTitle = source ? `${source.title} (copy)` : "";
+  const { data: similarRecipes, error: similarRecipesError } =
+    api.authorized.recipe.getRecipes.useQuery(
+      { title: copyTitle, limit: 100 },
+      { enabled: !!source },
+    );
 
   const form = useForm<RecipeFormValues>({
     resolver: zodResolver(recipeFormSchema) as Resolver<RecipeFormValues>,
@@ -95,6 +119,36 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
 
   const { isDirty, isSubmitting } = useFormState({ control: form.control });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: prefill once when the source recipe and taken titles are loaded
+  useEffect(() => {
+    if (!source || isPrefilled) return;
+    if (!similarRecipes && !similarRecipesError) return;
+
+    const takenSlugs = new Set(
+      similarRecipes?.results.map(({ title }) => parseSlug(title)),
+    );
+    let title = copyTitle;
+    for (let n = 2; takenSlugs.has(parseSlug(title)); n++)
+      title = `${copyTitle} ${n}`;
+
+    form.reset(
+      {
+        title,
+        description: source.description,
+        cuisines: source.cuisineIds,
+        categories: source.categoryIds,
+        content: source.content,
+        difficulty: source.difficulty,
+        time: source.time,
+        servings: source.servings,
+        image: source.image,
+        published: false,
+      },
+      { keepDefaultValues: true },
+    );
+    setIsPrefilled(true);
+  }, [source, similarRecipes, similarRecipesError]);
+
   async function handleSubmit(values: RecipeFormValues) {
     if (isEditMode) {
       await handleUpdateRecipe(recipeId, values, () => {
@@ -112,7 +166,10 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
     }
   }
 
-  if (isEditMode && isLoading)
+  if (
+    (isEditMode && isLoading) ||
+    (isDuplicate && !isPrefilled && (sourceLoading || !!source))
+  )
     return (
       <LoaderCircle className="text-muted-foreground mx-auto my-8 animate-spin" />
     );
@@ -124,10 +181,19 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
   return (
     <Form {...form}>
       <EditorLayout
-        title={isEditMode ? (data?.title ?? "Edit recipe") : "New recipe"}
+        title={
+          isEditMode
+            ? (data?.title ?? "Edit recipe")
+            : isDuplicate
+              ? "Duplicate recipe"
+              : "New recipe"
+        }
         isPublished={isPublished}
         viewHref={
           isPublished && data ? `${Path.RECIPE}/${data.slug}` : undefined
+        }
+        preview={
+          isEditMode && data ? { type: "recipe", id: recipeId } : undefined
         }
         isDirty={isDirty}
         isSubmitting={isSubmitting}

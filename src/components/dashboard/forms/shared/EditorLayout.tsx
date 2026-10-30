@@ -10,10 +10,13 @@ import { StatusBadge } from "@/components/dashboard/tables/shared/StatusBadge";
 import { Button } from "@/components/ui";
 import { useUnsavedChangesWarning } from "@/utils";
 
+import { PreviewActions, type PreviewTarget } from "./PreviewActions";
+
 interface EditorLayoutProps {
   title: string;
   isPublished?: boolean;
   viewHref?: string;
+  preview?: PreviewTarget;
   isDirty: boolean;
   isSubmitting: boolean;
   submitLabel?: string;
@@ -26,6 +29,7 @@ export const EditorLayout = ({
   title,
   isPublished,
   viewHref,
+  preview,
   isDirty,
   isSubmitting,
   submitLabel = "Save",
@@ -55,13 +59,18 @@ export const EditorLayout = ({
               <StatusBadge isPublished={isPublished} />
             )}
           </div>
-          {viewHref && (
-            <Button asChild variant="outline" size="sm">
-              <Link href={viewHref} target="_blank" rel="noopener">
-                <ExternalLink />
-                View on site
-              </Link>
-            </Button>
+          {(preview || viewHref) && (
+            <div className="flex flex-wrap items-center gap-2">
+              {preview && <PreviewActions {...preview} isDirty={isDirty} />}
+              {viewHref && (
+                <Button asChild variant="outline" size="sm">
+                  <Link href={viewHref} target="_blank" rel="noopener">
+                    <ExternalLink />
+                    View on site
+                  </Link>
+                </Button>
+              )}
+            </div>
           )}
         </div>
 

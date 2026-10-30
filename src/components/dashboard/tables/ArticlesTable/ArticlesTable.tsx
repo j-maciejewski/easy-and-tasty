@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { use, useEffect, useMemo, useState } from "react";
 
@@ -27,6 +28,7 @@ import {
   useColumnsToggler,
   useDebouncedSearchQuery,
   useModalAction,
+  useRowSelection,
   useStatusFilter,
   useWithReturnTo,
 } from "@/utils";
@@ -34,6 +36,7 @@ import {
 import {
   ActiveFilter,
   AddButton,
+  BulkActionsBar,
   ColumnsToggler,
   DateCell,
   getTableEmptyState,
@@ -70,8 +73,27 @@ export const ArticlesTable = () => {
   const openEditor = (id: number | "new") =>
     router.push(withReturnTo(getDashboardArticlePath(id)));
 
-  const { handleDeleteArticle, handlePublishArticle, handleUnpublishArticle } =
-    useArticlesActions();
+  const {
+    handleDeleteArticle,
+    handlePublishArticle,
+    handleUnpublishArticle,
+    handleBulkSetPublishedArticles,
+    handleBulkDeleteArticles,
+  } = useArticlesActions();
+
+  const { selectedKeys, setSelectedKeys, clearSelection } = useRowSelection([
+    pagination.currentPage,
+    pagination.itemsPerPage,
+    sort.key,
+    sort.order,
+    debouncedQuery,
+    status,
+  ]);
+
+  const onBulkSuccess = () => {
+    clearSelection();
+    refetch();
+  };
 
   type PageItem = NonNullable<typeof pages>[number];
 
@@ -240,6 +262,9 @@ export const ArticlesTable = () => {
             pagination.currentPage * pagination.itemsPerPage,
           )}
           getRowKey={({ id }) => id}
+          selectable
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
           emptyState={getTableEmptyState({
             entity: "article",
             isFiltered: !!debouncedQuery || !!status,
@@ -247,6 +272,44 @@ export const ArticlesTable = () => {
             onClear: clearFilters,
             onAdd: () => openEditor("new"),
           })}
+        />
+
+        <BulkActionsBar
+          count={selectedKeys.length}
+          onClear={clearSelection}
+          actions={[
+            {
+              label: "Publish",
+              icon: Eye,
+              onClick: () =>
+                handleBulkSetPublishedArticles(
+                  selectedKeys,
+                  true,
+                  onBulkSuccess,
+                ),
+            },
+            {
+              label: "Unpublish",
+              icon: EyeOff,
+              onClick: () =>
+                handleBulkSetPublishedArticles(
+                  selectedKeys,
+                  false,
+                  onBulkSuccess,
+                ),
+            },
+            {
+              label: "Delete",
+              icon: Trash2,
+              variant: "destructive",
+              confirm: {
+                title: `Delete ${selectedKeys.length} ${selectedKeys.length === 1 ? "article" : "articles"}?`,
+                description: "This action cannot be undone.",
+              },
+              onClick: () =>
+                handleBulkDeleteArticles(selectedKeys, onBulkSuccess),
+            },
+          ]}
         />
 
         <TableModals

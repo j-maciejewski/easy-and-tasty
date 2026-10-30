@@ -2,6 +2,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { use } from "react";
 
 import {
+  Checkbox,
   Skeleton,
   Table,
   TableBody,
@@ -33,24 +34,30 @@ const getDefaultRowKey = (item: unknown, idx: number): React.Key => {
 };
 
 export namespace DataTable {
-  export interface Props<T> {
+  export interface Props<T, K extends React.Key = React.Key> {
     isLoading?: boolean;
     hiddenColumns: string[];
     data: T[];
     columns: TableColumn<T>[];
-    getRowKey?: (item: T) => React.Key;
+    getRowKey?: (item: T) => K;
     emptyState?: EmptyStateProps;
+    selectable?: boolean;
+    selectedKeys?: K[];
+    onSelectionChange?: (keys: K[]) => void;
   }
 }
 
-export const DataTable = <T,>({
+export const DataTable = <T, K extends React.Key = React.Key>({
   isLoading = false,
   hiddenColumns,
   columns,
   data,
   getRowKey,
   emptyState,
-}: DataTable.Props<T>) => {
+  selectable = false,
+  selectedKeys = [],
+  onSelectionChange,
+}: DataTable.Props<T, K>) => {
   const { pagination, sort, handleChangeSort } = use(PaginationContext)!;
 
   if (!isLoading && data.length === 0) return <EmptyState {...emptyState} />;
@@ -59,11 +66,51 @@ export const DataTable = <T,>({
     (column) => !hiddenColumns.includes(column.label),
   );
 
+  const getKey = (item: T, idx: number) =>
+    getRowKey?.(item) ?? (getDefaultRowKey(item, idx) as K);
+  const pageKeys = data.map(getKey);
+  const selectedOnPage = pageKeys.filter((key) => selectedKeys.includes(key));
+  const allSelected =
+    pageKeys.length > 0 && selectedOnPage.length === pageKeys.length;
+
+  const toggleAll = () =>
+    onSelectionChange?.(
+      allSelected
+        ? selectedKeys.filter((key) => !pageKeys.includes(key))
+        : [
+            ...selectedKeys,
+            ...pageKeys.filter((key) => !selectedKeys.includes(key)),
+          ],
+    );
+
+  const toggleRow = (key: K) =>
+    onSelectionChange?.(
+      selectedKeys.includes(key)
+        ? selectedKeys.filter((selected) => selected !== key)
+        : [...selectedKeys, key],
+    );
+
   return (
     <>
       <Table>
         <TableHeader>
           <TableRow>
+            {selectable && (
+              <TableHead className="w-10">
+                <Checkbox
+                  aria-label="Select all rows on this page"
+                  disabled={isLoading}
+                  checked={
+                    allSelected
+                      ? true
+                      : selectedOnPage.length > 0
+                        ? "indeterminate"
+                        : false
+                  }
+                  onCheckedChange={toggleAll}
+                />
+              </TableHead>
+            )}
             {visibleColumns.map((column) => {
               const isRight = column.align === "right";
               const isActive = !!column.sortKey && sort.key === column.sortKey;
@@ -118,6 +165,11 @@ export const DataTable = <T,>({
           {isLoading
             ? Array.from(Array(pagination.itemsPerPage).keys()).map((idx) => (
                 <TableRow key={idx}>
+                  {selectable && (
+                    <TableCell className="w-10">
+                      <Skeleton className="size-4 rounded-[4px]" />
+                    </TableCell>
+                  )}
                   {visibleColumns.map((column, colIdx) => (
                     <TableCell key={column.label}>
                       <Skeleton
@@ -132,23 +184,40 @@ export const DataTable = <T,>({
                   ))}
                 </TableRow>
               ))
-            : data.map((item, idx) => (
-                <TableRow
-                  key={getRowKey?.(item) ?? getDefaultRowKey(item, idx)}
-                >
-                  {visibleColumns.map((column) => (
-                    <TableCell
-                      key={column.label}
-                      className={cn(
-                        "font-medium",
-                        column.align === "right" && "text-right tabular-nums",
-                      )}
-                    >
-                      {column.render(item)}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+            : data.map((item, idx) => {
+                const key = getKey(item, idx);
+                const isSelected = selectable && selectedKeys.includes(key);
+
+                return (
+                  <TableRow
+                    key={key}
+                    className={cn(
+                      isSelected && "bg-primary/5 hover:bg-primary/10",
+                    )}
+                  >
+                    {selectable && (
+                      <TableCell className="w-10">
+                        <Checkbox
+                          aria-label="Select row"
+                          checked={isSelected}
+                          onCheckedChange={() => toggleRow(key)}
+                        />
+                      </TableCell>
+                    )}
+                    {visibleColumns.map((column) => (
+                      <TableCell
+                        key={column.label}
+                        className={cn(
+                          "font-medium",
+                          column.align === "right" && "text-right tabular-nums",
+                        )}
+                      >
+                        {column.render(item)}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
         </TableBody>
       </Table>
       {!isLoading && <Pagination />}

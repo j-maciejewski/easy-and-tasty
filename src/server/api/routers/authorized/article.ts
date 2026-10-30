@@ -1,14 +1,53 @@
-import { type Column, desc, eq, gte, ilike, sql } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
+import {
+  and,
+  type Column,
+  desc,
+  eq,
+  gte,
+  ilike,
+  inArray,
+  isNull,
+  sql,
+} from "drizzle-orm";
 import { z } from "zod";
 
 import { pageSectionsSchema, stringifyPageSections } from "@/constants";
-import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
+  createPreviewToken,
+  getPreviewPath,
+  PREVIEW_TTL_SECONDS,
+} from "@/lib/preview";
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { db } from "@/server/db";
+import {
+  article_comment_likes,
   article_comments,
   article_views,
   articles,
   users,
 } from "@/server/db/schema";
+
+type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+const deleteArticlesWithRelations = async (tx: Transaction, ids: number[]) => {
+  await tx
+    .delete(article_comment_likes)
+    .where(
+      inArray(
+        article_comment_likes.articleCommentId,
+        tx
+          .select({ id: article_comments.id })
+          .from(article_comments)
+          .where(inArray(article_comments.articleId, ids)),
+      ),
+    );
+  await tx
+    .delete(article_comments)
+    .where(inArray(article_comments.articleId, ids));
+  await tx.delete(article_views).where(inArray(article_views.articleId, ids));
+  await tx.delete(articles).where(inArray(articles.id, ids));
+};
 
 export const authorizedArticleRouter = createTRPCRouter({
   getSummaryStats: authorizedProcedure.query(async ({ ctx }) => {
@@ -143,6 +182,29 @@ export const authorizedArticleRouter = createTRPCRouter({
     });
   }),
 
+  getPreviewLink: authorizedProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const item = await ctx.db.query.articles.findFirst({
+        columns: { slug: true },
+        where: eq(articles.id, input.id),
+      });
+
+      if (!item) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Article not found",
+        });
+      }
+
+      const token = createPreviewToken({ type: "article", id: input.id });
+
+      return {
+        url: getPreviewPath("article", item.slug, token),
+        expiresAt: new Date(Date.now() + PREVIEW_TTL_SECONDS * 1000),
+      };
+    }),
+
   getArticle: authorizedProcedure
     .input(z.string())
     .query(({ ctx, input: articleSlug }) => {
@@ -238,6 +300,35 @@ export const authorizedArticleRouter = createTRPCRouter({
   deleteArticle: authorizedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.delete(articles).where(eq(articles.id, input));
+      await ctx.db.transaction((tx) =>
+        deleteArticlesWithRelations(tx, [input]),
+      );
+    }),
+
+  bulkSetPublished: authorizedProcedure
+    .input(
+      z.object({
+        ids: z.number().positive().array().min(1),
+        published: z.boolean(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(articles)
+        .set({ publishedAt: input.published ? new Date() : null })
+        .where(
+          and(
+            inArray(articles.id, input.ids),
+            input.published ? isNull(articles.publishedAt) : undefined,
+          ),
+        );
+    }),
+
+  bulkDelete: authorizedProcedure
+    .input(z.object({ ids: z.number().positive().array().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction((tx) =>
+        deleteArticlesWithRelations(tx, input.ids),
+      );
     }),
 });

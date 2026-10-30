@@ -15,6 +15,9 @@ export const useCategoriesActions = () => {
   const publishCategory = api.authorized.category.publishCategory.useMutation();
   const unpublishCategory =
     api.authorized.category.unpublishCategory.useMutation();
+  const bulkSetPublished =
+    api.authorized.category.bulkSetPublished.useMutation();
+  const bulkDelete = api.authorized.category.bulkDelete.useMutation();
 
   async function handleCreateCategory(
     values: z.infer<typeof categoryFormSchema>,
@@ -102,11 +105,55 @@ export const useCategoriesActions = () => {
     }
   }
 
+  const countCategories = (count: number) =>
+    `${count} ${count === 1 ? "category" : "categories"}`;
+
+  async function handleBulkSetPublishedCategories(
+    ids: number[],
+    published: boolean,
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkSetPublished.mutateAsync({ ids, published });
+      refreshCategories();
+
+      toast.success(
+        `${countCategories(ids.length)} ${published ? "published" : "unpublished"}.`,
+      );
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          `There was an error while ${published ? "publishing" : "unpublishing"} the categories.`,
+      );
+    }
+  }
+
+  async function handleBulkDeleteCategories(
+    ids: number[],
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkDelete.mutateAsync({ ids });
+      refreshCategories();
+
+      toast.success(`${countCategories(ids.length)} deleted.`);
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while deleting the categories.",
+      );
+    }
+  }
+
   return {
     handleCreateCategory,
     handleUpdateCategory,
     handleDeleteCategory,
     handlePublishCategory,
     handleUnpublishCategory,
+    handleBulkSetPublishedCategories,
+    handleBulkDeleteCategories,
   };
 };

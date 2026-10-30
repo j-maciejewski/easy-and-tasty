@@ -15,6 +15,8 @@ const sectionLabels: Record<string, string> = {
   cuisines: "Cuisines",
   users: "Users",
   navigation: "Navigation",
+  comments: "Comments",
+  media: "Media",
   new: "New",
 };
 

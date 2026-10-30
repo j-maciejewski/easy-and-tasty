@@ -1,6 +1,6 @@
 "use client";
 
-import { ImageOff } from "lucide-react";
+import { Eye, EyeOff, Globe, ImageOff, Tag, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 
@@ -17,6 +17,7 @@ import {
   useDebouncedSearchQuery,
   useModalAction,
   useRecipesActions,
+  useRowSelection,
   useStatusFilter,
   useWithReturnTo,
 } from "@/utils";
@@ -25,6 +26,7 @@ import {
   ActiveFilter,
   AddButton,
   BadgeList,
+  BulkActionsBar,
   ColumnsToggler,
   DateCell,
   getTableEmptyState,
@@ -53,6 +55,19 @@ export const RecipesTable = () => {
   const withReturnTo = useWithReturnTo();
   const openEditor = (id: number | "new") =>
     router.push(withReturnTo(getDashboardRecipePath(id)));
+  const duplicateRecipe = (id: number) =>
+    router.push(
+      `${withReturnTo(getDashboardRecipePath("new"))}&duplicate=${id}`,
+    );
+
+  const { selectedKeys, setSelectedKeys, clearSelection } = useRowSelection([
+    pagination.currentPage,
+    pagination.itemsPerPage,
+    sort.key,
+    sort.order,
+    debouncedQuery,
+    status,
+  ]);
 
   const {
     data: recipes,
@@ -68,8 +83,20 @@ export const RecipesTable = () => {
     status,
   });
 
-  const { handlePublishRecipe, handleUnpublishRecipe, handleDeleteRecipe } =
-    useRecipesActions();
+  const {
+    handlePublishRecipe,
+    handleUnpublishRecipe,
+    handleDeleteRecipe,
+    handleBulkSetPublishedRecipes,
+    handleBulkDeleteRecipes,
+    handleBulkAddCategory,
+    handleBulkAddCuisine,
+  } = useRecipesActions();
+
+  const onBulkSuccess = () => {
+    clearSelection();
+    refetchRecipes();
+  };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
@@ -184,6 +211,10 @@ export const RecipesTable = () => {
               label: "Edit Recipe",
               onClick: () => openEditor(id),
             },
+            {
+              label: "Duplicate Recipe",
+              onClick: () => duplicateRecipe(id),
+            },
             publishedAt
               ? {
                   label: "Unpublish Recipe",
@@ -262,6 +293,9 @@ export const RecipesTable = () => {
           columns={columns}
           data={recipes?.results ?? []}
           getRowKey={({ id }) => id}
+          selectable
+          selectedKeys={selectedKeys}
+          onSelectionChange={setSelectedKeys}
           emptyState={getTableEmptyState({
             entity: "recipe",
             isFiltered: !!debouncedQuery || !!status,
@@ -269,6 +303,63 @@ export const RecipesTable = () => {
             onClear: clearFilters,
             onAdd: () => openEditor("new"),
           })}
+        />
+
+        <BulkActionsBar
+          count={selectedKeys.length}
+          onClear={clearSelection}
+          actions={[
+            {
+              label: "Publish",
+              icon: Eye,
+              onClick: () =>
+                handleBulkSetPublishedRecipes(
+                  selectedKeys,
+                  true,
+                  onBulkSuccess,
+                ),
+            },
+            {
+              label: "Unpublish",
+              icon: EyeOff,
+              onClick: () =>
+                handleBulkSetPublishedRecipes(
+                  selectedKeys,
+                  false,
+                  onBulkSuccess,
+                ),
+            },
+            {
+              label: "Assign category",
+              icon: Tag,
+              options: [...(categories?.values() ?? [])].map(
+                ({ id, name }) => ({ value: id, label: name }),
+              ),
+              onSelect: (categoryId) =>
+                handleBulkAddCategory(selectedKeys, categoryId, onBulkSuccess),
+            },
+            {
+              label: "Assign cuisine",
+              icon: Globe,
+              options: [...(cuisines?.values() ?? [])].map(({ id, name }) => ({
+                value: id,
+                label: name,
+              })),
+              onSelect: (cuisineId) =>
+                handleBulkAddCuisine(selectedKeys, cuisineId, onBulkSuccess),
+            },
+            {
+              label: "Delete",
+              icon: Trash2,
+              variant: "destructive",
+              confirm: {
+                title: `Delete ${selectedKeys.length} ${selectedKeys.length === 1 ? "recipe" : "recipes"}?`,
+                description: "This action cannot be undone.",
+              },
+              onClick: () =>
+                handleBulkDeleteRecipes(selectedKeys, onBulkSuccess),
+            },
+          ]}
         />
 
         <TableModals

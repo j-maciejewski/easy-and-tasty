@@ -8,11 +8,14 @@ import {
   ilike,
   inArray,
   isNotNull,
+  type SQL,
   sql,
 } from "drizzle-orm";
 import { z } from "zod";
 
+import { verifyPreviewToken } from "@/lib/preview";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import type { db as database } from "@/server/db";
 import {
   categories,
   cuisines,
@@ -70,6 +73,50 @@ const getNextRecipeCursor = (
   };
 };
 
+const getRecipeDetails = async (db: typeof database, where: SQL | undefined) =>
+  (
+    await db
+      .select({
+        id: recipes.id,
+        title: recipes.title,
+        description: recipes.description,
+        image: recipes.image,
+        difficulty: recipes.difficulty,
+        content: recipes.content,
+        servings: recipes.servings,
+        slug: recipes.slug,
+        time: recipes.time,
+        createdAt: recipes.createdAt,
+        updatedAt: recipes.updatedAt,
+        publishedAt: recipes.publishedAt,
+        avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
+        ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
+        categories: sql<{ name: string; slug: string }[]>`
+				COALESCE(
+					jsonb_agg(DISTINCT jsonb_build_object('name', ${categories.name}, 'slug', ${categories.slug}))
+    FILTER (WHERE ${categories.name} IS NOT NULL AND ${categories.slug} IS NOT NULL AND ${categories.publishedAt} IS NOT NULL),
+					'[]'::jsonb
+				)
+				`.as("categories"),
+        cuisines: sql<{ name: string; slug: string }[]>`
+				COALESCE(
+					jsonb_agg(DISTINCT jsonb_build_object('name', ${cuisines.name}, 'slug', ${cuisines.slug}))
+    FILTER (WHERE ${cuisines.name} IS NOT NULL AND ${cuisines.slug} IS NOT NULL AND ${cuisines.publishedAt} IS NOT NULL),
+					'[]'::jsonb
+				)
+				`.as("cuisines"),
+      })
+      .from(recipes)
+      .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+      .leftJoin(recipe_categories, eq(recipe_categories.recipeId, recipes.id))
+      .leftJoin(categories, eq(categories.id, recipe_categories.categoryId))
+      .leftJoin(recipe_cuisines, eq(recipe_cuisines.recipeId, recipes.id))
+      .leftJoin(cuisines, eq(cuisines.id, recipe_cuisines.cuisineId))
+      .where(where)
+      .groupBy(recipes.id)
+      .limit(1)
+  )?.[0] ?? null;
+
 export const publicRecipeRouter = createTRPCRouter({
   addRecipeView: publicProcedure
     .input(
@@ -115,58 +162,21 @@ export const publicRecipeRouter = createTRPCRouter({
 
   getRecipeBySlug: publicProcedure
     .input(z.string())
-    .query(async ({ ctx, input }) => {
-      return (
-        (
-          await ctx.db
-            .select({
-              id: recipes.id,
-              title: recipes.title,
-              description: recipes.description,
-              image: recipes.image,
-              difficulty: recipes.difficulty,
-              content: recipes.content,
-              servings: recipes.servings,
-              slug: recipes.slug,
-              time: recipes.time,
-              createdAt: recipes.createdAt,
-              updatedAt: recipes.updatedAt,
-              publishedAt: recipes.publishedAt,
-              avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
-              ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
-              categories: sql<{ name: string; slug: string }[]>`
-				COALESCE(
-					jsonb_agg(DISTINCT jsonb_build_object('name', ${categories.name}, 'slug', ${categories.slug}))
-          FILTER (WHERE ${categories.name} IS NOT NULL AND ${categories.slug} IS NOT NULL AND ${categories.publishedAt} IS NOT NULL),
-					'[]'::jsonb
-				)
-				`.as("categories"),
-              cuisines: sql<{ name: string; slug: string }[]>`
-				COALESCE(
-					jsonb_agg(DISTINCT jsonb_build_object('name', ${cuisines.name}, 'slug', ${cuisines.slug}))
-          FILTER (WHERE ${cuisines.name} IS NOT NULL AND ${cuisines.slug} IS NOT NULL AND ${cuisines.publishedAt} IS NOT NULL),
-					'[]'::jsonb
-				)
-				`.as("cuisines"),
-            })
-            .from(recipes)
-            .where(and(eq(recipes.slug, input), isNotNull(recipes.publishedAt)))
-            .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
-            .leftJoin(
-              recipe_categories,
-              eq(recipe_categories.recipeId, recipes.id),
-            )
-            .leftJoin(
-              categories,
-              eq(categories.id, recipe_categories.categoryId),
-            )
-            .leftJoin(recipe_cuisines, eq(recipe_cuisines.recipeId, recipes.id))
-            .leftJoin(cuisines, eq(cuisines.id, recipe_cuisines.cuisineId))
+    .query(({ ctx, input }) =>
+      getRecipeDetails(
+        ctx.db,
+        and(eq(recipes.slug, input), isNotNull(recipes.publishedAt)),
+      ),
+    ),
 
-            .groupBy(recipes.id)
-            .limit(1)
-        )?.[0] ?? null
-      );
+  getRecipePreview: publicProcedure
+    .input(z.string())
+    .query(({ ctx, input: token }) => {
+      const preview = verifyPreviewToken(token);
+
+      if (preview?.type !== "recipe") return null;
+
+      return getRecipeDetails(ctx.db, eq(recipes.id, preview.id));
     }),
 
   getRecipesSlugs: publicProcedure.query(({ ctx }) => {

@@ -1,8 +1,26 @@
-import { and, type Column, desc, eq, gte, ilike, sql } from "drizzle-orm";
+import { TRPCError } from "@trpc/server";
+import {
+  and,
+  type Column,
+  desc,
+  eq,
+  gte,
+  ilike,
+  inArray,
+  isNull,
+  sql,
+} from "drizzle-orm";
 import { z } from "zod";
 
-import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
 import {
+  createPreviewToken,
+  getPreviewPath,
+  PREVIEW_TTL_SECONDS,
+} from "@/lib/preview";
+import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
+import { db } from "@/server/db";
+import {
+  comment_likes,
   comments,
   difficultyEnum,
   recipe_bookmarks,
@@ -14,6 +32,35 @@ import {
   users,
 } from "@/server/db/schema";
 import { parseSlug } from "@/utils";
+
+type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+const deleteRecipesWithRelations = async (tx: Transaction, ids: number[]) => {
+  await tx.delete(recipe_ratings).where(inArray(recipe_ratings.recipeId, ids));
+  await tx
+    .delete(comment_likes)
+    .where(
+      inArray(
+        comment_likes.commentId,
+        tx
+          .select({ id: comments.id })
+          .from(comments)
+          .where(inArray(comments.recipeId, ids)),
+      ),
+    );
+  await tx.delete(comments).where(inArray(comments.recipeId, ids));
+  await tx
+    .delete(recipe_bookmarks)
+    .where(inArray(recipe_bookmarks.recipeId, ids));
+  await tx.delete(recipe_views).where(inArray(recipe_views.recipeId, ids));
+  await tx
+    .delete(recipe_categories)
+    .where(inArray(recipe_categories.recipeId, ids));
+  await tx
+    .delete(recipe_cuisines)
+    .where(inArray(recipe_cuisines.recipeId, ids));
+  await tx.delete(recipes).where(inArray(recipes.id, ids));
+};
 
 export const authorizedRecipeRouter = createTRPCRouter({
   getSummaryStats: authorizedProcedure.query(async ({ ctx }) => {
@@ -42,6 +89,7 @@ export const authorizedRecipeRouter = createTRPCRouter({
     });
     const emptyCounts = { last24h: 0, last7d: 0, last30d: 0, prev30d: 0 };
     const viewCount = sql<number>`CAST(COUNT(*) as int)`;
+    const ratingAvg = sql<number>`CAST(ROUND(AVG(${recipe_ratings.score}), 2) as float)`;
 
     const [
       [content],
@@ -54,6 +102,10 @@ export const authorizedRecipeRouter = createTRPCRouter({
       topViewed,
       recentComments,
       recentBookmarks,
+      [ratingTotals],
+      ratingDistribution,
+      lowestRated,
+      mostDiscussed,
     ] = await Promise.all([
       ctx.db
         .select({
@@ -143,6 +195,43 @@ export const authorizedRecipeRouter = createTRPCRouter({
         .leftJoin(users, eq(recipe_bookmarks.userId, users.id))
         .orderBy(desc(recipe_bookmarks.createdAt))
         .limit(6),
+      ctx.db
+        .select({
+          count: viewCount,
+          average: sql<number>`CAST(COALESCE(ROUND(AVG(${recipe_ratings.score}), 2), 0) as float)`,
+        })
+        .from(recipe_ratings),
+      ctx.db
+        .select({ score: recipe_ratings.score, count: viewCount })
+        .from(recipe_ratings)
+        .groupBy(recipe_ratings.score),
+      ctx.db
+        .select({
+          id: recipes.id,
+          title: recipes.title,
+          slug: recipes.slug,
+          average: ratingAvg,
+          count: viewCount,
+        })
+        .from(recipe_ratings)
+        .innerJoin(recipes, eq(recipe_ratings.recipeId, recipes.id))
+        .groupBy(recipes.id)
+        .having(sql`COUNT(*) >= 3 AND AVG(${recipe_ratings.score}) <= 3`)
+        .orderBy(ratingAvg, desc(viewCount))
+        .limit(5),
+      ctx.db
+        .select({
+          id: recipes.id,
+          title: recipes.title,
+          slug: recipes.slug,
+          comments: viewCount,
+        })
+        .from(comments)
+        .innerJoin(recipes, eq(comments.recipeId, recipes.id))
+        .where(gte(comments.createdAt, last30d))
+        .groupBy(recipes.id)
+        .orderBy(desc(viewCount))
+        .limit(5),
     ]);
 
     const commentsMap = new Map(
@@ -182,8 +271,40 @@ export const authorizedRecipeRouter = createTRPCRouter({
       topViewed,
       recentComments,
       recentBookmarks,
+      ratings: {
+        count: ratingTotals?.count ?? 0,
+        average: ratingTotals?.average ?? 0,
+        distribution: [5, 4, 3, 2, 1].map((score) => ({
+          score,
+          count:
+            ratingDistribution.find((entry) => entry.score === score)?.count ??
+            0,
+        })),
+        lowestRated,
+        mostDiscussed,
+      },
     };
   }),
+
+  getPreviewLink: authorizedProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const item = await ctx.db.query.recipes.findFirst({
+        columns: { slug: true },
+        where: eq(recipes.id, input.id),
+      });
+
+      if (!item) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Recipe not found" });
+      }
+
+      const token = createPreviewToken({ type: "recipe", id: input.id });
+
+      return {
+        url: getPreviewPath("recipe", item.slug, token),
+        expiresAt: new Date(Date.now() + PREVIEW_TTL_SECONDS * 1000),
+      };
+    }),
 
   getRecipe: authorizedProcedure
     .input(z.number())
@@ -558,30 +679,113 @@ export const authorizedRecipeRouter = createTRPCRouter({
   deleteRecipe: authorizedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: recipeId }) => {
+      await ctx.db.transaction((tx) =>
+        deleteRecipesWithRelations(tx, [recipeId]),
+      );
+    }),
+
+  bulkSetPublished: authorizedProcedure
+    .input(
+      z.object({
+        ids: z.number().positive().array().min(1),
+        published: z.boolean(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(recipes)
+        .set({ publishedAt: input.published ? new Date() : null })
+        .where(
+          and(
+            inArray(recipes.id, input.ids),
+            input.published ? isNull(recipes.publishedAt) : undefined,
+          ),
+        );
+    }),
+
+  bulkDelete: authorizedProcedure
+    .input(z.object({ ids: z.number().positive().array().min(1) }))
+    .mutation(async ({ ctx, input: { ids } }) => {
+      await ctx.db.transaction((tx) => deleteRecipesWithRelations(tx, ids));
+    }),
+
+  bulkAddCategory: authorizedProcedure
+    .input(
+      z.object({
+        ids: z.number().positive().array().min(1),
+        categoryId: z.number().positive(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
       await ctx.db.transaction(async (tx) => {
-        await tx
-          .delete(recipe_ratings)
-          .where(eq(recipe_ratings.recipeId, recipeId));
+        const existing = await tx
+          .select({ recipeId: recipe_categories.recipeId })
+          .from(recipe_categories)
+          .where(
+            and(
+              inArray(recipe_categories.recipeId, input.ids),
+              eq(recipe_categories.categoryId, input.categoryId),
+            ),
+          );
+        const existingIds = new Set(existing.map(({ recipeId }) => recipeId));
+        const missingIds = input.ids.filter((id) => !existingIds.has(id));
 
-        await tx.delete(comments).where(eq(comments.recipeId, recipeId));
+        if (missingIds.length === 0) return;
 
-        await tx
-          .delete(recipe_bookmarks)
-          .where(eq(recipe_bookmarks.recipeId, recipeId));
+        await tx.execute(sql`
+          SELECT setval(
+            pg_get_serial_sequence('"easy-and-tasty_recipe_category"', 'id'),
+            COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_category"), 0) + 1,
+            false
+          )
+        `);
 
-        await tx
-          .delete(recipe_views)
-          .where(eq(recipe_views.recipeId, recipeId));
+        await tx.insert(recipe_categories).values(
+          missingIds.map((recipeId) => ({
+            recipeId,
+            categoryId: input.categoryId,
+          })),
+        );
+      });
+    }),
 
-        await tx
-          .delete(recipe_categories)
-          .where(eq(recipe_categories.recipeId, recipeId));
+  bulkAddCuisine: authorizedProcedure
+    .input(
+      z.object({
+        ids: z.number().positive().array().min(1),
+        cuisineId: z.number().positive(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction(async (tx) => {
+        const existing = await tx
+          .select({ recipeId: recipe_cuisines.recipeId })
+          .from(recipe_cuisines)
+          .where(
+            and(
+              inArray(recipe_cuisines.recipeId, input.ids),
+              eq(recipe_cuisines.cuisineId, input.cuisineId),
+            ),
+          );
+        const existingIds = new Set(existing.map(({ recipeId }) => recipeId));
+        const missingIds = input.ids.filter((id) => !existingIds.has(id));
 
-        await tx
-          .delete(recipe_cuisines)
-          .where(eq(recipe_cuisines.recipeId, recipeId));
+        if (missingIds.length === 0) return;
 
-        await tx.delete(recipes).where(eq(recipes.id, recipeId));
+        await tx.execute(sql`
+          SELECT setval(
+            pg_get_serial_sequence('"easy-and-tasty_recipe_cuisine"', 'id'),
+            COALESCE((SELECT MAX(id) FROM "easy-and-tasty_recipe_cuisine"), 0) + 1,
+            false
+          )
+        `);
+
+        await tx.insert(recipe_cuisines).values(
+          missingIds.map((recipeId) => ({
+            recipeId,
+            cuisineId: input.cuisineId,
+          })),
+        );
       });
     }),
 });

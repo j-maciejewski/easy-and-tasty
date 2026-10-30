@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ViewTransition } from "react";
 
 import {
@@ -10,6 +10,7 @@ import {
   Breadcrumbs,
   FullWidthWrapper,
   MarkdownContent,
+  PreviewBanner,
   RecipeCard,
   RecipeCardFull,
   RecipesCarousel,
@@ -20,25 +21,47 @@ import { RetryImage } from "@/components/app/RetryImage";
 import { Separator } from "@/components/ui";
 import { type PageSection, parsePageSections } from "@/constants";
 import { getArticle } from "@/lib/data";
+import { getPagePreview, getPreviewPath } from "@/lib/preview";
 import { getImageTransitionName, parseMetadata, parseSlug } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
-export async function generateMetadata({
-  params,
-}: {
+type ArticlePageProps = {
   params: Promise<{ slug: string[] }>;
-}): Promise<Metadata> {
-  const page = await getArticle(parseSlug((await params).slug));
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+const loadArticle = async ({ params, searchParams }: ArticlePageProps) => {
+  const preview = await getPagePreview(searchParams, "article");
+  const page = preview
+    ? await api.public.article.getArticlePreview(preview.token)
+    : null;
+
+  if (preview && page) return { page, preview };
+
+  return {
+    page: await getArticle(parseSlug((await params).slug)),
+    preview: null,
+  };
+};
+
+export async function generateMetadata(
+  props: ArticlePageProps,
+): Promise<Metadata> {
+  const { page, preview } = await loadArticle(props);
 
   if (!page) return {};
 
-  return parseMetadata(
+  const metadata = parseMetadata(
     page.title,
     page.description,
     `/${page.slug}`,
     page.image,
     "article",
   );
+
+  return preview
+    ? { ...metadata, robots: { index: false, follow: false } }
+    : metadata;
 }
 
 export async function generateStaticParams() {
@@ -49,12 +72,18 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ({
-  params,
-}: {
-  params: Promise<{ slug: string[] }>;
-}) {
-  const page = await getArticle(parseSlug((await params).slug));
+export default async function (props: ArticlePageProps) {
+  const { page, preview } = await loadArticle(props);
+
+  if (
+    page &&
+    preview &&
+    decodeURIComponent(parseSlug((await props.params).slug)).toLowerCase() !==
+      page.slug.toLowerCase()
+  ) {
+    redirect(getPreviewPath("article", page.slug, preview.token));
+  }
+
   const sections = parsePageSections(page?.content);
   const latestArticles = (await api.public.article.getArticles()).filter(
     (article) => article.slug !== page?.slug,
@@ -224,7 +253,15 @@ export default async function ({
   return (
     <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14">
       <div className="min-w-0">
-        <ArticleViewTracker articleId={page.id} />
+        {preview ? (
+          <PreviewBanner
+            type="article"
+            isPublished={!!page.publishedAt}
+            path={page.publishedAt ? `/${page.slug}` : "/"}
+          />
+        ) : (
+          <ArticleViewTracker articleId={page.id} />
+        )}
         <Breadcrumbs
           paths={[
             { label: "Articles", href: "/articles" },
@@ -267,7 +304,7 @@ export default async function ({
         <div className="mt-10 space-y-10">
           {sections.map((section, index) => renderSection(section, index))}
         </div>
-        <ArticleComments articleId={page.id} />
+        {!preview && <ArticleComments articleId={page.id} />}
       </div>
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <ArticlesList

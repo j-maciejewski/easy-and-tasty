@@ -7,6 +7,8 @@ import {
   Earth,
   FileText,
   Ham,
+  Images,
+  MessageSquare,
   Navigation,
   Users,
 } from "lucide-react";
@@ -50,6 +52,7 @@ const groups: { label: string; items: SidebarItem[] }[] = [
     items: [
       { label: "Recipes", url: Path.DASHBOARD_RECIPES, icon: Book },
       { label: "Articles", url: Path.DASHBOARD_ARTICLES, icon: FileText },
+      { label: "Media", url: Path.DASHBOARD_MEDIA, icon: Images },
     ],
   },
   {
@@ -60,6 +63,13 @@ const groups: { label: string; items: SidebarItem[] }[] = [
     ],
   },
   {
+    label: "Community",
+    items: [
+      { label: "Comments", url: Path.DASHBOARD_COMMENTS, icon: MessageSquare },
+      { label: "Users", url: Path.DASHBOARD_USERS, icon: Users },
+    ],
+  },
+  {
     label: "Site",
     items: [
       {
@@ -67,7 +77,6 @@ const groups: { label: string; items: SidebarItem[] }[] = [
         url: Path.DASHBOARD_NAVIGATION,
         icon: Navigation,
       },
-      { label: "Users", url: Path.DASHBOARD_USERS, icon: Users },
     ],
   },
 ];

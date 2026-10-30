@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, inArray, isNull } from "drizzle-orm";
 import { z } from "zod";
 
 import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
@@ -84,5 +84,30 @@ export const authorizedCuisineRouter = createTRPCRouter({
     .input(z.number().positive())
     .mutation(async ({ ctx, input: cuisineId }) => {
       await ctx.db.delete(cuisines).where(eq(cuisines.id, cuisineId));
+    }),
+
+  bulkSetPublished: authorizedProcedure
+    .input(
+      z.object({
+        ids: z.number().positive().array().min(1),
+        published: z.boolean(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(cuisines)
+        .set({ publishedAt: input.published ? new Date() : null })
+        .where(
+          and(
+            inArray(cuisines.id, input.ids),
+            input.published ? isNull(cuisines.publishedAt) : undefined,
+          ),
+        );
+    }),
+
+  bulkDelete: authorizedProcedure
+    .input(z.object({ ids: z.number().positive().array().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.delete(cuisines).where(inArray(cuisines.id, input.ids));
     }),
 });

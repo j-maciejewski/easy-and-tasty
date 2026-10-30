@@ -15,6 +15,9 @@ export const useCuisinesActions = () => {
   const publishCuisine = api.authorized.cuisine.publishCuisine.useMutation();
   const unpublishCuisine =
     api.authorized.cuisine.unpublishCuisine.useMutation();
+  const bulkSetPublished =
+    api.authorized.cuisine.bulkSetPublished.useMutation();
+  const bulkDelete = api.authorized.cuisine.bulkDelete.useMutation();
 
   async function handleCreateCuisine(
     values: z.infer<typeof cuisineFormSchema>,
@@ -102,11 +105,55 @@ export const useCuisinesActions = () => {
     }
   }
 
+  const countCuisines = (count: number) =>
+    `${count} ${count === 1 ? "cuisine" : "cuisines"}`;
+
+  async function handleBulkSetPublishedCuisines(
+    ids: number[],
+    published: boolean,
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkSetPublished.mutateAsync({ ids, published });
+      refreshCuisines();
+
+      toast.success(
+        `${countCuisines(ids.length)} ${published ? "published" : "unpublished"}.`,
+      );
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          `There was an error while ${published ? "publishing" : "unpublishing"} the cuisines.`,
+      );
+    }
+  }
+
+  async function handleBulkDeleteCuisines(
+    ids: number[],
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkDelete.mutateAsync({ ids });
+      refreshCuisines();
+
+      toast.success(`${countCuisines(ids.length)} deleted.`);
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while deleting the cuisines.",
+      );
+    }
+  }
+
   return {
     handleCreateCuisine,
     handleUpdateCuisine,
     handleDeleteCuisine,
     handlePublishCuisine,
     handleUnpublishCuisine,
+    handleBulkSetPublishedCuisines,
+    handleBulkDeleteCuisines,
   };
 };

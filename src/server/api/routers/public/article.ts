@@ -13,6 +13,7 @@ import {
 } from "drizzle-orm";
 import { z } from "zod";
 
+import { verifyPreviewToken } from "@/lib/preview";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { article_views, articles } from "@/server/db/schema";
 
@@ -69,6 +70,20 @@ export const publicArticleRouter = createTRPCRouter({
           isNotNull(articles.publishedAt),
         ),
       });
+    }),
+
+  getArticlePreview: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input: token }) => {
+      const preview = verifyPreviewToken(token);
+
+      if (preview?.type !== "article") return null;
+
+      return (
+        (await ctx.db.query.articles.findFirst({
+          where: eq(articles.id, preview.id),
+        })) ?? null
+      );
     }),
 
   getArticles: publicProcedure.query(({ ctx }) => {

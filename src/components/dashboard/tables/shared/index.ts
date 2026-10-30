@@ -1,6 +1,7 @@
 export * from "./ActiveFilter";
 export * from "./AddButton";
 export * from "./BadgeList";
+export * from "./BulkActionsBar";
 export * from "./ColumnsToggler";
 export * from "./DateCell";
 export * from "./EmptyState";

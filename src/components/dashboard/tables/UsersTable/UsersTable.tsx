@@ -2,11 +2,20 @@
 
 import { use, useEffect } from "react";
 
-import { DataTable, ErrorCatcher } from "@/components/dashboard";
+import {
+  DataTable,
+  ErrorCatcher,
+  GenericConfirmModal,
+} from "@/components/dashboard";
 import { Badge } from "@/components/ui";
 import { PaginationContext } from "@/context";
 import { api } from "@/trpc/react";
-import { useColumnsToggler, useDebouncedSearchQuery } from "@/utils";
+import {
+  useColumnsToggler,
+  useDebouncedSearchQuery,
+  useModalAction,
+  useUsersActions,
+} from "@/utils";
 
 import {
   ActiveFilter,
@@ -14,8 +23,14 @@ import {
   DateCell,
   SearchBar,
   TableColumn,
+  TableDropdownActions,
   TableToolbar,
 } from "../shared";
+
+type UserModalAction = {
+  type: "role" | "delete";
+  user: { id: string; name: string | null; role: "viewer" | "editor" };
+};
 
 export const UsersTable = () => {
   const { pagination, sort, handleChangePage, setTotalItemsCount } =
@@ -34,6 +49,10 @@ export const UsersTable = () => {
     page: pagination.currentPage,
     limit: pagination.itemsPerPage,
   });
+
+  const { data: currentUser } = api.authorized.user.getCurrentUser.useQuery();
+  const { action, setAction, clearAction } = useModalAction<UserModalAction>();
+  const { handleSetUserRole, handleDeleteUser } = useUsersActions();
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
@@ -82,6 +101,27 @@ export const UsersTable = () => {
       render: ({ updatedAt }) => <DateCell date={updatedAt} />,
       defaultHidden: true,
     },
+    {
+      label: "Actions",
+      render: ({ id, name, role }) =>
+        !currentUser || id === currentUser.id ? null : (
+          <TableDropdownActions
+            actions={[
+              {
+                label: role === "editor" ? "Make viewer" : "Make editor",
+                onClick: () =>
+                  setAction({ type: "role", user: { id, name, role } }),
+              },
+              {
+                label: "Delete user",
+                onClick: () =>
+                  setAction({ type: "delete", user: { id, name, role } }),
+                variant: "destructive",
+              },
+            ]}
+          />
+        ),
+    },
   ];
 
   const { hiddenColumns, toggleColumn } = useColumnsToggler(
@@ -89,6 +129,8 @@ export const UsersTable = () => {
       .filter(({ defaultHidden }) => defaultHidden)
       .map(({ label }) => label),
   );
+
+  const actionUserName = action?.user.name || "this user";
 
   return (
     <ErrorCatcher errors={[usersError] as (Error | null)[]}>
@@ -123,6 +165,44 @@ export const UsersTable = () => {
           hiddenColumns={hiddenColumns}
           columns={columns}
           data={users?.results ?? []}
+          getRowKey={({ id }) => id}
+        />
+
+        <GenericConfirmModal
+          open={action?.type === "role"}
+          title={
+            action?.user.role === "editor"
+              ? `Make ${actionUserName} a viewer?`
+              : `Make ${actionUserName} an editor?`
+          }
+          description={
+            action?.user.role === "editor"
+              ? "They will lose access to the dashboard."
+              : "They will get full access to the dashboard, including managing content and users."
+          }
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            if (action?.type !== "role") return;
+            await handleSetUserRole(
+              action.user,
+              action.user.role === "editor" ? "viewer" : "editor",
+            );
+            clearAction();
+          }}
+        />
+
+        <GenericConfirmModal
+          open={action?.type === "delete"}
+          title={`Delete ${actionUserName}?`}
+          description="The account will be permanently deleted, along with all of its comments, ratings and bookmarks. This action cannot be undone."
+          confirmText="Delete"
+          confirmVariant="destructive"
+          handleClose={clearAction}
+          handleConfirm={async () => {
+            if (action?.type !== "delete") return;
+            await handleDeleteUser(action.user);
+            clearAction();
+          }}
         />
       </div>
     </ErrorCatcher>

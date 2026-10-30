@@ -1,7 +1,9 @@
 export { authorizedArticleRouter } from "./article";
 export { authorizedCategoryRouter } from "./category";
+export { authorizedCommentRouter } from "./comment";
 export { authorizedCuisineRouter } from "./cuisine";
 export { authorizedHomeRouter } from "./home";
+export { authorizedMediaRouter } from "./media";
 export { authorizedNavigationRouter } from "./navigation";
 export { authorizedRecipeRouter } from "./recipe";
 export { authorizedSeoRouter } from "./seo";

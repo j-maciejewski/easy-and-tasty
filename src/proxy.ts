@@ -4,7 +4,20 @@ import { getToken } from "next-auth/jwt";
 import { Path } from "./config";
 
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, searchParams } = request.nextUrl;
+
+  const previewToken = searchParams.get("preview");
+
+  if (
+    previewToken &&
+    !pathname.toLowerCase().startsWith("/dashboard") &&
+    !request.cookies.has("__prerender_bypass")
+  ) {
+    const previewUrl = new URL("/api/preview", request.url);
+    previewUrl.searchParams.set("token", previewToken);
+    previewUrl.searchParams.set("path", pathname);
+    return NextResponse.redirect(previewUrl);
+  }
 
   const token = await getToken({ req: request });
 

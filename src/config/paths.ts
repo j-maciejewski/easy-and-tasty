@@ -20,6 +20,8 @@ export enum Path {
   DASHBOARD_USERS = "/dashboard/users",
   DASHBOARD_ARTICLES = "/dashboard/articles",
   DASHBOARD_NAVIGATION = "/dashboard/navigation",
+  DASHBOARD_COMMENTS = "/dashboard/comments",
+  DASHBOARD_MEDIA = "/dashboard/media",
 }
 
 export const getDashboardRecipePath = (id: number | "new") =>

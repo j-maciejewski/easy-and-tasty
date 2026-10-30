@@ -16,6 +16,7 @@ export namespace GenericConfirmModal {
     open: boolean;
     closeText?: string;
     confirmText?: string;
+    confirmVariant?: "default" | "destructive";
     handleClose: () => void;
     handleConfirm: () => void;
   }
@@ -29,6 +30,7 @@ export const GenericConfirmModal = ({
   handleConfirm,
   closeText = "Cancel",
   confirmText = "Confirm",
+  confirmVariant = "default",
 }: GenericConfirmModal.Props) => {
   return (
     <AlertDialog
@@ -49,7 +51,7 @@ export const GenericConfirmModal = ({
           <AlertDialogCancel onClick={handleClose}>
             {closeText}
           </AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm}>
+          <AlertDialogAction variant={confirmVariant} onClick={handleConfirm}>
             {confirmText}
           </AlertDialogAction>
         </AlertDialogFooter>

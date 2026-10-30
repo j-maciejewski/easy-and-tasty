@@ -3,6 +3,11 @@ export { useArticlesActions } from "./dashboard/useArticlesActions";
 export { useBroadcastChannel } from "./dashboard/useBroadcast";
 export { useCategoriesActions } from "./dashboard/useCategoriesActions";
 export { useColumnsToggler } from "./dashboard/useColumnsToggler";
+export { useCommentsActions } from "./dashboard/useCommentsActions";
+export {
+  type CommentType,
+  useCommentTypeFilter,
+} from "./dashboard/useCommentTypeFilter";
 export { useCuisinesActions } from "./dashboard/useCuisinesActions";
 export { useModalAction } from "./dashboard/useModalAction";
 export { useRecipesActions } from "./dashboard/useRecipesActions";
@@ -13,6 +18,7 @@ export {
   useWithReturnTo,
   withReturnTo,
 } from "./dashboard/useReturnTo";
+export { useRowSelection } from "./dashboard/useRowSelection";
 export {
   useDebouncedSearchQuery,
   useSearchQuery,
@@ -23,6 +29,7 @@ export {
   useStatusFilter,
 } from "./dashboard/useStatusFilter";
 export { useUnsavedChangesWarning } from "./dashboard/useUnsavedChangesWarning";
+export { useUsersActions } from "./dashboard/useUsersActions";
 export { getDifficultyIcon } from "./getDifficultyIcon";
 export { getPaginationTiles } from "./getPaginationTiles";
 export { parseSlug } from "./parseSlug";

@@ -1,5 +1,6 @@
 "use client";
 
+import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { use, useEffect, useMemo } from "react";
 
 import { CategoryForm, DataTable } from "@/components/dashboard";
@@ -12,12 +13,14 @@ import {
   useColumnsToggler,
   useDebouncedSearchQuery,
   useModalAction,
+  useRowSelection,
   useStatusFilter,
 } from "@/utils";
 
 import {
   ActiveFilter,
   AddButton,
+  BulkActionsBar,
   ColumnsToggler,
   DateCell,
   getTableEmptyState,
@@ -47,7 +50,18 @@ export const CategoriesTable = () => {
     handleDeleteCategory,
     handlePublishCategory,
     handleUnpublishCategory,
+    handleBulkSetPublishedCategories,
+    handleBulkDeleteCategories,
   } = useCategoriesActions();
+
+  const { selectedKeys, setSelectedKeys, clearSelection } = useRowSelection([
+    pagination.currentPage,
+    pagination.itemsPerPage,
+    sort.key,
+    sort.order,
+    debouncedQuery,
+    status,
+  ]);
 
   const columns: TableColumn<Category>[] = [
     {
@@ -194,6 +208,9 @@ export const CategoriesTable = () => {
           pagination.currentPage * pagination.itemsPerPage,
         )}
         getRowKey={({ id }) => id}
+        selectable
+        selectedKeys={selectedKeys}
+        onSelectionChange={setSelectedKeys}
         emptyState={getTableEmptyState({
           entity: "category",
           entityPlural: "categories",
@@ -202,6 +219,44 @@ export const CategoriesTable = () => {
           onClear: clearFilters,
           onAdd: () => setAction({ type: "add" }),
         })}
+      />
+
+      <BulkActionsBar
+        count={selectedKeys.length}
+        onClear={clearSelection}
+        actions={[
+          {
+            label: "Publish",
+            icon: Eye,
+            onClick: () =>
+              handleBulkSetPublishedCategories(
+                selectedKeys,
+                true,
+                clearSelection,
+              ),
+          },
+          {
+            label: "Unpublish",
+            icon: EyeOff,
+            onClick: () =>
+              handleBulkSetPublishedCategories(
+                selectedKeys,
+                false,
+                clearSelection,
+              ),
+          },
+          {
+            label: "Delete",
+            icon: Trash2,
+            variant: "destructive",
+            confirm: {
+              title: `Delete ${selectedKeys.length} ${selectedKeys.length === 1 ? "category" : "categories"}?`,
+              description: "This action cannot be undone.",
+            },
+            onClick: () =>
+              handleBulkDeleteCategories(selectedKeys, clearSelection),
+          },
+        ]}
       />
 
       <TableModals

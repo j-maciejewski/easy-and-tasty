@@ -14,6 +14,10 @@ export const useRecipesActions = () => {
   const deleteRecipe = api.authorized.recipe.deleteRecipe.useMutation();
   const publishRecipe = api.authorized.recipe.publishRecipe.useMutation();
   const unpublishRecipe = api.authorized.recipe.unpublishRecipe.useMutation();
+  const bulkSetPublished = api.authorized.recipe.bulkSetPublished.useMutation();
+  const bulkDelete = api.authorized.recipe.bulkDelete.useMutation();
+  const bulkAddCategory = api.authorized.recipe.bulkAddCategory.useMutation();
+  const bulkAddCuisine = api.authorized.recipe.bulkAddCuisine.useMutation();
 
   async function invalidateRecipeQueries() {
     await Promise.all([
@@ -109,11 +113,95 @@ export const useRecipesActions = () => {
     }
   }
 
+  const countRecipes = (count: number) =>
+    `${count} ${count === 1 ? "recipe" : "recipes"}`;
+
+  async function handleBulkSetPublishedRecipes(
+    ids: number[],
+    published: boolean,
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkSetPublished.mutateAsync({ ids, published });
+      await invalidateRecipeQueries();
+
+      toast.success(
+        `${countRecipes(ids.length)} ${published ? "published" : "unpublished"}.`,
+      );
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          `There was an error while ${published ? "publishing" : "unpublishing"} the recipes.`,
+      );
+    }
+  }
+
+  async function handleBulkDeleteRecipes(
+    ids: number[],
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkDelete.mutateAsync({ ids });
+      await invalidateRecipeQueries();
+
+      toast.success(`${countRecipes(ids.length)} deleted.`);
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while deleting the recipes.",
+      );
+    }
+  }
+
+  async function handleBulkAddCategory(
+    ids: number[],
+    categoryId: number,
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkAddCategory.mutateAsync({ ids, categoryId });
+      await invalidateRecipeQueries();
+
+      toast.success(`Category added to ${countRecipes(ids.length)}.`);
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while assigning the category.",
+      );
+    }
+  }
+
+  async function handleBulkAddCuisine(
+    ids: number[],
+    cuisineId: number,
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkAddCuisine.mutateAsync({ ids, cuisineId });
+      await invalidateRecipeQueries();
+
+      toast.success(`Cuisine added to ${countRecipes(ids.length)}.`);
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while assigning the cuisine.",
+      );
+    }
+  }
+
   return {
     handleCreateRecipe,
     handleUpdateRecipe,
     handleDeleteRecipe,
     handlePublishRecipe,
     handleUnpublishRecipe,
+    handleBulkSetPublishedRecipes,
+    handleBulkDeleteRecipes,
+    handleBulkAddCategory,
+    handleBulkAddCuisine,
   };
 };

@@ -17,6 +17,7 @@ export { InfiniteArticleList } from "./InfiniteArticleList";
 export { InfiniteRecipeList } from "./InfiniteRecipeList";
 export { MarkdownContent } from "./MarkdownComponent";
 export { PageHeading } from "./PageHeading";
+export { PreviewBanner } from "./PreviewBanner";
 export { RateRecipe } from "./RateRecipe";
 export { Rating } from "./Rating";
 export { RecipeCard } from "./RecipeCards/RecipeCard";

@@ -1,7 +1,11 @@
 "use client";
 
-import { Input } from "@/components/ui";
+import { ImagePlus, Upload } from "lucide-react";
+import { useState } from "react";
 
+import { Button, Input } from "@/components/ui";
+
+import { MediaPickerDialog } from "../media/MediaPickerDialog";
 import { ImageUploadPreview } from "./ImageUploadPreview";
 
 const allowedTypes = ["image/png", "image/jpeg"];
@@ -29,6 +33,8 @@ export function ImageUploadField({
   alt,
   inputId,
 }: ImageUploadFieldProps) {
+  const [isLibraryOpen, setLibraryOpen] = useState(false);
+
   async function handleUpload(evt: React.ChangeEvent<HTMLInputElement>) {
     const file = evt.target.files?.[0];
 
@@ -61,6 +67,28 @@ export function ImageUploadField({
         accept="image/png, image/jpeg"
         className="hidden"
         onChange={handleUpload}
+      />
+      <div className="mt-2 flex flex-wrap gap-2">
+        <Button type="button" variant="outline" size="sm" asChild>
+          <label htmlFor={inputId} className="cursor-pointer">
+            <Upload />
+            Upload
+          </label>
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setLibraryOpen(true)}
+        >
+          <ImagePlus />
+          Choose from library
+        </Button>
+      </div>
+      <MediaPickerDialog
+        open={isLibraryOpen}
+        onOpenChange={setLibraryOpen}
+        onSelect={onChange}
       />
     </>
   );

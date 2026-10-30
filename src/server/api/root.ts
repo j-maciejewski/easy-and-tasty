@@ -8,8 +8,10 @@ import {
 import {
   authorizedArticleRouter,
   authorizedCategoryRouter,
+  authorizedCommentRouter,
   authorizedCuisineRouter,
   authorizedHomeRouter,
+  authorizedMediaRouter,
   authorizedNavigationRouter,
   authorizedRecipeRouter,
   authorizedSeoRouter,
@@ -52,6 +54,7 @@ export const appRouter = createTRPCRouter({
   },
   authorized: {
     category: authorizedCategoryRouter,
+    comment: authorizedCommentRouter,
     cuisine: authorizedCuisineRouter,
     recipe: authorizedRecipeRouter,
     user: authorizedUserRouter,
@@ -59,6 +62,7 @@ export const appRouter = createTRPCRouter({
     home: authorizedHomeRouter,
     article: authorizedArticleRouter,
     seo: authorizedSeoRouter,
+    media: authorizedMediaRouter,
   },
   seeder: seedRouter,
 });

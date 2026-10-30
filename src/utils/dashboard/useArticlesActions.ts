@@ -13,6 +13,9 @@ export const useArticlesActions = () => {
   const publishArticle = api.authorized.article.publishArticle.useMutation();
   const unpublishArticle =
     api.authorized.article.unpublishArticle.useMutation();
+  const bulkSetPublished =
+    api.authorized.article.bulkSetPublished.useMutation();
+  const bulkDelete = api.authorized.article.bulkDelete.useMutation();
 
   async function invalidateArticleQueries() {
     await Promise.all([
@@ -122,11 +125,55 @@ export const useArticlesActions = () => {
     }
   }
 
+  const countArticles = (count: number) =>
+    `${count} ${count === 1 ? "article" : "articles"}`;
+
+  async function handleBulkSetPublishedArticles(
+    ids: number[],
+    published: boolean,
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkSetPublished.mutateAsync({ ids, published });
+      await invalidateArticleQueries();
+
+      toast.success(
+        `${countArticles(ids.length)} ${published ? "published" : "unpublished"}.`,
+      );
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          `There was an error while ${published ? "publishing" : "unpublishing"} the articles.`,
+      );
+    }
+  }
+
+  async function handleBulkDeleteArticles(
+    ids: number[],
+    onSuccess?: () => void,
+  ) {
+    try {
+      await bulkDelete.mutateAsync({ ids });
+      await invalidateArticleQueries();
+
+      toast.success(`${countArticles(ids.length)} deleted.`);
+      onSuccess?.();
+    } catch (error) {
+      toast.error(
+        (error as Error)?.message ??
+          "There was an error while deleting the articles.",
+      );
+    }
+  }
+
   return {
     handleCreateArticle,
     handleUpdateArticle,
     handleDeleteArticle,
     handlePublishArticle,
     handleUnpublishArticle,
+    handleBulkSetPublishedArticles,
+    handleBulkDeleteArticles,
   };
 };
