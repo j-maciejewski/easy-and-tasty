@@ -37,7 +37,7 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
-export const rawTrpcClient = api.createClient({
+const rawTrpcClient = api.createClient({
   links: [
     loggerLink({
       enabled: (op) =>

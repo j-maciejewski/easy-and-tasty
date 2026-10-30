@@ -8,4 +8,3 @@ export { CuisinesContext, CuisinesProvider } from "./CuisinesProvider";
 export { NextAuthProvider } from "./NextAuthProvider";
 export { PaginationContext, PaginationProvider } from "./PaginationProvider";
 export { ThemeProvider, useTheme } from "./ThemeProvider";
-export { UserContext, UserProvider } from "./UserProvider";

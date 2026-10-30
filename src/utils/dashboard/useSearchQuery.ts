@@ -7,14 +7,6 @@ import { useReplaceSearchParams } from "./useReplaceSearchParams";
 
 const QUERY_PARAM = "q";
 
-export const useSearchQuery = () => {
-  const [query, setQuery] = useState("");
-
-  const clearQuery = () => setQuery("");
-
-  return { query, setQuery, clearQuery };
-};
-
 export const useDebouncedSearchQuery = (onChange?: () => void) => {
   const searchParams = useSearchParams();
   const replaceSearchParams = useReplaceSearchParams();

@@ -54,7 +54,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   },
 });
 
-export const { router, procedure, middleware } = t;
+const { middleware } = t;
 
 /**
  * Create a server-side caller.
@@ -77,7 +77,7 @@ export const createCallerFactory = t.createCallerFactory;
  */
 export const createTRPCRouter = t.router;
 
-export const isAuthenticated = middleware(async ({ ctx, next }) => {
+const isAuthenticated = middleware(async ({ ctx, next }) => {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -95,7 +95,7 @@ export const isAuthenticated = middleware(async ({ ctx, next }) => {
   });
 });
 
-export const isAuthorized = middleware(async ({ ctx, next }) => {
+const isAuthorized = middleware(async ({ ctx, next }) => {
   const session = await getServerSession(authOptions);
 
   if (session?.user.role !== "editor") {
@@ -119,7 +119,6 @@ export const isAuthorized = middleware(async ({ ctx, next }) => {
  */
 export const publicProcedure = t.procedure;
 
-// TODO: Configure authenticated and authorized procedures
 export const authenticatedProcedure = t.procedure.use(isAuthenticated);
 export const authorizedProcedure = t.procedure
   .use(isAuthenticated)

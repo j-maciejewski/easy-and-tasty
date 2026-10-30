@@ -1,4 +1,3 @@
-export { createMap } from "./createMap";
 export { useArticlesActions } from "./dashboard/useArticlesActions";
 export { useBroadcastChannel } from "./dashboard/useBroadcast";
 export { useCategoriesActions } from "./dashboard/useCategoriesActions";
@@ -19,10 +18,7 @@ export {
   withReturnTo,
 } from "./dashboard/useReturnTo";
 export { useRowSelection } from "./dashboard/useRowSelection";
-export {
-  useDebouncedSearchQuery,
-  useSearchQuery,
-} from "./dashboard/useSearchQuery";
+export { useDebouncedSearchQuery } from "./dashboard/useSearchQuery";
 export {
   matchesStatus,
   type PublishStatus,
