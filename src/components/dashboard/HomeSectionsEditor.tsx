@@ -36,6 +36,7 @@ import {
   homeSectionSchema,
   homeSectionTypeEnum,
   recipeFeedModeEnum,
+  taxonomyEnum,
 } from "@/constants";
 import { api } from "@/trpc/react";
 
@@ -54,6 +55,8 @@ type SectionDraft = {
   tone?: "tomato" | "sage" | "amber";
   heading?: string;
   subheading?: string;
+  taxonomy?: "categories" | "cuisines";
+  slug?: string;
   recipeFeed?: {
     mode:
       | "random"
@@ -82,6 +85,8 @@ const sectionLabels: Record<HomeSection["type"], string> = {
   scrollable_recipes: "Scrollable Recipes",
   separator: "Separator",
   recipes_list: "Recipes List",
+  taxonomy_grid: "Categories / Cuisines Grid",
+  recipes_group: "Category / Cuisine Recipes",
 };
 
 function createDefaultSection(type: HomeSection["type"]): HomeSection {
@@ -178,6 +183,22 @@ function createDefaultSection(type: HomeSection["type"]): HomeSection {
           limit: 6,
         },
       };
+    case "taxonomy_grid":
+      return {
+        id,
+        type,
+        heading: "Browse by category",
+        subheading: "Pick a meal type or occasion",
+        taxonomy: "categories",
+        limit: 6,
+      };
+    case "recipes_group":
+      return {
+        id,
+        type,
+        taxonomy: "cuisines",
+        slug: "",
+      };
   }
 }
 
@@ -215,6 +236,10 @@ function getSectionSummary(section: HomeSection) {
       return "Horizontal divider";
     case "recipes_list":
       return `${section.recipeFeed?.mode ?? "random"} | ${section.heading}`;
+    case "taxonomy_grid":
+      return `${section.taxonomy} | ${section.heading}`;
+    case "recipes_group":
+      return `${section.taxonomy} | ${section.slug}`;
   }
 }
 
@@ -235,6 +260,17 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draggedSectionId, setDraggedSectionId] = useState<string | null>(null);
+
+  const { data: categories } = api.public.category.getCategories.useQuery(
+    undefined,
+    { enabled: draft?.type === "recipes_group" },
+  );
+  const { data: cuisines } = api.public.cuisine.getCuisines.useQuery(
+    undefined,
+    { enabled: draft?.type === "recipes_group" },
+  );
+  const taxonomyOptions =
+    draft?.taxonomy === "categories" ? categories : cuisines;
 
   const sectionsChanged =
     JSON.stringify(sourceSections) !== JSON.stringify(sections);
@@ -960,6 +996,123 @@ export function HomeSectionsEditor({ inModal }: HomeSectionsEditor.Props) {
                         }))
                       }
                     />
+                  </div>
+                </>
+              )}
+
+              {draft.type === "taxonomy_grid" && (
+                <>
+                  <div className="space-y-2">
+                    <Label>Source</Label>
+                    <Select
+                      value={draft.taxonomy ?? "categories"}
+                      onValueChange={(value) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          taxonomy:
+                            value as (typeof taxonomyEnum.options)[number],
+                        }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="categories">Categories</SelectItem>
+                        <SelectItem value="cuisines">Cuisines</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Items count</Label>
+                    <Input
+                      type="number"
+                      min={1}
+                      max={24}
+                      value={draft.limit ?? 6}
+                      onChange={(evt) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          limit: Number(evt.target.value),
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Heading</Label>
+                    <Input
+                      value={draft.heading ?? ""}
+                      onChange={(evt) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          heading: evt.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Subheading</Label>
+                    <Input
+                      value={draft.subheading ?? ""}
+                      onChange={(evt) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          subheading: evt.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                </>
+              )}
+
+              {draft.type === "recipes_group" && (
+                <>
+                  <div className="space-y-2">
+                    <Label>Source</Label>
+                    <Select
+                      value={draft.taxonomy ?? "categories"}
+                      onValueChange={(value) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          taxonomy:
+                            value as (typeof taxonomyEnum.options)[number],
+                          slug: "",
+                        }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="categories">Categories</SelectItem>
+                        <SelectItem value="cuisines">Cuisines</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>
+                      {draft.taxonomy === "categories" ? "Category" : "Cuisine"}
+                    </Label>
+                    <Select
+                      value={draft.slug ?? ""}
+                      onValueChange={(value) =>
+                        setDraft((prev) => ({
+                          ...prev!,
+                          slug: value,
+                        }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {taxonomyOptions?.map(({ name, slug }) => (
+                          <SelectItem key={slug} value={slug}>
+                            {name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </>
               )}

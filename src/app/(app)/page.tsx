@@ -10,10 +10,18 @@ import {
   RecipesCarousel,
   RecipesList,
   ScrollableRecipes,
+  SectionHeading,
+  TaxonomyGrid,
 } from "@/components/app";
+import { RecipesGroupPreview } from "@/components/app/RecipesGroupPreview";
 import { Separator } from "@/components/ui";
 import { HomeSection } from "@/constants";
-import { getHomeSections, getSeo } from "@/lib/data";
+import {
+  getCategories,
+  getCuisines,
+  getHomeSections,
+  getSeo,
+} from "@/lib/data";
 import { parseMetadata } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
@@ -85,6 +93,21 @@ export default async function () {
       articlesBySection.set(section.id, articles);
     }),
   );
+
+  const usesTaxonomy = (taxonomy: "categories" | "cuisines") =>
+    homeSections.some(
+      (section) =>
+        (section.type === "taxonomy_grid" ||
+          section.type === "recipes_group") &&
+        section.taxonomy === taxonomy,
+    );
+
+  const [categories, cuisines] = await Promise.all([
+    usesTaxonomy("categories") ? getCategories() : [],
+    usesTaxonomy("cuisines") ? getCuisines() : [],
+  ]);
+
+  const taxonomyItems = { categories, cuisines };
 
   const ctaToneClasses: Record<"tomato" | "sage" | "amber", string> = {
     tomato: "bg-primary text-primary-foreground",
@@ -197,6 +220,32 @@ export default async function () {
             recipes={recipes}
           />
         ) : null;
+      }
+      case "taxonomy_grid": {
+        const items = taxonomyItems[section.taxonomy].slice(0, section.limit);
+        if (!items.length) return null;
+
+        return (
+          <div key={section.id} className="flex flex-col">
+            <SectionHeading
+              heading={section.heading}
+              subheading={section.subheading}
+            />
+            <TaxonomyGrid items={items} basePath={`/${section.taxonomy}`} />
+          </div>
+        );
+      }
+      case "recipes_group": {
+        const group = taxonomyItems[section.taxonomy].find(
+          ({ slug }) => slug === section.slug,
+        );
+        if (!group) return null;
+
+        return section.taxonomy === "cuisines" ? (
+          <RecipesGroupPreview key={section.id} cuisine={group} />
+        ) : (
+          <RecipesGroupPreview key={section.id} category={group} />
+        );
       }
     }
   }

@@ -10,6 +10,8 @@ export const homeSectionTypeEnum = z.enum([
   "scrollable_recipes",
   "separator",
   "recipes_list",
+  "taxonomy_grid",
+  "recipes_group",
 ]);
 
 export const recipeFeedModeEnum = z.enum([
@@ -26,6 +28,8 @@ export const recipeFeedSchema = z.object({
   recipeIds: z.array(z.number().int().positive()),
   limit: z.number().int().min(1).max(24),
 });
+
+export const taxonomyEnum = z.enum(["categories", "cuisines"]);
 
 export const articleFeedModeEnum = z.enum(["most_recent", "specific"]);
 
@@ -101,6 +105,22 @@ export const recipesListSectionSchema = z.object({
   recipeFeed: recipeFeedSchema.optional(),
 });
 
+export const taxonomyGridSectionSchema = z.object({
+  id: z.string().min(1),
+  type: z.literal("taxonomy_grid"),
+  heading: z.string().min(2),
+  subheading: z.string().optional(),
+  taxonomy: taxonomyEnum,
+  limit: z.number().int().min(1).max(24),
+});
+
+export const recipesGroupSectionSchema = z.object({
+  id: z.string().min(1),
+  type: z.literal("recipes_group"),
+  taxonomy: taxonomyEnum,
+  slug: z.string().min(1, { message: "Select a category or cuisine." }),
+});
+
 export const homeSectionSchema = z.discriminatedUnion("type", [
   bannerSectionSchema,
   recipeFullCardSectionSchema,
@@ -111,6 +131,8 @@ export const homeSectionSchema = z.discriminatedUnion("type", [
   scrollableRecipesSectionSchema,
   separatorSectionSchema,
   recipesListSectionSchema,
+  taxonomyGridSectionSchema,
+  recipesGroupSectionSchema,
 ]);
 
 export const homeSectionsSchema = z.array(homeSectionSchema);
@@ -167,6 +189,20 @@ export const defaultHomeSections: HomeSection[] = [
     },
   },
   {
+    id: "categories-grid",
+    type: "taxonomy_grid",
+    heading: "Browse by category",
+    subheading: "Pick a meal type or occasion",
+    taxonomy: "categories",
+    limit: 6,
+  },
+  {
+    id: "italian-group",
+    type: "recipes_group",
+    taxonomy: "cuisines",
+    slug: "italian",
+  },
+  {
     id: "home-cta",
     type: "cta",
     title: "Browse our recipes",
@@ -183,6 +219,14 @@ export const defaultHomeSections: HomeSection[] = [
       recipeIds: [],
       limit: 6,
     },
+  },
+  {
+    id: "cuisines-grid",
+    type: "taxonomy_grid",
+    heading: "Explore cuisines",
+    subheading: "Dishes from around the world",
+    taxonomy: "cuisines",
+    limit: 6,
   },
   {
     id: "separator-main",
