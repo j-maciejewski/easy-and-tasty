@@ -28,15 +28,15 @@ export const useArticlesActions = () => {
 
   async function handleCreateArticle(
     values: z.infer<typeof pageFormSchema>,
-    onSuccess?: () => void,
+    onSuccess?: (id?: number) => void,
   ) {
     try {
-      await addArticle.mutateAsync(values);
+      const created = await addArticle.mutateAsync(values);
       await invalidateArticleQueries();
 
       toast.success("Article was added.");
 
-      onSuccess?.();
+      onSuccess?.(created?.id);
     } catch (error) {
       toast.error(
         (error as Error)?.message ??

@@ -1,10 +1,10 @@
 "use client";
 
-import { Plus } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { NavigationItemForm, SortableNavigation } from "@/components/dashboard";
+import { AddButton } from "@/components/dashboard/tables/shared";
 import {
   Button,
   Dialog,
@@ -14,7 +14,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui";
 import { api } from "@/trpc/react";
 
@@ -146,17 +145,8 @@ export default function () {
 
   return (
     <div>
-      <div className="mb-4 flex items-end justify-between">
-        <div />
-        <Button
-          className="relative aspect-square p-1"
-          variant="ghost"
-          size="icon"
-          onClick={handleAdd}
-          aria-label="Add navigation item"
-        >
-          <Plus className="text-foreground absolute size-5 stroke-2" />
-        </Button>
+      <div className="mb-4 flex justify-end">
+        <AddButton onClick={handleAdd} label="New item" />
       </div>
       {navigation.length ? (
         <SortableNavigation
@@ -179,7 +169,6 @@ export default function () {
         Save
       </Button>
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-        <DialogTrigger asChild>Add new navigation item</DialogTrigger>
         <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-md">
           <DialogHeader>
             <DialogTitle>

@@ -62,7 +62,9 @@ export function CuisineForm({ cuisineId, onSubmit }: CuisineForm.Props) {
   });
 
   if (isEditMode && isLoading) {
-    return <LoaderCircle className="mx-auto my-2 animate-spin text-gray-500" />;
+    return (
+      <LoaderCircle className="text-muted-foreground mx-auto my-2 animate-spin" />
+    );
   }
 
   if (isEditMode && !data) {
@@ -128,16 +130,14 @@ export function CuisineForm({ cuisineId, onSubmit }: CuisineForm.Props) {
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-orange-500/70"
+                  className="data-[state=checked]:bg-success data-[state=unchecked]:bg-muted-foreground/35"
                 />
               </FormControl>
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="text-white">
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );

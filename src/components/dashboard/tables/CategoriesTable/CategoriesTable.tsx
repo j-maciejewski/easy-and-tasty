@@ -1,18 +1,18 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import { use, useEffect, useMemo } from "react";
 
 import { CategoryForm, DataTable } from "@/components/dashboard";
-import { Path } from "@/config";
 import { CategoriesContext, PaginationContext } from "@/context";
 import {
+  matchesStatus,
   searchItems,
   sortItems,
   useCategoriesActions,
   useColumnsToggler,
+  useDebouncedSearchQuery,
   useModalAction,
-  useSearchQuery,
+  useStatusFilter,
 } from "@/utils";
 
 import {
@@ -20,10 +20,12 @@ import {
   AddButton,
   ColumnsToggler,
   DateCell,
+  getTableEmptyState,
   ModalAction,
   SearchBar,
   SlugCell,
   StatusBadge,
+  StatusFilter,
   TableColumn,
   TableDropdownActions,
   TableModals,
@@ -31,14 +33,11 @@ import {
 } from "../shared";
 
 export const CategoriesTable = () => {
-  const { query, setQuery, clearQuery } = useSearchQuery();
-  const {
-    sort,
-    pagination,
-    setTotalItemsCount,
-    handleChangePage,
-    handleChangeLimit,
-  } = use(PaginationContext)!;
+  const { query, setQuery, debouncedQuery, clearQuery } =
+    useDebouncedSearchQuery();
+  const { status, setStatus, clearStatus } = useStatusFilter();
+  const { sort, pagination, setTotalItemsCount, handleChangePage } =
+    use(PaginationContext)!;
   const { categories, categoriesLoading, refreshCategories } =
     use(CategoriesContext)!;
 
@@ -49,19 +48,6 @@ export const CategoriesTable = () => {
     handlePublishCategory,
     handleUnpublishCategory,
   } = useCategoriesActions();
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
-  useEffect(() => {
-    if (!categories) return;
-
-    if (
-      (pagination.currentPage - 1) * pagination.itemsPerPage >
-      categories.size
-    )
-      redirect(Path.DASHBOARD_CATEGORIES);
-
-    setTotalItemsCount(categories.size);
-  }, [categories]);
 
   const columns: TableColumn<Category>[] = [
     {
@@ -122,38 +108,43 @@ export const CategoriesTable = () => {
     columns
       .filter(({ defaultHidden }) => defaultHidden)
       .map(({ label }) => label),
+    "categories",
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  const clearFilters = () => {
+    clearQuery();
+    clearStatus();
+  };
+
   const filteredCategories = useMemo(() => {
     if (!categories) return [];
 
     const filteredCategories = searchItems(
-      [...categories.values()],
+      [...categories.values()].filter(({ publishedAt }) =>
+        matchesStatus(publishedAt, status),
+      ),
       ["name", "slug", "description"],
-      query,
+      debouncedQuery,
     );
 
     sortItems(filteredCategories, sort.key as keyof Category, sort.order);
 
     return filteredCategories;
-  }, [
-    pagination.currentPage,
-    pagination.itemsPerPage,
-    query,
-    categories,
-    sort.key,
-    sort.order,
-  ]);
+  }, [debouncedQuery, status, categories, sort.key, sort.order]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
-    if (categories.size === filteredCategories.length) return;
+    if (categoriesLoading) return;
 
-    handleChangePage(1);
-    handleChangeLimit(10);
     setTotalItemsCount(filteredCategories.length);
-  }, [filteredCategories.length]);
+
+    if (
+      pagination.currentPage > 1 &&
+      (pagination.currentPage - 1) * pagination.itemsPerPage >=
+        filteredCategories.length
+    )
+      handleChangePage(1);
+  }, [filteredCategories.length, categoriesLoading]);
 
   return (
     <div>
@@ -165,6 +156,7 @@ export const CategoriesTable = () => {
             onChange={setQuery}
           />
         }
+        filters={<StatusFilter value={status} onChange={setStatus} />}
         actions={
           <>
             <ColumnsToggler
@@ -176,9 +168,20 @@ export const CategoriesTable = () => {
           </>
         }
       />
-      <div className="mb-6 empty:hidden">
-        {query && (
-          <ActiveFilter content={<>Query: {query}</>} onClear={clearQuery} />
+      <div className="mb-6 flex flex-wrap gap-2 empty:hidden">
+        {debouncedQuery && (
+          <ActiveFilter
+            content={<>Query: {debouncedQuery}</>}
+            onClear={clearQuery}
+          />
+        )}
+        {status && (
+          <ActiveFilter
+            content={
+              <>Status: {status === "published" ? "Published" : "Draft"}</>
+            }
+            onClear={clearStatus}
+          />
         )}
       </div>
 
@@ -190,6 +193,15 @@ export const CategoriesTable = () => {
           (pagination.currentPage - 1) * pagination.itemsPerPage,
           pagination.currentPage * pagination.itemsPerPage,
         )}
+        getRowKey={({ id }) => id}
+        emptyState={getTableEmptyState({
+          entity: "category",
+          entityPlural: "categories",
+          isFiltered: !!debouncedQuery || !!status,
+          hasQuery: !!debouncedQuery && !status,
+          onClear: clearFilters,
+          onAdd: () => setAction({ type: "add" }),
+        })}
       />
 
       <TableModals

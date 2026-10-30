@@ -17,6 +17,7 @@ export const ColumnsToggler = <T extends string>({
 }: ColumnsTogglerProps<T>) => {
   return (
     <MultiSelect
+      label="Columns"
       options={columnNames.map((name) => ({
         label: name,
         value: name,
@@ -24,8 +25,13 @@ export const ColumnsToggler = <T extends string>({
       }))}
       toggleOption={toggleColumn}
     >
-      <Button className="relative aspect-square">
-        <Columns3 className="absolute size-5" />
+      <Button
+        variant="outline"
+        size="icon"
+        className="bg-card"
+        aria-label="Toggle columns"
+      >
+        <Columns3 className="size-5" />
       </Button>
     </MultiSelect>
   );

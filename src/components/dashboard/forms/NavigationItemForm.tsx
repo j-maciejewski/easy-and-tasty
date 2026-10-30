@@ -93,9 +93,7 @@ export function NavigationItemForm({
             </FormItem>
           )}
         />
-        <Button type="submit" className="text-white">
-          {data ? "Update" : "Create"}
-        </Button>
+        <Button type="submit">{data ? "Update" : "Create"}</Button>
       </form>
     </Form>
   );

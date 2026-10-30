@@ -7,14 +7,11 @@ import {
   Earth,
   FileText,
   Ham,
-  LogOut,
   Navigation,
-  User2,
   Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
 import { FC } from "react";
 
 import {
@@ -22,6 +19,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -31,44 +29,51 @@ import {
 import { Path } from "@/config";
 
 import { LinkSpinner } from "./LinkSpinner";
+import { NavUser } from "./NavUser";
 
-const items: { label: string; url: string; icon: FC }[] = [
+interface SidebarItem {
+  label: string;
+  url: string;
+  icon: FC;
+  exact?: boolean;
+}
+
+const groups: { label: string; items: SidebarItem[] }[] = [
   {
-    label: "Summary",
-    url: Path.DASHBOARD,
-    icon: ChartPie,
+    label: "Overview",
+    items: [
+      { label: "Summary", url: Path.DASHBOARD, icon: ChartPie, exact: true },
+    ],
   },
   {
-    label: "Recipes",
-    url: Path.DASHBOARD_RECIPES,
-    icon: Book,
+    label: "Content",
+    items: [
+      { label: "Recipes", url: Path.DASHBOARD_RECIPES, icon: Book },
+      { label: "Articles", url: Path.DASHBOARD_ARTICLES, icon: FileText },
+    ],
   },
   {
-    label: "Articles",
-    url: Path.DASHBOARD_ARTICLES,
-    icon: FileText,
+    label: "Taxonomy",
+    items: [
+      { label: "Categories", url: Path.DASHBOARD_CATEGORIES, icon: Ham },
+      { label: "Cuisines", url: Path.DASHBOARD_CUISINES, icon: Earth },
+    ],
   },
   {
-    label: "Categories",
-    url: Path.DASHBOARD_CATEGORIES,
-    icon: Ham,
-  },
-  {
-    label: "Cuisines",
-    url: Path.DASHBOARD_CUISINES,
-    icon: Earth,
-  },
-  {
-    label: "Users",
-    url: Path.DASHBOARD_USERS,
-    icon: Users,
-  },
-  {
-    label: "Navigation",
-    url: Path.DASHBOARD_NAVIGATION,
-    icon: Navigation,
+    label: "Site",
+    items: [
+      {
+        label: "Navigation",
+        url: Path.DASHBOARD_NAVIGATION,
+        icon: Navigation,
+      },
+      { label: "Users", url: Path.DASHBOARD_USERS, icon: Users },
+    ],
   },
 ];
+
+const isItemActive = (pathname: string, { url, exact }: SidebarItem) =>
+  exact ? pathname === url : pathname === url || pathname.startsWith(`${url}/`);
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -77,48 +82,49 @@ export const Sidebar = () => {
     <SidebarWrapper collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
-          <Link href={Path.HOME}>
-            <SidebarMenuButton
-              size="lg"
-              className="pointer-events-none text-2xl font-semibold"
-            >
-              <ChefHat className="ml-1 size-6!" />
-              <span>easy and tasty</span>
-            </SidebarMenuButton>
-          </Link>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.label}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url}>
-                    <Link href={item.url}>
-                      <item.icon />
-                      <span>{item.label}</span>
-                      <LinkSpinner className="ml-auto" />
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              className="cursor-pointer"
-              onClick={() => signOut({ callbackUrl: "/login" })}
+              asChild
+              size="lg"
+              tooltip="Go to site"
+              className="text-2xl font-semibold"
             >
-              <User2 /> Log out
-              <LogOut className="ml-auto" />
+              <Link href={Path.HOME}>
+                <ChefHat className="ml-1 size-6!" />
+                <span>easy and tasty</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        {groups.map((group) => (
+          <SidebarGroup key={group.label}>
+            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton
+                      asChild
+                      tooltip={item.label}
+                      isActive={isItemActive(pathname, item)}
+                    >
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                        <LinkSpinner className="ml-auto" />
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser />
       </SidebarFooter>
     </SidebarWrapper>
   );

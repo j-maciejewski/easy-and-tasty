@@ -9,8 +9,8 @@ export const StatusBadge = ({ isPublished }: StatusBadgeProps) => {
     <Badge
       className={
         isPublished
-          ? "border-emerald-700 bg-emerald-700 text-white"
-          : "border-orange-700 bg-orange-700 text-white"
+          ? "border-success/30 bg-success/10 text-success"
+          : "border-warning/30 bg-warning/10 text-warning"
       }
     >
       {isPublished ? "Published" : "Draft"}

@@ -4,12 +4,18 @@ import { Button } from "@/components/ui";
 
 interface AddButtonProps {
   onClick: () => void;
+  label?: string;
 }
 
-export const AddButton = ({ onClick }: AddButtonProps) => {
+export const AddButton = ({ onClick, label = "New" }: AddButtonProps) => {
   return (
-    <Button className="relative aspect-square" onClick={onClick}>
-      <Plus className="text-foreground absolute size-5 stroke-2" />
+    <Button
+      onClick={onClick}
+      aria-label={label}
+      className="max-md:size-9 max-md:px-0"
+    >
+      <Plus className="size-5 stroke-2" />
+      <span className="max-md:sr-only">{label}</span>
     </Button>
   );
 };

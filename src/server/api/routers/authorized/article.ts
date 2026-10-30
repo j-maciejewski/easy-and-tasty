@@ -1,4 +1,4 @@
-import { desc, eq, gte, ilike, sql } from "drizzle-orm";
+import { type Column, desc, eq, gte, ilike, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { pageSectionsSchema, stringifyPageSections } from "@/constants";
@@ -20,42 +20,46 @@ export const authorizedArticleRouter = createTRPCRouter({
     };
 
     const now = new Date();
-    const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    const last7d = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const last30d = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const daysAgo = (days: number) =>
+      new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+    const ts = (value: Date) => sql`${value.toISOString()}::timestamptz`;
+    const last24h = daysAgo(1);
+    const last7d = daysAgo(7);
+    const last30d = daysAgo(30);
+    const last60d = daysAgo(60);
 
-    const [views24h, views7d, views30d] = await Promise.all([
-      ctx.db
-        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
-        .from(article_views)
-        .where(gte(article_views.viewedAt, last24h)),
-      ctx.db
-        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
-        .from(article_views)
-        .where(gte(article_views.viewedAt, last7d)),
-      ctx.db
-        .select({ count: sql<number>`CAST(COUNT(*) as int)` })
-        .from(article_views)
-        .where(gte(article_views.viewedAt, last30d)),
-    ]);
+    const windowCounts = (column: Column) => ({
+      last24h: sql<number>`CAST(COUNT(*) FILTER (WHERE ${column} >= ${ts(last24h)}) as int)`,
+      last7d: sql<number>`CAST(COUNT(*) FILTER (WHERE ${column} >= ${ts(last7d)}) as int)`,
+      last30d: sql<number>`CAST(COUNT(*) FILTER (WHERE ${column} >= ${ts(last30d)}) as int)`,
+      prev30d: sql<number>`CAST(COUNT(*) FILTER (WHERE ${column} >= ${ts(last60d)} AND ${column} < ${ts(last30d)}) as int)`,
+    });
+    const emptyCounts = { last24h: 0, last7d: 0, last30d: 0, prev30d: 0 };
+    const viewCount = sql<number>`CAST(COUNT(*) as int)`;
 
-    const [articleComments24h, articleComments7d, articleComments30d] =
-      await Promise.all([
-        ctx.db
-          .select({ count: sql<number>`CAST(COUNT(*) as int)` })
-          .from(article_comments)
-          .where(gte(article_comments.createdAt, last24h)),
-        ctx.db
-          .select({ count: sql<number>`CAST(COUNT(*) as int)` })
-          .from(article_comments)
-          .where(gte(article_comments.createdAt, last7d)),
-        ctx.db
-          .select({ count: sql<number>`CAST(COUNT(*) as int)` })
-          .from(article_comments)
-          .where(gte(article_comments.createdAt, last30d)),
-      ]);
-
-    const [viewsByDay, commentsByDay] = await Promise.all([
+    const [
+      [content],
+      [viewTotals],
+      [commentTotals],
+      viewsByDay,
+      commentsByDay,
+      topViewed,
+      recentComments,
+    ] = await Promise.all([
+      ctx.db
+        .select({
+          total: sql<number>`CAST(COUNT(*) as int)`,
+          published: sql<number>`CAST(COUNT(*) FILTER (WHERE ${articles.publishedAt} IS NOT NULL) as int)`,
+        })
+        .from(articles),
+      ctx.db
+        .select(windowCounts(article_views.viewedAt))
+        .from(article_views)
+        .where(gte(article_views.viewedAt, last60d)),
+      ctx.db
+        .select(windowCounts(article_comments.createdAt))
+        .from(article_comments)
+        .where(gte(article_comments.createdAt, last60d)),
       ctx.db
         .select({
           day: sql<string>`TO_CHAR(${article_views.viewedAt}, 'YYYY-MM-DD')`,
@@ -63,8 +67,7 @@ export const authorizedArticleRouter = createTRPCRouter({
         })
         .from(article_views)
         .where(gte(article_views.viewedAt, last30d))
-        .groupBy(sql`TO_CHAR(${article_views.viewedAt}, 'YYYY-MM-DD')`)
-        .orderBy(sql`TO_CHAR(${article_views.viewedAt}, 'YYYY-MM-DD') ASC`),
+        .groupBy(sql`TO_CHAR(${article_views.viewedAt}, 'YYYY-MM-DD')`),
       ctx.db
         .select({
           day: sql<string>`TO_CHAR(${article_comments.createdAt}, 'YYYY-MM-DD')`,
@@ -72,8 +75,37 @@ export const authorizedArticleRouter = createTRPCRouter({
         })
         .from(article_comments)
         .where(gte(article_comments.createdAt, last30d))
-        .groupBy(sql`TO_CHAR(${article_comments.createdAt}, 'YYYY-MM-DD')`)
-        .orderBy(sql`TO_CHAR(${article_comments.createdAt}, 'YYYY-MM-DD') ASC`),
+        .groupBy(sql`TO_CHAR(${article_comments.createdAt}, 'YYYY-MM-DD')`),
+      ctx.db
+        .select({
+          id: articles.id,
+          title: articles.title,
+          slug: articles.slug,
+          views: viewCount,
+        })
+        .from(article_views)
+        .innerJoin(articles, eq(article_views.articleId, articles.id))
+        .where(gte(article_views.viewedAt, last30d))
+        .groupBy(articles.id)
+        .orderBy(desc(viewCount))
+        .limit(5),
+      ctx.db
+        .select({
+          id: article_comments.id,
+          text: article_comments.text,
+          createdAt: article_comments.createdAt,
+          article: {
+            id: articles.id,
+            title: articles.title,
+            slug: articles.slug,
+          },
+          user: { name: users.name },
+        })
+        .from(article_comments)
+        .innerJoin(articles, eq(article_comments.articleId, articles.id))
+        .leftJoin(users, eq(article_comments.userId, users.id))
+        .orderBy(desc(article_comments.createdAt))
+        .limit(6),
     ]);
 
     const viewsMap = new Map(viewsByDay.map((e) => [e.day, e.count]));
@@ -90,66 +122,17 @@ export const authorizedArticleRouter = createTRPCRouter({
       };
     });
 
-    const [recentViews, recentComments] = await Promise.all([
-      ctx.db
-        .select({
-          id: article_views.id,
-          viewedAt: article_views.viewedAt,
-          ipAddress: article_views.ipAddress,
-          article: {
-            id: articles.id,
-            title: articles.title,
-            slug: articles.slug,
-          },
-          user: {
-            id: users.id,
-            name: users.name,
-            email: users.email,
-          },
-        })
-        .from(article_views)
-        .innerJoin(articles, eq(article_views.articleId, articles.id))
-        .leftJoin(users, eq(article_views.userId, users.id))
-        .orderBy(desc(article_views.viewedAt))
-        .limit(8),
-      ctx.db
-        .select({
-          id: article_comments.id,
-          text: article_comments.text,
-          createdAt: article_comments.createdAt,
-          article: {
-            id: articles.id,
-            title: articles.title,
-            slug: articles.slug,
-          },
-          user: {
-            id: users.id,
-            name: users.name,
-            email: users.email,
-          },
-        })
-        .from(article_comments)
-        .innerJoin(articles, eq(article_comments.articleId, articles.id))
-        .leftJoin(users, eq(article_comments.userId, users.id))
-        .orderBy(desc(article_comments.createdAt))
-        .limit(8),
-    ]);
+    const total = content?.total ?? 0;
+    const published = content?.published ?? 0;
 
     return {
+      content: { total, published, drafts: total - published },
       totals: {
-        views: {
-          last24h: views24h[0]?.count ?? 0,
-          last7d: views7d[0]?.count ?? 0,
-          last30d: views30d[0]?.count ?? 0,
-        },
-        comments: {
-          last24h: articleComments24h[0]?.count ?? 0,
-          last7d: articleComments7d[0]?.count ?? 0,
-          last30d: articleComments30d[0]?.count ?? 0,
-        },
+        views: viewTotals ?? emptyCounts,
+        comments: commentTotals ?? emptyCounts,
       },
       trend,
-      recentViews,
+      topViewed,
       recentComments,
     };
   }),
@@ -189,14 +172,19 @@ export const authorizedArticleRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(articles).values({
-        title: input.title,
-        image: input.image,
-        slug: input.slug,
-        description: input.description,
-        content: stringifyPageSections(input.sections),
-        publishedAt: input.published ? new Date() : null,
-      });
+      const [inserted] = await ctx.db
+        .insert(articles)
+        .values({
+          title: input.title,
+          image: input.image,
+          slug: input.slug,
+          description: input.description,
+          content: stringifyPageSections(input.sections),
+          publishedAt: input.published ? new Date() : null,
+        })
+        .returning({ id: articles.id });
+
+      return { id: inserted?.id };
     }),
 
   editArticle: authorizedProcedure

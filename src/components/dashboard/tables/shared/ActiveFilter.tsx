@@ -10,11 +10,12 @@ interface ActiveFilterProps {
 export const ActiveFilter = ({ content, onClear }: ActiveFilterProps) => {
   return (
     <Badge
-      className="cursor-pointer border-violet-500/25 bg-violet-500/15 text-violet-700 hover:bg-violet-500/25 dark:border-violet-400/30 dark:bg-violet-400/20 dark:text-violet-300 dark:hover:bg-violet-400/30"
-      tabIndex={0}
-      onClick={onClear}
+      asChild
+      className="border-primary/25 bg-primary/10 text-primary hover:bg-primary/15 cursor-pointer"
     >
-      {content} <X className="h-4 text-rose-600 dark:text-rose-300" />
+      <button type="button" onClick={onClear} aria-label="Clear filter">
+        {content} <X className="text-primary/70 h-4" />
+      </button>
     </Badge>
   );
 };

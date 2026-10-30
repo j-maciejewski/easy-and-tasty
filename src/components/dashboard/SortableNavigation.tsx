@@ -4,11 +4,32 @@ import {
   SimpleTreeItemWrapper,
   SortableTree,
   TreeItemComponentProps,
+  TreeItems,
 } from "dnd-kit-sortable-tree";
 import { GripVertical, Pencil, Trash2 } from "lucide-react";
 import { forwardRef } from "react";
 
 import { Button } from "@/components/ui";
+
+// Navigation supports two levels: only childless items may be nested under a top-level item.
+const withDepthLimit = (navigation: NavigationItem[]) =>
+  navigation.map((item) => ({
+    ...item,
+    canHaveChildren: (dragItem: { children?: unknown[] }) =>
+      !dragItem.children?.length,
+    children: item.children?.map((child) => ({
+      ...child,
+      canHaveChildren: false,
+    })),
+  })) as TreeItems<NavigationItem>;
+
+const withoutDepthLimit = (items: TreeItems<NavigationItem>) =>
+  items.map(({ canHaveChildren: _, children, ...item }) => ({
+    ...item,
+    children: children?.map(
+      ({ canHaveChildren: _, children: __, ...child }) => child,
+    ),
+  })) as NavigationItem[];
 
 export const SortableNavigation = ({
   navigation,
@@ -22,10 +43,10 @@ export const SortableNavigation = ({
   handleDelete: (item: Omit<NavigationItem, "children">) => void;
 }) => {
   return (
-    <div className="bg-background rounded-lg border p-4">
+    <div className="bg-card rounded-lg border p-4">
       <SortableTree
-        items={navigation}
-        onItemsChanged={(items) => setNavigation(items)}
+        items={withDepthLimit(navigation)}
+        onItemsChanged={(items) => setNavigation(withoutDepthLimit(items))}
         dropAnimation={null}
         TreeItemComponent={forwardRef<
           HTMLDivElement,

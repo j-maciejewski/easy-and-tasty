@@ -29,14 +29,14 @@ export const useRecipesActions = () => {
 
   async function handleCreateRecipe(
     values: RecipePayload,
-    onSuccess?: () => void,
+    onSuccess?: (id?: number) => void,
   ) {
     try {
-      await addRecipe.mutateAsync(values);
+      const created = await addRecipe.mutateAsync(values);
       await invalidateRecipeQueries();
 
       toast.success("Recipe was added.");
-      onSuccess?.();
+      onSuccess?.(created?.id);
     } catch (error) {
       toast.error(
         (error as Error)?.message ??

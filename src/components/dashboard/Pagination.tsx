@@ -39,6 +39,8 @@ export const Pagination = () => {
   const endItem = Math.min(currentPage * itemsPerPage, totalItemsCount);
   const totalPages = Math.ceil(totalItemsCount / itemsPerPage);
 
+  if (totalItemsCount <= 0) return null;
+
   return (
     <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
       <span className="text-muted-foreground text-sm text-nowrap">
@@ -59,7 +61,7 @@ export const Pagination = () => {
           <SelectItem value={"50"}>50</SelectItem>
         </SelectContent>
       </Select>
-      {totalPages !== 1 && (
+      {totalPages > 1 && (
         <PaginationRoot className="bg-card mx-0 h-9 w-fit rounded-lg border">
           <PaginationContent className="gap-0 [&>li:not(:first-child)]:border-l">
             <PaginationItem>

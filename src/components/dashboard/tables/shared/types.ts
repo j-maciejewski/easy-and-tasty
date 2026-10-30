@@ -10,4 +10,5 @@ export interface TableColumn<T> {
   render: (item: T) => React.ReactNode;
   sortKey?: string;
   defaultHidden?: boolean;
+  align?: "left" | "right";
 }

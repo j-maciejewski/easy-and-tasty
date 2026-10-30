@@ -122,9 +122,7 @@ export function EditSeoForm({ onSubmit, data, pageType }: EditSeoForm.Props) {
           )}
         />
 
-        <Button type="submit" className="text-white">
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );

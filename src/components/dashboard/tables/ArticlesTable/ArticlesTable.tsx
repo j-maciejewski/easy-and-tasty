@@ -1,13 +1,12 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { use, useEffect, useMemo, useState } from "react";
 
 import {
   DataTable,
   ErrorCatcher,
   HomeSectionsEditor,
-  PageForm,
   SeoContent,
 } from "@/components/dashboard";
 import {
@@ -17,16 +16,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui";
-import { Path } from "@/config";
+import { getDashboardArticlePath } from "@/config";
 import { PaginationContext } from "@/context";
 import { api } from "@/trpc/react";
 import {
+  matchesStatus,
   searchItems,
   sortItems,
   useArticlesActions,
   useColumnsToggler,
+  useDebouncedSearchQuery,
   useModalAction,
-  useSearchQuery,
+  useStatusFilter,
+  useWithReturnTo,
 } from "@/utils";
 
 import {
@@ -34,10 +36,12 @@ import {
   AddButton,
   ColumnsToggler,
   DateCell,
+  getTableEmptyState,
   ModalAction,
   SearchBar,
   SlugCell,
   StatusBadge,
+  StatusFilter,
   TableColumn,
   TableDropdownActions,
   TableModals,
@@ -47,14 +51,11 @@ import {
 export const ArticlesTable = () => {
   const [isHomeSectionsOpen, setHomeSectionsOpen] = useState(false);
   const [isSeoOpen, setSeoOpen] = useState(false);
-  const { query, setQuery, clearQuery } = useSearchQuery();
-  const {
-    sort,
-    pagination,
-    setTotalItemsCount,
-    handleChangePage,
-    handleChangeLimit,
-  } = use(PaginationContext)!;
+  const { query, setQuery, debouncedQuery, clearQuery } =
+    useDebouncedSearchQuery();
+  const { status, setStatus, clearStatus } = useStatusFilter();
+  const { sort, pagination, setTotalItemsCount, handleChangePage } =
+    use(PaginationContext)!;
 
   const {
     data: pages,
@@ -64,19 +65,13 @@ export const ArticlesTable = () => {
   } = api.authorized.article.getArticles.useQuery();
 
   const { action, setAction, clearAction } = useModalAction<ModalAction>();
+  const router = useRouter();
+  const withReturnTo = useWithReturnTo();
+  const openEditor = (id: number | "new") =>
+    router.push(withReturnTo(getDashboardArticlePath(id)));
 
   const { handleDeleteArticle, handlePublishArticle, handleUnpublishArticle } =
     useArticlesActions();
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
-  useEffect(() => {
-    if (!pages) return;
-
-    if ((pagination.currentPage - 1) * pagination.itemsPerPage > pages.length)
-      redirect(Path.DASHBOARD_ARTICLES);
-
-    setTotalItemsCount(pages.length);
-  }, [pages]);
 
   type PageItem = NonNullable<typeof pages>[number];
 
@@ -125,7 +120,7 @@ export const ArticlesTable = () => {
           actions={[
             {
               label: "Edit Article",
-              onClick: () => setAction({ type: "edit", id: page.id }),
+              onClick: () => openEditor(page.id),
             },
             page.publishedAt
               ? {
@@ -151,37 +146,40 @@ export const ArticlesTable = () => {
     columns
       .filter(({ defaultHidden }) => defaultHidden)
       .map(({ label }) => label),
+    "articles",
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  const clearFilters = () => {
+    clearQuery();
+    clearStatus();
+  };
+
   const filteredPages = useMemo(() => {
     if (!pages) return [];
 
     const filteredPages = searchItems(
-      pages,
+      pages.filter(({ publishedAt }) => matchesStatus(publishedAt, status)),
       ["title", "slug", "description"],
-      query,
+      debouncedQuery,
     );
 
     sortItems(filteredPages, sort.key as keyof PageItem, sort.order);
 
     return filteredPages;
-  }, [
-    pagination.currentPage,
-    pagination.itemsPerPage,
-    query,
-    pages,
-    sort.key,
-    sort.order,
-  ]);
+  }, [debouncedQuery, status, pages, sort.key, sort.order]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
-    if (!pages || pages.length === filteredPages.length) return;
+    if (!pages) return;
 
-    handleChangePage(1);
-    handleChangeLimit(10);
     setTotalItemsCount(filteredPages.length);
+
+    if (
+      pagination.currentPage > 1 &&
+      (pagination.currentPage - 1) * pagination.itemsPerPage >=
+        filteredPages.length
+    )
+      handleChangePage(1);
   }, [filteredPages.length, pages]);
 
   return (
@@ -195,6 +193,7 @@ export const ArticlesTable = () => {
               onChange={setQuery}
             />
           }
+          filters={<StatusFilter value={status} onChange={setStatus} />}
           actions={
             <>
               <ColumnsToggler
@@ -202,17 +201,33 @@ export const ArticlesTable = () => {
                 hiddenColumns={hiddenColumns}
                 toggleColumn={toggleColumn}
               />
-              <Button onClick={() => setHomeSectionsOpen(true)}>
+              <Button
+                variant="outline"
+                onClick={() => setHomeSectionsOpen(true)}
+              >
                 Home sections
               </Button>
-              <Button onClick={() => setSeoOpen(true)}>Static pages SEO</Button>
-              <AddButton onClick={() => setAction({ type: "add" })} />
+              <Button variant="outline" onClick={() => setSeoOpen(true)}>
+                Static pages SEO
+              </Button>
+              <AddButton onClick={() => openEditor("new")} />
             </>
           }
         />
-        <div className="mb-6 empty:hidden">
-          {query && (
-            <ActiveFilter content={<>Query: {query}</>} onClear={clearQuery} />
+        <div className="mb-6 flex flex-wrap gap-2 empty:hidden">
+          {debouncedQuery && (
+            <ActiveFilter
+              content={<>Query: {debouncedQuery}</>}
+              onClear={clearQuery}
+            />
+          )}
+          {status && (
+            <ActiveFilter
+              content={
+                <>Status: {status === "published" ? "Published" : "Draft"}</>
+              }
+              onClear={clearStatus}
+            />
           )}
         </div>
 
@@ -224,20 +239,20 @@ export const ArticlesTable = () => {
             (pagination.currentPage - 1) * pagination.itemsPerPage,
             pagination.currentPage * pagination.itemsPerPage,
           )}
+          getRowKey={({ id }) => id}
+          emptyState={getTableEmptyState({
+            entity: "article",
+            isFiltered: !!debouncedQuery || !!status,
+            hasQuery: !!debouncedQuery && !status,
+            onClear: clearFilters,
+            onAdd: () => openEditor("new"),
+          })}
         />
 
         <TableModals
           action={action}
           onClose={clearAction}
           config={{
-            form: {
-              addTitle: "New article",
-              editTitle: "Edit article",
-              modalClassName:
-                "max-h-[calc(100%-4rem)] overflow-auto sm:max-w-5xl",
-              form: PageForm,
-              getFormProps: (action) => ({ pageId: action.id }),
-            },
             publish: {
               title: "Publish article?",
               onConfirm: async (action) => {

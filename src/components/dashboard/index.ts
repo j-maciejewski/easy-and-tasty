@@ -38,3 +38,6 @@ export { CategoriesTable } from "./tables/CategoriesTable/CategoriesTable";
 export { CuisinesTable } from "./tables/CuisinesTable/CuisinesTable";
 export { ArticlesTable } from "./tables/ArticlesTable/ArticlesTable";
 export { RecipesTable } from "./tables/RecipesTable/RecipesTable";
+export { UsersTable } from "./tables/UsersTable/UsersTable";
+export { NavUser } from "./NavUser";
+export { Breadcrumbs } from "./Breadcrumbs";

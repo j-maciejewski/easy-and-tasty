@@ -8,7 +8,6 @@ import {
   CategoriesProvider,
   CuisinesProvider,
   PaginationProvider,
-  UserProvider,
 } from "@/context";
 import { api } from "@/trpc/server";
 
@@ -20,31 +19,31 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function ({ children }: React.PropsWithChildren) {
-  const categories = await api.authorized.category.getCategories();
-  const cuisines = await api.authorized.cuisine.getCuisines();
+  const [categories, cuisines] = await Promise.all([
+    api.authorized.category.getCategories(),
+    api.authorized.cuisine.getCuisines(),
+  ]);
 
   return (
-    <UserProvider>
-      <SessionWrapper>
-        <SidebarProvider>
-          <div className="flex h-screen w-full overflow-hidden">
-            <Sidebar />
-            <div className="bg-background flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-              <Header />
-              <main className="mx-auto w-full flex-1 px-6 py-8">
-                <Suspense>
-                  <CategoriesProvider categories={categories}>
-                    <CuisinesProvider cuisines={cuisines}>
-                      <PaginationProvider>{children}</PaginationProvider>
-                    </CuisinesProvider>
-                  </CategoriesProvider>
-                </Suspense>
-              </main>
-            </div>
+    <SessionWrapper>
+      <SidebarProvider>
+        <div className="flex h-screen w-full overflow-hidden">
+          <Sidebar />
+          <div className="bg-background flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
+            <Header />
+            <main className="mx-auto w-full max-w-screen-2xl flex-1 px-6 py-8">
+              <Suspense>
+                <CategoriesProvider categories={categories}>
+                  <CuisinesProvider cuisines={cuisines}>
+                    <PaginationProvider>{children}</PaginationProvider>
+                  </CuisinesProvider>
+                </CategoriesProvider>
+              </Suspense>
+            </main>
           </div>
-          <Toaster richColors />
-        </SidebarProvider>
-      </SessionWrapper>
-    </UserProvider>
+        </div>
+        <Toaster richColors />
+      </SidebarProvider>
+    </SessionWrapper>
   );
 }

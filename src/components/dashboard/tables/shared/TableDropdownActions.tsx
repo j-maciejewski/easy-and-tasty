@@ -20,7 +20,11 @@ export const TableDropdownActions = ({
         <DropdownMenuItem
           key={index}
           onClick={action.onClick}
-          className={action.variant === "destructive" ? "text-red-600" : ""}
+          className={
+            action.variant === "destructive"
+              ? "text-destructive focus:text-destructive"
+              : ""
+          }
         >
           {action.label}
         </DropdownMenuItem>

@@ -39,3 +39,13 @@ export function parseMetadata(
 export function getImageTransitionName(path: string) {
   return `image-${path.replace(/[^\w-]/g, "-")}`;
 }
+
+const MAX_SERIAL_ID = 2_147_483_647;
+
+export function parseId(value: string) {
+  if (!/^\d+$/.test(value)) return null;
+
+  const id = Number(value);
+
+  return id > 0 && id <= MAX_SERIAL_ID ? id : null;
+}

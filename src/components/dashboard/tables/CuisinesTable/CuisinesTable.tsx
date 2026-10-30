@@ -1,18 +1,18 @@
 "use client";
 
-import { redirect } from "next/navigation";
 import { use, useEffect, useMemo } from "react";
 
 import { CuisineForm, DataTable } from "@/components/dashboard";
-import { Path } from "@/config";
 import { CuisinesContext, PaginationContext } from "@/context";
 import {
+  matchesStatus,
   searchItems,
   sortItems,
   useColumnsToggler,
   useCuisinesActions,
+  useDebouncedSearchQuery,
   useModalAction,
-  useSearchQuery,
+  useStatusFilter,
 } from "@/utils";
 
 import {
@@ -20,10 +20,12 @@ import {
   AddButton,
   ColumnsToggler,
   DateCell,
+  getTableEmptyState,
   ModalAction,
   SearchBar,
   SlugCell,
   StatusBadge,
+  StatusFilter,
   TableColumn,
   TableDropdownActions,
   TableModals,
@@ -31,27 +33,14 @@ import {
 } from "../shared";
 
 export const CuisinesTable = () => {
-  const { query, setQuery, clearQuery } = useSearchQuery();
-  const {
-    sort,
-    pagination,
-    setTotalItemsCount,
-    handleChangePage,
-    handleChangeLimit,
-  } = use(PaginationContext)!;
+  const { query, setQuery, debouncedQuery, clearQuery } =
+    useDebouncedSearchQuery();
+  const { status, setStatus, clearStatus } = useStatusFilter();
+  const { sort, pagination, setTotalItemsCount, handleChangePage } =
+    use(PaginationContext)!;
   const { cuisines, cuisinesLoading, refreshCuisines } = use(CuisinesContext)!;
 
   const { action, setAction, clearAction } = useModalAction<ModalAction>();
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
-  useEffect(() => {
-    if (!cuisines) return;
-
-    if ((pagination.currentPage - 1) * pagination.itemsPerPage > cuisines.size)
-      redirect(Path.DASHBOARD_CUISINES);
-
-    setTotalItemsCount(cuisines.size);
-  }, [cuisines]);
 
   const { handleDeleteCuisine, handlePublishCuisine, handleUnpublishCuisine } =
     useCuisinesActions();
@@ -115,38 +104,43 @@ export const CuisinesTable = () => {
     columns
       .filter(({ defaultHidden }) => defaultHidden)
       .map(({ label }) => label),
+    "cuisines",
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
+  const clearFilters = () => {
+    clearQuery();
+    clearStatus();
+  };
+
   const filteredCuisines = useMemo(() => {
     if (!cuisines) return [];
 
     const filteredCuisines = searchItems(
-      [...cuisines.values()],
+      [...cuisines.values()].filter(({ publishedAt }) =>
+        matchesStatus(publishedAt, status),
+      ),
       ["name", "slug", "description"],
-      query,
+      debouncedQuery,
     );
 
     sortItems(filteredCuisines, sort.key as keyof Cuisine, sort.order);
 
     return filteredCuisines;
-  }, [
-    pagination.currentPage,
-    pagination.itemsPerPage,
-    query,
-    cuisines,
-    sort.key,
-    sort.order,
-  ]);
+  }, [debouncedQuery, status, cuisines, sort.key, sort.order]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
-    if (cuisines.size === filteredCuisines.length) return;
+    if (cuisinesLoading) return;
 
-    handleChangePage(1);
-    handleChangeLimit(10);
     setTotalItemsCount(filteredCuisines.length);
-  }, [filteredCuisines.length]);
+
+    if (
+      pagination.currentPage > 1 &&
+      (pagination.currentPage - 1) * pagination.itemsPerPage >=
+        filteredCuisines.length
+    )
+      handleChangePage(1);
+  }, [filteredCuisines.length, cuisinesLoading]);
 
   return (
     <div>
@@ -158,6 +152,7 @@ export const CuisinesTable = () => {
             onChange={setQuery}
           />
         }
+        filters={<StatusFilter value={status} onChange={setStatus} />}
         actions={
           <>
             <ColumnsToggler
@@ -169,9 +164,20 @@ export const CuisinesTable = () => {
           </>
         }
       />
-      <div className="mb-6 empty:hidden">
-        {query && (
-          <ActiveFilter content={<>Query: {query}</>} onClear={clearQuery} />
+      <div className="mb-6 flex flex-wrap gap-2 empty:hidden">
+        {debouncedQuery && (
+          <ActiveFilter
+            content={<>Query: {debouncedQuery}</>}
+            onClear={clearQuery}
+          />
+        )}
+        {status && (
+          <ActiveFilter
+            content={
+              <>Status: {status === "published" ? "Published" : "Draft"}</>
+            }
+            onClear={clearStatus}
+          />
         )}
       </div>
 
@@ -183,6 +189,14 @@ export const CuisinesTable = () => {
           (pagination.currentPage - 1) * pagination.itemsPerPage,
           pagination.currentPage * pagination.itemsPerPage,
         )}
+        getRowKey={({ id }) => id}
+        emptyState={getTableEmptyState({
+          entity: "cuisine",
+          isFiltered: !!debouncedQuery || !!status,
+          hasQuery: !!debouncedQuery && !status,
+          onClear: clearFilters,
+          onAdd: () => setAction({ type: "add" }),
+        })}
       />
 
       <TableModals

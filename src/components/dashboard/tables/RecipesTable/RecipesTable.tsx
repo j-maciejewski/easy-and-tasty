@@ -1,9 +1,11 @@
 "use client";
 
+import { ImageOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 
-import { DataTable, ErrorCatcher, RecipeForm } from "@/components/dashboard";
-import { Badge } from "@/components/ui";
+import { DataTable, ErrorCatcher } from "@/components/dashboard";
+import { getDashboardRecipePath } from "@/config";
 import {
   CategoriesContext,
   CuisinesContext,
@@ -15,17 +17,22 @@ import {
   useDebouncedSearchQuery,
   useModalAction,
   useRecipesActions,
+  useStatusFilter,
+  useWithReturnTo,
 } from "@/utils";
 
 import {
   ActiveFilter,
   AddButton,
+  BadgeList,
   ColumnsToggler,
   DateCell,
+  getTableEmptyState,
   ModalAction,
   SearchBar,
   SlugCell,
   StatusBadge,
+  StatusFilter,
   TableColumn,
   TableDropdownActions,
   TableModals,
@@ -36,12 +43,16 @@ export const RecipesTable = () => {
   const { categories, categoriesLoading } = use(CategoriesContext)!;
   const { cuisines, cuisinesLoading } = use(CuisinesContext)!;
 
-  const { pagination, sort, handleChangePage, setTotalItemsCount } =
-    use(PaginationContext)!;
+  const { pagination, sort, setTotalItemsCount } = use(PaginationContext)!;
   const { query, setQuery, debouncedQuery, clearQuery } =
-    useDebouncedSearchQuery(() => handleChangePage(1));
+    useDebouncedSearchQuery();
+  const { status, setStatus, clearStatus } = useStatusFilter();
 
   const { action, setAction, clearAction } = useModalAction<ModalAction>();
+  const router = useRouter();
+  const withReturnTo = useWithReturnTo();
+  const openEditor = (id: number | "new") =>
+    router.push(withReturnTo(getDashboardRecipePath(id)));
 
   const {
     data: recipes,
@@ -54,6 +65,7 @@ export const RecipesTable = () => {
     orderDir: sort.order,
     page: pagination.currentPage,
     limit: pagination.itemsPerPage,
+    status,
   });
 
   const { handlePublishRecipe, handleUnpublishRecipe, handleDeleteRecipe } =
@@ -61,14 +73,31 @@ export const RecipesTable = () => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: explanation
   useEffect(() => {
-    if (!recipes?.pagination) return;
+    if (!recipes) return;
 
-    setTotalItemsCount(recipes.pagination.hitsCount);
+    setTotalItemsCount(recipes.pagination?.hitsCount ?? 0);
   }, [recipes]);
 
   type RecipeItem = NonNullable<typeof recipes>["results"][number];
 
   const columns: TableColumn<RecipeItem>[] = [
+    {
+      label: "Image",
+      render: ({ image, title }) =>
+        image ? (
+          // biome-ignore lint/performance/noImgElement: explanation
+          <img
+            src={image}
+            alt={title}
+            loading="lazy"
+            className="bg-muted size-10 rounded-md border object-cover"
+          />
+        ) : (
+          <div className="bg-muted text-muted-foreground flex size-10 items-center justify-center rounded-md border">
+            <ImageOff className="size-4" />
+          </div>
+        ),
+    },
     {
       label: "Title",
       sortKey: "title",
@@ -82,46 +111,50 @@ export const RecipesTable = () => {
     {
       label: "Categories",
       render: ({ categoryIds }) => (
-        <div className="inline-flex gap-2">
-          {categoryIds.map((id) => (
-            <Badge key={id} className="border-rose-700 bg-rose-700 text-white">
-              {categories?.get(id)?.name}
-            </Badge>
-          ))}
-        </div>
+        <BadgeList
+          items={categoryIds.map((id) => ({
+            id,
+            label: categories?.get(id)?.name,
+          }))}
+          badgeClassName="border-primary/25 bg-primary/10 text-primary"
+        />
       ),
     },
     {
       label: "Cuisines",
       render: ({ cuisineIds }) => (
-        <div className="inline-flex gap-2">
-          {cuisineIds.map((id) => (
-            <Badge key={id} className="border-cyan-700 bg-cyan-700 text-white">
-              {cuisines?.get(id)?.name}
-            </Badge>
-          ))}
-        </div>
+        <BadgeList
+          items={cuisineIds.map((id) => ({
+            id,
+            label: cuisines?.get(id)?.name,
+          }))}
+          badgeClassName="border-border bg-secondary text-secondary-foreground"
+        />
       ),
     },
     {
       label: "Rating",
       sortKey: "avg_rating",
+      align: "right",
       render: ({ avgRating }) => avgRating,
     },
     {
       label: "Comments",
       render: ({ commentsCount }) => commentsCount,
       sortKey: "comments_count",
+      align: "right",
     },
     {
       label: "Bookmarks",
       render: ({ bookmarksCount }) => bookmarksCount,
       sortKey: "bookmarks_count",
+      align: "right",
     },
     {
       label: "Votes",
       render: ({ ratingsCount }) => ratingsCount,
       sortKey: "ratings_count",
+      align: "right",
     },
     {
       label: "Status",
@@ -149,7 +182,7 @@ export const RecipesTable = () => {
           actions={[
             {
               label: "Edit Recipe",
-              onClick: () => setAction({ type: "edit", id }),
+              onClick: () => openEditor(id),
             },
             publishedAt
               ? {
@@ -175,7 +208,13 @@ export const RecipesTable = () => {
     columns
       .filter(({ defaultHidden }) => defaultHidden)
       .map(({ label }) => label),
+    "recipes",
   );
+
+  const clearFilters = () => {
+    clearQuery();
+    clearStatus();
+  };
 
   return (
     <ErrorCatcher errors={[recipesError] as (Error | null)[]}>
@@ -188,6 +227,7 @@ export const RecipesTable = () => {
               onChange={setQuery}
             />
           }
+          filters={<StatusFilter value={status} onChange={setStatus} />}
           actions={
             <>
               <ColumnsToggler
@@ -195,15 +235,23 @@ export const RecipesTable = () => {
                 hiddenColumns={hiddenColumns}
                 toggleColumn={toggleColumn}
               />
-              <AddButton onClick={() => setAction({ type: "add" })} />
+              <AddButton onClick={() => openEditor("new")} />
             </>
           }
         />
-        <div className="mb-6 empty:hidden">
+        <div className="mb-6 flex flex-wrap gap-2 empty:hidden">
           {debouncedQuery && (
             <ActiveFilter
               content={<>Query: {debouncedQuery}</>}
               onClear={clearQuery}
+            />
+          )}
+          {status && (
+            <ActiveFilter
+              content={
+                <>Status: {status === "published" ? "Published" : "Draft"}</>
+              }
+              onClear={clearStatus}
             />
           )}
         </div>
@@ -213,20 +261,20 @@ export const RecipesTable = () => {
           hiddenColumns={hiddenColumns}
           columns={columns}
           data={recipes?.results ?? []}
+          getRowKey={({ id }) => id}
+          emptyState={getTableEmptyState({
+            entity: "recipe",
+            isFiltered: !!debouncedQuery || !!status,
+            hasQuery: !!debouncedQuery && !status,
+            onClear: clearFilters,
+            onAdd: () => openEditor("new"),
+          })}
         />
 
         <TableModals
           action={action}
           onClose={clearAction}
           config={{
-            form: {
-              addTitle: "New recipe",
-              editTitle: "Edit recipe",
-              modalClassName:
-                "max-h-[calc(100%-4rem)] overflow-auto sm:max-w-5xl",
-              form: RecipeForm,
-              getFormProps: (action) => ({ recipeId: action.id }),
-            },
             publish: {
               title: "Publish recipe?",
               onConfirm: async (action) => {
