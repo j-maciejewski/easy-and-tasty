@@ -6,6 +6,7 @@ import {
   authenticatedUserRouter,
 } from "./routers/authenticated";
 import {
+  authorizedAnalyticsRouter,
   authorizedArticleRouter,
   authorizedCategoryRouter,
   authorizedCommentRouter,
@@ -22,6 +23,7 @@ import {
   publicCategoryRouter,
   publicCommentRouter,
   publicCuisineRouter,
+  publicEventRouter,
   publicHomeRouter,
   publicNavigationRouter,
   publicRecipeRouter,
@@ -46,6 +48,7 @@ export const appRouter = createTRPCRouter({
     home: publicHomeRouter,
     article: publicArticleRouter,
     seo: publicSeoRouter,
+    event: publicEventRouter,
   },
   authenticated: {
     comment: authenticatedCommentRouter,
@@ -63,6 +66,7 @@ export const appRouter = createTRPCRouter({
     article: authorizedArticleRouter,
     seo: authorizedSeoRouter,
     media: authorizedMediaRouter,
+    analytics: authorizedAnalyticsRouter,
   },
   seeder: seedRouter,
 });

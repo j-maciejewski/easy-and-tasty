@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 
 import { Input } from "@/components/ui";
+import { useSearchTracking } from "@/hooks";
 import { api } from "@/trpc/react";
 
 export const Searchbar = () => {
@@ -28,6 +29,8 @@ export const Searchbar = () => {
     api.public.recipe.getRecipesByQuery.useQuery(debouncedValue, {
       enabled: debouncedValue.length >= 3,
     });
+
+  useSearchTracking(debouncedValue, data?.length);
 
   const SearchResults = useMemo(() => {
     if (isLoading || query !== debouncedValue) {

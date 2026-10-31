@@ -5,7 +5,6 @@ import { ViewTransition } from "react";
 import {
   ArticleComments,
   ArticlesList,
-  ArticleViewTracker,
   Banner,
   Breadcrumbs,
   FullWidthWrapper,
@@ -16,6 +15,7 @@ import {
   RecipesCarousel,
   RecipesList,
   ScrollableRecipes,
+  Tracker,
 } from "@/components/app";
 import { RetryImage } from "@/components/app/RetryImage";
 import { Separator } from "@/components/ui";
@@ -260,7 +260,7 @@ export default async function (props: ArticlePageProps) {
             path={page.publishedAt ? `/${page.slug}` : "/"}
           />
         ) : (
-          <ArticleViewTracker articleId={page.id} />
+          <Tracker entityType="article" entityId={page.id} />
         )}
         <Breadcrumbs
           paths={[
@@ -271,6 +271,7 @@ export default async function (props: ArticlePageProps) {
             path: `/${page.slug}`,
             text: "Check out this awesome article!",
             type: "article",
+            id: page.id,
           }}
         />
         <h1 className="font-display max-w-3xl text-4xl leading-[1.05] font-bold tracking-tight md:text-6xl">

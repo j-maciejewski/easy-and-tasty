@@ -17,7 +17,9 @@ const sectionLabels: Record<string, string> = {
   navigation: "Navigation",
   comments: "Comments",
   media: "Media",
+  tracking: "Tracking",
   new: "New",
+  stats: "Stats",
 };
 
 const getSegmentLabel = (segment: string, index: number) => {

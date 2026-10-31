@@ -1,6 +1,7 @@
 import {
   Bookmark,
   LayoutDashboardIcon as Dashboard,
+  History,
   LogOut,
 } from "lucide-react";
 import Link from "next/link";
@@ -77,6 +78,12 @@ export const AvatarDropdown = ({ user }: AvatarDropdownProps) => {
           <Link href="/bookmarks">
             <Bookmark />
             Saved recipes
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild className={itemClassName}>
+          <Link href="/recently-viewed">
+            <History />
+            Recently viewed
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator className="mx-1 my-1.5" />

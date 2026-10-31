@@ -17,7 +17,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui";
-import { getDashboardArticlePath } from "@/config";
+import {
+  getDashboardArticlePath,
+  getDashboardArticleStatsPath,
+} from "@/config";
 import { PaginationContext } from "@/context";
 import { api } from "@/trpc/react";
 import {
@@ -143,6 +146,13 @@ export const ArticlesTable = () => {
             {
               label: "Edit Article",
               onClick: () => openEditor(page.id),
+            },
+            {
+              label: "View Stats",
+              onClick: () =>
+                router.push(
+                  withReturnTo(getDashboardArticleStatsPath(page.id)),
+                ),
             },
             page.publishedAt
               ? {

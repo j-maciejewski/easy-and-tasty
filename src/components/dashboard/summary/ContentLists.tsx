@@ -1,3 +1,4 @@
+import { ChartNoAxesColumn } from "lucide-react";
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui";
@@ -8,6 +9,7 @@ type TopContentItem = {
   id: number;
   title: string;
   href: string;
+  statsHref?: string;
   views: number;
 };
 
@@ -54,6 +56,15 @@ export const TopContentList = ({
                   <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
                     {formatNumber(item.views)}
                   </span>
+                  {item.statsHref && (
+                    <Link
+                      href={item.statsHref}
+                      aria-label={`Stats for ${item.title}`}
+                      className="text-muted-foreground hover:text-foreground shrink-0 self-center"
+                    >
+                      <ChartNoAxesColumn className="size-3.5" />
+                    </Link>
+                  )}
                 </div>
                 <div className="bg-muted ml-6 h-1 overflow-hidden rounded-full">
                   <div

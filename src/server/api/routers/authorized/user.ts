@@ -7,12 +7,11 @@ import type { db } from "@/server/db";
 import {
   article_comment_likes,
   article_comments,
-  article_views,
   comment_likes,
   comments,
+  events,
   recipe_bookmarks,
   recipe_ratings,
-  recipe_views,
   roleEnum,
   users,
   verificationTokens,
@@ -218,13 +217,9 @@ export const authorizedUserRouter = createTRPCRouter({
           .delete(recipe_bookmarks)
           .where(eq(recipe_bookmarks.userId, id));
         await tx
-          .update(recipe_views)
+          .update(events)
           .set({ userId: null })
-          .where(eq(recipe_views.userId, id));
-        await tx
-          .update(article_views)
-          .set({ userId: null })
-          .where(eq(article_views.userId, id));
+          .where(eq(events.userId, id));
         await tx
           .delete(verificationTokens)
           .where(eq(verificationTokens.identifier, user.email));

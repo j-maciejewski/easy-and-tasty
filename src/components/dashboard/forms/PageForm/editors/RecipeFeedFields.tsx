@@ -39,6 +39,7 @@ export const RecipeFeedFields = ({ draft, setDraft }: DraftEditorProps) => {
             <SelectItem value="most_liked">Most liked</SelectItem>
             <SelectItem value="most_viewed">Most viewed</SelectItem>
             <SelectItem value="most_bookmarked">Most bookmarked</SelectItem>
+            <SelectItem value="trending">Trending this week</SelectItem>
             <SelectItem value="specific">Specific recipes</SelectItem>
           </SelectContent>
         </Select>

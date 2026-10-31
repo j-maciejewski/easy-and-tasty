@@ -1,10 +1,57 @@
-import { and, eq, isNotNull, sql } from "drizzle-orm";
+import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { z } from "zod";
 
 import { authenticatedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { recipe_bookmarks, recipe_ratings, recipes } from "@/server/db/schema";
+import {
+  events,
+  recipe_bookmarks,
+  recipe_ratings,
+  recipes,
+} from "@/server/db/schema";
+
+const lastViewedAt = sql<Date>`MAX(${events.createdAt})`;
 
 export const authenticatedRecipeRouter = createTRPCRouter({
+  getRecentlyViewed: authenticatedProcedure.query(({ ctx }) => {
+    return ctx.db
+      .select({
+        id: recipes.id,
+        title: recipes.title,
+        description: recipes.description,
+        image: recipes.image,
+        difficulty: recipes.difficulty,
+        servings: recipes.servings,
+        slug: recipes.slug,
+        time: recipes.time,
+        // Subqueries, because joining ratings would multiply the view rows
+        avgRating: sql<number>`CAST((SELECT ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) FROM ${recipe_ratings} WHERE ${recipe_ratings.recipeId} = ${recipes.id}) as float)`,
+        ratingsCount: sql<number>`CAST((SELECT COUNT(*) FROM ${recipe_ratings} WHERE ${recipe_ratings.recipeId} = ${recipes.id}) as int)`,
+        lastViewedAt,
+      })
+      .from(events)
+      .innerJoin(recipes, eq(events.entityId, recipes.id))
+      .where(
+        and(
+          eq(events.userId, ctx.user.id),
+          eq(events.type, "view"),
+          eq(events.entityType, "recipe"),
+          isNotNull(recipes.publishedAt),
+        ),
+      )
+      .groupBy(recipes.id)
+      .orderBy(desc(lastViewedAt))
+      .limit(12);
+  }),
+
+  // Detaches the reader's account from their tracked events instead of
+  // deleting them, so site-wide view counts stay intact.
+  clearViewHistory: authenticatedProcedure.mutation(async ({ ctx }) => {
+    await ctx.db
+      .update(events)
+      .set({ userId: null })
+      .where(eq(events.userId, ctx.user.id));
+  }),
+
   bookmarkRecipe: authenticatedProcedure
     .input(z.number().positive())
     .mutation(async ({ ctx, input: recipeId }) => {

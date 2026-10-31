@@ -23,6 +23,7 @@ export enum Path {
   DASHBOARD_NAVIGATION = "/dashboard/navigation",
   DASHBOARD_COMMENTS = "/dashboard/comments",
   DASHBOARD_MEDIA = "/dashboard/media",
+  DASHBOARD_TRACKING = "/dashboard/tracking",
 }
 
 export const getDashboardRecipePath = (id: number | "new") =>
@@ -30,3 +31,9 @@ export const getDashboardRecipePath = (id: number | "new") =>
 
 export const getDashboardArticlePath = (id: number | "new") =>
   `${Path.DASHBOARD_ARTICLES}/${id}`;
+
+export const getDashboardRecipeStatsPath = (id: number) =>
+  `${getDashboardRecipePath(id)}/stats`;
+
+export const getDashboardArticleStatsPath = (id: number) =>
+  `${getDashboardArticlePath(id)}/stats`;

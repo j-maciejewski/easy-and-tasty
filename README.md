@@ -8,6 +8,7 @@ A modern recipe sharing platform built with Next.js 16, React 19, and TypeScript
 - 📱 Responsive design for all devices
 - 🎨 Dark/Light theme support
 - 🍲 Recipe pages with ratings, comments, bookmarks and a print view
+- 🕒 Recently viewed recipes and "People also viewed" suggestions
 - 🗂️ Category, cuisine and article browsing with infinite scroll
 - 🔍 Recipe search by title
 - 🎯 SEO optimization with a generated sitemap
@@ -17,7 +18,9 @@ A modern recipe sharing platform built with Next.js 16, React 19, and TypeScript
   - Media library with image uploads (UploadThing, compressed with sharp)
   - Category, cuisine and user management
   - Drag-and-drop navigation and homepage section editors
-  - Recipe view statistics
+  - Reader analytics: views, engaged reads, prints, shares and copies; traffic sources; trending content; views by category and cuisine; top and zero-result searches
+  - Per-recipe and per-article stats pages, and CSV export
+  - Privacy-friendly tracking: no raw IPs stored, bots filtered, events anonymized after 90 days via `/api/cron/anonymize-events` (call daily with `Authorization: Bearer $CRON_SECRET`)
 
 ## Tech Stack
 

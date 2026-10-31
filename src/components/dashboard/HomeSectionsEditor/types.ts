@@ -24,6 +24,7 @@ export type SectionDraft = {
       | "most_liked"
       | "most_viewed"
       | "most_bookmarked"
+      | "trending"
       | "specific";
     recipeIds: number[];
     limit: number;

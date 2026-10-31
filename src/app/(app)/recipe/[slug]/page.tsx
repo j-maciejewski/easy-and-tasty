@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { ViewTransition } from "react";
 
 import {
+  AlsoViewedRecipes,
   Breadcrumbs,
   MarkdownContent,
   PreviewBanner,
@@ -11,7 +12,7 @@ import {
   RecipeComments,
   RecipeInformation,
   RecipesList,
-  RecipeViewTracker,
+  Tracker,
 } from "@/components/app";
 import { RetryImage } from "@/components/app/RetryImage";
 import { getRecipe, getSuggestedRecipes } from "@/lib/data";
@@ -90,7 +91,7 @@ export default async function (props: RecipePageProps) {
           path={recipe.publishedAt ? `/recipe/${recipe.slug}` : "/"}
         />
       ) : (
-        <RecipeViewTracker recipeId={recipe.id} />
+        <Tracker entityType="recipe" entityId={recipe.id} />
       )}
       <div className="min-w-0">
         <Breadcrumbs
@@ -102,6 +103,7 @@ export default async function (props: RecipePageProps) {
             path: `/recipe/${recipe.slug}`,
             text: "Check out this awesome recipe!",
             type: "recipe",
+            id: recipe.id,
           }}
           recipeId={recipe.id}
           printable
@@ -186,6 +188,9 @@ export default async function (props: RecipePageProps) {
       </div>
       <aside className="lg:sticky lg:top-28 lg:self-start print:hidden">
         <RecipesList heading="Cook this next" recipes={recipes} />
+        {!preview && (
+          <AlsoViewedRecipes recipeId={recipe.id} className="mt-12" />
+        )}
       </aside>
     </div>
   );

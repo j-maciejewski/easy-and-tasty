@@ -23,11 +23,11 @@ import {
   comment_likes,
   comments,
   difficultyEnum,
+  events,
   recipe_bookmarks,
   recipe_categories,
   recipe_cuisines,
   recipe_ratings,
-  recipe_views,
   recipes,
   users,
 } from "@/server/db/schema";
@@ -52,7 +52,9 @@ const deleteRecipesWithRelations = async (tx: Transaction, ids: number[]) => {
   await tx
     .delete(recipe_bookmarks)
     .where(inArray(recipe_bookmarks.recipeId, ids));
-  await tx.delete(recipe_views).where(inArray(recipe_views.recipeId, ids));
+  await tx
+    .delete(events)
+    .where(and(eq(events.entityType, "recipe"), inArray(events.entityId, ids)));
   await tx
     .delete(recipe_categories)
     .where(inArray(recipe_categories.recipeId, ids));
@@ -89,6 +91,10 @@ export const authorizedRecipeRouter = createTRPCRouter({
     });
     const emptyCounts = { last24h: 0, last7d: 0, last30d: 0, prev30d: 0 };
     const viewCount = sql<number>`CAST(COUNT(*) as int)`;
+    const isEntityView = and(
+      eq(events.type, "view"),
+      eq(events.entityType, "recipe"),
+    );
     const ratingAvg = sql<number>`CAST(ROUND(AVG(${recipe_ratings.score}), 2) as float)`;
 
     const [
@@ -122,9 +128,9 @@ export const authorizedRecipeRouter = createTRPCRouter({
         .from(recipe_bookmarks)
         .where(gte(recipe_bookmarks.createdAt, last60d)),
       ctx.db
-        .select(windowCounts(recipe_views.viewedAt))
-        .from(recipe_views)
-        .where(gte(recipe_views.viewedAt, last60d)),
+        .select(windowCounts(events.createdAt))
+        .from(events)
+        .where(and(isEntityView, gte(events.createdAt, last60d))),
       ctx.db
         .select({
           day: sql<string>`TO_CHAR(${comments.createdAt}, 'YYYY-MM-DD')`,
@@ -143,12 +149,12 @@ export const authorizedRecipeRouter = createTRPCRouter({
         .groupBy(sql`TO_CHAR(${recipe_bookmarks.createdAt}, 'YYYY-MM-DD')`),
       ctx.db
         .select({
-          day: sql<string>`TO_CHAR(${recipe_views.viewedAt}, 'YYYY-MM-DD')`,
+          day: sql<string>`TO_CHAR(${events.createdAt}, 'YYYY-MM-DD')`,
           count: sql<number>`CAST(COUNT(*) as int)`,
         })
-        .from(recipe_views)
-        .where(gte(recipe_views.viewedAt, last30d))
-        .groupBy(sql`TO_CHAR(${recipe_views.viewedAt}, 'YYYY-MM-DD')`),
+        .from(events)
+        .where(and(isEntityView, gte(events.createdAt, last30d)))
+        .groupBy(sql`TO_CHAR(${events.createdAt}, 'YYYY-MM-DD')`),
       ctx.db
         .select({
           id: recipes.id,
@@ -156,9 +162,9 @@ export const authorizedRecipeRouter = createTRPCRouter({
           slug: recipes.slug,
           views: viewCount,
         })
-        .from(recipe_views)
-        .innerJoin(recipes, eq(recipe_views.recipeId, recipes.id))
-        .where(gte(recipe_views.viewedAt, last30d))
+        .from(events)
+        .innerJoin(recipes, eq(events.entityId, recipes.id))
+        .where(and(isEntityView, gte(events.createdAt, last30d)))
         .groupBy(recipes.id)
         .orderBy(desc(viewCount))
         .limit(5),

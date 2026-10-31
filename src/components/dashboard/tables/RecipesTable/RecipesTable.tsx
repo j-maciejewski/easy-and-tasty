@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 
 import { DataTable, ErrorCatcher } from "@/components/dashboard";
-import { getDashboardRecipePath } from "@/config";
+import { getDashboardRecipePath, getDashboardRecipeStatsPath } from "@/config";
 import {
   CategoriesContext,
   CuisinesContext,
@@ -210,6 +210,11 @@ export const RecipesTable = () => {
             {
               label: "Edit Recipe",
               onClick: () => openEditor(id),
+            },
+            {
+              label: "View Stats",
+              onClick: () =>
+                router.push(withReturnTo(getDashboardRecipeStatsPath(id))),
             },
             {
               label: "Duplicate Recipe",

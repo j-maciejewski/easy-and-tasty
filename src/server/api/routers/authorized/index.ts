@@ -1,3 +1,4 @@
+export { authorizedAnalyticsRouter } from "./analytics";
 export { authorizedArticleRouter } from "./article";
 export { authorizedCategoryRouter } from "./category";
 export { authorizedCommentRouter } from "./comment";

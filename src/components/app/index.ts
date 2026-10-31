@@ -1,10 +1,10 @@
 // Client Components and Mixed Components (safe to import anywhere)
 
+export { AlsoViewedRecipes } from "./AlsoViewedRecipes";
 export { ArticleCard } from "./ArticleCard";
 export { ArticleComments } from "./ArticleComments";
 export { ArticleListItem } from "./ArticleListItem";
 export { ArticlesList } from "./ArticlesList";
-export { ArticleViewTracker } from "./ArticleViewTracker";
 export { AvatarDropdown } from "./AvatarDropdown";
 export { Banner } from "./Banner";
 export { BookmarkButton } from "./BookmarkButton";
@@ -28,7 +28,6 @@ export { RecipeComments } from "./RecipeComments";
 export { RecipeInformation } from "./RecipeInformation";
 export { RecipesCarousel } from "./RecipesCarousel";
 export { RecipesList } from "./RecipesList";
-export { RecipeViewTracker } from "./RecipeViewTracker";
 export { RetryImage } from "./RetryImage";
 export { ScrollableRecipes } from "./ScrollableRecipes";
 export { SectionHeading } from "./SectionHeading";
@@ -36,3 +35,4 @@ export { SectionHeading } from "./SectionHeading";
 export { ShareDialog } from "./ShareDialog";
 export { SortSelect } from "./SortSelect";
 export { TaxonomyGrid } from "./TaxonomyGrid";
+export { Tracker } from "./Tracker";

@@ -4,62 +4,18 @@ import {
   desc,
   eq,
   gt,
-  gte,
   ilike,
   inArray,
   isNotNull,
   lt,
-  sql,
 } from "drizzle-orm";
 import { z } from "zod";
 
 import { verifyPreviewToken } from "@/lib/preview";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { article_views, articles } from "@/server/db/schema";
+import { articles } from "@/server/db/schema";
 
 export const publicArticleRouter = createTRPCRouter({
-  addArticleView: publicProcedure
-    .input(
-      z.object({
-        articleId: z.number().positive(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const dedupeWindowMinutes = 30;
-      const dedupeSince = new Date(
-        Date.now() - dedupeWindowMinutes * 60 * 1000,
-      );
-
-      const ipAddress =
-        ctx.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-        ctx.headers.get("x-real-ip")?.trim() ??
-        null;
-      const userAgent = ctx.headers.get("user-agent") ?? null;
-
-      const recentView = await ctx.db
-        .select({ id: article_views.id })
-        .from(article_views)
-        .where(
-          and(
-            eq(article_views.articleId, input.articleId),
-            gte(article_views.viewedAt, dedupeSince),
-            sql`${article_views.ipAddress} IS NOT DISTINCT FROM ${ipAddress}`,
-            sql`${article_views.userAgent} IS NOT DISTINCT FROM ${userAgent}`,
-          ),
-        )
-        .limit(1);
-
-      if (recentView.length > 0) {
-        return;
-      }
-
-      await ctx.db.insert(article_views).values({
-        articleId: input.articleId,
-        ipAddress,
-        userAgent,
-      });
-    }),
-
   getArticle: publicProcedure
     .input(z.string())
     .query(({ ctx, input: articleSlug }) => {

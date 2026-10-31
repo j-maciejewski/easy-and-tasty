@@ -23,8 +23,8 @@ import { db } from "@/server/db";
 import {
   article_comment_likes,
   article_comments,
-  article_views,
   articles,
+  events,
   users,
 } from "@/server/db/schema";
 
@@ -45,7 +45,11 @@ const deleteArticlesWithRelations = async (tx: Transaction, ids: number[]) => {
   await tx
     .delete(article_comments)
     .where(inArray(article_comments.articleId, ids));
-  await tx.delete(article_views).where(inArray(article_views.articleId, ids));
+  await tx
+    .delete(events)
+    .where(
+      and(eq(events.entityType, "article"), inArray(events.entityId, ids)),
+    );
   await tx.delete(articles).where(inArray(articles.id, ids));
 };
 
@@ -75,6 +79,10 @@ export const authorizedArticleRouter = createTRPCRouter({
     });
     const emptyCounts = { last24h: 0, last7d: 0, last30d: 0, prev30d: 0 };
     const viewCount = sql<number>`CAST(COUNT(*) as int)`;
+    const isEntityView = and(
+      eq(events.type, "view"),
+      eq(events.entityType, "article"),
+    );
 
     const [
       [content],
@@ -92,21 +100,21 @@ export const authorizedArticleRouter = createTRPCRouter({
         })
         .from(articles),
       ctx.db
-        .select(windowCounts(article_views.viewedAt))
-        .from(article_views)
-        .where(gte(article_views.viewedAt, last60d)),
+        .select(windowCounts(events.createdAt))
+        .from(events)
+        .where(and(isEntityView, gte(events.createdAt, last60d))),
       ctx.db
         .select(windowCounts(article_comments.createdAt))
         .from(article_comments)
         .where(gte(article_comments.createdAt, last60d)),
       ctx.db
         .select({
-          day: sql<string>`TO_CHAR(${article_views.viewedAt}, 'YYYY-MM-DD')`,
+          day: sql<string>`TO_CHAR(${events.createdAt}, 'YYYY-MM-DD')`,
           count: sql<number>`CAST(COUNT(*) as int)`,
         })
-        .from(article_views)
-        .where(gte(article_views.viewedAt, last30d))
-        .groupBy(sql`TO_CHAR(${article_views.viewedAt}, 'YYYY-MM-DD')`),
+        .from(events)
+        .where(and(isEntityView, gte(events.createdAt, last30d)))
+        .groupBy(sql`TO_CHAR(${events.createdAt}, 'YYYY-MM-DD')`),
       ctx.db
         .select({
           day: sql<string>`TO_CHAR(${article_comments.createdAt}, 'YYYY-MM-DD')`,
@@ -122,9 +130,9 @@ export const authorizedArticleRouter = createTRPCRouter({
           slug: articles.slug,
           views: viewCount,
         })
-        .from(article_views)
-        .innerJoin(articles, eq(article_views.articleId, articles.id))
-        .where(gte(article_views.viewedAt, last30d))
+        .from(events)
+        .innerJoin(articles, eq(events.entityId, articles.id))
+        .where(and(isEntityView, gte(events.createdAt, last30d)))
         .groupBy(articles.id)
         .orderBy(desc(viewCount))
         .limit(5),

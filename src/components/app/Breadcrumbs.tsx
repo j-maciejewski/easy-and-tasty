@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { BookmarkButton } from "./BookmarkButton";
 import { PrintButton } from "./PrintButton";
-import { ShareDialog } from "./ShareDialog";
+import { ShareDialog, type ShareDialogProps } from "./ShareDialog";
 
 interface BreadcrumbsProps {
   paths: Array<{
@@ -11,11 +11,7 @@ interface BreadcrumbsProps {
     href?: string;
     active?: boolean;
   }>;
-  shareConfig?: {
-    path: string;
-    text: string;
-    type: "recipe" | "article";
-  };
+  shareConfig?: ShareDialogProps["shareConfig"];
   recipeId?: number;
   printable?: boolean;
 }

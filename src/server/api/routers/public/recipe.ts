@@ -11,6 +11,7 @@ import {
   type SQL,
   sql,
 } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import { z } from "zod";
 
 import { verifyPreviewToken } from "@/lib/preview";
@@ -19,13 +20,22 @@ import type { db as database } from "@/server/db";
 import {
   categories,
   cuisines,
+  events,
   recipe_bookmarks,
   recipe_categories,
   recipe_cuisines,
   recipe_ratings,
-  recipe_views,
   recipes,
 } from "@/server/db/schema";
+
+const recipeViewsCount = (since?: Date) =>
+  sql<number>`(
+    SELECT CAST(COUNT(*) as int) FROM ${events}
+    WHERE ${events.type} = 'view'
+      AND ${events.entityType} = 'recipe'
+      AND ${events.entityId} = ${recipes.id}
+      ${since ? sql`AND ${events.createdAt} >= ${since.toISOString()}::timestamptz` : sql``}
+  )`;
 
 // Cursor pagination needs a unique sort key, so recipes sharing a createdAt
 // or title (e.g. seeded in one insert) are tie-broken by id. createdAt is
@@ -118,46 +128,74 @@ const getRecipeDetails = async (db: typeof database, where: SQL | undefined) =>
   )?.[0] ?? null;
 
 export const publicRecipeRouter = createTRPCRouter({
-  addRecipeView: publicProcedure
-    .input(
-      z.object({
-        recipeId: z.number().positive(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const dedupeWindowMinutes = 30;
-      const dedupeSince = new Date(
-        Date.now() - dedupeWindowMinutes * 60 * 1000,
-      );
+  // Recipes opened by the same visitors (same day, or same account) who
+  // opened this one
+  getAlsoViewed: publicProcedure
+    .input(z.number().int().positive())
+    .query(async ({ ctx, input: recipeId }) => {
+      const thisView = alias(events, "this_view");
+      const otherView = alias(events, "other_view");
+      const viewers = sql<number>`COUNT(DISTINCT COALESCE(${otherView.userId}, ${otherView.visitorHash}))`;
+      const since = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
 
-      const ipAddress =
-        ctx.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-        ctx.headers.get("x-real-ip")?.trim() ??
-        null;
-      const userAgent = ctx.headers.get("user-agent") ?? null;
-
-      const recentView = await ctx.db
-        .select({ id: recipe_views.id })
-        .from(recipe_views)
-        .where(
+      const ranked = await ctx.db
+        .select({ id: sql<number>`${otherView.entityId}`, viewers })
+        .from(thisView)
+        .innerJoin(
+          otherView,
           and(
-            eq(recipe_views.recipeId, input.recipeId),
-            gte(recipe_views.viewedAt, dedupeSince),
-            sql`${recipe_views.ipAddress} IS NOT DISTINCT FROM ${ipAddress}`,
-            sql`${recipe_views.userAgent} IS NOT DISTINCT FROM ${userAgent}`,
+            eq(otherView.type, "view"),
+            eq(otherView.entityType, "recipe"),
+            sql`${otherView.entityId} <> ${thisView.entityId}`,
+            sql`(${otherView.visitorHash} = ${thisView.visitorHash} OR ${otherView.userId} = ${thisView.userId})`,
           ),
         )
-        .limit(1);
+        .where(
+          and(
+            eq(thisView.type, "view"),
+            eq(thisView.entityType, "recipe"),
+            eq(thisView.entityId, recipeId),
+            gte(thisView.createdAt, since),
+          ),
+        )
+        .groupBy(otherView.entityId)
+        .orderBy(desc(viewers))
+        .limit(4);
 
-      if (recentView.length > 0) {
-        return;
-      }
+      if (!ranked.length) return [];
 
-      await ctx.db.insert(recipe_views).values({
-        recipeId: input.recipeId,
-        ipAddress,
-        userAgent,
-      });
+      const results = await ctx.db
+        .select({
+          id: recipes.id,
+          title: recipes.title,
+          description: recipes.description,
+          image: recipes.image,
+          difficulty: recipes.difficulty,
+          servings: recipes.servings,
+          slug: recipes.slug,
+          time: recipes.time,
+          publishedAt: recipes.publishedAt,
+          avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
+          ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
+        })
+        .from(recipes)
+        .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
+        .where(
+          and(
+            inArray(
+              recipes.id,
+              ranked.map((row) => row.id),
+            ),
+            isNotNull(recipes.publishedAt),
+          ),
+        )
+        .groupBy(recipes.id);
+
+      const order = new Map(ranked.map((row, idx) => [row.id, idx]));
+
+      return results.sort(
+        (a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0),
+      );
     }),
 
   getRecipeBySlug: publicProcedure
@@ -223,6 +261,7 @@ export const publicRecipeRouter = createTRPCRouter({
           "most_liked",
           "most_viewed",
           "most_bookmarked",
+          "trending",
           "specific",
         ]),
         recipeIds: z.array(z.number().int().positive()).default([]),
@@ -243,12 +282,11 @@ export const publicRecipeRouter = createTRPCRouter({
           publishedAt: recipes.publishedAt,
           avgRating: sql<number>`CAST(ROUND(COALESCE(AVG(${recipe_ratings.score}), 0), 2) as float)`,
           ratingsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_ratings.id}) as int)`,
-          viewsCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_views.id}) as int)`,
+          viewsCount: recipeViewsCount(),
           bookmarksCount: sql<number>`CAST(COUNT(DISTINCT ${recipe_bookmarks.id}) as int)`,
         })
         .from(recipes)
         .leftJoin(recipe_ratings, eq(recipe_ratings.recipeId, recipes.id))
-        .leftJoin(recipe_views, eq(recipe_views.recipeId, recipes.id))
         .leftJoin(recipe_bookmarks, eq(recipe_bookmarks.recipeId, recipes.id))
         .where(
           and(
@@ -289,10 +327,15 @@ export const publicRecipeRouter = createTRPCRouter({
 
       if (input.mode === "most_viewed") {
         return baseQuery
-          .orderBy(
-            desc(sql`COUNT(DISTINCT ${recipe_views.id})`),
-            desc(recipes.createdAt),
-          )
+          .orderBy(desc(recipeViewsCount()), desc(recipes.createdAt))
+          .limit(input.limit);
+      }
+
+      if (input.mode === "trending") {
+        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+        return baseQuery
+          .orderBy(desc(recipeViewsCount(weekAgo)), desc(recipes.createdAt))
           .limit(input.limit);
       }
 

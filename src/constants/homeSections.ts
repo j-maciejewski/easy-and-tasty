@@ -20,6 +20,7 @@ export const recipeFeedModeEnum = z.enum([
   "most_liked",
   "most_viewed",
   "most_bookmarked",
+  "trending",
   "specific",
 ]);
 

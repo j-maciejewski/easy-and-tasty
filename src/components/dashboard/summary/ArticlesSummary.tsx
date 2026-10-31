@@ -1,5 +1,6 @@
 "use client";
 
+import { getDashboardArticleStatsPath } from "@/config";
 import { api } from "@/trpc/react";
 
 import { ActivityList, TopContentList } from "./ContentLists";
@@ -28,6 +29,7 @@ export const ArticlesSummary = () => {
         items={data.topViewed.map((article) => ({
           ...article,
           href: `/articles/${article.slug}`,
+          statsHref: getDashboardArticleStatsPath(article.id),
         }))}
       />
       <ActivityList

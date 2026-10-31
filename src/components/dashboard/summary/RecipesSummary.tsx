@@ -1,5 +1,6 @@
 "use client";
 
+import { getDashboardRecipeStatsPath } from "@/config";
 import { api } from "@/trpc/react";
 
 import { ActivityList, TopContentList } from "./ContentLists";
@@ -30,6 +31,7 @@ export const RecipesSummary = () => {
           items={data.topViewed.map((recipe) => ({
             ...recipe,
             href: `/recipe/${recipe.slug}`,
+            statsHref: getDashboardRecipeStatsPath(recipe.id),
           }))}
         />
         <ActivityList

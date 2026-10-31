@@ -1,6 +1,6 @@
 import type { ChartConfig } from "@/components/ui";
 
-export type Metric = "views" | "comments" | "bookmarks";
+export type Metric = "views" | "engaged" | "comments" | "bookmarks";
 
 export type WindowCounts = {
   last24h: number;
@@ -17,6 +17,13 @@ export const chartConfig = {
     theme: {
       light: "oklch(0.7 0.14 205)",
       dark: "oklch(0.76 0.12 210)",
+    },
+  },
+  engaged: {
+    label: "Engaged",
+    theme: {
+      light: "oklch(0.65 0.15 150)",
+      dark: "oklch(0.72 0.13 150)",
     },
   },
   comments: {

@@ -16,6 +16,7 @@ export { SeoContent } from "./seo";
 export { SortableNavigation } from "./SortableNavigation";
 export { SummaryStats } from "./SummaryStats";
 export { ToggleThemeButton } from "./ToggleThemeButton";
+export { TrackingStats } from "./TrackingStats";
 
 // Modals
 export { GenericModal } from "./modals/GenericModal";
@@ -39,3 +40,6 @@ export { RecipesTable } from "./tables/RecipesTable/RecipesTable";
 export { UsersTable } from "./tables/UsersTable/UsersTable";
 export { NavUser } from "./NavUser";
 export { Breadcrumbs } from "./Breadcrumbs";
+
+// Stats
+export { EntityStats } from "./stats/EntityStats";

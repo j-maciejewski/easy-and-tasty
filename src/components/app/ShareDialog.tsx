@@ -16,24 +16,30 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui";
+import { useTrackEvent } from "@/hooks";
 
 export interface ShareDialogProps {
   shareConfig: {
     path: string;
     text: string;
     type: "recipe" | "article";
+    id: number;
   };
 }
 
 export const ShareDialog = ({ shareConfig }: ShareDialogProps) => {
-  const { path, type, text } = shareConfig;
+  const { path, type, text, id } = shareConfig;
   const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL}${path}`;
+  const track = useTrackEvent();
+  const trackShare = (channel: "copy_link" | "facebook" | "twitter") =>
+    track({ type: "share", entityType: type, entityId: id, channel });
 
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
+      trackShare("copy_link");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -42,6 +48,7 @@ export const ShareDialog = ({ shareConfig }: ShareDialogProps) => {
   };
 
   const shareOnFacebook = () => {
+    trackShare("facebook");
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
         shareUrl,
@@ -51,6 +58,7 @@ export const ShareDialog = ({ shareConfig }: ShareDialogProps) => {
   };
 
   const shareOnTwitter = () => {
+    trackShare("twitter");
     window.open(
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         shareUrl,

@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Activity,
   Book,
   ChartPie,
   ChefHat,
@@ -45,6 +46,7 @@ const groups: { label: string; items: SidebarItem[] }[] = [
     label: "Overview",
     items: [
       { label: "Summary", url: Path.DASHBOARD, icon: ChartPie, exact: true },
+      { label: "Tracking", url: Path.DASHBOARD_TRACKING, icon: Activity },
     ],
   },
   {

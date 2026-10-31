@@ -4,8 +4,10 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  index,
   integer,
   json,
+  jsonb,
   pgEnum,
   pgTableCreator,
   primaryKey,
@@ -135,31 +137,57 @@ export const recipe_bookmarks = createTable("recipe_bookmark", {
     .notNull(),
 });
 
-export const recipe_views = createTable("recipe_view", {
-  id: serial("id").primaryKey(),
-  recipeId: integer("recipe_id")
-    .notNull()
-    .references(() => recipes.id),
-  userId: text("user_id").references(() => users.id),
-  viewedAt: timestamp("viewed_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  ipAddress: varchar("ip_address", { length: 45 }),
-  userAgent: varchar("user_agent", { length: 512 }),
-});
+export const eventTypeEnum = pgEnum("event_type", [
+  "view",
+  "engaged",
+  "print",
+  "share",
+  "copy",
+  "search",
+]);
 
-export const article_views = createTable("article_view", {
-  id: serial("id").primaryKey(),
-  articleId: integer("article_id")
-    .notNull()
-    .references(() => articles.id),
-  userId: text("user_id").references(() => users.id),
-  viewedAt: timestamp("viewed_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  ipAddress: varchar("ip_address", { length: 45 }),
-  userAgent: varchar("user_agent", { length: 512 }),
-});
+export const eventEntityTypeEnum = pgEnum("event_entity_type", [
+  "recipe",
+  "article",
+]);
+
+// Polymorphic: entityId points at recipes or articles depending on
+// entityType, so there is no foreign key. Search events have no entity.
+// visitorHash is a salted hash of IP and user agent that rotates daily, so
+// raw IPs are never stored and visitors can't be linked across days.
+export const events = createTable(
+  "event",
+  {
+    id: serial("id").primaryKey(),
+    type: eventTypeEnum("type").notNull(),
+    entityType: eventEntityTypeEnum("entity_type"),
+    entityId: integer("entity_id"),
+    userId: text("user_id").references(() => users.id),
+    visitorHash: varchar("visitor_hash", { length: 64 }),
+    source: varchar("source", { length: 128 }),
+    meta: jsonb("meta").$type<EventMeta>(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (event) => [
+    index("event_entity_idx").on(
+      event.entityType,
+      event.entityId,
+      event.createdAt,
+    ),
+    index("event_type_created_at_idx").on(event.type, event.createdAt),
+    index("event_user_idx").on(event.userId, event.createdAt),
+  ],
+);
+
+export type EventMeta = {
+  channel?: "copy_link" | "facebook" | "twitter";
+  term?: string;
+  resultCount?: number;
+  utmMedium?: string;
+  utmCampaign?: string;
+};
 
 export const recipe_categories = createTable("recipe_category", {
   id: serial("id").primaryKey(),
