@@ -2,6 +2,53 @@
 
 A modern recipe sharing platform built with Next.js 16, React 19, and TypeScript. This application allows users to discover, share, and manage recipes with a clean and intuitive interface.
 
+## Screenshots
+
+### Site
+
+![Home page](.github/screenshots/home.png)
+
+| Recipe page | All recipes |
+| --- | --- |
+| ![Recipe page](.github/screenshots/recipe.png) | ![All recipes](.github/screenshots/all-recipes.png) |
+
+<details>
+<summary>Full recipe page</summary>
+
+![Full Banana Bread recipe page](.github/screenshots/recipe-full.png)
+
+</details>
+
+| Categories | Cuisine |
+| --- | --- |
+| ![Categories](.github/screenshots/categories.png) | ![Italian cuisine page](.github/screenshots/cuisine.png) |
+
+| Articles | Article |
+| --- | --- |
+| ![Articles](.github/screenshots/articles.png) | ![Article page](.github/screenshots/article.png) |
+
+| Recently viewed | Mobile |
+| --- | --- |
+| ![Recently viewed recipes](.github/screenshots/recently-viewed.png) | <img src=".github/screenshots/mobile-home.png" alt="Home page on mobile" width="260"> <img src=".github/screenshots/mobile-recipe.png" alt="Recipe page on mobile" width="260"> |
+
+### Dashboard
+
+| Summary | Reader tracking |
+| --- | --- |
+| ![Dashboard summary](.github/screenshots/dashboard.png) | ![Reader tracking](.github/screenshots/dashboard-tracking.png) |
+
+| Recipe editor | Recipe stats |
+| --- | --- |
+| ![Recipe editor](.github/screenshots/dashboard-recipe-editor.png) | ![Recipe stats](.github/screenshots/dashboard-recipe-stats.png) |
+
+| Recipes (dark theme) | Media library |
+| --- | --- |
+| ![Recipe management in dark theme](.github/screenshots/dashboard-recipes.png) | ![Media library](.github/screenshots/dashboard-media.png) |
+
+| Categories | Navigation editor |
+| --- | --- |
+| ![Category management](.github/screenshots/dashboard-categories.png) | ![Navigation editor](.github/screenshots/dashboard-navigation.png) |
+
 ## Features
 
 - 🔐 Authentication with NextAuth.js (email/password and Google), with email confirmation and password reset
