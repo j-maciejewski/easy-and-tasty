@@ -31,7 +31,7 @@ export const SectionsList = ({
     <SortableList
       items={sections}
       onReorder={onChange}
-      className="space-y-2 rounded-lg border p-3"
+      className="min-w-0 space-y-2 rounded-lg border p-3"
       itemClassName="bg-card rounded-md border"
       renderItem={(section, index, dragHandle) => (
         <div className="flex items-center gap-2 px-3 py-2">
