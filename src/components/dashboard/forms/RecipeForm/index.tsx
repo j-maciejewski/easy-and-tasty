@@ -28,8 +28,7 @@ import {
 } from "@/utils";
 
 import { ImageUploadField } from "../ImageUploadField";
-import { EditorLayout, FormSection } from "../shared";
-import { ContentEditor } from "./ContentEditor";
+import { EditorLayout, FormSection, MarkdownEditor } from "../shared";
 import { DetailsSection } from "./DetailsSection";
 import { TaxonomySection } from "./TaxonomySection";
 import type { RecipeFormValues } from "./types";
@@ -246,7 +245,11 @@ export function RecipeForm({ recipeId, onSubmit }: RecipeForm.Props) {
                   <FormItem>
                     <FormLabel className="sr-only">Content</FormLabel>
                     <FormControl>
-                      <ContentEditor field={field} />
+                      <MarkdownEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

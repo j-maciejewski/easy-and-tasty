@@ -1,18 +1,28 @@
-import { FormLabel, Textarea } from "@/components/ui";
+import { FormLabel } from "@/components/ui";
 
+import { MarkdownEditor, type MarkdownEditorMode } from "../../shared";
 import type { DraftEditorProps } from "../types";
 
-export const MarkdownFields = ({ draft, setDraft }: DraftEditorProps) => {
+interface MarkdownFieldsProps extends DraftEditorProps {
+  onModeChange?: (mode: MarkdownEditorMode) => void;
+}
+
+export const MarkdownFields = ({
+  draft,
+  setDraft,
+  onModeChange,
+}: MarkdownFieldsProps) => {
   return (
     <div className="space-y-2">
       <FormLabel>Content</FormLabel>
-      <Textarea
-        className="min-h-48"
+      <MarkdownEditor
+        height="360px"
+        onModeChange={onModeChange}
         value={draft.content ?? ""}
-        onChange={(evt) =>
+        onChange={(content) =>
           setDraft((prev) => ({
             ...prev!,
-            content: evt.target.value,
+            content,
           }))
         }
       />

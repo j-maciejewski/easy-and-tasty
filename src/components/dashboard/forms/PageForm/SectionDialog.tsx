@@ -1,4 +1,4 @@
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 
 import {
   Button,
@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui";
 import { type PageSection, pageSectionTypeEnum } from "@/constants";
+import { cn } from "@/lib/utils";
 
 import {
   ArticleFeedFields,
@@ -60,9 +61,24 @@ export const SectionDialog = ({
   onTypeChange,
   onSave,
 }: SectionDialogProps) => {
+  const [isSplit, setIsSplit] = useState(false);
+  const isMarkdown = draft?.type === "markdown";
+
+  // The editor remounts in write mode when the dialog reopens or the type
+  // changes, so drop the widened layout with it.
+  useEffect(() => {
+    if (!open || !isMarkdown) setIsSplit(false);
+  }, [open, isMarkdown]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[calc(100%-4rem)] overflow-auto sm:max-w-xl">
+      <DialogContent
+        className={cn(
+          "max-h-[calc(100%-4rem)] overflow-auto sm:max-w-xl",
+          isMarkdown && "sm:max-w-3xl",
+          isMarkdown && isSplit && "sm:max-w-6xl",
+        )}
+      >
         <DialogHeader>
           <DialogTitle>
             {isEditing ? "Edit section" : "Add section"}
@@ -93,7 +109,11 @@ export const SectionDialog = ({
             </div>
 
             {draft.type === "markdown" && (
-              <MarkdownFields draft={draft} setDraft={setDraft} />
+              <MarkdownFields
+                draft={draft}
+                setDraft={setDraft}
+                onModeChange={(mode) => setIsSplit(mode === "split")}
+              />
             )}
             {draft.type === "banner" && (
               <BannerFields draft={draft} setDraft={setDraft} />
