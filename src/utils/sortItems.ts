@@ -7,7 +7,7 @@ export function sortItems<T>(
 
   const firstItemValue = items?.[0]?.[sortKey];
 
-  if (!firstItemValue) return items;
+  if (firstItemValue == null) return items;
 
   const sortType = typeof firstItemValue === "number" ? "number" : "string";
 

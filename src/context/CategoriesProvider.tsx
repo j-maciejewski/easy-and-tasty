@@ -12,7 +12,7 @@ import { api } from "@/trpc/react";
 import { useBroadcastChannel } from "@/utils";
 
 interface ICategoriesContext {
-  categories: Map<number, Category>;
+  categories: Map<number, CategoryWithCount>;
   categoriesLoading: boolean;
   refreshCategories: () => void;
 }
@@ -24,7 +24,7 @@ const CategoriesProvider = ({
   ...rest
 }: {
   children: ReactNode;
-  categories: Category[];
+  categories: CategoryWithCount[];
 }) => {
   const [categories, setCategories] = useState(initialCategories);
   const { isFetching, refetch } =
@@ -32,7 +32,7 @@ const CategoriesProvider = ({
       enabled: false,
     });
 
-  const broadcast = useBroadcastChannel<Category>(
+  const broadcast = useBroadcastChannel<CategoryWithCount>(
     "categories-sync",
     setCategories,
   );
@@ -47,7 +47,7 @@ const CategoriesProvider = ({
   };
 
   const handleUpdateCategories = useCallback(
-    (categories: Category[]) => {
+    (categories: CategoryWithCount[]) => {
       setCategories(categories);
       broadcast(categories);
     },

@@ -62,7 +62,7 @@ export const CuisinesTable = () => {
     status,
   ]);
 
-  const columns: TableColumn<Cuisine>[] = [
+  const columns: TableColumn<CuisineWithCount>[] = [
     {
       label: "Name",
       sortKey: "name",
@@ -77,6 +77,11 @@ export const CuisinesTable = () => {
       label: "Description",
       sortKey: "description",
       render: ({ description }) => description,
+    },
+    {
+      label: "Recipes",
+      sortKey: "recipesCount",
+      render: ({ recipesCount }) => recipesCount,
     },
     {
       label: "Status",
@@ -140,7 +145,7 @@ export const CuisinesTable = () => {
       debouncedQuery,
     );
 
-    sortItems(filteredCuisines, sort.key as keyof Cuisine, sort.order);
+    sortItems(filteredCuisines, sort.key as keyof CuisineWithCount, sort.order);
 
     return filteredCuisines;
   }, [debouncedQuery, status, cuisines, sort.key, sort.order]);

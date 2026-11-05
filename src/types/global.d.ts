@@ -7,6 +7,8 @@ declare global {
   type Seo = typeof seo.$inferSelect;
   type Category = typeof categories.$inferSelect;
   type Cuisine = typeof cuisines.$inferSelect;
+  type CategoryWithCount = Category & { recipesCount: number };
+  type CuisineWithCount = Cuisine & { recipesCount: number };
 
   type RecipeRatingOptions = {
     avgRating: number;

@@ -1,8 +1,16 @@
-import { and, eq, inArray, isNull } from "drizzle-orm";
+import {
+  and,
+  asc,
+  count,
+  eq,
+  getTableColumns,
+  inArray,
+  isNull,
+} from "drizzle-orm";
 import { z } from "zod";
 
 import { authorizedProcedure, createTRPCRouter } from "@/server/api/trpc";
-import { categories } from "@/server/db/schema";
+import { categories, recipe_categories } from "@/server/db/schema";
 
 export const authorizedCategoryRouter = createTRPCRouter({
   getCategory: authorizedProcedure.input(z.number()).query(({ ctx, input }) => {
@@ -13,9 +21,18 @@ export const authorizedCategoryRouter = createTRPCRouter({
   }),
 
   getCategories: authorizedProcedure.query(({ ctx }) => {
-    return ctx.db.query.categories.findMany({
-      orderBy: (categories, { asc }) => [asc(categories.name)],
-    });
+    return ctx.db
+      .select({
+        ...getTableColumns(categories),
+        recipesCount: count(recipe_categories.id),
+      })
+      .from(categories)
+      .leftJoin(
+        recipe_categories,
+        eq(recipe_categories.categoryId, categories.id),
+      )
+      .groupBy(categories.id)
+      .orderBy(asc(categories.name));
   }),
 
   addCategory: authorizedProcedure

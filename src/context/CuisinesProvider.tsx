@@ -12,7 +12,7 @@ import { api } from "@/trpc/react";
 import { useBroadcastChannel } from "@/utils";
 
 interface ICuisinesContext {
-  cuisines: Map<number, Cuisine>;
+  cuisines: Map<number, CuisineWithCount>;
   cuisinesLoading: boolean;
   refreshCuisines: () => void;
 }
@@ -24,7 +24,7 @@ const CuisinesProvider = ({
   ...rest
 }: {
   children: ReactNode;
-  cuisines: Cuisine[];
+  cuisines: CuisineWithCount[];
 }) => {
   const [cuisines, setCuisines] = useState(initialCuisines);
   const { isFetching, refetch } = api.authorized.cuisine.getCuisines.useQuery(
@@ -34,7 +34,10 @@ const CuisinesProvider = ({
     },
   );
 
-  const broadcast = useBroadcastChannel<Cuisine>("cuisines-sync", setCuisines);
+  const broadcast = useBroadcastChannel<CuisineWithCount>(
+    "cuisines-sync",
+    setCuisines,
+  );
 
   const refreshCuisines = async () => {
     console.log("Refreshing cuisines...");
@@ -46,7 +49,7 @@ const CuisinesProvider = ({
   };
 
   const handleUpdateCuisines = useCallback(
-    (cuisines: Cuisine[]) => {
+    (cuisines: CuisineWithCount[]) => {
       setCuisines(cuisines);
       broadcast(cuisines);
     },
