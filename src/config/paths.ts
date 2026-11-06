@@ -5,6 +5,9 @@ export enum Path {
   CUISINES = "/cuisines",
   CATEGORIES = "/categories",
   RECIPE = "/recipe",
+  CONTACT = "/contact",
+  FAQ = "/faq",
+  PRIVACY_POLICY = "/privacy-policy",
 
   // Auth
   LOGIN = "/login",

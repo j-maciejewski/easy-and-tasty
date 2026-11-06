@@ -39,6 +39,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    ...["/faq", "/contact", "/privacy-policy"].map((path) => ({
+      url: `${baseUrl}${path}`,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    })),
   ];
 
   const recipeRoutes: MetadataRoute.Sitemap = recipesSlugs.map(({ slug }) => ({

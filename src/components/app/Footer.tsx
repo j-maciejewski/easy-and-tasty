@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Facebook, Instagram, Twitter } from "@/components/icons";
+import { Path } from "@/config";
 
 const linkGroups = [
   {
@@ -15,9 +16,9 @@ const linkGroups = [
   {
     heading: "Help",
     links: [
-      { label: "Contact", href: "#" },
-      { label: "FAQ", href: "#" },
-      { label: "Privacy policy", href: "#" },
+      { label: "Contact", href: Path.CONTACT },
+      { label: "FAQ", href: Path.FAQ },
+      { label: "Privacy policy", href: Path.PRIVACY_POLICY },
     ],
   },
 ];
