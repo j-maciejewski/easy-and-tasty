@@ -23,6 +23,20 @@ const config = {
   headers: async () => {
     return [
       {
+        // The browser checks for a new service worker on every navigation
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-cache, no-store, must-revalidate",
+          },
+          {
+            key: "Content-Type",
+            value: "application/javascript; charset=utf-8",
+          },
+        ],
+      },
+      {
         source: "/api/trpc/public/category",
         headers: [
           {

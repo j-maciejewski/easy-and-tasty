@@ -1,10 +1,12 @@
 "use client";
 
-import { Bookmark } from "lucide-react";
+import { Bookmark, WifiOff } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 import { EmptyState, PageHeading, RecipeCard } from "@/components/app";
 import { Path } from "@/config";
+import { cachePagesForOffline } from "@/lib/pwa";
 import { api } from "@/trpc/react";
 
 const recipeGridClassName =
@@ -12,10 +14,21 @@ const recipeGridClassName =
 
 export default function BookmarksPage() {
   const { data: session, status } = useSession();
-  const { data: bookmarkedRecipes, isLoading } =
-    api.authenticated.recipe.getBookmarkedRecipes.useQuery(undefined, {
-      enabled: !!session,
-    });
+  const {
+    data: bookmarkedRecipes,
+    isLoading,
+    isError,
+  } = api.authenticated.recipe.getBookmarkedRecipes.useQuery(undefined, {
+    enabled: !!session,
+  });
+
+  // Keep saved recipes readable offline, even ones not opened on this device
+  useEffect(() => {
+    if (!bookmarkedRecipes?.length) return;
+    cachePagesForOffline(
+      bookmarkedRecipes.map((recipe) => `${Path.RECIPE}/${recipe.slug}`),
+    ).catch(() => undefined);
+  }, [bookmarkedRecipes]);
 
   const heading = (
     <PageHeading
@@ -49,6 +62,20 @@ export default function BookmarksPage() {
           title="Sign in to see your saved recipes"
           description="Bookmark recipes as you browse and they'll be waiting for you here."
           action={{ label: "Sign in", href: Path.LOGIN }}
+        />
+      </div>
+    );
+  }
+
+  if (isError && !bookmarkedRecipes) {
+    return (
+      <div className="w-full">
+        {heading}
+        <EmptyState
+          icon={WifiOff}
+          title="Can't load your saved recipes"
+          description="You might be offline. Saved recipes you've opened on this device are still available."
+          action={{ label: "See offline recipes", href: "/offline" }}
         />
       </div>
     );
