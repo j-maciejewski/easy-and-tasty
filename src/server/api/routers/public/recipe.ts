@@ -359,6 +359,9 @@ export const publicRecipeRouter = createTRPCRouter({
           id: true,
           title: true,
           slug: true,
+          image: true,
+          time: true,
+          difficulty: true,
         },
         where: and(
           ilike(recipes.title, `%${searchQuery}%`),
