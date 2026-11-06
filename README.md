@@ -41,6 +41,10 @@ A modern recipe sharing platform built with Next.js 16, React 19, and TypeScript
 | --- | --- |
 | ![Recipe editor](.github/screenshots/dashboard-recipe-editor.png) | ![Recipe stats](.github/screenshots/dashboard-recipe-stats.png) |
 
+Markdown editor, side by side with the rendered preview:
+
+![Markdown recipe editor in side-by-side mode](.github/screenshots/dashboard-markdown-editor.png)
+
 | Recipes (dark theme) | Media library |
 | --- | --- |
 | ![Recipe management in dark theme](.github/screenshots/dashboard-recipes.png) | ![Media library](.github/screenshots/dashboard-media.png) |
