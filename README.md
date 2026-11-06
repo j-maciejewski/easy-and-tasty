@@ -29,7 +29,7 @@ A modern recipe sharing platform built with Next.js 16, React 19, and TypeScript
 
 | Recently viewed | Mobile |
 | --- | --- |
-| ![Recently viewed recipes](.github/screenshots/recently-viewed.png) | <img src=".github/screenshots/mobile-home.png" alt="Home page on mobile" width="260"> <img src=".github/screenshots/mobile-recipe.png" alt="Recipe page on mobile" width="260"> |
+| ![Recently viewed recipes](.github/screenshots/recently-viewed.png) | <img src=".github/screenshots/mobile-home.png" alt="Home page on mobile" width="260"> <img src=".github/screenshots/mobile-recipe.png" alt="Recipe page on mobile" width="260"> <img src=".github/screenshots/mobile-search.png" alt="Recipe search on mobile" width="260"> |
 
 ### Dashboard
 
