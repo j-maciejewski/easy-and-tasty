@@ -45,6 +45,13 @@ Markdown editor, side by side with the rendered preview:
 
 ![Markdown recipe editor in side-by-side mode](.github/screenshots/dashboard-markdown-editor.png)
 
+<details>
+<summary>Full recipe editor</summary>
+
+![Full Banana Bread recipe editor](.github/screenshots/dashboard-recipe-editor-full.png)
+
+</details>
+
 | Recipes (dark theme) | Media library |
 | --- | --- |
 | ![Recipe management in dark theme](.github/screenshots/dashboard-recipes.png) | ![Media library](.github/screenshots/dashboard-media.png) |
