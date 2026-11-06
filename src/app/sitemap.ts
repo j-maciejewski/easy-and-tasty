@@ -1,11 +1,23 @@
 import type { MetadataRoute } from "next";
 
+import { Path } from "@/config/paths";
 import { api } from "@/trpc/server";
+
+// Regenerate hourly so newly published content shows up without a rebuild.
+export const revalidate = 3600;
+
+const lastModifiedOf = ({
+  updatedAt,
+  publishedAt,
+}: {
+  updatedAt: Date | null;
+  publishedAt: Date | null;
+}) => updatedAt ?? publishedAt ?? undefined;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
 
-  const [recipesSlugs, categoriesSlugs, cuisinesSlugs, pagesSlugs] =
+  const [recipesSlugs, categoriesSlugs, cuisinesSlugs, articlesSlugs] =
     await Promise.all([
       api.public.recipe.getRecipesSlugs(),
       api.public.category.getCategoriesSlugs(),
@@ -20,41 +32,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/articles`,
+      url: `${baseUrl}${Path.ARTICLES}`,
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/all-recipes`,
+      url: `${baseUrl}${Path.ALL_RECIPES}`,
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/categories`,
+      url: `${baseUrl}${Path.CATEGORIES}`,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/cuisines`,
+      url: `${baseUrl}${Path.CUISINES}`,
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    ...["/faq", "/contact", "/privacy-policy"].map((path) => ({
+    ...[Path.FAQ, Path.CONTACT, Path.PRIVACY_POLICY].map((path) => ({
       url: `${baseUrl}${path}`,
       changeFrequency: "yearly" as const,
       priority: 0.3,
     })),
   ];
 
-  const recipeRoutes: MetadataRoute.Sitemap = recipesSlugs.map(({ slug }) => ({
-    url: `${baseUrl}/recipe/${slug}`,
+  const recipeRoutes: MetadataRoute.Sitemap = recipesSlugs.map((recipe) => ({
+    url: `${baseUrl}${Path.RECIPE}/${recipe.slug}`,
+    lastModified: lastModifiedOf(recipe),
     changeFrequency: "weekly",
     priority: 0.7,
   }));
 
   const categoryRoutes: MetadataRoute.Sitemap = categoriesSlugs.map(
     ({ slug }) => ({
-      url: `${baseUrl}/categories/${slug}`,
+      url: `${baseUrl}${Path.CATEGORIES}/${slug}`,
       changeFrequency: "weekly",
       priority: 0.6,
     }),
@@ -62,14 +75,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const cuisineRoutes: MetadataRoute.Sitemap = cuisinesSlugs.map(
     ({ slug }) => ({
-      url: `${baseUrl}/cuisines/${slug}`,
+      url: `${baseUrl}${Path.CUISINES}/${slug}`,
       changeFrequency: "weekly",
       priority: 0.6,
     }),
   );
 
-  const pageRoutes: MetadataRoute.Sitemap = pagesSlugs.map(({ slug }) => ({
-    url: `${baseUrl}/${slug}`,
+  const articleRoutes: MetadataRoute.Sitemap = articlesSlugs.map((article) => ({
+    url: `${baseUrl}/${article.slug}`,
+    lastModified: lastModifiedOf(article),
     changeFrequency: "weekly",
     priority: 0.5,
   }));
@@ -79,6 +93,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...recipeRoutes,
     ...categoryRoutes,
     ...cuisineRoutes,
-    ...pageRoutes,
+    ...articleRoutes,
   ];
 }

@@ -53,6 +53,8 @@ export const publicArticleRouter = createTRPCRouter({
     return ctx.db.query.articles.findMany({
       columns: {
         slug: true,
+        updatedAt: true,
+        publishedAt: true,
       },
       where: isNotNull(articles.publishedAt),
     });

@@ -221,6 +221,8 @@ export const publicRecipeRouter = createTRPCRouter({
     return ctx.db.query.recipes.findMany({
       columns: {
         slug: true,
+        updatedAt: true,
+        publishedAt: true,
       },
       where: isNotNull(recipes.publishedAt),
       orderBy: (recipes, { desc }) => [desc(recipes.createdAt)],
